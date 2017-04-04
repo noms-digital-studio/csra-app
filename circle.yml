@@ -7,16 +7,11 @@ machine:
 dependencies:
   override:
     - yarn
-
-dependencies:
-  override:
-    - yarn
   cache_directories:
     - ~/.cache/yarn
 
 test:
   override:
-    - yarn test
-    - mocha test --reporter mocha-junit-reporter:
+    - yarn testci:
         environment:
           MOCHA_FILE: $CIRCLE_TEST_REPORTS/junit/test-results.xml

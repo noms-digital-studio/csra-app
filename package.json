@@ -11,6 +11,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "lint": "eslint client server test --cache --max-warnings 0",
+    "testci": "mocha test/*.spec.js test/**/*.spec.js test/**/**/*.spec.js --reporter mocha-junit-reporter",
     "test": "mocha test/*.spec.js test/**/*.spec.js test/**/**/*.spec.js",
     "test:watch": "mocha test/*.spec.js test/**/*.spec.js test/**/**/*.spec.js  --watch",
     "verify": "yarn run lint && yarn run test",

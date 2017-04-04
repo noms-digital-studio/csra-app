@@ -1,4 +1,4 @@
 --require ./test/.setup.js
---reporter mocha-junit-reporter
+--reporter spec
 --colors
 --bail
