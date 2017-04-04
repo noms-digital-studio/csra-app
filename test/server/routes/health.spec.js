@@ -9,7 +9,7 @@ describe('GET /health', () => {
     app.use('/health', healthEndpoint);
   });
 
-  it('respond with { status: "OK" }', (done) => {
+  it('responds with { status: "OK" }', (done) => {
     request(app)
       .get('/health')
       .expect('Content-Type', /json/)
