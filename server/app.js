@@ -18,6 +18,7 @@ app.use((req, res, next) => {
 });
 
 // error handler
+/* eslint-disable no-unused-vars */
 app.use((error, req, res, next) => {
   const errorMessage = error.message || 'error';
   const errorStatus = error.status || 500;
