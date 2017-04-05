@@ -14,7 +14,7 @@
     "testci": "yarn lint && mocha test/*.spec.js test/**/*.spec.js test/**/**/*.spec.js --reporter mocha-junit-reporter",
     "test": "yarn lint && mocha test/*.spec.js test/**/*.spec.js test/**/**/*.spec.js",
     "test:watch": "mocha test/*.spec.js test/**/*.spec.js test/**/**/*.spec.js  --watch",
-    "build": "NODE_ENV=production webpack",
+    "build": "NODE_ENV=production webpack"
   },
   "engines": {
     "node": "^6.10.0"
