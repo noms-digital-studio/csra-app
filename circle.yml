@@ -15,3 +15,11 @@ test:
     - yarn testci:
         environment:
           MOCHA_FILE: $CIRCLE_TEST_REPORTS/junit/test-results.xml
+
+deployment:
+  mock:
+    branch: master
+    commands:
+        # Push to the deploy-to-mock branch which will trigger
+        # a deployment to the Azure MOCK stage
+        - git push --force origin $CIRCLE_SHA1:deploy-to-mock
