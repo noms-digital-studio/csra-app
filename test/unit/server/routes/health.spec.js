@@ -1,6 +1,6 @@
 import request from 'supertest';
 import express from 'express';
-import healthEndpoint from '../../../server/routes/health';
+import healthEndpoint from '../../../../server/routes/health';
 
 describe('GET /health', () => {
   let app;

@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../../server/app';
+import app from '../../../server/app';
 
 describe('App', () => {
   describe('GET /unknown', () => {
