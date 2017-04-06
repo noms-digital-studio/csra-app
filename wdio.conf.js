@@ -115,7 +115,16 @@ exports.config = {
   // Test reporter for stdout.
   // The only one supported by default is 'dot'
   // see also: http://webdriver.io/guide/testrunner/reporters.html
-  reporters: ['spec'],
+  reporters: ['spec', 'junit'],
+  reporterOptions: {
+    junit: {
+      outputDir: process.env.E2E_REPORTS_PATH,
+      outputFileFormat(opts) {
+        // optional
+        return `results-${opts.cid}.${opts.capabilities}.xml`;
+      },
+    },
+  },
   //
   // Options to be passed to Mocha.
   // See the full list at http://mochajs.org/
@@ -152,7 +161,7 @@ exports.config = {
     global.Assertion = chai.Assertion;
     global.assert = chai.assert;
     chai.Should();
-  }
+  },
   //
   // Hook that gets executed before the suite starts
   // beforeSuite: function (suite) {

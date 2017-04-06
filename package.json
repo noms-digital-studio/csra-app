@@ -101,6 +101,7 @@
     "style-loader": "^0.13.2",
     "supertest": "^3.0.0",
     "url-loader": "^0.5.8",
+    "wdio-junit-reporter": "^0.3.0",
     "wdio-mocha-framework": "^0.5.9",
     "wdio-selenium-standalone-service": "^0.0.8",
     "wdio-spec-reporter": "^0.1.0",
