@@ -1,7 +1,13 @@
 # CSRA Application
 Cell Sharing Risk Assessment application.
 
-## Comands Available
+## Before you start
+The app uses a `.env` file to manage the applications environmental variables.
+an example [file](.env.template) can be duplicated and updated according to you're needs.
+once changes are done save the file naming it `.env`.
+
+
+## Commands Available
 
 ### Install dependencies
 ```
@@ -25,6 +31,13 @@ Runs tests continuously.
 
 ```
 yarn test:watch
+```
+
+### Test end to end tests
+To run the end to end test you will need to have a running server `yarn start` then simply run:
+
+```
+yarn test:integration
 ```
 
 ### Lint
