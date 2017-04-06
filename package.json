@@ -41,6 +41,7 @@
     "babel-polyfill": "6.22.0",
     "babel-runtime": "^6.23.0",
     "debug": "^2.6.3",
+    "dotenv": "^4.0.0",
     "express": "^4.15.2",
     "govuk-elements-sass": "3.0.0",
     "govuk_frontend_toolkit": "5.1.3",
