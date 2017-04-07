@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+
+/* eslint-disable no-console */
+
+const request = require('superagent');
+
+const appUrl = process.env.APP_BASE_URL;
+const gitRef = process.env.GIT_REF;
+
+const poolEndpointForGitRef = (retryCount) => {
+  console.log('Pooling attempts remaining: ', retryCount);
+  if (retryCount === 0) {
+    // throw new Error(`Failed to get correct gitRef ${gitRef}`);
+    console.log(`Failed to get correct gitRef ${gitRef}`);
+    process.exit(1);
+  }
+
+  request
+    .get(`${appUrl}/health`)
+    .timeout({
+      response: 5000, // Wait 5 seconds for the server to start sending,
+      deadline: 10000, // but allow 30 seconds for request.
+    })
+    .end((error, response) => {
+      if (response.body && response.body.gitRef === gitRef) {
+        console.log('Successfully found the correct gitRef');
+        process.exit(0);
+      }
+
+      poolEndpointForGitRef(retryCount - 1);
+    });
+};
+
+// Run
+poolEndpointForGitRef(20);
