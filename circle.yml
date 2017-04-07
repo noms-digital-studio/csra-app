@@ -28,12 +28,12 @@ deployment:
     commands:
         # Push to the deploy-to-mock branch which will trigger
         # a deployment to the Azure MOCK stage
-        - BUILD_NUMBER=$CIRCLE_BUILD_NUM GIT_REF=$CIRCLE_SHA1 yarn run record-build-info
+        - BUILD_NUMBER=$CIRCLE_BUILD_NUM GIT_REF=$CIRCLE_SHA1 yarn record-build-info
         - git add --force --verbose build-info.json
         - git config user.name "Circle CI"
         - git config user.email "circle@circleci.com"
         - git commit -m "Deployment of $CIRCLE_SHA1"
         - git push --force origin HEAD:deploy-to-mock
-        - GIT_REF=$CIRCLE_SHA1 APP_BASE_URL=http://csra-mock.hmpps.dsd.io yarn run wait-for-deploy
-        - APP_BASE_URL=http://csra-mock.hmpps.dsd.io yarn run test:integtation
+        - GIT_REF=$CIRCLE_SHA1 APP_BASE_URL=http://csra-mock.hmpps.dsd.io yarn wait-for-deploy
+        - APP_BASE_URL=http://csra-mock.hmpps.dsd.io yarn test:integtation
 
