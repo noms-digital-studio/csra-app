@@ -4,6 +4,11 @@ machine:
   node:
     version: 6.10.0
 
+general:
+  branches:
+    ignore:
+        - deploy-to-mock
+
 dependencies:
   override:
     - yarn
