@@ -20,7 +20,7 @@ test:
     - yarn run lint
     - yarn test -- '--reporter mocha-junit-reporter':
         environment:
-          MOCHA_FILE: $CIRCLE_TEST_REPORTS/junit/test-results.xml
+          MOCHA_FILE: $CIRCLE_TEST_REPORTS/unit/test-results.xml
 
 deployment:
   mock:
@@ -28,12 +28,21 @@ deployment:
     commands:
         # Push to the deploy-to-mock branch which will trigger
         # a deployment to the Azure MOCK stage
-        - BUILD_NUMBER=$CIRCLE_BUILD_NUM GIT_REF=$CIRCLE_SHA1 yarn record-build-info
+        - yarn record-build-info:
+            environment:
+              BUILD_NUMBER: $CIRCLE_BUILD_NUM
+              GIT_REF: $CIRCLE_SHA1
         - git add --force --verbose build-info.json
         - git config user.name "Circle CI"
         - git config user.email "circle@circleci.com"
         - git commit -m "Deployment of $CIRCLE_SHA1"
         - git push --force origin HEAD:deploy-to-mock
-        - GIT_REF=$CIRCLE_SHA1 APP_BASE_URL=http://csra-mock.hmpps.dsd.io yarn wait-for-deploy
-        - APP_BASE_URL=http://csra-mock.hmpps.dsd.io yarn test:integration
+        - yarn 'wait-for-deploy':
+            environment:
+               GIT_REF: $CIRCLE_SHA1
+               APP_BASE_URL: http://csra-mock.hmpps.dsd.io
+        - yarn 'test:integration':
+            environment:
+              APP_BASE_URL: http://csra-mock.hmpps.dsd.io
+              E2E_REPORTS_PATH: $CIRCLE_TEST_REPORTS/end-to-end
 
