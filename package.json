@@ -16,7 +16,6 @@
     "test:watch": "yarn test -- --watch",
     "test:integration": "wdio wdio.conf.js",
     "build": "webpack",
-    "postinstall": "npm run build"
   },
   "engines": {
     "node": "^6.10.0"
