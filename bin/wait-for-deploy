@@ -22,14 +22,18 @@ const poolEndpointForGitRef = (retryCount) => {
       deadline: 10000, // but allow 30 seconds for request.
     })
     .end((error, response) => {
-      if (response.body && response.body.gitRef === gitRef) {
-        console.log('Successfully found the correct gitRef');
-        process.exit(0);
+      if (error || !response.ok) {
+        return poolEndpointForGitRef(retryCount - 1);
       }
 
-      poolEndpointForGitRef(retryCount - 1);
+      if (response.body && response.body.gitRef === gitRef) {
+        console.log('Successfully found the correct gitRef');
+        return process.exit(0);
+      }
+
+      return poolEndpointForGitRef(retryCount - 1);
     });
 };
 
 // Run
-poolEndpointForGitRef(20);
+setTimeout(() => poolEndpointForGitRef(20), 45000);
