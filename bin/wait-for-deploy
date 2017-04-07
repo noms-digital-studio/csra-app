@@ -3,31 +3,44 @@
 /* eslint-disable no-console */
 
 const request = require('superagent');
+const Throttle = require('superagent-throttle');
+const moment = require('moment');
 
 const appUrl = process.env.APP_BASE_URL;
 const gitRef = process.env.GIT_REF;
+const throttle = new Throttle({
+  active: true,
+  rate: 1,
+  ratePer: 5000,
+  concurrent: 1,
+});
 
 const poolEndpointForGitRef = (retryCount) => {
-  console.log('Pooling attempts remaining: ', retryCount);
+  console.log(moment().format(), ': Pooling attempts remaining: ', retryCount);
+
   if (retryCount === 0) {
-    // throw new Error(`Failed to get correct gitRef ${gitRef}`);
     console.log(`Failed to get correct gitRef ${gitRef}`);
     process.exit(1);
   }
 
   request
     .get(`${appUrl}/health`)
+    .use(throttle.plugin())
     .timeout({
-      response: 5000, // Wait 5 seconds for the server to start sending,
-      deadline: 10000, // but allow 30 seconds for request.
+      response: 5000, // Wait 5 seconds for the server to be available,
+      deadline: 5000, // but allow 5 seconds for request.
     })
     .end((error, response) => {
       if (error || !response.ok) {
         return poolEndpointForGitRef(retryCount - 1);
       }
 
-      if (response.body && response.body.gitRef === gitRef) {
-        console.log('Successfully found the correct gitRef');
+      if (
+        response.body &&
+        response.body.gitRef === gitRef &&
+        response.body.status === 'OK'
+      ) {
+        console.log('Successfully found the correct gitRef and status is ok');
         return process.exit(0);
       }
 
@@ -36,4 +49,4 @@ const poolEndpointForGitRef = (retryCount) => {
 };
 
 // Run
-setTimeout(() => poolEndpointForGitRef(20), 45000);
+setTimeout(() => poolEndpointForGitRef(60), 45000);
