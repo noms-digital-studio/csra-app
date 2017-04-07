@@ -30,5 +30,7 @@ deployment:
         # a deployment to the Azure MOCK stage
         - BUILD_NUMBER=$CIRCLE_BUILD_NUM GITREF=$CIRCLE_SHA1 yarn run record-build-info
         - git add --force --verbose build-info.json
+        - git config user.name "Circle CI"
+        - git config user.email "circle@circleci.com"
         - git commit -m "Deployment of $CIRCLE_SHA1"
         - git push --force origin HEAD:deploy-to-mock
