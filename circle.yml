@@ -35,5 +35,5 @@ deployment:
         - git commit -m "Deployment of $CIRCLE_SHA1"
         - git push --force origin HEAD:deploy-to-mock
         - GIT_REF=$CIRCLE_SHA1 APP_BASE_URL=http://csra-mock.hmpps.dsd.io yarn wait-for-deploy
-        - APP_BASE_URL=http://csra-mock.hmpps.dsd.io yarn test:integtation
+        - APP_BASE_URL=http://csra-mock.hmpps.dsd.io yarn test:integration
 
