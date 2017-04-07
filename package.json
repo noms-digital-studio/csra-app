@@ -15,7 +15,8 @@
     "verify": "yarn lint && yarn test",
     "test:watch": "yarn test -- --watch",
     "test:integration": "wdio wdio.conf.js",
-    "build": "webpack"
+    "build": "webpack",
+    "record-build-info": "./bin/record-build-info"
   },
   "engines": {
     "node": "^6.10.0"

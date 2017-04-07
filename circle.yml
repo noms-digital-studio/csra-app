@@ -23,4 +23,7 @@ deployment:
     commands:
         # Push to the deploy-to-mock branch which will trigger
         # a deployment to the Azure MOCK stage
-        - git push --force origin $CIRCLE_SHA1:deploy-to-mock
+        - BUILD_NUMBER=$CIRCLE_BUILD_NUM GITREF=$CIRCLE_SHA1 yarn run record-build-info
+        - git add --force --verbose build-info.json
+        - git commit -m "Deployment of $CIRCLE_SHA1"
+        - git push --force origin HEAD:deploy-to-mock
