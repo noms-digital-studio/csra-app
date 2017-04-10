@@ -16,6 +16,7 @@ describe('Wait for deploy script', () => {
     });
   });
 
+  /* eslint-disable func-names */
   it('calls the onSuccess callback if health endpoint returns "OK"', function (done) {
     this.timeout(2000);
 
