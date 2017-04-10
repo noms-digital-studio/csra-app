@@ -1,4 +1,4 @@
-describe('CSRA homepage', () => {
+describe('/ (homepage)', () => {
   before(() => {
     browser.url('/');
   });
