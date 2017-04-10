@@ -15,7 +15,7 @@ describe('GET /health', () => {
       .expect('Content-Type', /json/)
       .expect('Content-Length', '15')
       .expect(200, {
-        status: 'Not OK',
+        status: 'OK',
       }, done);
   });
 });
