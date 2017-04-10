@@ -36,7 +36,7 @@ deployment:
         - git config user.email "circle@circleci.com"
         - git commit -m "Deployment of $CIRCLE_SHA1"
         - git push --force origin HEAD:deploy-to-mock
-        - yarn 'wait-for-deploy':
+        - yarn wait-for-deploy:
             environment:
                GIT_REF: $CIRCLE_SHA1
                APP_BASE_URL: http://csra-mock.hmpps.dsd.io
