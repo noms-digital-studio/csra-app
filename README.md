@@ -3,8 +3,8 @@ Cell Sharing Risk Assessment application.
 
 ## Before you start
 The app uses a `.env` file to manage the applications environmental variables.
-an example [file](.env.template) can be duplicated and updated according to you're needs.
-once changes are done save the file naming it `.env`.
+An example [file](.env.template) can be duplicated and updated according to you're needs.
+Once changes are done save the file naming it `.env`.
 
 
 ## Commands Available
@@ -58,6 +58,7 @@ Starts the server on `PORT 5000`
 yarn start
 ```
 
+Then go to [http://localhost:5000/](http://localhost:5000/)
 
 ## Monitoring endpoint
 
@@ -65,8 +66,14 @@ yarn start
 
 e.g.
 
-```> curl http://localhost:5000/health ```
+Request: ```curl http://localhost:5000/health ```
 
-```{"status":"OK"}```
 
-Then go to [http://localhost:5000/](http://localhost:5000/)
+Response:
+```
+{
+  "status": "OK",
+  "buildNumber": "63",
+  "gitRef": "6fb33281f349f57068de83efa1585c3e5bcaa56f"
+}
+```
