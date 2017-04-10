@@ -11,10 +11,9 @@ general:
 
 dependencies:
   override:
-    - yarn
+    - yarn --frozen-lockfile
   cache_directories:
     - ~/.cache/yarn
-
 test:
   override:
     - yarn run lint
@@ -41,6 +40,7 @@ deployment:
             environment:
                GIT_REF: $CIRCLE_SHA1
                APP_BASE_URL: http://csra-mock.hmpps.dsd.io
+               WAIT_DURATION: 45000
         - yarn 'test:integration':
             environment:
               APP_BASE_URL: http://csra-mock.hmpps.dsd.io

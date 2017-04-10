@@ -11,7 +11,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "lint": "eslint client server test --cache --max-warnings 0",
-    "test": "mocha test/*.spec.js test/unit/*.spec.js test/unit/**/*.spec.js test/unit/**/**/*.spec.js",
+    "test": "mocha test/*.spec.js test/scripts/*.spec.js test/unit/*.spec.js test/unit/**/*.spec.js test/unit/**/**/*.spec.js",
     "verify": "yarn lint && yarn test",
     "test:watch": "yarn test -- --watch",
     "test:integration": "wdio wdio.conf.js",
@@ -93,6 +93,7 @@
     "jsdom": "^9.12.0",
     "mocha": "^3.2.0",
     "mocha-junit-reporter": "^1.13.0",
+    "nock": "^9.0.11",
     "node-sass": "^4.5.0",
     "optimize-css-assets-webpack-plugin": "^1.3.0",
     "postcss": "^5.2.15",
