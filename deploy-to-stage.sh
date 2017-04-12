@@ -2,7 +2,7 @@
 
 # Grab the MOCK build
 git checkout deploy-to-mock
-git pull
+git pull --rebase
 
 # Push the MOCK build to STAGE
 git push --force origin HEAD:deploy-to-stage
