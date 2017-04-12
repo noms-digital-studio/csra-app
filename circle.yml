@@ -8,6 +8,7 @@ general:
   branches:
     ignore:
         - deploy-to-mock
+        - deploy-to-stage
 
 dependencies:
   override:
