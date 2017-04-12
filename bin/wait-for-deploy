@@ -2,25 +2,25 @@
 
 /* eslint-disable no-console, comma-dangle */
 
-const poolEndpointForGitRef = require('../utils/scripts/wait-for-deployment');
+const pollEndpointFor = require('poll-endpoint-for');
 
-console.log('Starting pool for status endpoint...');
-
-setTimeout(
-  () => {
-    poolEndpointForGitRef({
-      appUrl: process.env.APP_BASE_URL,
-      gitRef: process.env.GIT_REF,
-      retryCount: 60,
-      onSuccess: (result) => {
-        console.log(result);
-        process.exit(0);
-      },
-      onError: () => {
-        console.log(`Failed to receive an "OK" status from ${process.env.APP_BASE_URL}`);
-        process.exit(1);
-      },
-    });
+pollEndpointFor(
+  {
+    status: 'OK',
+    gitRef: process.env.GIT_REF,
   },
-  process.env.WAIT_DURATION
+  {
+    url: process.env.APP_BASE_URL,
+    initialWait: process.env.WAIT_DURATION,
+    requestInterval: 5000,
+    retryCount: 60,
+    onSuccess: () => {
+      console.log('Success');
+      process.exit(0);
+    },
+    onError: () => {
+      console.log(`Failed to receive an "OK" status from ${process.env.APP_BASE_URL}`);
+      process.exit(1);
+    },
+  }
 );
