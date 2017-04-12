@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# This script requires the 'jq' command line tool
+# brew install jq
+
 # Grab the MOCK build
 git checkout deploy-to-mock
 git pull --rebase
@@ -13,5 +16,5 @@ GIT_REF=`jq -r '.gitRef' build-info.json` APP_BASE_URL=http://csra-stage.hmpps.d
 # Run the E2E tests against STAGE
 APP_BASE_URL=http://csra-stage.hmpps.dsd.io yarn test:integration
 
-
-
+# Switch back to master branch
+git checkout master
