@@ -38,3 +38,4 @@ node_modules/
 reports
 test-results.xml
 build-info.json
+temp
