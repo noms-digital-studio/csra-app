@@ -22,10 +22,10 @@ const buildInfo = {
 
 recordBuildInfoTo(target, buildInfo, (error) => {
   if (error) {
-    console.log('💔  Failed to record build info');
+    console.log('💔 Failed to record build info');
     return process.exit(1);
   }
 
-  console.log('✨  Successfully recorded build info');
+  console.log('✨ Successfully recorded build info');
   return process.exit(0);
 });

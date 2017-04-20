@@ -15,7 +15,7 @@ pollEndpointFor(
     requestInterval: 5000,
     retryCount: 60,
     onSuccess: () => {
-      console.log('✨  Success');
+      console.log('✨ Success');
       process.exit(0);
     },
     onError: () => {
