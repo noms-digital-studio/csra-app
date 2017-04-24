@@ -60,6 +60,12 @@ yarn start
 
 Then go to [http://localhost:5000/](http://localhost:5000/)
 
+### Deploy to Stage
+Deploy the application to the STAGE environment and run the E2E tests against STAGE
+```
+./scripts/promote-from-mock-to-stage.sh
+```
+
 ## Monitoring endpoint
 
 ### GET `/health`
