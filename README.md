@@ -40,6 +40,13 @@ To run the end to end test you will need to have a running server `yarn start` t
 yarn test:integration
 ```
 
+If running locally with Firefox 53.0 or above you will need to disable the new JSON preview mode.
+```
+Go to about:config
+Find the 'devtools.jsonview.enabled' entry
+Toggle it to false
+```
+
 ### Lint
 Runs the lint using [eslint-config-airbnb](https://www.npmjs.com/package/eslint-config-airbnb)
 ```
@@ -61,7 +68,7 @@ yarn start
 Then go to [http://localhost:5000/](http://localhost:5000/)
 
 ### Deploy to Stage
-Deploy the application to the STAGE environment and run the E2E tests against STAGE
+Deploy the application to the STAGE environment and run the E2E tests against STAGE. See the note above regarding Firefox
 ```
 ./promote-from-mock-to-stage.sh
 ```
