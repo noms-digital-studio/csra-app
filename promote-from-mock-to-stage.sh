@@ -11,7 +11,7 @@ git pull --rebase
 git push --force origin origin/deploy-to-mock:deploy-to-stage
 
 # Wait for STAGE deploy to finish
-GIT_REF=`jq -r '.gitRef' ../build-info.json` APP_BASE_URL=http://csra-stage.hmpps.dsd.io/health yarn wait-for-deploy
+GIT_REF=`jq -r '.gitRef' build-info.json` APP_BASE_URL=http://csra-stage.hmpps.dsd.io/health yarn wait-for-deploy
 
 # Run the E2E tests against STAGE
 APP_BASE_URL=http://csra-stage.hmpps.dsd.io yarn test:integration
