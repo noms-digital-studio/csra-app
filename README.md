@@ -35,7 +35,6 @@ yarn test:watch
 
 ### Test end to end tests
 To run the end to end test you will need to have a running server `yarn start` then simply run:
-
 ```
 yarn test:integration
 ```
