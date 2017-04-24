@@ -40,13 +40,6 @@ To run the end to end test you will need to have a running server `yarn start` t
 yarn test:integration
 ```
 
-If running locally with Firefox 53.0 or above you will need to disable the new JSON preview mode.
-```
-Go to about:config
-Find the 'devtools.jsonview.enabled' entry
-Toggle it to false
-```
-
 ### Lint
 Runs the lint using [eslint-config-airbnb](https://www.npmjs.com/package/eslint-config-airbnb)
 ```

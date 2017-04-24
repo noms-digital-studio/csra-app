@@ -14,7 +14,7 @@
     "test": "mocha test/*.spec.js test/scripts/*.spec.js test/unit/*.spec.js test/unit/**/*.spec.js test/unit/**/**/*.spec.js",
     "verify": "yarn lint && yarn test",
     "test:watch": "yarn test -- --watch",
-    "test:integration": "wdio wdio.conf.js",
+    "test:integration": "wdio wdio.conf.js && mocha test/end-to-end/rest/*.spec.js ",
     "build": "webpack",
     "record-build-info": "node ./bin/record-build-info",
     "wait-for-deploy": "node ./bin/wait-for-deploy"
