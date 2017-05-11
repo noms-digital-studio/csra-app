@@ -1,0 +1,16 @@
+{
+  "output": [
+    {
+      "nomisId": "A111111",
+      "viperScore": 0.35
+    },
+    {
+      "nomisId": "A222222",
+      "viperScore": 0.50
+    },
+    {
+      "nomisId": "A333333",
+      "viperScore": 0.92
+    }
+  ]
+}

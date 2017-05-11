@@ -1,0 +1,18 @@
+[
+  {
+    "nomisId": "nomisIdForLowRiskPerson1",
+    "viperScore": "0.00"
+  },
+  {
+    "nomisId": "nomisIdForLowRiskPerson2",
+    "viperScore": "0.59"
+  },
+  {
+    "nomisId": "nomisIdForHighRiskPerson1",
+    "viperScore": "0.60"
+  },
+  {
+    "nomisId": "nomisIdForHighRiskPerson2",
+    "viperScore": "1.0"
+  }
+]

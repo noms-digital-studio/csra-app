@@ -7,7 +7,7 @@ describe('/ (homepage)', () => {
     expect(browser.getTitle()).equal('Assess if a prisoner can share a cell safely');
   });
 
-  it('displays "Hello World" on the page', () => {
-    expect(browser.getText('main')).equal('Hello World');
+  it('displays "Enter your full name" on the page', () => {
+    expect(browser.getText('main')).to.contain('Enter your full name');
   });
 });

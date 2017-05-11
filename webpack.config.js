@@ -27,7 +27,7 @@ module.exports = {
   context: __dirname,
 
   entry: {
-    main: path.join(__dirname, 'client', 'main.jsx'),
+    main: path.join(__dirname, 'client', 'javascript', 'main.jsx'),
   },
 
   devtool: dev ? 'cheap-module-source-map' : 'source-map',
