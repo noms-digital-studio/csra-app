@@ -13,15 +13,5 @@ describe('/health', () => {
         done();
       });
   });
-
-  it('returns 406 Not Acceptable if I request a non-JSON response', function test(done) {
-    this.timeout(5000);
-    const baseUrl = process.env.APP_BASE_URL;
-    request(baseUrl)
-      .get('/health')
-      .set('Accept', 'application/xml')
-      .expect(406)
-      .end(done);
-  });
 });
 
