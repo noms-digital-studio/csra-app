@@ -1,8 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import QuestionWithCommentAndAside from '../../../src/javascript/containers/QuestionWithCommentAndAside';
-import Aside from '../../../src/javascript/components/asides/Index';
+import QuestionWithCommentAndAside from '../../../../client/javascript/containers/QuestionWithCommentAndAside';
+import Aside from '../../../../client/javascript/components/asides/Index';
 
 describe('<QuestionWithCommentAndAside />', () => {
   it('renders the title', () => {
@@ -33,7 +33,7 @@ describe('<QuestionWithCommentAndAside />', () => {
   });
 
   it('displays a comment box when the yes radio button is selected', () => {
-    const wrapper = mount(<QuestionWithCommentAndAside  />);
+    const wrapper = mount(<QuestionWithCommentAndAside />);
 
     expect(wrapper.find('textarea').length).to.equal(0, 'Did not expect to find a text area before the radio button was clicked');
 

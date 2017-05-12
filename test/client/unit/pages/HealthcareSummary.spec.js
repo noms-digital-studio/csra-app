@@ -1,10 +1,10 @@
 import React from 'react';
-import {Provider} from 'react-redux';
-import {mount, shallow} from 'enzyme';
+import { Provider } from 'react-redux';
+import { mount, shallow } from 'enzyme';
 
-import {fakeStore} from '../test-helpers';
+import { fakeStore } from '../test-helpers';
 
-import HealthcareSummary from '../../../src/javascript/pages/HealthcareSummary';
+import HealthcareSummary from '../../../../client/javascript/pages/HealthcareSummary';
 
 const prisonerDetails = {
   First_Name: 'foo-name',
@@ -14,27 +14,27 @@ const prisonerDetails = {
 };
 
 const healthcareAnswers = {
-  "outcome": {
-    "answer": "yes"
+  outcome: {
+    answer: 'yes',
   },
-  "comments": {},
-  "consent": {
-    "answer": "no"
+  comments: {},
+  consent: {
+    answer: 'no',
   },
-  "assessor": {
-    "role": "foo role",
-    "full-name": "Foo fullname",
-    "day": "20",
-    "month": "12",
-    "year": "1984"
-  }
+  assessor: {
+    role: 'foo role',
+    'full-name': 'Foo fullname',
+    day: '20',
+    month: '12',
+    year: '1984',
+  },
 };
 
 const storeData = {
   answers: {
     selectedPrisonerId: 'foo-nomis-id',
     healthcare: {
-      'foo-nomis-id': healthcareAnswers
+      'foo-nomis-id': healthcareAnswers,
     },
   },
   offender: {
@@ -43,9 +43,7 @@ const storeData = {
 };
 
 describe('<HealthcareSummary />', () => {
-
   context('Connected HealthcareSummary', () => {
-
     it('accepts and correctly renders a prisoner`s details', () => {
       const store = fakeStore(storeData);
       const wrapper = mount(
@@ -73,10 +71,10 @@ describe('<HealthcareSummary />', () => {
       });
 
       it('correctly renders a low risk outcome', () => {
-        const healthcareAnswersLow = {...healthcareAnswers, outcome: {"answer": "no"}};
+        const healthcareAnswersLow = { ...healthcareAnswers, outcome: { answer: 'no' } };
         const storeDataLow = {
           ...storeData,
-          answers: {...storeData.answers, healthcare: {'foo-nomis-id': healthcareAnswersLow}}
+          answers: { ...storeData.answers, healthcare: { 'foo-nomis-id': healthcareAnswersLow } },
         };
         const store = fakeStore(storeDataLow);
         const wrapper = mount(
@@ -102,10 +100,10 @@ describe('<HealthcareSummary />', () => {
       });
 
       it('correctly renders comments', () => {
-        const healthcareAnswersWithComments = {...healthcareAnswers, comments: {"comments": "some foo comment"}};
+        const healthcareAnswersWithComments = { ...healthcareAnswers, comments: { comments: 'some foo comment' } };
         const storeDataLow = {
           ...storeData,
-          answers: {...storeData.answers, healthcare: {'foo-nomis-id': healthcareAnswersWithComments}}
+          answers: { ...storeData.answers, healthcare: { 'foo-nomis-id': healthcareAnswersWithComments } },
         };
         const store = fakeStore(storeDataLow);
         const wrapper = mount(
@@ -141,6 +139,5 @@ describe('<HealthcareSummary />', () => {
       expect(healthcareAssessor).to.contain('foo role');
       expect(healthcareAssessor).to.contain('20-12-1984');
     });
-
   });
 });

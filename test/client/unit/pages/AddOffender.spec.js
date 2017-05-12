@@ -4,7 +4,7 @@ import { mount, shallow } from 'enzyme';
 
 import { fakeStore } from '../test-helpers';
 
-import ConnectedAddOffender, { AddOffender } from '../../../src/javascript/pages/AddOffender';
+import ConnectedAddOffender, { AddOffender } from '../../../../client/javascript/pages/AddOffender';
 
 const prisoner = {
   'first-name': 'foo-first-name',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import Comments from '../../../src/javascript/containers/Comments';
+import Comments from '../../../../client/javascript/containers/Comments';
 
 describe('<Comments />', () => {
   it('renders the title', () => {

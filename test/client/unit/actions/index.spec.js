@@ -12,12 +12,12 @@ import {
   saveHealthcareAssessmentAnswer,
   completeAssessmentFor,
   saveExitPoint,
-} from '../../../src/javascript/actions';
+} from '../../../../client/javascript/actions';
 
 import csraQuestions
-  from '../../../src/javascript/fixtures/csra-questions.json';
+  from '../../../../client/javascript/fixtures/csra-questions.json';
 import healthcareQuestions
-  from '../../../src/javascript/fixtures/healthcare-questions.json';
+  from '../../../../client/javascript/fixtures/healthcare-questions.json';
 
 describe('Actions', () => {
   describe('#getAssessmentQuestions', () => {

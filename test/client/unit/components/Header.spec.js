@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
-import ConnectedHeader, { Header } from '../../../src/javascript/components/Header';
+import ConnectedHeader, { Header } from '../../../../client/javascript/components/Header';
 import { fakeStore } from '../test-helpers';
 
 describe('<Header />', () => {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import store from '../src/javascript/store';
-import routes from '../src/javascript/Router';
+import store from '../../client/javascript/store';
+import routes from '../../client/javascript/Router';
 
 describe('App', () => {
   it('should render', () => {

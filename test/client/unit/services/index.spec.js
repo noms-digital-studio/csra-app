@@ -3,9 +3,9 @@ import {
   viperScores,
   offenderNomisProfiles,
   clearBrowserStorage,
-} from '../../../src/javascript/services';
-import localViperScores from '../../../src/javascript/fixtures/viper.json';
-import localOffenderProfiles from '../../../src/javascript/fixtures/nomis.json';
+} from '../../../../client/javascript/services';
+import localViperScores from '../../../../client/javascript/fixtures/viper.json';
+import localOffenderProfiles from '../../../../client/javascript/fixtures/nomis.json';
 import testViperScores from '../fixtures/viperScore.json';
 import testOffenderProfiles from '../fixtures/offenderProfiles.json';
 

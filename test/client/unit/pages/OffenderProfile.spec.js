@@ -6,7 +6,7 @@ import { fakeStore } from '../test-helpers';
 
 import ConnectedOffenderProfile, {
   OffenderProfile,
-} from '../../../src/javascript/pages/OffenderProfile';
+} from '../../../../client/javascript/pages/OffenderProfile';
 
 const selected = {
   First_Name: 'forename',

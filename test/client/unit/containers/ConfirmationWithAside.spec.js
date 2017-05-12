@@ -1,8 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import CofirmationWithAside from '../../../src/javascript/containers/ConfirmationWithAside';
-import Aside from '../../../src/javascript/components/asides/Index';
+import CofirmationWithAside from '../../../../client/javascript/containers/ConfirmationWithAside';
+import Aside from '../../../../client/javascript/components/asides/Index';
 
 describe('<CofirmationWithAside />', () => {
   it('renders the title', () => {

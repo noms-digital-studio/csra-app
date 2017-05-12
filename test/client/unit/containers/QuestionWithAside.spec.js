@@ -2,8 +2,8 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import QuestionWithAside
-  from '../../../src/javascript/containers/QuestionWithAside';
-import Aside from '../../../src/javascript/components/asides/Index';
+  from '../../../../client/javascript/containers/QuestionWithAside';
+import Aside from '../../../../client/javascript/components/asides/Index';
 
 describe('<QuestionWithAside />', () => {
   it('renders the title', () => {

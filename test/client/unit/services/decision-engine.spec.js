@@ -1,4 +1,4 @@
-import { assessmentCanContinue } from '../../../src/javascript/services/index';
+import { assessmentCanContinue } from '../../../../client/javascript/services/index';
 
 describe('Decision Engine', () => {
   it('return false if given an invalid sharedCellPredicate type', () => {

@@ -4,11 +4,11 @@ import { mount, shallow } from 'enzyme';
 
 import { fakeStore } from '../test-helpers';
 
-import viperScores from '../../../src/javascript/fixtures/viper.json';
+import viperScores from '../../../../client/javascript/fixtures/viper.json';
 
 import ConnectedDashboard, {
   Dashboard,
-} from '../../../src/javascript/pages/Dashboard';
+} from '../../../../client/javascript/pages/Dashboard';
 
 const profiles = [
   {

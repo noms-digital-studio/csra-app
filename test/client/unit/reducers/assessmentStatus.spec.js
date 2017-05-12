@@ -1,4 +1,4 @@
-import assessmentStatusReducer from '../../../src/javascript/reducers/assessmentStatus';
+import assessmentStatusReducer from '../../../../client/javascript/reducers/assessmentStatus';
 
 describe('#assessmentStatusReducer', () => {
   const defaultState = {

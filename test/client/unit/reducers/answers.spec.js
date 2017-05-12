@@ -1,4 +1,4 @@
-import answersReducer from '../../../src/javascript/reducers/answers';
+import answersReducer from '../../../../client/javascript/reducers/answers';
 
 describe('answersReducer', () => {
   const defaultState = {

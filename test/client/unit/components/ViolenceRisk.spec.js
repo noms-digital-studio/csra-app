@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { ViolenceRisk } from '../../../src/javascript/components/asides/ViolenceRisk';
+import { ViolenceRisk } from '../../../../client/javascript/components/asides/ViolenceRisk';
 
 describe('<ViolenceRisk />', () => {
   it('renders the component with a high viper rating', () => {

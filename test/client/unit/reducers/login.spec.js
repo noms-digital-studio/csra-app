@@ -1,4 +1,4 @@
-import loginReducer from '../../../src/javascript/reducers/login';
+import loginReducer from '../../../../client/javascript/reducers/login';
 
 describe('#loginReducer', () => {
   const defaultState = {

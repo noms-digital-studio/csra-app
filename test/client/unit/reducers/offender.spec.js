@@ -1,4 +1,4 @@
-import offenderReducer from '../../../src/javascript/reducers/offender';
+import offenderReducer from '../../../../client/javascript/reducers/offender';
 
 describe('#offenderReducer', () => {
   const defaultState = {

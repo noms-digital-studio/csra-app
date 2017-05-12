@@ -1,4 +1,4 @@
-import healthcareStatusReducer from '../../../src/javascript/reducers/healthcareStatus';
+import healthcareStatusReducer from '../../../../client/javascript/reducers/healthcareStatus';
 
 describe('#healthcareStatusReducer', () => {
   const defaultState = {

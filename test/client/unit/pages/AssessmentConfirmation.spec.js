@@ -6,7 +6,7 @@ import { fakeStore } from '../test-helpers';
 
 import ConnectedAssessmentConfirmation, {
   AssessmentConfirmation,
-} from '../../../src/javascript/pages/AssessmentConfirmation';
+} from '../../../../client/javascript/pages/AssessmentConfirmation';
 
 const prisonerDetails = {
   First_Name: 'foo-name',

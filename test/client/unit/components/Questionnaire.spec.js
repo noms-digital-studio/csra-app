@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import Questionnaire from '../../../src/javascript/components/Questionnaire';
+import Questionnaire from '../../../../client/javascript/components/Questionnaire';
 
 const questions = [
   {
@@ -153,24 +153,24 @@ describe('<Questionnaire />', () => {
 
   context('when there is a predicate for a question', () => {
     const question = [
-          {
-            section: 'foo-section',
-            title: 'foo-title',
-            description: 'foo-description',
-            template: 'default_with_aside',
-            aside: {
-              template: 'static',
-              title: 'aside-title',
-              description: 'aside-description',
-            },
-            sharedCellPredicate: {
-              type: 'QUESTION',
-              value: 'no',
-              dependents: ['foo-section'],
-              reasons: ['foo reason'],
-            },
-          },
-        ];
+      {
+        section: 'foo-section',
+        title: 'foo-title',
+        description: 'foo-description',
+        template: 'default_with_aside',
+        aside: {
+          template: 'static',
+          title: 'aside-title',
+          description: 'aside-description',
+        },
+        sharedCellPredicate: {
+          type: 'QUESTION',
+          value: 'no',
+          dependents: ['foo-section'],
+          reasons: ['foo reason'],
+        },
+      },
+    ];
 
     context('and the predicate condition to continue are met', () => {
       it('calls the onSubmit function with a state that matches', () => {

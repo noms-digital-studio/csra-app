@@ -6,7 +6,7 @@ import { fakeStore } from '../test-helpers';
 
 import ConnectedConfirmOffender, {
   ConfirmOffender,
-} from '../../../src/javascript/pages/ConfirmOffender';
+} from '../../../../client/javascript/pages/ConfirmOffender';
 
 const prisoner = {
   'first-name': 'foo-first-name',

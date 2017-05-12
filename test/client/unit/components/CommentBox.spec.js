@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import CommentBox from '../../../src/javascript/components/CommentBox';
+import CommentBox from '../../../../client/javascript/components/CommentBox';
 
 describe('<CommentBox />', () => {
   it('accepts a character limit', () => {

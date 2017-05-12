@@ -1,4 +1,4 @@
-import questionnaireReducer from '../../../src/javascript/reducers/questionnaire';
+import questionnaireReducer from '../../../../client/javascript/reducers/questionnaire';
 
 describe('questionnaireReducer', () => {
   const defaultState = {

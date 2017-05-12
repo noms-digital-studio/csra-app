@@ -6,7 +6,7 @@ import { fakeStore } from '../test-helpers';
 
 import ConnectedAssessmentComplete, {
   AssessmentComplete,
-} from '../../../src/javascript/pages/AssessmentComplete';
+} from '../../../../client/javascript/pages/AssessmentComplete';
 
 const prisonerDetails = {
   First_Name: 'foo-name',

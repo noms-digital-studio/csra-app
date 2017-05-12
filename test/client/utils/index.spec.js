@@ -1,4 +1,4 @@
-import { allFormFieldsComplete } from '../../src/javascript/utils';
+import { allFormFieldsComplete } from '../../../client/javascript/utils';
 
 describe('Utils', () => {
   describe('#allFormFieldsComplete', () => {

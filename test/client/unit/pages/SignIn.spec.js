@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import { fakeStore } from '../test-helpers';
 
-import ConnectedSignIn, { SignIn } from '../../../src/javascript/pages/SignIn';
+import ConnectedSignIn, { SignIn } from '../../../../client/javascript/pages/SignIn';
 
 describe('<SignIn />', () => {
   context('Standalone Sign', () => {

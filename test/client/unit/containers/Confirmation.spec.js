@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import Confirmation from '../../../src/javascript/containers/Confirmation';
+import Confirmation from '../../../../client/javascript/containers/Confirmation';
 
 describe('<Confirmation />', () => {
   it('renders the title', () => {
