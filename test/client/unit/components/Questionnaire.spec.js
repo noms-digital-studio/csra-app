@@ -39,7 +39,7 @@ describe('<Questionnaire />', () => {
 
     mount(<Questionnaire getQuestions={getQuestions} />);
 
-    expect(getQuestions.calledOnce).to.be.true;
+    expect(getQuestions.calledOnce).to.equal(true);
   });
 
   it('renders offender name', () => {

@@ -29,7 +29,7 @@ describe('<QuestionWithCommentAndAside />', () => {
 
     wrapper.find('form').simulate('submit');
 
-    expect(callback.calledOnce).to.be.true;
+    expect(callback.calledOnce).to.equal(true);
   });
 
   it('displays a comment box when the yes radio button is selected', () => {

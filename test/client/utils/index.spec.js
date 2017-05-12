@@ -6,28 +6,28 @@ describe('Utils', () => {
       const data = { foo: 'bar', bar: 'baz' };
       const requiredFields = ['foo', 'bar'];
 
-      expect(allFormFieldsComplete(data, requiredFields)).to.be.true;
+      expect(allFormFieldsComplete(data, requiredFields)).to.equal(true);
     });
 
     it('returns false is if some required field  empty', () => {
       const data = { foo: '', bar: 'baz' };
       const requiredFields = ['foo', 'bar'];
 
-      expect(allFormFieldsComplete(data, requiredFields)).to.be.false;
+      expect(allFormFieldsComplete(data, requiredFields)).to.equal(false);
     });
 
     it('returns false if there are no fields in the data', () => {
       const data = {};
       const requiredFields = ['foo', 'bar'];
 
-      expect(allFormFieldsComplete(data, requiredFields)).to.be.false;
+      expect(allFormFieldsComplete(data, requiredFields)).to.equal(false);
     });
 
     it('returns true if there are no required fields', () => {
       const data = { foo: '', bar: 'baz' };
       const requiredFields = [];
 
-      expect(allFormFieldsComplete(data, requiredFields)).to.be.true;
+      expect(allFormFieldsComplete(data, requiredFields)).to.equal(true);
     });
   });
 });

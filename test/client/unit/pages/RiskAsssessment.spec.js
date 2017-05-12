@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 
 import { fakeStore } from '../test-helpers';
 
-import Assessment from '../../../../client/javascript/pages/RiskAssessment.jsx';
+import Assessment from '../../../../client/javascript/pages/RiskAssessment';
 
 const questions = [
   {

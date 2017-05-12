@@ -27,7 +27,7 @@ describe('<Header />', () => {
 
         wrapper.find('[data-sign-out]').simulate('click');
 
-        expect(callback.calledOnce).to.be.true;
+        expect(callback.calledOnce).to.equal(true);
       });
     });
   });
@@ -61,14 +61,14 @@ describe('<Header />', () => {
       it('accepts a logout action', () => {
         wrapper.find('[data-sign-out]').simulate('click');
 
-        expect(store.dispatch.calledWithMatch({ type: 'SIGN_OUT' })).to.be.true;
+        expect(store.dispatch.calledWithMatch({ type: 'SIGN_OUT' })).to.equal(true, 'Sign out called');
 
         expect(
           store.dispatch.calledWithMatch({
             type: '@@router/CALL_HISTORY_METHOD',
             payload: { method: 'replace', args: ['/sign-in'] },
           }),
-        ).to.be.true;
+        ).to.equal(true);
       });
     });
   });

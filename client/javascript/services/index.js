@@ -71,6 +71,7 @@ export const assessmentCanContinue = (question, answers, viperScore) => {
     return viperScore === question.sharedCellPredicate.value;
   }
 
-  console.error(`Recieved an invalid sharedCellPredicate type: ${question.sharedCellPredicate.type}`);
+  /* eslint-disable no-console */
+  console.error(`Received an invalid sharedCellPredicate type: ${question.sharedCellPredicate.type}`);
   return false;
 };

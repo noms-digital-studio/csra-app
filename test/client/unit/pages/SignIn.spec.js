@@ -13,7 +13,7 @@ describe('<SignIn />', () => {
 
       wrapper.find('form').simulate('submit');
 
-      expect(callback.calledOnce).to.be.false;
+      expect(callback.calledOnce).to.equal(false);
     });
 
     context('when a username has been provided to the sign in form', () => {
@@ -27,8 +27,8 @@ describe('<SignIn />', () => {
 
         form.simulate('submit');
 
-        expect(callback.calledOnce).to.be.true;
-        expect(callback.calledWith(name)).to.be.true;
+        expect(callback.calledOnce).to.equal(true);
+        expect(callback.calledWith(name)).to.equal(true);
       });
     });
   });
@@ -56,7 +56,7 @@ describe('<SignIn />', () => {
 
         form.simulate('submit');
 
-        expect(store.dispatch.calledWithMatch({ type: 'SIGN_IN', payload: name })).to.be.true;
+        expect(store.dispatch.calledWithMatch({ type: 'SIGN_IN', payload: name })).to.equal(true);
 
         expect(
           store.dispatch.calledWithMatch({

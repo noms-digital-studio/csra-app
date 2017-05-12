@@ -20,7 +20,7 @@ describe('<Confirmation />', () => {
 
     wrapper.find('form').simulate('submit');
 
-    expect(callback.calledOnce).to.be.true;
+    expect(callback.calledOnce).to.equal(true);
   });
 
   it('pre-populates the forms if data is available', () => {

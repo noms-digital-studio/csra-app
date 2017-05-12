@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import { fakeStore } from '../test-helpers';
 
@@ -17,7 +17,8 @@ const prisoner = {
 
 const populateForm = (wrapper) => {
   Object.keys(prisoner).forEach((key) => {
-    wrapper.find(`input[name="${key}"]`).node.value = prisoner[key];
+    const node = wrapper.find(`input[name="${key}"]`).node;
+    node.value = prisoner[key];
   });
 };
 
