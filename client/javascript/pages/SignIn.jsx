@@ -23,7 +23,7 @@ class SignIn extends Component {
   render() {
     return (
       <form action="/" method="POST" className="form" onSubmit={event => this.handleSubmit(event)}>
-        <h1 className="form-title heading-large">Enter your full name</h1>
+        <h1 className="form-title heading-large">Your full name</h1>
 
         <div className="form-group">
           <input type="text" className="form-control" id="username" name="username" />
