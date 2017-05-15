@@ -28,7 +28,7 @@ module.exports = {
 
   entry: {
     main: [path.join(__dirname, 'client', 'javascript', 'main.jsx')].concat(
-      dev ? ['webpack-hot-middleware/client'] : [],
+      dev ? ['webpack-hot-middleware/client'] : []
     ),
   },
 
@@ -77,11 +77,11 @@ module.exports = {
               includePaths: [
                 path.join(
                   __dirname,
-                  'node_modules/govuk-elements-sass/public/sass',
+                  'node_modules/govuk-elements-sass/public/sass'
                 ),
                 path.join(
                   __dirname,
-                  'node_modules/govuk_frontend_toolkit/stylesheets',
+                  'node_modules/govuk_frontend_toolkit/stylesheets'
                 ),
               ],
             },
