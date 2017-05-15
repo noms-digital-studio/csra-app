@@ -11,6 +11,7 @@ exports.config = {
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
   specs: ['./test/end-to-end/browser/**/*.js'],
+  waitforTimeout: 99999,
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
@@ -132,7 +133,7 @@ exports.config = {
     ui: 'bdd',
     compilers: ['js:babel-register'],
     require: [],
-    timeout: 10000,
+    timeout: 999999,
   },
   //
   // =====
