@@ -2,7 +2,7 @@ const path = require('path');
 
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -27,15 +27,17 @@ module.exports = {
   context: __dirname,
 
   entry: {
-    main: path.join(__dirname, 'client', 'javascript', 'main.jsx'),
+    main: [path.join(__dirname, 'client', 'javascript', 'main.jsx')].concat(
+      dev ? ['webpack-hot-middleware/client'] : [],
+    ),
   },
 
   devtool: dev ? 'cheap-module-source-map' : 'source-map',
 
   output: {
     path: path.join(__dirname, 'public', 'dist'),
-    publicPath: '/',
-    filename:'[name].bundle.js',
+    publicPath: '/dist',
+    filename: '[name].bundle.js',
     sourceMapFilename: '[name].[hash].map',
   },
 
@@ -46,12 +48,12 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel-loader',
         options: {
-          presets: ['env'],
+          presets: dev ? ['env', 'react-hmre'] : ['env'],
         },
       },
       {
         test: /\.css$/,
-        loader: extractInProduction([
+        use: extractInProduction([
           'css-loader',
           {
             loader: 'postcss-loader',
@@ -63,7 +65,7 @@ module.exports = {
       },
       {
         test: /\.scss/,
-        loader: extractInProduction([
+        use: extractInProduction([
           {
             loader: 'css-loader',
             options: { sourceMap: true },
@@ -73,8 +75,14 @@ module.exports = {
             options: {
               sourceMap: true,
               includePaths: [
-                path.join(__dirname, 'node_modules/govuk-elements-sass/public/sass'),
-                path.join(__dirname, 'node_modules/govuk_frontend_toolkit/stylesheets'),
+                path.join(
+                  __dirname,
+                  'node_modules/govuk-elements-sass/public/sass',
+                ),
+                path.join(
+                  __dirname,
+                  'node_modules/govuk_frontend_toolkit/stylesheets',
+                ),
               ],
             },
           },
@@ -82,11 +90,11 @@ module.exports = {
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
-        loader: 'url-loader?limit=10000',
+        use: 'url-loader?limit=10000',
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
-        loader: 'url-loader?limit=10000',
+        use: 'url-loader?limit=10000',
       },
     ],
   },
@@ -94,29 +102,49 @@ module.exports = {
   plugins: [
     // Remove old artfacts on build
     new WebpackCleanupPlugin(),
+    new webpack.NamedModulesPlugin(),
+    dev && new webpack.NoEmitOnErrorsPlugin(),
+    dev && new webpack.HotModuleReplacementPlugin(),
+
+    new HtmlWebpackPlugin({
+      inject: true,
+      template: 'server/views/index.tmpl.html',
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true,
+      },
+    }),
 
     // React uses this to do dead code elimination
     !dev &&
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': '"production"',
-    }),
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': '"production"',
+      }),
 
     !dev &&
-    new CompressionPlugin({
-      asset: '[path].gz[query]',
-      algorithm: 'gzip',
-      test: /\.(js|css|html)$/,
-      threshold: 10240,
-      minRatio: 0.8,
-    }),
+      new CompressionPlugin({
+        asset: '[path].gz[query]',
+        algorithm: 'gzip',
+        test: /\.(js|css|html)$/,
+        threshold: 10240,
+        minRatio: 0.8,
+      }),
 
     !dev &&
-    new OptimizeCssAssetsPlugin({
-      assetNameRegExp: /\.css$/g,
-      cssProcessor: require('cssnano'),
-      cssProcessorOptions: { discardComments: { removeAll: true } },
-      canPrint: false,
-    }),
+      new OptimizeCssAssetsPlugin({
+        assetNameRegExp: /\.css$/g,
+        cssProcessor: require('cssnano'),
+        cssProcessorOptions: { discardComments: { removeAll: true } },
+        canPrint: false,
+      }),
 
     // CSS is moved into an external file for production
     !dev && new ExtractTextPlugin('[name].css'),
@@ -124,17 +152,6 @@ module.exports = {
     // Minify code in production only
     !dev && new BabiliPlugin(),
   ].filter(Boolean),
-
-  // Shim some things that enzyme requires when running in karma
-  externals: dev
-    ? {
-      jsdom: 'window',
-      cheerio: 'window',
-      'react/lib/ExecutionEnvironment': true,
-      'react/addons': true,
-      'react/lib/ReactContext': 'window',
-    }
-    : {},
 
   resolve: {
     extensions: ['*', '.js', '.jsx'],

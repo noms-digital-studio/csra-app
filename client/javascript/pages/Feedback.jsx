@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { hashHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 
 import SelectableInputGroup from '../components/SelectableInputGroup';
 import CommentBox from '../components/CommentBox';
@@ -10,7 +10,7 @@ import Routes from '../constants/routes';
 class Feedback extends Component {
   handleSubmit(e) {
     e.preventDefault();
-    hashHistory.push(Routes.FEEDBACK_CONFIRMATION);
+    browserHistory.push(Routes.FEEDBACK_CONFIRMATION);
   }
 
   render() {

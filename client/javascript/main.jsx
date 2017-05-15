@@ -5,6 +5,6 @@ import { render } from 'react-dom';
 import store from './store';
 import routes from './Router';
 
-import SassStyles from '../assets/scss/main.scss';
+import appScss from '../assets/scss/main.scss';
 
 render(routes(store), document.getElementById('mountNode'));

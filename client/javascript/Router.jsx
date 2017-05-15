@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route, hashHistory } from 'react-router';
+import { Router, Route, browserHistory } from 'react-router';
 
 import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
@@ -24,7 +24,7 @@ import HealthcareComplete from './pages/HealthcareComplete';
 import Error404 from './pages/Error404';
 
 export default (store) => {
-  const history = syncHistoryWithStore(hashHistory, store);
+  const history = syncHistoryWithStore(browserHistory, store);
 
   return (
     <Provider store={store}>
