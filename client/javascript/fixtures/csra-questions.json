@@ -1,8 +1,8 @@
 [
   {
     "section": "introduction",
-    "title": "Explanation to the prisoner",
-    "description": "<p class='text'>We are going to decide whether it is safe for you to share a cell with someone else.  Most people share cells in this prison.  So it is important that we know as much as possible about you to help us make the best decision.  I have some information about you already and I also have some questions.  The information you give me will be recorded and may be used by other staff in the prison to support you and make sure you and others are safe. Do you have any concerns about sharing a cell?</p>",
+    "title": "Explain to the prisoner",
+    "description": "<p class='text'> Most people share cells in this prison.</p><p> You have some information about them already, but you're now going to ask some questions.</p> <p>The information they give will be recorded and may be used by other prison staff to support them and make everyone as safe as possible.</p>",
     "template": "confirmation"
   },
   {
@@ -10,16 +10,16 @@
     "title": "Viper result",
     "content": {
       "low": {
-        "title": "Viper result: Low risk of violence",
+        "title": "Current recommendation: shared cell",
         "description": "<p class='text'>We've automatically run a background check that looks at your history in prison, offence, sentence and past behaviour. It's telling us that you may be safe to share a cell but I need to go through some questions with you before deciding.</p>"
       },
       "high": {
-        "title": "Viper result: High risk of violence",
+        "title": "Current recommendation: single cell",
         "description": "<p class='text'>We've automatically run a background check that looks at your history in prison, sentence and past behaviour in prison. It's telling us that you should have your own cell.</p>"
       },
       "unknown": {
-        "title": "Viper result: Unknown",
-        "description": "<p class='text'>This prisoner is either not in the system or it is their first time in prison. Please continue with the assessment.</p>"
+        "title": "No prisoner record",
+        "description": "<p class='text'>You don't have a record of them on the system.</p><p>You're now going to ask them some questions"
       }
     },
     "template": "viper",
@@ -36,19 +36,19 @@
   },
   {
     "section": "how-do-you-feel",
-    "title": "How do you feel about sharing a cell?",
-    "description": "Record any specific concerns shared by the prisoner.",
+    "title": "How do you think they feel about sharing a cell at this moment?",
+    "description": "Record anything you feel is relevant.",
     "template": "comments"
   },
   {
     "section": "prison-self-assessment",
-    "title": "Do you think you might hurt someone you had to share a cell with?",
+    "title": "Have they indicated they might seriously hurt a cellmate?",
     "description": "",
     "template": "default_with_comment_aside",
     "formFields": {
       "input": {
-        "yes": { "text": "Yes - they might harm a cellmate" },
-        "no": { "text": "No indicators that they might harm a cellmate" }
+        "yes": { "text": "Yes" },
+        "no": { "text": "No" }
       }
     },
     "sharedCellPredicate": {
@@ -63,22 +63,21 @@
     },
     "aside": {
       "template": "static",
-      "title": "Why is this important?",
-      "description": "<p class='text'>If the prisoner says they may hurt a cellmate a single cell will be recommended.</p>"
+      "description": "<p class='text'></p>"
     },
     "answerRequired": true
   },
   {
     "section": "vulnerability",
-    "title": "Have you been hurt or threatened in prison before?",
+    "title": "Do you think they might seriously hurt a cellmate because they're vulnerable?",
     "template": "default_with_comment_aside",
     "formFields": {
       "input": {
-        "yes": { "text": "Yes - at risk if sharing a cell" },
-        "no": { "text": "No - not obviously at risk if sharing a cell" }
+        "yes": { "text": "Yes" },
+        "no": { "text": "No" }
       }
     },
-    "description": "<p class='lede text'>Or do you have any reason to think that someone might hurt you if you shared a cell?</p>",
+    "description": "<p class='lede text'></p>",
     "sharedCellPredicate": {
       "type": "QUESTION",
       "value": "no",
@@ -91,56 +90,53 @@
     },
     "aside": {
       "template": "static",
-      "title": "Why is this important?",
-      "description": "<p class='text'>If the prisoner is at risk of being harmed whilst sharing a cell a single cell will be recommended.</p>"
+      "description": ""
     },
     "answerRequired": true
   },
   {
     "section": "gang-affiliation",
-    "title": "Are there any gangs or people you would rather not see while you’re here?",
+    "title": "Are they part of a gang, or likely to join a gang in prison?",
     "template": "default_with_comment_aside",
     "formFields": {
       "input": {
-        "yes": { "text": "Yes - has a gang affiliation" },
-        "no": { "text": "No - no obvious gang affiliation" }
+        "yes": { "text": "Yes" },
+        "no": { "text": "No" }
       }
     },
-    "description": "<p class='lede text c-text-hint'>If this is the only risk factor present, then it doesn't mean they will be recommended a single cell. Other risk factors that are relevant could affect the recommendation.</p>",
+    "description": "<p class='lede text c-text-hint'></p>",
     "aside": {
       "template": "static",
-      "title": "Why is this important?",
-      "description": "<p class='text'>Research tells us that people who are part of gangs when they come to prison or who join gangs when in prison are more likely than other prisoners to be violent during their stay. For this reason, it is important to establish whether or not the person is part of a gang.</p>"
+      "description": "<p class='text'></p>"
     },
     "answerRequired": true
   },
   {
     "section": "drug-misuse",
-    "title": "Have you used drugs in the last month?",
+    "title": "Have they used drugs in the last month?",
     "template": "default_with_comment_aside",
     "formFields": {
       "input": {
-        "yes": { "text": "Yes - has used drugs recently" },
-        "no": { "text": "No - hasn’t used drugs recently" }
+        "yes": { "text": "Yes" },
+        "no": { "text": "No" }
       }
     },
-    "description": "<p class='lede text'>Tell me about what you’ve used and how often.</p><p class='lede text c-text-hint'>On its own this risk factor will not lead to the recommendation of a single cell. When combined with other risk factors, it can lead to the recommendation that it would be safer for the prisoner to be in a single cell.</p>",
+    "description": "<p class='lede text'></p>",
     "aside": {
-      "title": "Why is this important?",
       "template": "static",
-      "description": "<p class='text'>Research on prison violence tells us that people who have been recently using drugs are more likely than other prisoners to be violent in prison. There are lots of possible reasons for this. For some it might be involvement in the illicit economy, dealing or getting into debt. For others, their drug use might affect their thinking, making them more suspicious and hostile, or might stop them thinking things through and controlling their impulses. Violence can also result from drug-induced psychosis.</p><p class='text'>As lots of people who come to prison take or have recently taken drugs.</p>"
+      "description": "<p class='text'></p><p class='text'></p>"
     },
     "answerRequired": true
   },
   {
     "section": "prejudice",
-    "title": "Are there any particular groups you would find it difficult to share a cell with?",
-    "description": "<p class='lede text'>For example, someone of a different age, race, religion, sexuality, gender identity or certain offence history.</p><p class='lede text c-text-hint'>Hostile attitudes on their own don’t mean that someone will automatically be given a single cell. They may be safe to share with a range of other people, and this will be taken into account in the final recommendation.</p>",
+    "title": "Do they have any hostile views or predjudices that mean they shouldn't share a cell with a particular group?",
+    "description": "<p class='lede text'></p><p class='lede text c-text-hint'></p>",
     "template": "default_with_comment_aside",
     "formFields": {
       "input": {
-        "yes": { "text": "Yes - likely to discriminate" },
-        "no": { "text": "No - not obviously likely to discriminate" }
+        "yes": { "text": "Yes" },
+        "no": { "text": "No" }
       }
     },
     "sharedCellPredicate": {
@@ -156,28 +152,26 @@
       ]
     },
     "aside": {
-      "title": "Why is this important?",
       "template": "static",
-      "description": "<p class='text'>We have a duty of care to keep people safe from discrimination. If someone has hostile attitudes towards a particular group, this needs to be noted, to keep others safe.</p>"
+      "description": "<p class='text'></p>"
     },
     "answerRequired": true
   },
   {
     "section": "officers-assessment",
-    "title": "Are there any other reasons why this person should not share a cell?",
-    "description": "<p class='lede text'>For example, if you have information from case records or the prisoner that raises concerns about them sharing a cell safely.</p>",
-    "commentLabel": "Enter the reasons why you think they should not share a cell:",
+    "title": "Are there any other reasons why you would recommend they have a single cell?",
+    "description": "<p class='lede text'></p>",
+    "commentLabel": "",
     "formFields": {
       "input": {
-        "yes": { "text": "Yes - I have more information" },
-        "no": { "text": "No - nothing else to record" }
+        "yes": { "text": "Yes" },
+        "no": { "text": "No" }
       }
     },
     "template": "default_with_comment_aside",
     "aside": {
-      "title": "Why is this important?",
       "template": "static",
-      "description": "<p class='text'>If there is any other information from case records or from the prisoner, that raises concerns that he/she might be violent towards a cell mate, then note it here.</p>"
+      "description": "<p class='text'></p>"
     },
     "sharedCellPredicate": {
       "type": "QUESTION",
