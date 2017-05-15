@@ -20,7 +20,7 @@ const Confirmation = ({ title, description, onSubmit, formDefaults: { confirmati
               type="checkbox"
               id="confirmation"
               value="accepted"
-              text="I confirm that this has been explained to the prisoner"
+              text="I confirm this has been explained and the prisoner understands"
               name="confirmation"
               selected={confirmation === 'accepted'}
             />

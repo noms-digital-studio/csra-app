@@ -28,14 +28,14 @@ class Dashboard extends Component {
         <td data-assessment-complete={not(isEmpty(profile.assessmentCompleted))}>
           {isEmpty(profile.assessmentCompleted)
             ? <a onClick={() => this.props.onOffenderSelect(profile)} className="link u-link">
-                Incomplete
+                Start
               </a>
             : <span>Complete</span>}
         </td>
         <td data-health-assessment-complete={not(isEmpty(profile.healthAssessmentCompleted))}>
           {isEmpty(profile.healthAssessmentCompleted)
             ? <a onClick={() => this.props.onOffenderHealthcareSelect(profile)} className="link u-link">
-                Incomplete
+                Start
               </a>
             : <span>Complete</span>}
         </td>
@@ -61,15 +61,12 @@ class Dashboard extends Component {
               <Link to={routes.ADD_OFFENDER} className="button">Add a prisoner</Link>
             </div>
             <div className="column-one-half u-text-align-right">
-              <span className="c-offender-count ">
-                Total prisoners: {this.props.profiles.length}
-              </span>
             </div>
           </div>
         </div>
         <div className="c-date-title">
           <h1 className="heading-large">
-            <span className="heading-secondary">Prisoners arriving on</span>
+            <span className="heading-secondary">Prisoners to assess on:</span>
             {this.props.date}
           </h1>
         </div>
@@ -77,13 +74,13 @@ class Dashboard extends Component {
         {isEmpty(this.props.profiles)
           ? <div className="u-text-align-center">
             <h2 className="heading-large">
-                There are currently no prisoners to assess
+                There are no prisoners to assess. Add a prisoner button
               </h2>
           </div>
           : <table>
             <thead>
               <tr>
-                <th scope="col">Photo</th>
+                <th scope="col"></th>
                 <th scope="col">Name</th>
                 <th scope="col">NOMIS ID</th>
                 <th scope="col">DOB</th>

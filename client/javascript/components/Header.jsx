@@ -21,7 +21,7 @@ const Header = ({ username, signedIn, onSignOut }) => {
                   height="32"
                   alt="GOV.UK"
                 />
-                <span>&nbsp;HMPS</span>
+                <span>HMPPS</span>
               </Link>
             </div>
           </div>
@@ -37,7 +37,7 @@ const Header = ({ username, signedIn, onSignOut }) => {
                       Sign out
                     </button>
                   </div>}
-                <Link to="/" id="proposition-name">Assess if a prisoner can share a cell safely</Link>
+                <Link to="/" id="proposition-name">Cell sharing risk assessment</Link>
               </nav>
             </div>
           </div>

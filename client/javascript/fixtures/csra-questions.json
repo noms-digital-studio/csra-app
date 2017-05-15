@@ -130,7 +130,7 @@
   },
   {
     "section": "prejudice",
-    "title": "Do they have any hostile views or predjudices that mean they shouldn't share a cell with a particular group?",
+    "title": "Do they have any hostile views or prejudices that mean they shouldn't share a cell with a particular group?",
     "description": "<p class='lede text'></p><p class='lede text c-text-hint'></p>",
     "template": "default_with_comment_aside",
     "formFields": {

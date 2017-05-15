@@ -11,7 +11,7 @@ const Viper = (
     <div className="grid-row">
       <div className="column-two-thirds">
         <h1 className="heading-large">{content[viperScore].title}</h1>
-        <p className="bold-medium">You can explain this to the prisoner:</p>
+        <p className="bold-medium">Explain to the prisoner:</p>
         <div dangerouslySetInnerHTML={{ __html: content[viperScore].description }} />
 
         <form className="c-confirmation-form" onSubmit={onSubmit} key={uuid()}>
@@ -21,7 +21,7 @@ const Viper = (
               type="checkbox"
               id="confirmation"
               value="accepted"
-              text="I confirm that this has been explained to the prisoner"
+              text="I confirm this has been explained and the prisoner understands"
               name="confirmation"
               selected={confirmation === 'accepted'}
             />
