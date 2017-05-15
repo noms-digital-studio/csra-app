@@ -77,7 +77,7 @@ class Dashboard extends Component {
         {isEmpty(this.props.profiles)
           ? <div className="u-text-align-center">
             <h2 className="heading-large">
-                There are currently no prisoners to assess. Please add some to the list by clicking the &quot;Add a prisoner&quot; button above
+                There are currently no prisoners to assess.
               </h2>
           </div>
           : <table>
