@@ -58,7 +58,7 @@ class SelectableInputWithComments extends Component {
                 className="c-radio-comment__label"
                 htmlFor={`reason-for-${name}`}
               >
-                Enter the reasons for your answer:
+                Use the box below to record the reasons for your answer:
               </label>
 
               <CommentBox
