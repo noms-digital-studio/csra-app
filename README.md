@@ -52,7 +52,12 @@ yarn verify
 ```
 
 ### Run
-Starts the server on `PORT 5000`
+Starts the server on `PORT 5000` in dev mode
+```
+yarn start:dev
+```
+
+Starts the server on `PORT 5000` in prod mode (prerequisite you wil have to run NODE_ENV=production yarn build)
 ```
 yarn start
 ```
