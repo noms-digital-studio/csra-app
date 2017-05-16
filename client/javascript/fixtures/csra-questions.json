@@ -2,7 +2,7 @@
   {
     "section": "introduction",
     "title": "Explain to the prisoner",
-    "description": "<p class='text'> Most people share cells in this prison.</p><p> You have some information about them already, but you're now going to ask some questions.</p> <p>The information they give will be recorded and may be used by other prison staff to support them and make everyone as safe as possible.</p>",
+    "description": "<p class='text'> Most people share cells in this prison.</p><p>The information they give will be recorded and may be used by other prison staff to support them and make everyone as safe as possible.</p>",
     "template": "confirmation"
   },
   {
@@ -11,15 +11,15 @@
     "content": {
       "low": {
         "title": "Current recommendation: shared cell",
-        "description": "<p class='text'>We've automatically run a background check that looks at your history in prison, offence, sentence and past behaviour. It's telling us that you may be safe to share a cell but I need to go through some questions with you before deciding.</p>"
+        "description": "<p class='text'>You've run a background check that looks at their history in prison, offence, sentence and past behaviour.</p><p>You now have some more questions.</p>"
       },
       "high": {
         "title": "Current recommendation: single cell",
-        "description": "<p class='text'>We've automatically run a background check that looks at your history in prison, sentence and past behaviour in prison. It's telling us that you should have your own cell.</p>"
+        "description": "<p class='text'>You've run a background check that looks at their history in prison, sentence and past behaviour in prison. It's telling you that they should have their own cell.</p>"
       },
       "unknown": {
         "title": "No prisoner record",
-        "description": "<p class='text'>You don't have a record of them on the system.</p><p>You're now going to ask them some questions"
+        "description": "<p class='text'>You don't have a record of them on the system.</p><p>You're now going to ask them some questions.</p>"
       }
     },
     "template": "viper",

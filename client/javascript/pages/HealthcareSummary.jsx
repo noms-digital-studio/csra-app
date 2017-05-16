@@ -10,19 +10,19 @@ class HealthCareSummary extends Component {
 
   render() {
     const {prisoner, answers} = this.props
-    const riskText = {no: 'no - low risk', yes: 'yes - high risk'};
+    const riskText = {no: 'Shared cell', yes: 'Single cell'};
     window.answers = answers;
     return (
 
       <div>
         <h1 className="heading-xlarge">Healthcare assessment completed</h1>
-        <p>The healthcare information has been captured for the prisoner</p>
+        <p></p>
 
         <div data-profile>
-          <h2 className="heading-medium">Prisoner Details</h2>
-          <p>Prisoner Name: <strong className="heading-small">{prisoner.firstName} {prisoner.surname}</strong></p>
-          <p>Date of Birth: <strong className="heading-small">{prisoner.dob}</strong></p>
-          <p>Prisoner Number: <strong className="heading-small">{prisoner.nomisId}</strong></p>
+          <h2 className="heading-medium">Prisoner details</h2>
+          <p>Prisoner name: <strong className="heading-small">{prisoner.firstName} {prisoner.surname}</strong></p>
+          <p>Date of birth: <strong className="heading-small">{prisoner.dob}</strong></p>
+          <p>NOMIS ID: <strong className="heading-small">{prisoner.nomisId}</strong></p>
         </div>
 
         <table className="check-your-answers">
@@ -31,7 +31,7 @@ class HealthCareSummary extends Component {
           <tr>
             <th colSpan="2">
               <h2 className="heading-medium">
-                Healthcare Summary
+                Healthcare outcome
               </h2>
             </th>
             <th>
@@ -42,7 +42,7 @@ class HealthCareSummary extends Component {
           <tbody>
           <tr data-healthcare-outcome>
             <td>
-              Healthcare Outcome
+              Recommendation
             </td>
             <td className="u-text-capitalize">
               {riskText[answers.outcome.answer]}
@@ -97,13 +97,12 @@ class HealthCareSummary extends Component {
           </tbody>
         </table>
 
-        <h2 className="heading-medium">Next steps</h2>
+        <h2 className="heading-medium"></h2>
 
-        <p className="text">The healthcare assessment has been saved, but the prisoner assessment must still
-          be completed before their assessment out come can be made.</p>
+        <p className="text"></p>
 
         <div className="form-group">
-          <Link to={routes.HEALTHCARE_COMPLETE} className="button">Save and Continue</Link>
+          <Link to={routes.HEALTHCARE_COMPLETE} className="button">Save and return to prisoner list</Link>
         </div>
       </div>
     );

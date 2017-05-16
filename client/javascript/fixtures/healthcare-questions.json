@@ -1,59 +1,54 @@
 [
   {
     "section": "outcome",
-    "title": "What is the outcome of the Health Assessment?",
-    "description": "<p>Complete the answer from the Healthcare Assessment form</p>",
+    "title": "Does the healthcare form recommend a single cell?",
+    "description": "<p></p>",
     "template": "default_with_aside",
     "formFields": {
       "input": {
-        "yes": { "text": "Yes - High risk" },
-        "no": { "text": "No - Low risk" }
+        "yes": { "text": "Yes" },
+        "no": { "text": "No" }
       }
     },
     "aside": {
       "template": "static",
-      "title": "Why is this important?",
-      "description": "<p class='text'>Healthcare can provide valuable information from their health assessment. It is vital to you record this accurately here.</p>"
+      "title": "",
+      "description": "<p class='text'></p>"
     },
     "answerRequired": true
   },
   {
     "section": "comments",
-    "title": "Are there any comments made by Healthcare?",
-    "description": "Insert any comments from Healthcare",
-    "template": "comments",
-    "aside": {
-      "template": "static",
-      "title": "Why is this important?",
-      "description": "<p class='text'>Healthcare can provide valuable information from their health assessment. It is vital to you record this accurately here.</p>"
-    }
+    "title": "Enter all the comments written on the healthcare form",
+    "description": "",
+    "template": "comments"
   },
   {
     "section": "consent",
-    "title": "Has the prisoner given consent to share their medical information?",
-    "description": "<p>Capture the answer whether the prisoner gave permission to share their information with other agencies involved in their care</p>",
+    "title": "Have they given consent to share their medical information?",
+    "description": "<p></p>",
     "template": "default_with_aside",
     "formFields": {
       "input": {
-        "yes": { "text": "Yes - gives consent to share information" },
-        "no": { "text": "No - does not consent to share information" }
+        "yes": { "text": "Yes" },
+        "no": { "text": "No" }
       }
     },
     "aside": {
       "template": "static",
-      "title": "Why is this important?",
-      "description": "<p class='text'>Healthcare can provide valuable information from their health assessment. It is vital to you record this accurately here.</p>"
+      "title": "",
+      "description": "<p class='text'></p>"
     },
     "answerRequired": true
   },
   {
     "section": "assessor",
-    "title": "Who complete the Healthcare assessment?",
+    "title": "Who completed the Healthcare assessment?",
     "template": "healthcare_assessment",
     "aside": {
       "template": "static",
-      "title": "Why is this important?",
-      "description": "<p class='text'>Healthcare can provide valuable information from their health assessment. It is vital to you record this accurately here.</p>"
+      "title": "",
+      "description": "<p class='text'></p>"
     },
     "answerRequired": true
   }
