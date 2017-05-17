@@ -1,4 +1,4 @@
-import { allFormFieldsComplete } from '../../../client/javascript/utils';
+import { allFormFieldsComplete, addUniqElementToList } from '../../../client/javascript/utils';
 
 describe('Utils', () => {
   describe('#allFormFieldsComplete', () => {
@@ -28,6 +28,18 @@ describe('Utils', () => {
       const requiredFields = [];
 
       expect(allFormFieldsComplete(data, requiredFields)).to.equal(true);
+    });
+  });
+
+  describe('#addUniqElementToList', () => {
+    it('adds an element to a list if its already not in it', () => {
+      expect(addUniqElementToList(1, [2])).to.eql([2, 1]);
+    });
+
+    it('does not add an element to the list if is already in the list', () => {
+      expect(addUniqElementToList(1, [1])).to.eql([1]);
+      expect(addUniqElementToList({}, [{}])).to.eql([{}]);
+      expect(addUniqElementToList([1], [[1]])).to.eql([[1]]);
     });
   });
 });

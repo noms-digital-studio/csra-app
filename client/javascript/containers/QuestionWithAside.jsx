@@ -4,17 +4,16 @@ import uuid from 'uuid/v4';
 import Aside from '../components/asides/Index';
 import SelectableInputGroup from '../components/SelectableInputGroup';
 
-const QuestionWithAside = (
-  {
-    title,
-    description,
-    aside,
-    onSubmit,
-    formDefaults,
-    answerRequired,
-    formFields: { input: { yes, no } },
-  },
-) => (
+const QuestionWithAside = ({
+  title,
+  description,
+  aside,
+  onSubmit,
+  formDefaults,
+  answerRequired,
+  questionnaireComplete,
+  formFields: { input: { yes, no } },
+}) => (
   <div className="grid-row">
     <div className="column-two-thirds">
       <form
@@ -49,9 +48,12 @@ const QuestionWithAside = (
             />
           </fieldset>
         </div>
-
         <p>
-          <input type="submit" className="button" value="Save and continue" />
+          <input
+            type="submit"
+            className="button"
+            value={questionnaireComplete ? 'Save' : 'Save and continue'}
+          />
         </p>
       </form>
     </div>
@@ -81,6 +83,7 @@ QuestionWithAside.defaultProps = {
       no: '',
     },
   },
+  questionnaireComplete: false,
   answerRequired: false,
 };
 

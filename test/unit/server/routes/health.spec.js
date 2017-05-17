@@ -5,7 +5,7 @@ import request from 'supertest';
 import express from 'express';
 import healthEndpoint from '../../../../server/routes/health';
 
-describe('GET /health', () => {
+xdescribe('GET /health', () => {
   let app;
   before(() => {
     app = express();

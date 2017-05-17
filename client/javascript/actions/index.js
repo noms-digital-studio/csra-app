@@ -13,6 +13,7 @@ import {
   COMPLETE_ASSESSMENT,
   SAVE_EXIT_POINT,
   COMPLETE_HEALTH_ASSESSMENT,
+  HEALTHCARE_ANSWERS_COMPLETE,
 } from '../constants/actions';
 
 import AssessmentQuestions from '../fixtures/csra-questions.json';
@@ -89,5 +90,10 @@ export const saveExitPoint = riskFactor => ({
 
 export const completeHealthAssessmentFor = offender => ({
   type: COMPLETE_HEALTH_ASSESSMENT,
+  payload: offender,
+});
+
+export const completeHealthAnswersFor = offender => ({
+  type: HEALTHCARE_ANSWERS_COMPLETE,
   payload: offender,
 });
