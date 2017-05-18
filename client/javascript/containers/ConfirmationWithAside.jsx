@@ -5,7 +5,7 @@ import SelectableInput from '../components/SelectableInput';
 import Aside from '../components/asides/Index';
 
 const ConfirmationWithAside = (
-  { title, description, aside, onSubmit, formDefaults: { confirmation } },
+  { title, description, aside, onSubmit, formDefaults: { confirmation }, isComplete },
 ) => (
   <div>
     <div className="grid-row">
@@ -27,7 +27,7 @@ const ConfirmationWithAside = (
             />
           </p>
           <p>
-            <input type="submit" className="button" value="Save and continue" />
+            <input type="submit" className="button" value={isComplete ? 'Save' : 'Save and continue'} />
           </p>
         </form>
       </div>
@@ -46,6 +46,7 @@ ConfirmationWithAside.propTypes = {
   formDefaults: PropTypes.shape({
     confirmation: PropTypes.string,
   }),
+  isComplete: PropTypes.bool,
 };
 
 ConfirmationWithAside.defaultProps = {

@@ -13,6 +13,7 @@ const QuestionWithAside = (
     formDefaults,
     answerRequired,
     formFields: { input: { yes, no } },
+    isComplete,
   },
 ) => (
   <div className="grid-row">
@@ -53,7 +54,7 @@ const QuestionWithAside = (
         </div>
 
         <p>
-          <input type="submit" className="button" value="Save and continue" />
+          <input type="submit" className="button" value={isComplete ? 'Save' : 'Save and continue'} />
         </p>
       </form>
     </div>
@@ -73,6 +74,7 @@ QuestionWithAside.propTypes = {
   }),
   formFields: PropTypes.object,
   answerRequired: PropTypes.bool,
+  isComplete: PropTypes.bool
 };
 
 QuestionWithAside.defaultProps = {

@@ -84,7 +84,7 @@ class Questionnaire extends Component {
       prisonerViperScore,
       basePath,
       completionPath,
-      questionnaireComplete,
+      isComplete,
     } = this.props;
     const { sectionIndex, question } = sectionData(questions, section);
     const answer = serialize(event.target, { hash: true });
@@ -102,7 +102,7 @@ class Questionnaire extends Component {
       prisonerViperScore,
     );
 
-    if (canContinue && questions[nextSectionIndex] && not(questionnaireComplete)) {
+    if (canContinue && questions[nextSectionIndex] && not(isComplete)) {
       nextPath = `${basePath}/${questions[nextSectionIndex].section}`;
     } else {
       nextPath = completionPath;
@@ -122,7 +122,7 @@ class Questionnaire extends Component {
       questions,
       prisonerViperScore,
       completionPath,
-      questionnaireComplete,
+      isComplete,
       params: { section },
       prisoner: { firstName, surname },
     } = this.props;
@@ -157,7 +157,7 @@ class Questionnaire extends Component {
           </div>
         </div>
         {templateSelector({
-          questionnaireComplete,
+          isComplete,
           completionPath,
           ...question,
           onSubmit: e => this.handleFormSubmit(e),
@@ -179,7 +179,7 @@ Questionnaire.propTypes = {
   prisoner: PropTypes.object,
   getQuestions: PropTypes.func,
   onSubmit: PropTypes.func,
-  questionnaireComplete: PropTypes.bool,
+  isComplete: PropTypes.bool,
 };
 
 Questionnaire.defaultProps = {
@@ -190,7 +190,7 @@ Questionnaire.defaultProps = {
   prisonerViperScore: '',
   getQuestions: () => {},
   onSubmit: () => {},
-  questionnaireComplete: false,
+  isComplete: false,
 };
 
 export default Questionnaire;

@@ -31,4 +31,19 @@ describe('<Confirmation />', () => {
       'Check box is checked',
     );
   });
+
+  context('when the isComplete prop is present', () => {
+    it('display "Save" on the submission button', () => {
+      const wrapper = mount(<Confirmation isComplete />);
+
+      expect(wrapper.find('input[type="submit"]').node.value).to.equal('Save');
+    });
+  });
+
+  context('when the isComplete prop is not present', () => {
+    it('display "Save and continue" on the submission button', () => {
+      const wrapper = mount(<Confirmation />);
+      expect(wrapper.find('input[type="submit"]').node.value).to.equal('Save and continue');
+    });
+  });
 });

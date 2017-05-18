@@ -3,7 +3,7 @@ import uuid from 'uuid/v4';
 
 import SelectableInput from '../components/SelectableInput';
 
-const Confirmation = ({ title, description, onSubmit, formDefaults: { confirmation } }) => (
+const Confirmation = ({ title, description, onSubmit, formDefaults: { confirmation }, isComplete }) => (
   <div>
     <div className="grid-row">
       <div className="column-two-thirds">
@@ -27,7 +27,7 @@ const Confirmation = ({ title, description, onSubmit, formDefaults: { confirmati
           </p>
 
           <p>
-            <input className="button" type="submit" value="Save and continue" />
+            <input className="button" type="submit" value={isComplete ? 'Save' : 'Save and continue'} />
           </p>
         </form>
       </div>
@@ -42,6 +42,7 @@ Confirmation.propTypes = {
   formDefaults: PropTypes.shape({
     confirmation: PropTypes.string,
   }),
+  isComplete: PropTypes.bool,
 };
 
 Confirmation.defaultProps = {

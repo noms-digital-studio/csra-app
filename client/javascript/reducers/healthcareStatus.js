@@ -12,6 +12,9 @@ const defaultState = {
   awaitingSubmission: [],
 };
 
+const filterOutPrisoner = (prisonerList, prisoner) =>
+  prisonerList.filter(el => el.NOMS_Number !== prisoner.NOMS_Number);
+
 export default (state = defaultState, { type, payload }) => {
   switch (type) {
     case SELECT_OFFENDER:
@@ -22,15 +25,16 @@ export default (state = defaultState, { type, payload }) => {
     case COMPLETE_HEALTH_ASSESSMENT:
       return {
         ...state,
-        awaitingSubmission: state.awaitingSubmission.filter(
-          prisoner => prisoner.NOMS_Number !== payload.NOMS_Number
-        ),
+        awaitingSubmission: filterOutPrisoner(state.awaitingSubmission, payload),
         completed: addUniqElementToList(payload, state.completed),
       };
     case HEALTHCARE_ANSWERS_COMPLETE:
       return {
         ...state,
-        awaitingSubmission: [...state.completed, payload],
+        awaitingSubmission: addUniqElementToList(
+          payload,
+          state.awaitingSubmission,
+        ),
       };
     default:
       return state;

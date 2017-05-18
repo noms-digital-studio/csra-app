@@ -4,7 +4,10 @@ import { push } from 'react-router-redux';
 
 import path from 'ramda/src/path';
 
-import { getHealthAssessmentQuestions, saveHealthcareAssessmentAnswer } from '../actions';
+import {
+  getHealthAssessmentQuestions,
+  saveHealthcareAssessmentAnswer,
+} from '../actions';
 
 import Questionnaire from '../components/Questionnaire';
 
@@ -27,6 +30,11 @@ const mapStateToProps = (state, ownProps) => ({
   },
   prisonerViperScore: '',
   answers: path([state.answers.selectedPrisonerId], state.answers.healthcare),
+  isComplete: Boolean(
+    state.healthcareStatus.awaitingSubmission.find(
+      prisoner => prisoner.NOMS_Number === state.offender.selected.NOMS_Number,
+    )
+  ),
 });
 
 const mapActionsToProps = dispatch => ({
@@ -39,4 +47,6 @@ const mapActionsToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapActionsToProps)(HealthcareAssessment);
+export default connect(mapStateToProps, mapActionsToProps)(
+  HealthcareAssessment,
+);

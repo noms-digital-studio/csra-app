@@ -1,7 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import Questionnaire from '../../../../client/javascript/components/Questionnaire';
+import Questionnaire
+  from '../../../../client/javascript/components/Questionnaire';
 
 const questions = [
   {
@@ -232,6 +233,40 @@ describe('<Questionnaire />', () => {
             answer: { answer: 'yes' },
             nextPath: '/foo-complete',
             canContinue: false,
+          }),
+        ).to.equal(true, 'called with the correct props');
+      });
+    });
+
+    context('when the questionnaire is considered complete', () => {
+      it('displays a save button that returns to the completion path', () => {
+        const callback = sinon.spy();
+        const params = { section: 'foo-section' };
+
+        const wrapper = mount(
+          <Questionnaire
+            questions={question}
+            params={params}
+            onSubmit={callback}
+            completionPath={'/foo-complete'}
+            isComplete
+          />,
+        );
+
+        wrapper
+          .find('#radio-no')
+          .simulate('change', { target: { value: 'no' } });
+
+        wrapper.find('form').simulate('submit');
+
+        expect(callback.calledOnce).to.equal(true, 'onSubmit called');
+
+        expect(
+          callback.calledWith({
+            section: 'foo-section',
+            answer: { answer: 'no' },
+            nextPath: '/foo-complete',
+            canContinue: true,
           }),
         ).to.equal(true, 'called with the correct props');
       });

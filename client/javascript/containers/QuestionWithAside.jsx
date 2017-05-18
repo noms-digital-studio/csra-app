@@ -11,7 +11,7 @@ const QuestionWithAside = ({
   onSubmit,
   formDefaults,
   answerRequired,
-  questionnaireComplete,
+  isComplete,
   formFields: { input: { yes, no } },
 }) => (
   <div className="grid-row">
@@ -52,7 +52,7 @@ const QuestionWithAside = ({
           <input
             type="submit"
             className="button"
-            value={questionnaireComplete ? 'Save' : 'Save and continue'}
+            value={isComplete ? 'Save' : 'Save and continue'}
           />
         </p>
       </form>
@@ -73,6 +73,7 @@ QuestionWithAside.propTypes = {
   }),
   formFields: PropTypes.object,
   answerRequired: PropTypes.bool,
+  isComplete: PropTypes.bool,
 };
 
 QuestionWithAside.defaultProps = {
@@ -83,7 +84,7 @@ QuestionWithAside.defaultProps = {
       no: '',
     },
   },
-  questionnaireComplete: false,
+  isComplete: false,
   answerRequired: false,
 };
 
