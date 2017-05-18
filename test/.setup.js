@@ -1,12 +1,14 @@
 require('dotenv').config();
 require('babel-register')();
 
-const { jsdom } = require('jsdom');
+const jsdom = require('jsdom');
 const chai = require('chai');
 const sinon = require('sinon');
-const mockLocalStorage = require('mock-local-storage');
+const storage = require('mock-local-storage');
 
-const exposedProperties = ['window', 'navigator', 'document'];
+const { JSDOM } = jsdom;
+const { document } = (new JSDOM(undefined, {url: 'http://example.com'})).window;
+const exposedProperties = ['window', 'navigator', 'document', 'localStorage', 'sessionStorage'];
 
 
 // Test Assertion libraries
@@ -14,10 +16,10 @@ global.expect = chai.expect;
 global.sinon = sinon;
 
 // JSDOM
-global.document = jsdom('<!doctype html><html><body></body></html>', { url: 'http://localhost' });
+global.document = document;
 global.window = document.defaultView;
-global.window.localStorage = mockLocalStorage;
-global.window.sessionStorage = mockLocalStorage;
+global.window.localStorage = global.window.sessionStorage = storage;
+
 
 Object.keys(document.defaultView).forEach((property) => {
     if (typeof global[property] === 'undefined') {

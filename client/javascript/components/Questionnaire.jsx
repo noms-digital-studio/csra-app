@@ -1,39 +1,40 @@
-import React, { Component, PropTypes } from "react";
-import serialize from "form-serialize";
+import React, { Component, PropTypes } from 'react';
+import serialize from 'form-serialize';
 
-import isEmpty from "ramda/src/isEmpty";
+import isEmpty from 'ramda/src/isEmpty';
+import not from 'ramda/src/not';
 
-import { assessmentCanContinue } from "../services";
+import { assessmentCanContinue } from '../services';
 
-import routes from "../constants/routes";
+import routes from '../constants/routes';
 
-import Comments from "../containers/Comments";
-import ConfirmationTemplate from "../containers/Confirmation";
-import ConfirmationWithAsideTemplate from "../containers/ConfirmationWithAside";
-import HealthcareAssessor from "../containers/HealthcareAssessor";
-import QuestionWithAsideTemplate from "../containers/QuestionWithAside";
+import Comments from '../containers/Comments';
+import ConfirmationTemplate from '../containers/Confirmation';
+import ConfirmationWithAsideTemplate from '../containers/ConfirmationWithAside';
+import HealthcareAssessor from '../containers/HealthcareAssessor';
+import QuestionWithAsideTemplate from '../containers/QuestionWithAside';
 import QuestionWithCommentAndAsideTemplate
-  from "../containers/QuestionWithCommentAndAside";
-import QuestionWithComments from "../containers/QuestionWithTextBox";
-import Viper from "../containers/Viper";
+  from '../containers/QuestionWithCommentAndAside';
+import QuestionWithComments from '../containers/QuestionWithTextBox';
+import Viper from '../containers/Viper';
 
 function templateSelector(data) {
   switch (data.template) {
-    case "confirmation":
+    case 'confirmation':
       return <ConfirmationTemplate {...data} />;
-    case "confirmation_with_aside":
+    case 'confirmation_with_aside':
       return <ConfirmationWithAsideTemplate {...data} />;
-    case "viper":
+    case 'viper':
       return <Viper {...data} />;
-    case "default_with_aside":
+    case 'default_with_aside':
       return <QuestionWithAsideTemplate {...data} />;
-    case "default_with_comment_aside":
+    case 'default_with_comment_aside':
       return <QuestionWithCommentAndAsideTemplate {...data} />;
-    case "question_with_comments":
+    case 'question_with_comments':
       return <QuestionWithComments {...data} />;
-    case "comments":
+    case 'comments':
       return <Comments {...data} />;
-    case "healthcare_assessment":
+    case 'healthcare_assessment':
       return <HealthcareAssessor {...data} />;
     default:
       return null;
@@ -43,15 +44,15 @@ function templateSelector(data) {
 const reduceYesNoAnswers = answers =>
   Object.keys(answers).reduce(
     (result, key) => ({ ...result, [key]: answers[key].answer }),
-    {}
+    {},
   );
 
-const sectionData = (questions = [], section = "") => {
+const sectionData = (questions = [], section = '') => {
   if (isEmpty(questions)) {
     return {
       totalSections: 0,
       question: {},
-      sectionIndex: 0
+      sectionIndex: 0,
     };
   }
   const sectionEqls = item => item.section === section;
@@ -64,7 +65,7 @@ const sectionData = (questions = [], section = "") => {
   return {
     totalSections: total,
     question,
-    sectionIndex: adJustedIndex
+    sectionIndex: adJustedIndex,
   };
 };
 
@@ -82,14 +83,15 @@ class Questionnaire extends Component {
       answers,
       prisonerViperScore,
       basePath,
-      completionPath
+      completionPath,
+      isComplete,
     } = this.props;
     const { sectionIndex, question } = sectionData(questions, section);
     const answer = serialize(event.target, { hash: true });
     const nextSectionIndex = sectionIndex + 1;
     const reducedAnswers = reduceYesNoAnswers({
       ...answers,
-      [section]: answer
+      [section]: answer,
     });
 
     let nextPath;
@@ -97,10 +99,10 @@ class Questionnaire extends Component {
     const canContinue = assessmentCanContinue(
       question,
       reducedAnswers,
-      prisonerViperScore
+      prisonerViperScore,
     );
 
-    if (canContinue && questions[nextSectionIndex]) {
+    if (canContinue && questions[nextSectionIndex] && not(isComplete)) {
       nextPath = `${basePath}/${questions[nextSectionIndex].section}`;
     } else {
       nextPath = completionPath;
@@ -110,7 +112,7 @@ class Questionnaire extends Component {
       section: question.section,
       answer,
       nextPath,
-      canContinue
+      canContinue,
     });
   }
 
@@ -119,13 +121,15 @@ class Questionnaire extends Component {
       answers,
       questions,
       prisonerViperScore,
+      completionPath,
+      isComplete,
       params: { section },
-      prisoner: { firstName, surname }
+      prisoner: { firstName, surname },
     } = this.props;
 
     const { totalSections, sectionIndex, question } = sectionData(
       questions,
-      section
+      section,
     );
 
     return (
@@ -153,10 +157,12 @@ class Questionnaire extends Component {
           </div>
         </div>
         {templateSelector({
+          isComplete,
+          completionPath,
           ...question,
           onSubmit: e => this.handleFormSubmit(e),
           formDefaults: answers[section],
-          viperScore: prisonerViperScore
+          viperScore: prisonerViperScore,
         })}
       </div>
     );
@@ -172,7 +178,8 @@ Questionnaire.propTypes = {
   params: PropTypes.object,
   prisoner: PropTypes.object,
   getQuestions: PropTypes.func,
-  onSubmit: PropTypes.func
+  onSubmit: PropTypes.func,
+  isComplete: PropTypes.bool,
 };
 
 Questionnaire.defaultProps = {
@@ -180,9 +187,10 @@ Questionnaire.defaultProps = {
   questions: [],
   params: {},
   prisoner: {},
-  prisonerViperScore: "",
+  prisonerViperScore: '',
   getQuestions: () => {},
-  onSubmit: () => {}
+  onSubmit: () => {},
+  isComplete: false,
 };
 
 export default Questionnaire;

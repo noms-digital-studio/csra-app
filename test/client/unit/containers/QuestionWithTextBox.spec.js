@@ -52,4 +52,19 @@ describe('<QuestionWithComments />', () => {
     expect(wrapper.find('[data-label="yes"]').text()).to.equal('foo-text');
     expect(wrapper.find('[data-label="no"]').text()).to.equal('bar-text');
   });
+
+  context('when the isComplete prop is present', () => {
+    it('display "Save" on the submission button', () => {
+      const wrapper = mount(<QuestionWithComments isComplete />);
+
+      expect(wrapper.find('input[type="submit"]').node.value).to.equal('Save');
+    });
+  });
+
+  context('when the isComplete prop is not present', () => {
+    it('display "Save and continue" on the submission button', () => {
+      const wrapper = mount(<QuestionWithComments />);
+      expect(wrapper.find('input[type="submit"]').node.value).to.equal('Save and continue');
+    });
+  });
 });

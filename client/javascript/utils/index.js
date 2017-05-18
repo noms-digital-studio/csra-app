@@ -1,3 +1,5 @@
+import deepEqual from 'deep-equal';
+
 export const allFormFieldsComplete = (formData = {}, expectedKeys = []) => {
   if (Object.keys(formData).length === 0) return false;
 
@@ -6,7 +8,15 @@ export const allFormFieldsComplete = (formData = {}, expectedKeys = []) => {
 
 export const todaysDate = () => {
   // Array of day names
-  const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const dayNames = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
 
   // Array of month Names
   const monthNames = [
@@ -27,4 +37,13 @@ export const todaysDate = () => {
   const now = new Date();
 
   return `${dayNames[now.getDay()]} ${monthNames[now.getMonth()]} ${now.getDate()} ${now.getFullYear()}`;
+};
+
+// Didn't want to use the shiny ES6 sets
+export const addUniqElementToList = (item, list) => {
+  if (list.find(elm => deepEqual(elm, item))) {
+    return list;
+  }
+
+  return list.concat([item]);
 };

@@ -8,7 +8,8 @@ const Comments = ({
   description,
   onSubmit,
   aside,
-  formDefaults: { comments }
+  formDefaults: { comments },
+  isComplete,
 }) => (
   <div className="grid-row">
     <div className="column-two-thirds">
@@ -29,7 +30,7 @@ const Comments = ({
           cssClassName="form-control form-control-3-4 u-margin-bottom-default"
         />
         <p>
-          <input type="submit" className="button" value="Save and continue" />
+          <input type="submit" className="button" value={isComplete ? 'Save' : 'Save and continue'} />
         </p>
       </form>
     </div>
@@ -48,7 +49,8 @@ Comments.propTypes = {
   onSubmit: PropTypes.func,
   formDefaults: PropTypes.shape({
     comments: PropTypes.string
-  })
+  }),
+  isComplete: PropTypes.bool,
 };
 
 Comments.defaultProps = {

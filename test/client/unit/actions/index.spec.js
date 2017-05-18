@@ -11,6 +11,7 @@ import {
   saveRiskAssessmentAnswer,
   saveHealthcareAssessmentAnswer,
   completeAssessmentFor,
+  completeHealthAnswersFor,
   saveExitPoint,
 } from '../../../../client/javascript/actions';
 
@@ -173,6 +174,21 @@ describe('Actions', () => {
       expect(completeAssessmentFor(outcome)).to.eql({
         type: 'COMPLETE_ASSESSMENT',
         payload: outcome,
+      });
+    });
+  });
+
+  describe('#completeHealthAnswersFor', () => {
+    it('returns a HEALTHCARE_ANSWERS_COMPLETE action', () => {
+      const offender = {
+        NOMS_Number: 'AA12345',
+        Surname: 'bar',
+        First_Name: 'foo',
+        Date_of_Birth: '01-10-1997',
+      };
+      expect(completeHealthAnswersFor(offender)).to.eql({
+        type: 'HEALTHCARE_ANSWERS_COMPLETE',
+        payload: offender,
       });
     });
   });

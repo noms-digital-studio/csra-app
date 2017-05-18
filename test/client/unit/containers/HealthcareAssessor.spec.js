@@ -54,4 +54,19 @@ describe('<HealthcareAssessor />', () => {
       );
     });
   });
+
+  context('when the isComplete prop is present', () => {
+    it('display "Save" on the submission button', () => {
+      const wrapper = mount(<HealthcareAssessor isComplete />);
+
+      expect(wrapper.find('input[type="submit"]').node.value).to.equal('Save');
+    });
+  });
+
+  context('when the isComplete prop is not present', () => {
+    it('display "Save and continue" on the submission button', () => {
+      const wrapper = mount(<HealthcareAssessor />);
+      expect(wrapper.find('input[type="submit"]').node.value).to.equal('Save and continue');
+    });
+  });
 });
