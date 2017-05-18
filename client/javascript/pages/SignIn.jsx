@@ -26,11 +26,11 @@ class SignIn extends Component {
         <h1 className="form-title heading-large">Your full name</h1>
 
         <div className="form-group">
-          <input type="text" className="form-control" id="username" name="username" />
+          <input type="text" className="form-control" id="username" name="username" data-username />
         </div>
 
         <div className="form-group">
-          <input type="submit" className="button" value="Sign in" />
+          <input type="submit" className="button" value="Sign in" data-sign-in-button />
         </div>
       </form>
     );

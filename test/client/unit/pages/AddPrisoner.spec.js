@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 
 import { fakeStore } from '../test-helpers';
 
-import ConnectedAddOffender, { AddOffender } from '../../../../client/javascript/pages/AddOffender';
+import ConnectedAddPrisoner, { AddPrisoner } from '../../../../client/javascript/pages/AddPrisoner';
 
 const prisoner = {
   'first-name': 'foo-first-name',
@@ -24,7 +24,7 @@ const populateForm = (wrapper) => {
 
 const mountComponent = store => mount(
   <Provider store={store}>
-    <ConnectedAddOffender />
+    <ConnectedAddPrisoner />
   </Provider>,
 );
 
@@ -34,11 +34,11 @@ const assertFormFieldsArePopulated = (wrapper) => {
   });
 };
 
-describe('<AddOffender />', () => {
-  context('Standalone AddOffender', () => {
+describe('<AddPrisoner />', () => {
+  context('Standalone AddPrisoner', () => {
     it('fails to submit if fields are missing in the form', () => {
       const callback = sinon.spy();
-      const wrapper = mount(<AddOffender onSubmit={callback} />);
+      const wrapper = mount(<AddPrisoner onSubmit={callback} />);
 
       wrapper.find('form').simulate('submit');
 
@@ -47,7 +47,7 @@ describe('<AddOffender />', () => {
 
     it('calls onSubmit callback when form submits successfully', () => {
       const callback = sinon.spy();
-      const wrapper = mount(<AddOffender onSubmit={callback} />);
+      const wrapper = mount(<AddPrisoner onSubmit={callback} />);
 
       populateForm(wrapper);
 
@@ -58,12 +58,12 @@ describe('<AddOffender />', () => {
     });
 
     it('displays prisoner data in the form', () => {
-      const wrapper = mount(<AddOffender prisonerDetails={prisoner} />);
+      const wrapper = mount(<AddPrisoner prisonerDetails={prisoner} />);
       assertFormFieldsArePopulated(wrapper);
     });
   });
 
-  context('Connected AddOffender', () => {
+  context('Connected AddPrisoner', () => {
     context('When form is empty', () => {
       it('calls onSubmit callback when form submits successfully', () => {
         const store = fakeStore({

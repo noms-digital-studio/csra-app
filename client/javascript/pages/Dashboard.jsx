@@ -58,7 +58,7 @@ class Dashboard extends Component {
         <div className="c-dashboard-header">
           <div className="grid-row">
             <div className="column-one-half">
-              <Link to={routes.ADD_OFFENDER} className="button">Add a prisoner</Link>
+              <Link to={routes.ADD_OFFENDER} className="button" data-add-prisoner-button>Add a prisoner</Link>
             </div>
             <div className="column-one-half u-text-align-right">
             </div>

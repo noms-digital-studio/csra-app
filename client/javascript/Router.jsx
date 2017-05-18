@@ -9,8 +9,8 @@ import Layout from './containers/Main';
 import Admin from './pages/Admin';
 import SignInHoc from './pages/SignIn';
 import DashboardHoC from './pages/Dashboard';
-import AddOffenderHoc from './pages/AddOffender';
-import ConfirmOffenderHoc from './pages/ConfirmOffender';
+import AddPrisonerHoc from './pages/AddPrisoner';
+import ConfirmOffenderHoc from './pages/ConfirmPrisoner';
 import OffenderProfileHoc from './pages/OffenderProfile';
 import HealthcareAssessment from './pages/HealthcareAssessment';
 import RiskAssessment from './pages/RiskAssessment';
@@ -33,7 +33,7 @@ export default (store) => {
           <Route path="/" name="home" component={SignInHoc} />
           <Route path="/before-you-start" component={BeforeYouStart} />
           <Route path="/dashboard" name="dashboard" component={DashboardHoC} />
-          <Route path="/add-offender" name="add-offender" component={AddOffenderHoc} />
+          <Route path="/add-offender" name="add-offender" component={AddPrisonerHoc} />
           <Route path="/confirm-offender" name="confirm-offender" component={ConfirmOffenderHoc} />
           <Route path="/offender-profile" name="offender-profile" component={OffenderProfileHoc} />
           <Route path="/admin" name="admin" component={Admin} />

@@ -20,7 +20,7 @@ const BeforeYouStart = () => (
 
 
 
-    <Link to={routes.DASHBOARD} className="button button-start">Continue and sign in</Link>
+    <Link to={routes.DASHBOARD} className="button button-start" data-before-you-start-button>Continue and sign in</Link>
   </div>
 );
 

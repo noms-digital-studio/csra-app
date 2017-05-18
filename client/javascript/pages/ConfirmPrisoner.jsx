@@ -16,23 +16,24 @@ const ConfirmOffender = (props) => {
         <div className="column-one-half">
           <p>
             <span className="heading-small">Name:&nbsp;</span>
-            <span>{prisoner['first-name']} {prisoner['last-name']}</span>
+            <span data-prisoner-name>{prisoner['first-name']} {prisoner['last-name']}</span>
           </p>
 
           <p>
             <span className="heading-small">DOB:&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            {`${prisoner['dob-day']}-${prisoner['dob-month']}-${prisoner['dob-year']}`}
+            <span data-prisoner-dob>{`${prisoner['dob-day']}-${prisoner['dob-month']}-${prisoner['dob-year']}`}</span>
           </p>
         </div>
         <div className="column-one-half">
           <p>
-            <span className="heading-small">NOMIS No:</span> {prisoner['nomis-id']}
+            <span className="heading-small">NOMIS No:</span>
+            <span data-prisoner-nomis-id>{prisoner['nomis-id']}</span>
           </p>
         </div>
       </div>
 
       <p>
-        <button data-confirm onClick={() => { onClick(prisoner) }} className="button">
+        <button data-confirm onClick={() => { onClick(prisoner) }} className="button" data-confirm-button>
           Confirm
         </button>
       </p>
