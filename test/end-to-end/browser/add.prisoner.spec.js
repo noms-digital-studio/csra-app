@@ -33,7 +33,5 @@ describe('add prisoner', () => {
 
     browser.click('[data-confirm-button]');
     expect(browser.getText('h1')).to.contain('Prisoners to assess on:');
-
-    browser.pause(10000);
   });
 });
