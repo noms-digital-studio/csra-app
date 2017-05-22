@@ -101,9 +101,9 @@ describe('<AssessmentConfirmation />', () => {
       expect(
         store.dispatch.calledWithMatch({
           type: '@@router/CALL_HISTORY_METHOD',
-          payload: { method: 'replace', args: ['/dashboard'] },
+          payload: { method: 'replace', args: ['/dashboardPage'] },
         }),
-      ).to.equal(true, 'Changed path to /dashboard');
+      ).to.equal(true, 'Changed path to /dashboardPage');
     });
   });
 });

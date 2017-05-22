@@ -77,7 +77,7 @@ class Dashboard extends Component {
                 There are no prisoners to assess. Add a prisoner button
               </h2>
           </div>
-          : <table>
+          : <table data-prisoner-table>
             <thead>
               <tr>
                 <th scope="col"></th>
