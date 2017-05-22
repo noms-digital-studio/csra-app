@@ -12,6 +12,7 @@ import {
   SAVE_HEALTHCARE_ANSWER,
   COMPLETE_ASSESSMENT,
   SAVE_EXIT_POINT,
+  CLEAR_EXIT_POINT,
   COMPLETE_HEALTH_ASSESSMENT,
   HEALTHCARE_ANSWERS_COMPLETE,
 } from '../constants/actions';
@@ -87,6 +88,8 @@ export const saveExitPoint = riskFactor => ({
   type: SAVE_EXIT_POINT,
   payload: riskFactor,
 });
+
+export const clearExitPoint = () => ({ type: CLEAR_EXIT_POINT });
 
 export const completeHealthAssessmentFor = offender => ({
   type: COMPLETE_HEALTH_ASSESSMENT,

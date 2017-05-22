@@ -13,6 +13,7 @@ import {
   completeAssessmentFor,
   completeHealthAnswersFor,
   saveExitPoint,
+  clearExitPoint,
 } from '../../../../client/javascript/actions';
 
 import csraQuestions
@@ -200,6 +201,12 @@ describe('Actions', () => {
         type: 'SAVE_EXIT_POINT',
         payload: riskFactor,
       });
+    });
+  });
+
+  describe('#clearExitPoint', () => {
+    it('returns a CLEAR_EXIT_POINT action', () => {
+      expect(clearExitPoint()).to.eql({ type: 'CLEAR_EXIT_POINT' });
     });
   });
 });

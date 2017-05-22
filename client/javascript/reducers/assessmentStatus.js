@@ -1,4 +1,4 @@
-import { COMPLETE_ASSESSMENT, SAVE_EXIT_POINT, SELECT_OFFENDER } from '../constants/actions';
+import { COMPLETE_ASSESSMENT, SAVE_EXIT_POINT, CLEAR_EXIT_POINT } from '../constants/actions';
 
 const defaultState = {
   completed: [],
@@ -7,11 +7,6 @@ const defaultState = {
 
 export default (state = defaultState, { type, payload }) => {
   switch (type) {
-    case SELECT_OFFENDER:
-      return {
-        ...state,
-        exitPoint: '',
-      };
     case COMPLETE_ASSESSMENT:
       return {
         ...state,
@@ -22,6 +17,11 @@ export default (state = defaultState, { type, payload }) => {
       return {
         ...state,
         exitPoint: payload,
+      };
+    case CLEAR_EXIT_POINT:
+      return {
+        ...state,
+        exitPoint: '',
       };
     default:
       return state;

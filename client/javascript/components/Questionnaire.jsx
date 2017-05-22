@@ -6,15 +6,12 @@ import not from 'ramda/src/not';
 
 import { assessmentCanContinue } from '../services';
 
-import routes from '../constants/routes';
-
 import Comments from '../containers/Comments';
 import ConfirmationTemplate from '../containers/Confirmation';
 import ConfirmationWithAsideTemplate from '../containers/ConfirmationWithAside';
 import HealthcareAssessor from '../containers/HealthcareAssessor';
 import QuestionWithAsideTemplate from '../containers/QuestionWithAside';
-import QuestionWithCommentAndAsideTemplate
-  from '../containers/QuestionWithCommentAndAside';
+import QuestionWithCommentAndAsideTemplate from '../containers/QuestionWithCommentAndAside';
 import QuestionWithComments from '../containers/QuestionWithTextBox';
 import Viper from '../containers/Viper';
 
@@ -72,6 +69,7 @@ const sectionData = (questions = [], section = '') => {
 class Questionnaire extends Component {
   componentDidMount() {
     this.props.getQuestions();
+    this.props.clearExitPoint();
   }
 
   handleFormSubmit(event) {
@@ -178,6 +176,7 @@ Questionnaire.propTypes = {
   params: PropTypes.object,
   prisoner: PropTypes.object,
   getQuestions: PropTypes.func,
+  clearExitPoint: PropTypes.func,
   onSubmit: PropTypes.func,
   isComplete: PropTypes.bool,
 };
@@ -189,6 +188,7 @@ Questionnaire.defaultProps = {
   prisoner: {},
   prisonerViperScore: '',
   getQuestions: () => {},
+  clearExitPoint: () => {},
   onSubmit: () => {},
   isComplete: false,
 };

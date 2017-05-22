@@ -23,15 +23,14 @@ describe('#assessmentStatusReducer', () => {
     expect(assessmentStatusReducer(undefined, action)).to.eql(expectedState);
   });
 
-  it('resets a the exit point when a user is selected', () => {
+  it('resets the exit point', () => {
     const state = {
       ...defaultState,
       exitPoint: 'foo-exit-point',
     };
 
     const action = {
-      type: 'SELECT_OFFENDER',
-      payload: {},
+      type: 'CLEAR_EXIT_POINT',
     };
 
     const expectedState = {
