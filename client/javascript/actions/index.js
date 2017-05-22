@@ -59,10 +59,10 @@ export const addPrisoner = prisoner => ({
 
 export const confirmPrisoner = (prisonerData) => {
   const prisoner = {
-    NOMS_Number: prisonerData['nomis-id'],
-    Surname: prisonerData['last-name'],
-    First_Name: prisonerData['first-name'],
-    Date_of_Birth: `${prisonerData['dob-day']}-${prisonerData['dob-month']}-${prisonerData['dob-year']}`,
+    nomisId: prisonerData['nomis-id'],
+    surname: prisonerData['last-name'],
+    firstName: prisonerData['first-name'],
+    dob: `${prisonerData['dob-day']}-${prisonerData['dob-month']}-${prisonerData['dob-year']}`,
   };
 
   return { type: CONFIRM_PRISONER, payload: prisoner };

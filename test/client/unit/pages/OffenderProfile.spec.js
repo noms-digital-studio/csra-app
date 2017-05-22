@@ -9,10 +9,10 @@ import ConnectedOffenderProfile, {
 } from '../../../../client/javascript/pages/OffenderProfile';
 
 const selected = {
-  First_Name: 'forename',
-  Surname: 'surname',
-  Date_of_Birth: '17-Nov-1999',
-  NOMS_Number: 'AA54321XX',
+  firstName: 'forename',
+  surname: 'surname',
+  dob: '17-Nov-1999',
+  nomisId: 'AA54321XX',
 };
 
 describe('<OffenderProfile />', () => {

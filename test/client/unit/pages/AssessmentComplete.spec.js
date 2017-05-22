@@ -9,10 +9,10 @@ import ConnectedAssessmentComplete, {
 } from '../../../../client/javascript/pages/AssessmentComplete';
 
 const prisonerDetails = {
-  First_Name: 'foo-name',
-  Surname: 'foo-surname',
-  Date_of_Birth: 'foo-date',
-  NOMS_Number: 'foo-nomis-id',
+  firstName: 'foo-name',
+  surname: 'foo-surname',
+  dob: 'foo-date',
+  nomisId: 'foo-nomis-id',
 };
 
 const csraQuestions = [

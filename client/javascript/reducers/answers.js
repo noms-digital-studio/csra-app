@@ -27,7 +27,7 @@ const saveAnswer = (state, payload, type) => ({
 export default (state = defaultState, { type, payload }) => {
   switch (type) {
     case SELECT_OFFENDER:
-      return { ...state, selectedPrisonerId: payload.NOMS_Number };
+      return { ...state, selectedPrisonerId: payload.nomisId };
 
     case SAVE_CSRA_ANSWER:
       return saveAnswer(state, payload, 'csra');

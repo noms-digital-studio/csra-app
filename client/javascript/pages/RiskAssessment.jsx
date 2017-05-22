@@ -24,11 +24,11 @@ const mapStateToProps = (state, ownProps) => ({
   ...ownProps,
   questions: state.questions.csra,
   prisoner: {
-    firstName: state.offender.selected.First_Name,
-    surname: state.offender.selected.Surname,
+    firstName: state.offender.selected.firstName,
+    surname: state.offender.selected.surname,
   },
   prisonerViperScore: calculateRiskFor(
-    state.offender.selected.NOMS_Number,
+    state.offender.selected.nomisId,
     state.offender.viperScores,
   ),
   answers: path([state.answers.selectedPrisonerId], state.answers.csra),

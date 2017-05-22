@@ -26,7 +26,7 @@ const extractDecision = (questions, exitPoint) => {
 };
 
 const AssessmentComplete = ({
-  prisoner: { First_Name, Date_of_Birth, NOMS_Number, Surname },
+  prisoner: { firstName, dob, nomisId, surname },
   onSubmit,
   outcome,
 }) => (
@@ -49,19 +49,19 @@ const AssessmentComplete = ({
                 <div>
                   <p className="c-offender-profile-item">
                     <span className="heading-small">Name:&nbsp;</span>
-                    {First_Name} {Surname}
+                    {firstName} {surname}
                   </p>
                 </div>
                 <div>
                   <p className="c-offender-profile-item">
                     <span className="heading-small">DOB:&nbsp;</span>
-                    {Date_of_Birth}
+                    {dob}
                   </p>
                 </div>
                 <div>
                   <p className="c-offender-profile-item">
                     <span className="heading-small">NOMIS ID:&nbsp;</span>
-                    {NOMS_Number}
+                    {nomisId}
                   </p>
                 </div>
               </div>
@@ -93,7 +93,7 @@ const AssessmentComplete = ({
     <p>
       <button
         className="button button-start u-margin-bottom-default"
-        onClick={() => onSubmit({ ...outcome, nomisId: NOMS_Number })}
+        onClick={() => onSubmit({ ...outcome, nomisId: nomisId })}
       >
         Submit Decision
       </button>
@@ -110,10 +110,10 @@ AssessmentComplete.propTypes = {
   }),
   onSubmit: PropTypes.func,
   prisoner: PropTypes.shape({
-    First_Name: PropTypes.string,
-    Date_of_Birth: PropTypes.string,
-    NOMS_Number: PropTypes.string,
-    Surname: PropTypes.string,
+    firstName: PropTypes.string,
+    dob: PropTypes.string,
+    nomisId: PropTypes.string,
+    surname: PropTypes.string,
   }),
 };
 
