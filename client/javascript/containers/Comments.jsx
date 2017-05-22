@@ -30,7 +30,7 @@ const Comments = ({
           cssClassName="form-control form-control-3-4 u-margin-bottom-default"
         />
         <p>
-          <input type="submit" className="button" value={isComplete ? 'Save' : 'Save and continue'} />
+          <input type="submit" className="button" value={isComplete ? 'Save' : 'Save and continue'} data-continue-button />
         </p>
       </form>
     </div>

@@ -82,7 +82,7 @@ class Admin extends Component {
         <input name="viperScores" onChange={e => this.loadFile(e)} type="file" />
 
         <h3 className="heading-medium">Preload Test Prisoners</h3>
-        <button onClick={() => this.addDefaultPrisoners()} className="button">
+        <button onClick={() => this.addDefaultPrisoners()} className="button" data-load-data-button>
           Load Data
         </button>
 
@@ -91,7 +91,7 @@ class Admin extends Component {
           Clear Browser Session and Local Storage
         </button>
 
-        <Link href="/#/sign-in" className="button c-btn-right--xcustom">Continue to sign in</Link>
+        <Link href="/#/sign-in" className="button c-btn-right--xcustom" data-continue>Continue to sign in</Link>
 
       </div>
     );

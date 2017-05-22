@@ -33,6 +33,7 @@ class CommentBox extends Component {
           defaultValue={text}
           cols="20"
           rows="5"
+          data-comments-textbox
         />
         <p className="c-text-hint" data-character-limit={charactersLeft} >You have {charactersLeft} {pluralize('character', charactersLeft)} left.</p>
       </div>

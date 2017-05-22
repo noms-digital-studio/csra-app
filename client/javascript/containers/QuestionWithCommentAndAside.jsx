@@ -54,7 +54,7 @@ const QuestionWithAside = (
         </div>
 
         <p>
-          <input type="submit" className="button" value={isComplete ? 'Save' : 'Save and continue'} />
+          <input type="submit" className="button" value={isComplete ? 'Save' : 'Save and continue'} data-continue-button/>
         </p>
       </form>
     </div>

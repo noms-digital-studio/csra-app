@@ -42,26 +42,26 @@ const AssessmentConfirmation = (props) => {
                   <div>
                     <p className="c-offender-profile-item">
                       <span className="heading-small">Name:&nbsp;</span>
-                      {firstName} {surname}
+                      <span data-prisoner-name>{firstName} {surname}</span>
                     </p>
                   </div>
                   <div>
                     <p className="c-offender-profile-item">
                       <span className="heading-small">DOB:&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                      {dob}
+                      <span data-prisoner-dob>{dob}</span>
                     </p>
                   </div>
                   <div>
                     <p className="c-offender-profile-item">
                       <span className="heading-small">NOMIS ID:&nbsp;</span>
-                      {nomisId}
+                      <span data-prisoner-nomis-id>{nomisId}</span>
                     </p>
                   </div>
                 </div>
               </div>
               <div className="column-one-half">
                 <div className="c-offender-profile-prisoner">
-                  <p><span className="heading-small">Outcome: {outcome.recommendation}</span></p>
+                  <p><span className="heading-small">Outcome: <span data-outcome>{outcome.recommendation}</span></span></p>
                 </div>
               </div>
             </div>
@@ -103,7 +103,7 @@ const AssessmentConfirmation = (props) => {
             </p>
 
             <p>
-              <input className="button button-start" type="submit" value="Complete" />
+              <input className="button button-start" type="submit" value="Complete" data-continue-button />
             </p>
           </form>
         </div>

@@ -38,6 +38,7 @@ const Viper = ({
               type="submit"
               className="button"
               value={isComplete ? 'Save' : 'Save and continue'}
+              data-continue-button
             />
           </p>
         </form>

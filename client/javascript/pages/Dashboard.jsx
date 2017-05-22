@@ -27,7 +27,7 @@ class Dashboard extends Component {
         <td>{profile.dob}</td>
         <td data-assessment-complete={not(isEmpty(profile.assessmentCompleted))}>
           {isEmpty(profile.assessmentCompleted)
-            ? <a onClick={() => this.props.onOffenderSelect(profile)} className="link u-link">
+            ? <a onClick={() => this.props.onOffenderSelect(profile)} className="link u-link" data-start-csra-link>
                 Start
               </a>
             : <span>Complete</span>}

@@ -60,19 +60,19 @@ const AssessmentComplete = ({
                 <div>
                   <p className="c-offender-profile-item">
                     <span className="heading-small">Name:&nbsp;</span>
-                    {firstName} {surname}
+                    <span data-prisoner-name>{firstName} {surname}</span>
                   </p>
                 </div>
                 <div>
                   <p className="c-offender-profile-item">
                     <span className="heading-small">DOB:&nbsp;</span>
-                    {dob}
+                    <span data-prisoner-dob>{dob}</span>
                   </p>
                 </div>
                 <div>
                   <p className="c-offender-profile-item">
                     <span className="heading-small">NOMIS ID:&nbsp;</span>
-                    {nomisId}
+                    <span data-prisoner-nomis-id>{nomisId}</span>
                   </p>
                 </div>
               </div>
@@ -83,7 +83,7 @@ const AssessmentComplete = ({
     </div>
 
     <h2 className="heading-large">
-      Recommended action: {outcome.recommendation}
+      <span data-recommended-action>Recommended action: {outcome.recommendation}</span>
     </h2>
 
     <div className="grid-row">
@@ -105,6 +105,7 @@ const AssessmentComplete = ({
       <button
         className="button button-start u-margin-bottom-default"
         onClick={() => onSubmit({ ...outcome, nomisId })}
+        data-continue-button
       >
         Submit Decision
       </button>

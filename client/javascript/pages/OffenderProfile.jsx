@@ -23,7 +23,7 @@ const OffenderProfile = ({ details: { firstName, dob, nomisId, surname } }) => (
             <div>
               <p className="c-offender-profile-item">
                 <span className="heading-small">Name:&nbsp;</span>
-                {firstName} {surname}
+                <span data-prisoner-name>{firstName} {surname}</span>
               </p>
             </div>
             <div>
@@ -51,7 +51,7 @@ const OffenderProfile = ({ details: { firstName, dob, nomisId, surname } }) => (
     </div>
 
     <p>
-      <Link to={`${routes.ASSESSMENT}/introduction`} className="button button-start u-margin-bottom-default">
+      <Link to={`${routes.ASSESSMENT}/introduction`} className="button button-start u-margin-bottom-default" data-continue-button>
         Continue to Assessment
       </Link>
     </p>

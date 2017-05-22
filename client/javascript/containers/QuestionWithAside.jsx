@@ -45,6 +45,7 @@ const QuestionWithAside = ({
                   required: answerRequired,
                 },
               ]}
+              data-yes-no-radio-group
             />
           </fieldset>
         </div>
@@ -53,6 +54,7 @@ const QuestionWithAside = ({
             type="submit"
             className="button"
             value={isComplete ? 'Save' : 'Save and continue'}
+            data-continue-button
           />
         </p>
       </form>
