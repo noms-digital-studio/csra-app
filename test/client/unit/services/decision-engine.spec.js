@@ -34,6 +34,17 @@ describe('Decision Engine', () => {
 
       expect(assessmentCanContinue(question, answers, viperScore)).to.equal(true);
     });
+
+    it('continues when the viper score is unknown', () => {
+      const question = {
+        section: 'risk-of-violence',
+        sharedCellPredicate: { type: 'VIPER_SCORE', value: 'low' },
+      };
+      const answers = {};
+      const viperScore = 'unknown';
+
+      expect(assessmentCanContinue(question, answers, viperScore)).to.equal(true);
+    });
   });
 
   context('Single Question Decision', () => {

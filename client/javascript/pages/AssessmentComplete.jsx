@@ -1,18 +1,29 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { replace } from 'react-router-redux';
+
 import { completeAssessmentFor } from '../actions';
+import { calculateRiskFor as viperScoreFor } from '../services';
+
 import routes from '../constants/routes';
 
-import SelectableInput from '../components/SelectableInput';
-
-const extractDecision = (questions, exitPoint) => {
+const extractDecision = (questions, exitPoint, viperScore) => {
   if (exitPoint) {
     const question = questions.find(item => item.section === exitPoint);
     return {
       recommendation: 'Single Cell',
       rating: 'high',
       reasons: question.sharedCellPredicate.reasons,
+    };
+  }
+
+  if (viperScore === 'unknown') {
+    return {
+      recommendation: 'Single Cell',
+      rating: 'unknown',
+      reasons: [
+        'Based on the fact that a Viper Score was not available for you.',
+      ],
     };
   }
 
@@ -93,7 +104,7 @@ const AssessmentComplete = ({
     <p>
       <button
         className="button button-start u-margin-bottom-default"
-        onClick={() => onSubmit({ ...outcome, nomisId: nomisId })}
+        onClick={() => onSubmit({ ...outcome, nomisId })}
       >
         Submit Decision
       </button>
@@ -130,6 +141,7 @@ const mapStateToProps = state => ({
   outcome: extractDecision(
     state.questions.csra,
     state.assessmentStatus.exitPoint,
+    viperScoreFor(state.offender.selected.nomisId, state.offender.viperScores),
   ),
 });
 

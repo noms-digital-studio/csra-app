@@ -1,3 +1,5 @@
+/* eslint-disable comma-dangle */
+
 import React from 'react';
 import { Provider } from 'react-redux';
 import { mount, shallow } from 'enzyme';
@@ -38,7 +40,9 @@ const csraQuestions = [
 describe('<AssessmentComplete />', () => {
   context('Standalone AssessmentComplete', () => {
     it('accepts and correctly renders a profile', () => {
-      const wrapper = shallow(<AssessmentComplete prisoner={prisonerDetails} />);
+      const wrapper = shallow(
+        <AssessmentComplete prisoner={prisonerDetails} />,
+      );
       const pageText = wrapper.text();
       expect(pageText).to.contain('foo-name');
       expect(pageText).to.contain('foo-surname');
@@ -57,7 +61,7 @@ describe('<AssessmentComplete />', () => {
       const pageText = wrapper.text();
 
       expect(pageText).to.contain('foo-recommendation');
-      expect(pageText).to.contain(' we think you can act calmly and appropriately around other prisoners');
+      expect(pageText).to.contain('we think you can act calmly and appropriately around other prisoners');
       expect(pageText).to.contain('foo-reason');
     });
 
@@ -70,15 +74,18 @@ describe('<AssessmentComplete />', () => {
 
       const callback = sinon.spy();
       const wrapper = mount(
-        <AssessmentComplete outcome={outcome} prisoner={prisonerDetails} onSubmit={callback} />,
+        <AssessmentComplete
+          outcome={outcome}
+          prisoner={prisonerDetails}
+          onSubmit={callback}
+        />,
       );
       wrapper.find('button').simulate('click');
       expect(callback.calledOnce).to.equal(true, 'callback called once');
 
-      expect(callback.calledWith({ nomisId: 'foo-nomis-id', ...outcome })).to.equal(
-        true,
-        'called with the correct arguments',
-      );
+      expect(
+        callback.calledWith({ nomisId: 'foo-nomis-id', ...outcome })
+      ).to.equal(true, 'called with the correct arguments');
     });
   });
 
@@ -95,6 +102,12 @@ describe('<AssessmentComplete />', () => {
         },
         offender: {
           selected: prisonerDetails,
+          viperScores: [
+            {
+              nomisId: 'foo-nomis-id',
+              viperScore: 0.79,
+            },
+          ],
         },
       });
     });
@@ -103,7 +116,7 @@ describe('<AssessmentComplete />', () => {
       const wrapper = mount(
         <Provider store={store}>
           <ConnectedAssessmentComplete />
-        </Provider>,
+        </Provider>
       );
       const pageText = wrapper.text();
       expect(pageText).to.contain('foo-name');
@@ -116,7 +129,7 @@ describe('<AssessmentComplete />', () => {
       const wrapper = mount(
         <Provider store={store}>
           <ConnectedAssessmentComplete />
-        </Provider>,
+        </Provider>
       );
       const pageText = wrapper.text();
       expect(pageText).to.contain('Single Cell');
@@ -133,19 +146,46 @@ describe('<AssessmentComplete />', () => {
         },
         offender: {
           selected: prisonerDetails,
+          viperScores: [
+            {
+              nomisId: 'foo-nomis-id',
+              viperScore: 0.10,
+            },
+          ],
         },
       });
       const wrapper = mount(
         <Provider store={lowRiskStore}>
           <ConnectedAssessmentComplete />
-        </Provider>,
+        </Provider>
       );
       const pageText = wrapper.text();
       expect(pageText).to.contain('we think you can act calmly and appropriately around other prisoners');
       expect(pageText).to.contain('Shared Cell');
-      expect(pageText).to.contain(
-        'Ensure that the nature of these views is taken into account',
+      expect(pageText).to.contain('Ensure that the nature of these views is taken into account');
+    });
+
+    it('renders the outcome of a unknown risk assessment', () => {
+      const unknownRiskStore = fakeStore({
+        assessmentStatus: {
+          exitPoint: '',
+        },
+        questions: {
+          csra: csraQuestions,
+        },
+        offender: {
+          selected: prisonerDetails,
+          viperScores: [],
+        },
+      });
+      const wrapper = mount(
+        <Provider store={unknownRiskStore}>
+          <ConnectedAssessmentComplete />
+        </Provider>,
       );
+      const pageText = wrapper.text();
+      expect(pageText).to.contain('Based on the fact that a Viper Score was not available for you.');
+      expect(pageText).to.contain('Single Cell');
     });
 
     it('handles callback on assessment submission', () => {
@@ -164,16 +204,13 @@ describe('<AssessmentComplete />', () => {
             recommendation: 'Single Cell',
             rating: 'high',
             reasons: ['foo-reason'],
-          },
-        }),
-      ).to.equal(true, 'dispatched COMPLETE_ASSESSMENT');
+          } })).to.equal(true, 'dispatched COMPLETE_ASSESSMENT');
 
       expect(
         store.dispatch.calledWithMatch({
           type: '@@router/CALL_HISTORY_METHOD',
           payload: { method: 'replace', args: ['/assessment-confirmation'] },
-        }),
-      ).to.equal(true, 'Changed path to /assessment-confirmation');
+        })).to.equal(true, 'Changed path to /assessment-confirmation');
     });
   });
 });

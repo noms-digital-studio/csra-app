@@ -68,7 +68,7 @@ export const assessmentCanContinue = (question, answers, viperScore) => {
   }
 
   if (question.sharedCellPredicate.type === 'VIPER_SCORE') {
-    return viperScore === question.sharedCellPredicate.value;
+    return viperScore === 'unknown' || viperScore === question.sharedCellPredicate.value;
   }
 
   /* eslint-disable no-console */
