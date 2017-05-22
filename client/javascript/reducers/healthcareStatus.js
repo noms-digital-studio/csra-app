@@ -13,7 +13,7 @@ const defaultState = {
 };
 
 const filterOutPrisoner = (prisonerList, prisoner) =>
-  prisonerList.filter(el => el.NOMS_Number !== prisoner.NOMS_Number);
+  prisonerList.filter(el => el.nomisId !== prisoner.nomisId);
 
 export default (state = defaultState, { type, payload }) => {
   switch (type) {

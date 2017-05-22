@@ -59,10 +59,10 @@ describe('<ConfirmOffender />', () => {
 
       it('calls onClick callback when user clicks Confirm', () => {
         const newProfile = {
-          NOMS_Number: 'foo-nomis-id',
-          Surname: 'foo-last-name',
-          First_Name: 'foo-first-name',
-          Date_of_Birth: '01-11-1960',
+          nomisId: 'foo-nomis-id',
+          surname: 'foo-last-name',
+          firstName: 'foo-first-name',
+          dob: '01-11-1960',
         };
 
         wrapper.find('[data-confirm]').simulate('click');

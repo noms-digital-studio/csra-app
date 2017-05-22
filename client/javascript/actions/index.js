@@ -12,6 +12,7 @@ import {
   SAVE_HEALTHCARE_ANSWER,
   COMPLETE_ASSESSMENT,
   SAVE_EXIT_POINT,
+  CLEAR_EXIT_POINT,
   COMPLETE_HEALTH_ASSESSMENT,
   HEALTHCARE_ANSWERS_COMPLETE,
 } from '../constants/actions';
@@ -59,10 +60,10 @@ export const addPrisoner = prisoner => ({
 
 export const confirmPrisoner = (prisonerData) => {
   const prisoner = {
-    NOMS_Number: prisonerData['nomis-id'],
-    Surname: prisonerData['last-name'],
-    First_Name: prisonerData['first-name'],
-    Date_of_Birth: `${prisonerData['dob-day']}-${prisonerData['dob-month']}-${prisonerData['dob-year']}`,
+    nomisId: prisonerData['nomis-id'],
+    surname: prisonerData['last-name'],
+    firstName: prisonerData['first-name'],
+    dob: `${prisonerData['dob-day']}-${prisonerData['dob-month']}-${prisonerData['dob-year']}`,
   };
 
   return { type: CONFIRM_PRISONER, payload: prisoner };
@@ -87,6 +88,8 @@ export const saveExitPoint = riskFactor => ({
   type: SAVE_EXIT_POINT,
   payload: riskFactor,
 });
+
+export const clearExitPoint = () => ({ type: CLEAR_EXIT_POINT });
 
 export const completeHealthAssessmentFor = offender => ({
   type: COMPLETE_HEALTH_ASSESSMENT,

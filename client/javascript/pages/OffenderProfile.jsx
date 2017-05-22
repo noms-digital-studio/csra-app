@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import routes from '../constants/routes';
 
-const OffenderProfile = ({ details: { First_Name, Date_of_Birth, NOMS_Number, Surname } }) => (
+const OffenderProfile = ({ details: { firstName, dob, nomisId, surname } }) => (
   <div>
     <p>
       <Link to={{ pathname: routes.DASHBOARD }} className="link-back">Back to dashboard</Link>
@@ -23,19 +23,19 @@ const OffenderProfile = ({ details: { First_Name, Date_of_Birth, NOMS_Number, Su
             <div>
               <p className="c-offender-profile-item">
                 <span className="heading-small">Name:&nbsp;</span>
-                {First_Name} {Surname}
+                {firstName} {surname}
               </p>
             </div>
             <div>
               <p className="c-offender-profile-item">
                 <span className="heading-small">DOB:&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                {Date_of_Birth}
+                {dob}
               </p>
             </div>
             <div>
               <p className="c-offender-profile-item">
                 <span className="heading-small">NOMIS ID:&nbsp;</span>
-                {NOMS_Number}
+                {nomisId}
               </p>
             </div>
           </div>
@@ -65,10 +65,10 @@ const mapStateToProps = state => ({
 
 OffenderProfile.propTypes = {
   details: PropTypes.shape({
-    First_Name: PropTypes.string,
-    Date_of_Birth: PropTypes.string,
-    NOMS_Number: PropTypes.string,
-    Surname: PropTypes.string,
+    firstName: PropTypes.string,
+    dob: PropTypes.string,
+    nomisId: PropTypes.string,
+    surname: PropTypes.string,
   }),
 };
 

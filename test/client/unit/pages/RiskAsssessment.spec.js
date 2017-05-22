@@ -50,10 +50,10 @@ describe('<Assessment />', () => {
       },
       offender: {
         selected: {
-          First_Name: 'foo-first-name',
-          Surname: 'foo-surname',
-          Date_of_Birth: '17-Nov-1999',
-          NOMS_Number: 'AA54321XX',
+          firstName: 'foo-first-name',
+          surname: 'foo-surname',
+          dob: '17-Nov-1999',
+          nomisId: 'AA54321XX',
         },
       },
     });

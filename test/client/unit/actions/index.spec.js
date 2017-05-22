@@ -13,6 +13,7 @@ import {
   completeAssessmentFor,
   completeHealthAnswersFor,
   saveExitPoint,
+  clearExitPoint,
 } from '../../../../client/javascript/actions';
 
 import csraQuestions
@@ -44,10 +45,10 @@ describe('Actions', () => {
       const profiles = {
         output: [
           {
-            NOMS_Number: 'foo',
-            Surname: 'foobar',
-            First_Name: 'foobaz',
-            Date_of_Birth: 'foo-age',
+            nomisId: 'foo',
+            surname: 'foobar',
+            firstName: 'foobaz',
+            dob: 'foo-age',
           },
         ],
       };
@@ -72,10 +73,10 @@ describe('Actions', () => {
   describe('#selectOffender', () => {
     it('returns a SELECT_OFFENDER action', () => {
       const offender = {
-        NOMS_Number: 'foo',
-        Surname: 'foobar',
-        First_Name: 'foobaz',
-        Date_of_Birth: 'foo-age',
+        nomisId: 'foo',
+        surname: 'foobar',
+        firstName: 'foobaz',
+        dob: 'foo-age',
       };
 
       expect(selectOffender(offender)).to.eql({
@@ -127,10 +128,10 @@ describe('Actions', () => {
     };
 
     const prisoner = {
-      NOMS_Number: 'AA12345',
-      Surname: 'bar',
-      First_Name: 'foo',
-      Date_of_Birth: '01-10-1997',
+      nomisId: 'AA12345',
+      surname: 'bar',
+      firstName: 'foo',
+      dob: '01-10-1997',
     };
 
     expect(confirmPrisoner(prisonerData)).to.eql({
@@ -181,10 +182,10 @@ describe('Actions', () => {
   describe('#completeHealthAnswersFor', () => {
     it('returns a HEALTHCARE_ANSWERS_COMPLETE action', () => {
       const offender = {
-        NOMS_Number: 'AA12345',
-        Surname: 'bar',
-        First_Name: 'foo',
-        Date_of_Birth: '01-10-1997',
+        nomisId: 'AA12345',
+        surname: 'bar',
+        firstName: 'foo',
+        dob: '01-10-1997',
       };
       expect(completeHealthAnswersFor(offender)).to.eql({
         type: 'HEALTHCARE_ANSWERS_COMPLETE',
@@ -200,6 +201,12 @@ describe('Actions', () => {
         type: 'SAVE_EXIT_POINT',
         payload: riskFactor,
       });
+    });
+  });
+
+  describe('#clearExitPoint', () => {
+    it('returns a CLEAR_EXIT_POINT action', () => {
+      expect(clearExitPoint()).to.eql({ type: 'CLEAR_EXIT_POINT' });
     });
   });
 });

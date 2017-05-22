@@ -9,10 +9,10 @@ describe('#healthcareStatusReducer', () => {
   };
 
   const profile = {
-    NOMS_Number: 'foo',
-    Surname: 'foobar',
-    First_Name: 'foobaz',
-    Date_of_Birth: 'foo-age',
+    nomisId: 'foo',
+    surname: 'foobar',
+    firstName: 'foobaz',
+    dob: 'foo-age',
   };
 
   it('returns a default state', () => {

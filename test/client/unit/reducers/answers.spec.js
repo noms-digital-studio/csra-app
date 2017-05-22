@@ -13,15 +13,15 @@ describe('answersReducer', () => {
 
   it('stores the selected prisoner', () => {
     const profile = {
-      NOMS_Number: 'foo',
-      Surname: 'foobar',
-      First_Name: 'foobaz',
-      Date_of_Birth: 'foo-age',
+      nomisId: 'foo',
+      surname: 'foobar',
+      firstName: 'foobaz',
+      dob: 'foo-age',
     };
     const action = { type: 'SELECT_OFFENDER', payload: profile };
     const expectedState = {
       ...defaultState,
-      selectedPrisonerId: profile.NOMS_Number,
+      selectedPrisonerId: profile.nomisId,
     };
 
     expect(answersReducer(undefined, action)).to.eql(expectedState);

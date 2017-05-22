@@ -18,13 +18,13 @@ class Dashboard extends Component {
 
   renderProfiles() {
     return this.props.profiles.map(profile => (
-      <tr data-profile-row key={profile.NOMS_Number}>
+      <tr data-profile-row key={profile.nomisId}>
         <td>
           <span className="c-profile-holder" />
         </td>
-        <td>{profile.First_Name} {profile.Surname}</td>
-        <td>{profile.NOMS_Number}</td>
-        <td>{profile.Date_of_Birth}</td>
+        <td>{profile.firstName} {profile.surname}</td>
+        <td>{profile.nomisId}</td>
+        <td>{profile.dob}</td>
         <td data-assessment-complete={not(isEmpty(profile.assessmentCompleted))}>
           {isEmpty(profile.assessmentCompleted)
             ? <a onClick={() => this.props.onOffenderSelect(profile)} className="link u-link">
@@ -104,10 +104,10 @@ const mapStateToProps = state => ({
   profiles: state.offender.profiles.map(profile => ({
     ...profile,
     healthAssessmentCompleted: state.healthcareStatus.completed.find(
-      assessment => assessment.NOMS_Number === profile.NOMS_Number,
+      assessment => assessment.nomisId === profile.nomisId,
     ) || {},
     assessmentCompleted: state.assessmentStatus.completed.find(
-      assessment => assessment.nomisId === profile.NOMS_Number,
+      assessment => assessment.nomisId === profile.nomisId,
     ) || {},
   })),
 });
@@ -127,10 +127,10 @@ const mapActionsToProps = dispatch => ({
 Dashboard.propTypes = {
   profiles: PropTypes.arrayOf(
     PropTypes.shape({
-      NOMS_Number: PropTypes.string,
-      Surname: PropTypes.string,
-      First_Name: PropTypes.string,
-      Date_of_Birth: PropTypes.string,
+      nomisId: PropTypes.string,
+      surname: PropTypes.string,
+      firstName: PropTypes.string,
+      dob: PropTypes.string,
       assessmentCompleted: PropTypes.object,
       healthAssessmentCompleted: PropTypes.object,
     }),

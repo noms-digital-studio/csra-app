@@ -25,14 +25,14 @@ const mapStateToProps = (state, ownProps) => ({
   ...ownProps,
   questions: state.questions.healthcare,
   prisoner: {
-    firstName: state.offender.selected.First_Name,
-    surname: state.offender.selected.Surname,
+    firstName: state.offender.selected.firstName,
+    surname: state.offender.selected.surname,
   },
   prisonerViperScore: '',
   answers: path([state.answers.selectedPrisonerId], state.answers.healthcare),
   isComplete: Boolean(
     state.healthcareStatus.awaitingSubmission.find(
-      prisoner => prisoner.NOMS_Number === state.offender.selected.NOMS_Number,
+      prisoner => prisoner.nomisId === state.offender.selected.nomisId,
     )
   ),
 });

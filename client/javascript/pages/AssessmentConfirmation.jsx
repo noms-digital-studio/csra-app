@@ -8,7 +8,7 @@ import SelectableInput from '../components/SelectableInput';
 
 const AssessmentConfirmation = (props) => {
   const {
-    prisoner: { First_Name, Date_of_Birth, NOMS_Number, Surname },
+    prisoner: { firstName, dob, nomisId, surname },
     outcome,
     onSubmit,
   } = props;
@@ -42,19 +42,19 @@ const AssessmentConfirmation = (props) => {
                   <div>
                     <p className="c-offender-profile-item">
                       <span className="heading-small">Name:&nbsp;</span>
-                      {First_Name} {Surname}
+                      {firstName} {surname}
                     </p>
                   </div>
                   <div>
                     <p className="c-offender-profile-item">
                       <span className="heading-small">DOB:&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                      {Date_of_Birth}
+                      {dob}
                     </p>
                   </div>
                   <div>
                     <p className="c-offender-profile-item">
                       <span className="heading-small">NOMIS ID:&nbsp;</span>
-                      {NOMS_Number}
+                      {nomisId}
                     </p>
                   </div>
                 </div>
@@ -126,16 +126,16 @@ const AssessmentConfirmation = (props) => {
 const mapStateToProps = ({ offender, assessmentStatus }) => ({
   prisoner: offender.selected,
   outcome: assessmentStatus.completed.find(
-    assessment => assessment.nomisId === offender.selected.NOMS_Number,
+    assessment => assessment.nomisId === offender.selected.nomisId,
   ),
 });
 
 AssessmentConfirmation.propTypes = {
   prisoner: PropTypes.shape({
-    First_Name: PropTypes.string,
-    Date_of_Birth: PropTypes.string,
-    NOMS_Number: PropTypes.string,
-    Surname: PropTypes.string,
+    firstName: PropTypes.string,
+    dob: PropTypes.string,
+    nomisId: PropTypes.string,
+    surname: PropTypes.string,
   }),
   outcome: PropTypes.shape({
     rating: PropTypes.string,

@@ -23,10 +23,10 @@ describe('#offenderReducer', () => {
   it('returns the state with offenders profiles included', () => {
     const profiles = [
       {
-        NOMS_Number: 'foo',
-        Surname: 'foobar',
-        First_Name: 'foobaz',
-        Date_of_Birth: 'foo-age',
+        nomisId: 'foo',
+        surname: 'foobar',
+        firstName: 'foobaz',
+        dob: 'foo-age',
       },
     ];
     const action = { type: 'GET_OFFENDER_NOMIS_PROFILES', payload: profiles };
@@ -37,10 +37,10 @@ describe('#offenderReducer', () => {
 
   it('returns the state with the selected offender', () => {
     const profile = {
-      NOMS_Number: 'foo',
-      Surname: 'foobar',
-      First_Name: 'foobaz',
-      Date_of_Birth: 'foo-age',
+      nomisId: 'foo',
+      surname: 'foobar',
+      firstName: 'foobaz',
+      dob: 'foo-age',
     };
     const action = { type: 'SELECT_OFFENDER', payload: profile };
     const expectedState = { ...defaultState, selected: profile };
@@ -75,10 +75,10 @@ describe('#offenderReducer', () => {
     };
 
     const newProfile = {
-      NOMS_Number: 'AA12345',
-      Surname: 'bar',
-      First_Name: 'foo',
-      Date_of_Birth: '01-10-1997',
+      nomisId: 'AA12345',
+      surname: 'bar',
+      firstName: 'foo',
+      dob: '01-10-1997',
     };
 
     const state = { ...defaultState, prisonerFormData };

@@ -26,18 +26,18 @@ class HealthCareSummary extends Component {
             Prisoner Name:
             {' '}
             <strong className="heading-small">
-              {prisoner.First_Name} {prisoner.Surname}
+              {prisoner.firstName} {prisoner.surname}
             </strong>
           </p>
           <p>
             Date of Birth:
             {' '}
-            <strong className="heading-small">{prisoner.Date_of_Birth}</strong>
+            <strong className="heading-small">{prisoner.dob}</strong>
           </p>
           <p>
             Prisoner Number:
             {' '}
-            <strong className="heading-small">{prisoner.NOMS_Number}</strong>
+            <strong className="heading-small">{prisoner.nomisId}</strong>
           </p>
         </div>
 

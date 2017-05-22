@@ -1,5 +1,5 @@
 {
   "output": [
-    {"NOMS_Number":"123","Surname":"surname1","First_Name":"forename1","Date_of_Birth":"dd-mmm-yyy"}
+    {"nomisId":"123","surname":"surname1","firstName":"forename1","dob":"dd-mmm-yyy"}
   ]
 }

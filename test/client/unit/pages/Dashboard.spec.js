@@ -12,10 +12,10 @@ import ConnectedDashboard, {
 
 const profiles = [
   {
-    NOMS_Number: 'foo-id',
-    Surname: 'foo-surname',
-    First_Name: 'foo-first-name',
-    Date_of_Birth: 'foo-age',
+    nomisId: 'foo-id',
+    surname: 'foo-surname',
+    firstName: 'foo-first-name',
+    dob: 'foo-age',
     assessmentCompleted: {
       nomisId: 'foo-id',
       recommendation: 'Single Cell',
@@ -23,14 +23,14 @@ const profiles = [
       reasons: ['foo-reason'],
     },
     healthAssessmentCompleted: {
-      NOMS_Number: 'foo-id',
+      nomisId: 'foo-id',
     },
   },
   {
-    NOMS_Number: 'bar-id',
-    Surname: 'foo-surname',
-    First_Name: 'foo-first-name',
-    Date_of_Birth: 'foo-age',
+    nomisId: 'bar-id',
+    surname: 'foo-surname',
+    firstName: 'foo-first-name',
+    dob: 'foo-age',
     assessmentCompleted: {},
     healthAssessmentCompleted: {},
   },
@@ -57,10 +57,10 @@ describe('<Dashboard />', () => {
     it('renders the correct profile information per row', () => {
       const wrapper = shallow(<Dashboard profiles={profiles} />);
       const whitelist = [
-        'NOMS_Number',
-        'Surname',
-        'First_Name',
-        'Date_of_Birth',
+        'nomisId',
+        'surname',
+        'firstName',
+        'dob',
       ];
 
       assertGivenValuesInWhiteListAreInPage(profiles, whitelist, wrapper);
@@ -147,23 +147,23 @@ describe('<Dashboard />', () => {
         healthcareStatus: {
           completed: [
             {
-              NOMS_Number: 'foo-id',
+              nomisId: 'foo-id',
             },
           ],
         },
         offender: {
           profiles: [
             {
-              NOMS_Number: 'foo-id',
-              Surname: 'foo-surname',
-              First_Name: 'foo-first-name',
-              Date_of_Birth: 'foo-age',
+              nomisId: 'foo-id',
+              surname: 'foo-surname',
+              firstName: 'foo-first-name',
+              dob: 'foo-age',
             },
             {
-              NOMS_Number: 'bar-id',
-              Surname: 'foo-surname',
-              First_Name: 'foo-first-name',
-              Date_of_Birth: 'foo-age',
+              nomisId: 'bar-id',
+              surname: 'foo-surname',
+              firstName: 'foo-first-name',
+              dob: 'foo-age',
             },
           ],
         },
@@ -182,10 +182,10 @@ describe('<Dashboard />', () => {
 
     it('renders the correct profile information per row', () => {
       const whitelist = [
-        'NOMS_Number',
-        'Surname',
-        'First_Name',
-        'Date_of_Birth',
+        'nomisId',
+        'surname',
+        'firstName',
+        'dob',
       ];
 
       assertGivenValuesInWhiteListAreInPage(profiles, whitelist, wrapper);
