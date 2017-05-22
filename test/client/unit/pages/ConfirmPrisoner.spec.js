@@ -73,9 +73,9 @@ describe('<ConfirmOffender />', () => {
         expect(
           store.dispatch.calledWithMatch({
             type: '@@router/CALL_HISTORY_METHOD',
-            payload: { method: 'replace', args: ['/dashboardPage'] },
+            payload: { method: 'replace', args: ['/dashboard'] },
           }),
-        ).to.equal(true, 'Changed path to /dashboardPage');
+        ).to.equal(true, 'Changed path to /dashboard');
       });
 
       it('displays prisoner data in the page', () => {
