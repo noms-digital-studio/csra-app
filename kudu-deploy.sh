@@ -131,7 +131,8 @@ selectNodeVersion
 installYarn
 
 echo "Installing npm packages via yarn"
-yarn.cmd install --frozen-lockfile
+# unset NODE_ENV so we get dev dependencies included
+NODE_ENV= yarn.cmd install --frozen-lockfile
 exitWithMessageOnError "yarn install failed"
 
 cd - > /dev/null
