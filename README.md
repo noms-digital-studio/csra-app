@@ -66,6 +66,22 @@ Then go to [http://localhost:5000/](http://localhost:5000/)
 
 ### Deploy to Stage
 Deploy the application to the STAGE environment and run the E2E tests against STAGE. See the note above regarding Firefox
+
+*Note when running this script you will need firefox and jq installed*
+```
+Firefox can be installed by going to: 
+
+https://www.mozilla.org/en-GB/firefox/new/
+```
+
+```
+jq can be installed using homebrew:
+
+brew install jq
+```
+
+If these are installed then all you need to run is the following:
+
 ```
 ./promote-from-mock-to-stage.sh
 ```
