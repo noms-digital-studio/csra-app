@@ -147,7 +147,7 @@ module.exports = {
       }),
 
     // CSS is moved into an external file for production
-    !dev && new ExtractTextPlugin('[name].css'),
+    !dev && new ExtractTextPlugin('[name][hash].css'),
 
     // Minify code in production only
     !dev && new BabiliPlugin(),
