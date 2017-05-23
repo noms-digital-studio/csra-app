@@ -46,7 +46,7 @@ exports.config = {
       // 5 instance gets started at a time.
       maxInstances: 5,
       //
-      browserName: 'firefox', // options: chrome || firefox || phantomjs
+      browserName: 'phantomjs', // options: chrome || firefox || phantomjs
     },
   ],
   //
