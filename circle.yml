@@ -30,9 +30,7 @@ deployment:
   mock:
     branch: master
     commands:
-      - yarn build:
-        environment:
-          NODE_ENV: production
+      - NODE_ENV=production yarn build:
       # Push to the deploy-to-mock branch which will trigger
       # a deployment to the Azure MOCK stage
       - yarn record-build-info:
