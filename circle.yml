@@ -30,24 +30,27 @@ deployment:
   mock:
     branch: master
     commands:
-        # Push to the deploy-to-mock branch which will trigger
-        # a deployment to the Azure MOCK stage
-        - yarn record-build-info:
-            environment:
-              BUILD_NUMBER: $CIRCLE_BUILD_NUM
+      - yarn build:
+        environment:
+          NODE_ENV: production
+      # Push to the deploy-to-mock branch which will trigger
+      # a deployment to the Azure MOCK stage
+      - yarn record-build-info:
+          environment:
+            BUILD_NUMBER: $CIRCLE_BUILD_NUM
+            GIT_REF: $CIRCLE_SHA1
+      - git add --force --verbose build-info.json public/dist
+      - git config user.name "Circle CI"
+      - git config user.email "circle@circleci.com"
+      - git commit -m "Deployment of $CIRCLE_SHA1"
+      - git push --force origin HEAD:deploy-to-mock
+      - yarn wait-for-deploy:
+          environment:
               GIT_REF: $CIRCLE_SHA1
-        - git add --force --verbose build-info.json
-        - git config user.name "Circle CI"
-        - git config user.email "circle@circleci.com"
-        - git commit -m "Deployment of $CIRCLE_SHA1"
-        - git push --force origin HEAD:deploy-to-mock
-        - yarn wait-for-deploy:
-            environment:
-               GIT_REF: $CIRCLE_SHA1
-               APP_BASE_URL: http://csra-mock.hmpps.dsd.io/health
-               WAIT_DURATION: 45000
-        - yarn 'test:integration':
-            environment:
-              APP_BASE_URL: http://csra-mock.hmpps.dsd.io
-              E2E_REPORTS_PATH: $CIRCLE_TEST_REPORTS/end-to-end
+              APP_BASE_URL: http://csra-mock.hmpps.dsd.io/health
+              WAIT_DURATION: 45000
+      - yarn 'test:integration':
+          environment:
+            APP_BASE_URL: http://csra-mock.hmpps.dsd.io
+            E2E_REPORTS_PATH: $CIRCLE_TEST_REPORTS/end-to-end
 
