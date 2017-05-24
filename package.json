@@ -22,7 +22,7 @@
     "wait-for-deploy": "node ./bin/wait-for-deploy"
   },
   "engines": {
-    "node": "^6.10.3"
+    "node": "~6.10.0"
   },
   "repository": {
     "type": "git",
