@@ -12,6 +12,11 @@ class AdminPage extends BasePage {
   clickContinueButton() {
     browser.click('[data-continue]');
   }
+
+  loadTestUsers() {
+    this.clickLoadDataButton();
+    this.clickContinueButton();
+  }
 }
 
 export default new AdminPage();

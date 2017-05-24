@@ -3,7 +3,13 @@ import BasePage from './BasePage';
 
 class CsraConfirmationPage extends BasePage {
   clickContinue() { browser.click('[data-continue-button]'); }
-  tickCheckbox() { browser.click('[data-confirm-checkbox]'); }
+  clickCheckbox() { browser.click('[data-confirm-checkbox]'); }
+
+  confirmAndContinue() {
+    this.clickCheckbox();
+    this.clickContinue();
+  }
+
 }
 
 export default new CsraConfirmationPage();

@@ -18,7 +18,7 @@ class Dashboard extends Component {
 
   renderProfiles() {
     return this.props.profiles.map(profile => (
-      <tr data-profile-row key={profile.nomisId}>
+      <tr data-profile-row={profile.nomisId} key={profile.nomisId}>
         <td>
           <span className="c-profile-holder" />
         </td>
@@ -27,7 +27,7 @@ class Dashboard extends Component {
         <td>{profile.dob}</td>
         <td data-assessment-complete={not(isEmpty(profile.assessmentCompleted))}>
           {isEmpty(profile.assessmentCompleted)
-            ? <a onClick={() => this.props.onOffenderSelect(profile)} className="link u-link" data-start-csra-link>
+            ? <a onClick={() => this.props.onOffenderSelect(profile)} className="link u-link" data-start-csra-link={profile.nomisId}>
                 Start
               </a>
             : <span>Complete</span>}

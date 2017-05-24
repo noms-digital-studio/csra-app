@@ -83,7 +83,7 @@ const AssessmentComplete = ({
     </div>
 
     <h2 className="heading-large">
-      <span data-recommended-action>Recommended action: {outcome.recommendation}</span>
+      <span>Recommended action: <span data-recommended-action>{outcome.recommendation}</span></span>
     </h2>
 
     <div className="grid-row">

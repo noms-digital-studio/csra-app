@@ -1,7 +1,6 @@
 import AddPrisonerPage from './pages/AddPrisoner.page';
 import PrisonerAddedPage from './pages/PrisonerAdded.page';
 import DashboardPage from './pages/Dashboard.page';
-
 import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
 
 function whenTheOfficerAddsThePrisonersDetails() {
@@ -20,7 +19,7 @@ function whenTheOfficerAddsThePrisonersDetails() {
 
 function thenThePrisonerIsAvailableToAssess() {
   expect(DashboardPage.mainHeading).to.contain('Prisoners to assess on:');
-  const row = browser.element('[data-profile-row]:nth-child(1)');
+  const row = browser.element('[data-profile-row=A12345]');
   expect(row.getText()).to.equal('Henry Young A12345 23-5-1974 Start Start');
 }
 

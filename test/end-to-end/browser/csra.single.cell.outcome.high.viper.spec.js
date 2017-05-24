@@ -1,14 +1,14 @@
 import AdminPage from './pages/Admin.page';
 import DashboardPage from './pages/Dashboard.page';
 import AssessmentConfirmationPage from './pages/AssessmentConfirmation.page';
-import whenALowRiskPrisonerIsAssessed from './tasks/lowRiskPrisonerAssessed.task';
 import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
+import whenAViolentPrisonerIsAssessed from './tasks/violentPrisonerAssessed.task';
 
-function thenASharedCellIsRecommended() {
+function thenASingleCellIsRecommended() {
   AssessmentConfirmationPage.clickConfirmAndContinue();
   expect(DashboardPage.mainHeading).to.contain('Prisoners to assess on:');
-  const row = browser.element('[data-profile-row=A111111');
-  expect(row.getText()).to.equal('John Lowe A111111 01-Oct-1970 Complete Start Shared Cell');
+  const row = browser.element('[data-profile-row=A333333');
+  expect(row.getText()).to.equal('Ian Rate A333333 23-Mar-1988 Complete Start Single Cell');
 }
 
 describe('CSRA assessment', () => {
@@ -18,9 +18,9 @@ describe('CSRA assessment', () => {
     AdminPage.loadTestUsers();
   });
 
-  it('Assesses a low risk prisoner', () => {
+  it('Assesses a violent prisoner', () => {
     givenThatTheOfficerIsSignedIn();
-    whenALowRiskPrisonerIsAssessed();
-    thenASharedCellIsRecommended();
+    whenAViolentPrisonerIsAssessed();
+    thenASingleCellIsRecommended();
   });
 });

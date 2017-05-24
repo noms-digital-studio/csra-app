@@ -8,7 +8,12 @@ class AssessmentConfirmationPage extends BasePage {
   get nomisId() { return browser.getText('[data-prisoner-nomis-id]'); }
 
   clickContinue() { browser.click('[data-continue-button]'); }
-  tickCheckbox() { browser.click('[data-confirm-checkbox]'); }
+  clickCheckbox() { browser.click('[data-confirm-checkbox]'); }
+
+  clickConfirmAndContinue() {
+    this.clickCheckbox();
+    this.clickContinue();
+  }
 }
 
 export default new AssessmentConfirmationPage();
