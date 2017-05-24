@@ -7,9 +7,12 @@ require('dotenv').config();
 require('babel-register')();
 
 
-const app = require('../server/app').default;
 const debug = require('debug')('csra:server');
 const http = require('http');
+
+const appInsights = require('../utils/applicationinsights');
+const app = require('../server/app').default;
+
 
 debug('booting %s', 'csra');
 
@@ -83,9 +86,12 @@ function onError(error) {
 /**
  * Event listener for HTTP server "listening" event.
  */
+const start = Date.now();
 
 function onListening() {
+  const duration = Date.now() - start;
   const addr = server.address();
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
   debug(`Listening on ${bind}`);
+  appInsights.client.trackMetric('server startup time', duration);
 }
