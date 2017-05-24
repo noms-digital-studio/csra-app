@@ -7,7 +7,7 @@ import CsraYesNoPage from '../pages/CsraYesNo.page';
 import AssessmentCompletePage from '../pages/AssessmentComplete.page';
 
 function whenAPrisonerWithNoViperIsAssessed() {
-  DashboardPage.clickCsraStartLinkForNomisId('A444444');
+  DashboardPage.clickCsraStartLinkForNomisId('J6285NE');
   expect(PrisonerProfilePage.mainHeading).to.contain('Confirm prisoner identity and begin assessment');
   expect(PrisonerProfilePage.prisonerName).to.equal('James Neo');
 
@@ -43,14 +43,14 @@ function whenAPrisonerWithNoViperIsAssessed() {
   expect(AssessmentCompletePage.recommendationText).to.equal('Single Cell');
   expect(AssessmentCompletePage.name).to.equal('James Neo');
   expect(AssessmentCompletePage.dob).to.equal('03-Dec-1958');
-  expect(AssessmentCompletePage.nomisId).to.equal('A444444');
+  expect(AssessmentCompletePage.nomisId).to.equal('J6285NE');
 
   AssessmentCompletePage.clickContinue();
   expect(AssessmentConfirmationPage.mainHeading).to.contain('Assessment confirmation');
   expect(AssessmentConfirmationPage.outcome).to.equal('Single Cell');
   expect(AssessmentConfirmationPage.name).to.equal('James Neo');
   expect(AssessmentConfirmationPage.dob).to.equal('03-Dec-1958');
-  expect(AssessmentConfirmationPage.nomisId).to.equal('A444444');
+  expect(AssessmentConfirmationPage.nomisId).to.equal('J6285NE');
 }
 
 export default whenAPrisonerWithNoViperIsAssessed;

@@ -1,8 +1,8 @@
 {
   "output": [
-    {"nomisId":"A111111","surname":"Lowe","firstName":"John","dob":"01-Oct-1970"},
-    {"nomisId":"A222222","surname":"Moyen","firstName":"Richard","dob":"05-Jan-1995"},
-    {"nomisId":"A333333","surname":"Rate","firstName":"Ian","dob":"23-Mar-1988"},
-    {"nomisId":"A444444","surname":"Neo","firstName":"James","dob":"03-Dec-1958"}
+    {"nomisId":"J1234LO","surname":"Lowe","firstName":"John","dob":"01-Oct-1970"},
+    {"nomisId":"R6524MO","surname":"Moyen","firstName":"Richard","dob":"05-Jan-1995"},
+    {"nomisId":"I9876RA","surname":"Rate","firstName":"Ian","dob":"23-Mar-1988"},
+    {"nomisId":"J6285NE","surname":"Neo","firstName":"James","dob":"03-Dec-1958"}
   ]
 }

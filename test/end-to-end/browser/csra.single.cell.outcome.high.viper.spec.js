@@ -7,8 +7,8 @@ import whenAViolentPrisonerIsAssessed from './tasks/violentPrisonerAssessed.task
 function thenASingleCellIsRecommended() {
   AssessmentConfirmationPage.clickConfirmAndContinue();
   expect(DashboardPage.mainHeading).to.contain('Prisoners to assess on:');
-  const row = browser.element('[data-profile-row=A333333]');
-  expect(row.getText()).to.equal('Ian Rate A333333 23-Mar-1988 Complete Start Single Cell');
+  const row = browser.element('[data-profile-row=I9876RA]');
+  expect(row.getText()).to.equal('Ian Rate I9876RA 23-Mar-1988 Complete Start Single Cell');
 }
 
 describe('CSRA assessment', () => {

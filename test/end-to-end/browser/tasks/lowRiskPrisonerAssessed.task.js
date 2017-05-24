@@ -7,7 +7,7 @@ import AssessmentCompletePage from '../pages/AssessmentComplete.page';
 import AssessmentConfirmationPage from '../pages/AssessmentConfirmation.page';
 
 function whenALowRiskPrisonerIsAssessed() {
-  DashboardPage.clickCsraStartLinkForNomisId('A111111');
+  DashboardPage.clickCsraStartLinkForNomisId('J1234LO');
   expect(PrisonerProfilePage.mainHeading).to.contain('Confirm prisoner identity and begin assessment');
   expect(PrisonerProfilePage.prisonerName).to.equal('John Lowe');
 
@@ -43,14 +43,14 @@ function whenALowRiskPrisonerIsAssessed() {
   expect(AssessmentCompletePage.recommendationText).to.equal('Shared Cell');
   expect(AssessmentCompletePage.name).to.equal('John Lowe');
   expect(AssessmentCompletePage.dob).to.equal('01-Oct-1970');
-  expect(AssessmentCompletePage.nomisId).to.equal('A111111');
+  expect(AssessmentCompletePage.nomisId).to.equal('J1234LO');
 
   AssessmentCompletePage.clickContinue();
   expect(AssessmentConfirmationPage.mainHeading).to.contain('Assessment confirmation');
   expect(AssessmentConfirmationPage.outcome).to.equal('Shared Cell');
   expect(AssessmentConfirmationPage.name).to.equal('John Lowe');
   expect(AssessmentConfirmationPage.dob).to.equal('01-Oct-1970');
-  expect(AssessmentConfirmationPage.nomisId).to.equal('A111111');
+  expect(AssessmentConfirmationPage.nomisId).to.equal('J1234LO');
 }
 
 export default whenALowRiskPrisonerIsAssessed;
