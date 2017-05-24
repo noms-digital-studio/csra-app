@@ -7,7 +7,7 @@ import whenAViolentPrisonerIsAssessed from './tasks/violentPrisonerAssessed.task
 function thenASingleCellIsRecommended() {
   AssessmentConfirmationPage.clickConfirmAndContinue();
   expect(DashboardPage.mainHeading).to.contain('Prisoners to assess on:');
-  const row = browser.element('[data-profile-row=A333333');
+  const row = browser.element('[data-profile-row=A333333]');
   expect(row.getText()).to.equal('Ian Rate A333333 23-Mar-1988 Complete Start Single Cell');
 }
 

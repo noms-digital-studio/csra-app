@@ -7,7 +7,7 @@ import whenAPrisonerWithNoViperIsAssessed from './tasks/prisonerWithNoViperIsAss
 function thenASingleCellIsRecommended() {
   AssessmentConfirmationPage.clickConfirmAndContinue();
   expect(DashboardPage.mainHeading).to.contain('Prisoners to assess on:');
-  const row = browser.element('[data-profile-row=A444444');
+  const row = browser.element('[data-profile-row=A444444]');
   expect(row.getText()).to.equal('James Neo A444444 03-Dec-1958 Complete Start Single Cell');
 }
 
