@@ -9,6 +9,10 @@ class HealthcareOutcome extends BasePage {
   get assessor() { return browser.getText('[data-assessor]'); }
   get role() { return browser.getText('[data-role]'); }
   get date() { return browser.getText('[data-date]'); }
+
+  get outcome() { return browser.getText('[data-outcome]'); }
+  get comments() { return browser.getText('[data-comments]'); }
+  get consent() { return browser.getText('[data-consent]'); }
 }
 
 export default new HealthcareOutcome();

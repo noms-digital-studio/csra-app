@@ -75,7 +75,7 @@ class HealthCareSummary extends Component {
                 Further Comments
               </td>
               <td className="u-text-capitalize">
-                <span data-further-comment>{answers.comments.comments || 'none'}</span>
+                <span data-comments>{answers.comments.comments || 'none'}</span>
               </td>
               <td className="change-answer">
                 <Link to={`${routes.HEALTHCARE_ASSESSMENT}/comments`}>

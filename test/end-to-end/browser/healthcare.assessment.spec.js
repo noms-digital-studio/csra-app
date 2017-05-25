@@ -16,7 +16,7 @@ function whenAPrisonersHealthcareResultsAreEntered() {
   HealthcareOutcomePage.clickNoAndContinue();
   expect(HealthcareCommentsPage.mainHeading).to.contain('Are there any comments made by Healthcare?');
 
-  HealthcareCommentsPage.commentAndContinue('healthcare comment');
+  HealthcareCommentsPage.commentAndContinue('a healthcare comment');
   expect(HealthcareConsentPage.mainHeading).to.contain('Has the prisoner given consent to share their medical information?');
 
   HealthcareConsentPage.clickNoAndContinue();
@@ -24,11 +24,18 @@ function whenAPrisonersHealthcareResultsAreEntered() {
   HealthcareNursePage.enterRole('Nurse');
   HealthcareNursePage.enterName('Jane Doe');
   HealthcareNursePage.enterDate('21', '07', '2017');
+
   HealthcareNursePage.clickContinue();
   expect(HealthcareCompletePage.mainHeading).to.equal('Healthcare assessment completed');
   expect(HealthcareCompletePage.name).to.equal('John Lowe');
   expect(HealthcareCompletePage.dob).to.equal('01-Oct-1970');
   expect(HealthcareCompletePage.nomisId).to.equal('J1234LO');
+  expect(HealthcareCompletePage.assessor).to.equal('Jane Doe');
+  expect(HealthcareCompletePage.role).to.equal('Nurse');
+  expect(HealthcareCompletePage.date).to.equal('21-07-2017');
+  expect(HealthcareCompletePage.outcome).to.equal('No - Low Risk');
+  expect(HealthcareCompletePage.comments).to.equal('A Healthcare Comment');
+  expect(HealthcareCompletePage.consent).to.equal('No');
 }
 
 function thenThereHealthcareAssessmentIsComplete() {
