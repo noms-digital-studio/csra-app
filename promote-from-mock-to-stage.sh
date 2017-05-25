@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # This script requires the 'jq' command line tool
-# brew install jq
+brew install jq
 
 # Grab the MOCK build
 git checkout deploy-to-mock
