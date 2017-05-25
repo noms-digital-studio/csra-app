@@ -23,8 +23,12 @@ import HealthcareSummary from './pages/HealthcareSummary';
 import HealthcareComplete from './pages/HealthcareComplete';
 import Error404 from './pages/Error404';
 
+
 export default (store) => {
   const history = syncHistoryWithStore(browserHistory, store);
+  /* eslint-disable no-unused-vars */
+  history.listen(location => window.appInsights.trackPageView());
+
 
   return (
     <Provider store={store}>
