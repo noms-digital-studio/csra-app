@@ -109,7 +109,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       template: 'server/views/index.tmpl.html',
-      APPINSIGHTS_INSTRUMENTATIONKEY: process.env.APPINSIGHTS_INSTRUMENTATIONKEY,
       minify: {
         removeComments: true,
         collapseWhitespace: true,
