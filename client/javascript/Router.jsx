@@ -25,16 +25,15 @@ import Error404 from './pages/Error404';
 
 export default (store) => {
   const history = syncHistoryWithStore(browserHistory, store);
-  /* eslint-disable no-unused-vars */
-  history.listen((location) => {
-    if (window.appInsights) {
-      window.appInsights.trackPageView();
-    }
-  });
 
   return (
     <Provider store={store}>
-      <Router history={history} onUpdate={() => window.scrollTo(0, 0)}>
+      <Router history={history} onUpdate={() => {
+        window.scrollTo(0, 0);
+        if (window.appInsights) {
+          window.appInsights.trackPageView();
+        }
+      }}>
         <Route component={Layout}>
           <Route path="/" name="home" component={SignInHoc} />
           <Route path="/before-you-start" component={BeforeYouStart} />
