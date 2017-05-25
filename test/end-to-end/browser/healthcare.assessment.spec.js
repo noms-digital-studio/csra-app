@@ -31,11 +31,13 @@ function whenAPrisonersHealthcareResultsAreEntered() {
   expect(HealthcareCompletePage.nomisId).to.equal('J1234LO');
 }
 
-function thenASharedCellIsRecommended() {
-  AssessmentConfirmationPage.clickConfirmAndContinue();
+function thenThereHealthcareAssessmentIsComplete() {
+  HealthcareCompletePage.clickContinue();
+  expect(AssessmentConfirmationPage.mainHeading).to.contain('Healthcare assessment saved');
+  AssessmentConfirmationPage.clickContinue();
   expect(DashboardPage.mainHeading).to.contain('Prisoners to assess on:');
   const row = browser.element('[data-profile-row=J1234LO]');
-  expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Start Complete Shared Cell');
+  expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Start Complete');
 }
 
 
@@ -46,9 +48,9 @@ describe('CSRA assessment', () => {
     AdminPage.loadTestUsers();
   });
 
-  it('Captures a prisoner`s healthcare result', () => {
+  it('Record a prisoner`s healthcare details', () => {
     givenThatTheOfficerIsSignedIn();
     whenAPrisonersHealthcareResultsAreEntered();
-    // thenASharedCellIsRecommended();
+    thenThereHealthcareAssessmentIsComplete();
   });
 });

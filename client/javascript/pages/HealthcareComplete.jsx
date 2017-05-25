@@ -21,6 +21,7 @@ class HealthCareComplete extends Component {
         <button
           onClick={() => this.props.navigateTo(routes.DASHBOARD)}
           className="button u-margin-bottom-large"
+          data-continue-button
         >
           Return to prisoner list
         </button>

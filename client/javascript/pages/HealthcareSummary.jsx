@@ -128,7 +128,7 @@ class HealthCareSummary extends Component {
         </p>
 
         <div className="form-group">
-          <Link to={routes.HEALTHCARE_COMPLETE} className="button">
+          <Link to={routes.HEALTHCARE_COMPLETE} className="button" data-continue-button>
             Save and Continue
           </Link>
         </div>
