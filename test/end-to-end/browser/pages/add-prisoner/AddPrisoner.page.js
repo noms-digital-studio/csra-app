@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import BasePage from './BasePage';
+import BasePage from '../BasePage';
 
 class AddPrisonerPage extends BasePage {
   enterName(forename, surname) {

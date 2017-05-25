@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import BasePage from './BasePage';
+import BasePage from '../BasePage';
 
 class PrisonerProfilePage extends BasePage {
   get prisonerName() { return browser.getText('[data-prisoner-name]'); }

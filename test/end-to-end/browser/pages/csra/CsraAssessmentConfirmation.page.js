@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import BasePage from './BasePage';
+import BasePage from '../BasePage';
 
 class AssessmentConfirmationPage extends BasePage {
   get outcome() { return browser.getText('[data-outcome]'); }

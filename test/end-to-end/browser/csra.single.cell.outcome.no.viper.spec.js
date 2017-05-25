@@ -1,11 +1,11 @@
 import AdminPage from './pages/Admin.page';
 import DashboardPage from './pages/Dashboard.page';
-import AssessmentConfirmationPage from './pages/AssessmentConfirmation.page';
+import CsraAssessmentConfirmationPage from './pages/csra/CsraAssessmentConfirmation.page';
 import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
 import whenAPrisonerWithNoViperIsAssessed from './tasks/prisonerWithNoViperIsAssessed.task';
 
 function thenASingleCellIsRecommended() {
-  AssessmentConfirmationPage.clickConfirmAndContinue();
+  CsraAssessmentConfirmationPage.clickConfirmAndContinue();
   expect(DashboardPage.mainHeading).to.contain('Prisoners to assess on:');
   const row = browser.element('[data-profile-row=J6285NE]');
   expect(row.getText()).to.equal('James Neo J6285NE 03-Dec-1958 Complete Start Single Cell');

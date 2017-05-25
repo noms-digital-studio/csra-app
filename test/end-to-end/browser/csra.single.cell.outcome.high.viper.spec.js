@@ -1,11 +1,11 @@
 import AdminPage from './pages/Admin.page';
 import DashboardPage from './pages/Dashboard.page';
-import AssessmentConfirmationPage from './pages/AssessmentConfirmation.page';
+import CsraAssessmentConfirmationPage from './pages/csra/CsraAssessmentConfirmation.page';
 import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
 import whenAViolentPrisonerIsAssessed from './tasks/violentPrisonerAssessed.task';
 
 function thenASingleCellIsRecommended() {
-  AssessmentConfirmationPage.clickConfirmAndContinue();
+  CsraAssessmentConfirmationPage.clickConfirmAndContinue();
   expect(DashboardPage.mainHeading).to.contain('Prisoners to assess on:');
   const row = browser.element('[data-profile-row=I9876RA]');
   expect(row.getText()).to.equal('Ian Rate I9876RA 23-Mar-1988 Complete Start Single Cell');

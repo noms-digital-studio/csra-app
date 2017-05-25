@@ -1,17 +1,17 @@
 import DashboardPage from '../pages/Dashboard.page';
-import AssessmentConfirmationPage from '../pages/AssessmentConfirmation.page';
-import PrisonerProfilePage from '../pages/PrisonerProfile.page';
+import CsraAssessmentConfirmationPage from '../pages/csra/CsraAssessmentConfirmation.page';
+import CsraPrisonerProfilePage from '../pages/csra/CsraPrisonerProfile.page';
 import CsraConfirmationPage from '../pages/csra/CsraConfirmation.page';
 import CsraCommentsPage from '../pages/csra/CsraComments.page';
 import CsraYesNoPage from '../pages/csra/CsraYesNo.page';
-import AssessmentCompletePage from '../pages/AssessmentComplete.page';
+import CsraAssessmentCompletePage from '../pages/csra/CsraAssessmentComplete.page';
 
 function whenAPrisonerWithNoViperIsAssessed() {
   DashboardPage.clickCsraStartLinkForNomisId('J6285NE');
-  expect(PrisonerProfilePage.mainHeading).to.contain('Confirm prisoner identity and begin assessment');
-  expect(PrisonerProfilePage.prisonerName).to.equal('James Neo');
+  expect(CsraPrisonerProfilePage.mainHeading).to.contain('Confirm prisoner identity and begin assessment');
+  expect(CsraPrisonerProfilePage.prisonerName).to.equal('James Neo');
 
-  PrisonerProfilePage.clickContinue();
+  CsraPrisonerProfilePage.clickContinue();
   expect(CsraConfirmationPage.mainHeading).to.contain('Explain to the prisoner');
 
   CsraConfirmationPage.confirmAndContinue();
@@ -39,18 +39,18 @@ function whenAPrisonerWithNoViperIsAssessed() {
   expect(CsraYesNoPage.mainHeading).to.contain('Are there any other reasons why you would recommend they have a single cell?');
 
   CsraYesNoPage.clickNoAndContinue();
-  expect(AssessmentCompletePage.mainHeading).to.contain('Assessment Complete');
-  expect(AssessmentCompletePage.recommendationText).to.equal('Single Cell');
-  expect(AssessmentCompletePage.name).to.equal('James Neo');
-  expect(AssessmentCompletePage.dob).to.equal('03-Dec-1958');
-  expect(AssessmentCompletePage.nomisId).to.equal('J6285NE');
+  expect(CsraAssessmentCompletePage.mainHeading).to.contain('Assessment Complete');
+  expect(CsraAssessmentCompletePage.recommendationText).to.equal('Single Cell');
+  expect(CsraAssessmentCompletePage.name).to.equal('James Neo');
+  expect(CsraAssessmentCompletePage.dob).to.equal('03-Dec-1958');
+  expect(CsraAssessmentCompletePage.nomisId).to.equal('J6285NE');
 
-  AssessmentCompletePage.clickContinue();
-  expect(AssessmentConfirmationPage.mainHeading).to.contain('Assessment confirmation');
-  expect(AssessmentConfirmationPage.outcome).to.equal('Single Cell');
-  expect(AssessmentConfirmationPage.name).to.equal('James Neo');
-  expect(AssessmentConfirmationPage.dob).to.equal('03-Dec-1958');
-  expect(AssessmentConfirmationPage.nomisId).to.equal('J6285NE');
+  CsraAssessmentCompletePage.clickContinue();
+  expect(CsraAssessmentConfirmationPage.mainHeading).to.contain('Assessment confirmation');
+  expect(CsraAssessmentConfirmationPage.outcome).to.equal('Single Cell');
+  expect(CsraAssessmentConfirmationPage.name).to.equal('James Neo');
+  expect(CsraAssessmentConfirmationPage.dob).to.equal('03-Dec-1958');
+  expect(CsraAssessmentConfirmationPage.nomisId).to.equal('J6285NE');
 }
 
 export default whenAPrisonerWithNoViperIsAssessed;

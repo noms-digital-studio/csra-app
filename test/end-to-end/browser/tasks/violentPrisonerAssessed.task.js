@@ -1,33 +1,33 @@
-import PrisonerProfilePage from '../pages/PrisonerProfile.page';
+import CsraPrisonerProfilePage from '../pages/csra/CsraPrisonerProfile.page';
 import CsraConfirmationPage from '../pages/csra/CsraConfirmation.page';
 import DashboardPage from '../pages/Dashboard.page';
-import AssessmentCompletePage from '../pages/AssessmentComplete.page';
-import AssessmentConfirmationPage from '../pages/AssessmentConfirmation.page';
+import CsraAssessmentCompletePage from '../pages/csra/CsraAssessmentComplete.page';
+import CsraAssessmentConfirmationPage from '../pages/csra/CsraAssessmentConfirmation.page';
 
 function whenAViolentPrisonerIsAssessed() {
   DashboardPage.clickCsraStartLinkForNomisId('I9876RA');
-  expect(PrisonerProfilePage.mainHeading).to.contain('Confirm prisoner identity and begin assessment');
-  expect(PrisonerProfilePage.prisonerName).to.equal('Ian Rate');
+  expect(CsraPrisonerProfilePage.mainHeading).to.contain('Confirm prisoner identity and begin assessment');
+  expect(CsraPrisonerProfilePage.prisonerName).to.equal('Ian Rate');
 
-  PrisonerProfilePage.clickContinue();
+  CsraPrisonerProfilePage.clickContinue();
   expect(CsraConfirmationPage.mainHeading).to.contain('Explain to the prisoner');
 
   CsraConfirmationPage.confirmAndContinue();
   expect(CsraConfirmationPage.mainHeading).to.contain('Current recommendation: single cell');
 
   CsraConfirmationPage.confirmAndContinue();
-  expect(AssessmentCompletePage.mainHeading).to.contain('Assessment Complete');
-  expect(AssessmentCompletePage.recommendationText).to.equal('Single Cell');
-  expect(AssessmentCompletePage.name).to.equal('Ian Rate');
-  expect(AssessmentCompletePage.dob).to.equal('23-Mar-1988');
-  expect(AssessmentCompletePage.nomisId).to.equal('I9876RA');
+  expect(CsraAssessmentCompletePage.mainHeading).to.contain('Assessment Complete');
+  expect(CsraAssessmentCompletePage.recommendationText).to.equal('Single Cell');
+  expect(CsraAssessmentCompletePage.name).to.equal('Ian Rate');
+  expect(CsraAssessmentCompletePage.dob).to.equal('23-Mar-1988');
+  expect(CsraAssessmentCompletePage.nomisId).to.equal('I9876RA');
 
-  AssessmentCompletePage.clickContinue();
-  expect(AssessmentConfirmationPage.mainHeading).to.contain('Assessment confirmation');
-  expect(AssessmentConfirmationPage.outcome).to.equal('Single Cell');
-  expect(AssessmentConfirmationPage.name).to.equal('Ian Rate');
-  expect(AssessmentConfirmationPage.dob).to.equal('23-Mar-1988');
-  expect(AssessmentConfirmationPage.nomisId).to.equal('I9876RA');
+  CsraAssessmentCompletePage.clickContinue();
+  expect(CsraAssessmentConfirmationPage.mainHeading).to.contain('Assessment confirmation');
+  expect(CsraAssessmentConfirmationPage.outcome).to.equal('Single Cell');
+  expect(CsraAssessmentConfirmationPage.name).to.equal('Ian Rate');
+  expect(CsraAssessmentConfirmationPage.dob).to.equal('23-Mar-1988');
+  expect(CsraAssessmentConfirmationPage.nomisId).to.equal('I9876RA');
 }
 
 export default whenAViolentPrisonerIsAssessed;

@@ -1,7 +1,7 @@
 import AdminPage from './pages/Admin.page';
 import DashboardPage from './pages/Dashboard.page';
 import HealthcareOutcomePage from './pages/healthcare/HealthcareOutcome.page';
-import AssessmentConfirmationPage from './pages/AssessmentConfirmation.page';
+import HealthcareAssessmentSave from './pages/healthcare/HealthcareAssessmentSave.page';
 import HealthcareCommentsPage from './pages/healthcare/HealthcareComments.page';
 import HealthcareConsentPage from './pages/healthcare/HealthcareConsent.page';
 import HealthcareNursePage from './pages/healthcare/HealthcareNurse.page';
@@ -33,8 +33,8 @@ function whenAPrisonersHealthcareResultsAreEntered() {
 
 function thenThereHealthcareAssessmentIsComplete() {
   HealthcareCompletePage.clickContinue();
-  expect(AssessmentConfirmationPage.mainHeading).to.contain('Healthcare assessment saved');
-  AssessmentConfirmationPage.clickContinue();
+  expect(HealthcareAssessmentSave.mainHeading).to.contain('Healthcare assessment saved');
+  HealthcareAssessmentSave.clickContinue();
   expect(DashboardPage.mainHeading).to.contain('Prisoners to assess on:');
   const row = browser.element('[data-profile-row=J1234LO]');
   expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Start Complete');

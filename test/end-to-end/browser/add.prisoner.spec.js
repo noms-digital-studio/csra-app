@@ -1,5 +1,5 @@
-import AddPrisonerPage from './pages/AddPrisoner.page';
-import PrisonerAddedPage from './pages/PrisonerAdded.page';
+import AddPrisonerPage from './pages/add-prisoner/AddPrisoner.page';
+import PrisonerAddedPage from './pages/add-prisoner/PrisonerAdded.page';
 import DashboardPage from './pages/Dashboard.page';
 import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
 

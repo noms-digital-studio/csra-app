@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import BasePage from './BasePage';
+import BasePage from '../BasePage';
 
 class AssessmentCompletePage extends BasePage {
   get recommendationText() { return browser.getText('[data-recommended-action]'); }
