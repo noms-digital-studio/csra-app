@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 import { replace } from 'react-router-redux';
 
@@ -37,81 +38,90 @@ const extractDecision = (questions, exitPoint, viperScore) => {
 };
 
 const AssessmentComplete = ({
+  title,
   prisoner: { firstName, dob, nomisId, surname },
   onSubmit,
   outcome,
 }) => (
-  <div>
-    <div className="grid-row">
-      <div className="column-two-thirds">
-        <h1 className="heading-xlarge">Assessment Complete</h1>
-        <h2 className="heading-large">Prisoner details</h2>
+  <DocumentTitle title={title}>
+    <div>
+      <div className="grid-row">
+        <div className="column-two-thirds">
+          <h1 className="heading-xlarge">Assessment Complete</h1>
+          <h2 className="heading-large">Prisoner details</h2>
 
-        <div className="c-offender-details-container u-no-margin-bottom">
-          <div className="grid-row">
-            <div className="column-full">
-              <div className="c-offender-profile-image">
-                <img src="/assets/images/profile-placeholder.gif" />
-              </div>
-              <div
-                data-offender-profile-details
-                className="c-offender-profile-details"
-              >
-                <div>
-                  <p className="c-offender-profile-item">
-                    <span className="heading-small">Name:&nbsp;</span>
-                    <span data-prisoner-name>{firstName} {surname}</span>
-                  </p>
+          <div className="c-offender-details-container u-no-margin-bottom">
+            <div className="grid-row">
+              <div className="column-full">
+                <div className="c-offender-profile-image">
+                  <img src="/assets/images/profile-placeholder.gif" />
                 </div>
-                <div>
-                  <p className="c-offender-profile-item">
-                    <span className="heading-small">DOB:&nbsp;</span>
-                    <span data-prisoner-dob>{dob}</span>
-                  </p>
-                </div>
-                <div>
-                  <p className="c-offender-profile-item">
-                    <span className="heading-small">NOMIS ID:&nbsp;</span>
-                    <span data-prisoner-nomis-id>{nomisId}</span>
-                  </p>
+                <div
+                  data-offender-profile-details
+                  className="c-offender-profile-details"
+                >
+                  <div>
+                    <p className="c-offender-profile-item">
+                      <span className="heading-small">Name:&nbsp;</span>
+                      <span data-prisoner-name>{firstName} {surname}</span>
+                    </p>
+                  </div>
+                  <div>
+                    <p className="c-offender-profile-item">
+                      <span className="heading-small">DOB:&nbsp;</span>
+                      <span data-prisoner-dob>{dob}</span>
+                    </p>
+                  </div>
+                  <div>
+                    <p className="c-offender-profile-item">
+                      <span className="heading-small">NOMIS ID:&nbsp;</span>
+                      <span data-prisoner-nomis-id>{nomisId}</span>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <h2 className="heading-large">
-      <span>Recommended action: <span data-recommended-action>{outcome.recommendation}</span></span>
-    </h2>
+      <h2 className="heading-large">
+        <span>
+          Recommended action:
+          {' '}
+          <span data-recommended-action>{outcome.recommendation}</span>
+        </span>
+      </h2>
 
-    <div className="grid-row">
-      <div className="column-two-thirds">
-        <div className="panel panel-border-wide u-margin-bottom-large">
-          {outcome.rating === 'low' &&
-            <p>
-              Based on what we know about your offence and your previous time in prison,
-              we think you can act calmly and appropriately around other prisoners.
-            </p>}
-          <ul className="list list-bullet">
-            {outcome.reasons.map((reason, key) => <li key={key}>{reason}</li>)}
-          </ul>
+      <div className="grid-row">
+        <div className="column-two-thirds">
+          <div className="panel panel-border-wide u-margin-bottom-large">
+            {outcome.rating === 'low' &&
+              <p>
+                Based on what we know about your offence and your previous time in prison,
+                we think you can act calmly and appropriately around other prisoners.
+              </p>}
+            <ul className="list list-bullet">
+              {outcome.reasons.map((reason, key) => (
+                <li key={key}>{reason}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
+
+      <p>
+        <button
+          className="button button-start u-margin-bottom-default"
+          onClick={() => onSubmit({ ...outcome, nomisId })}
+          data-continue-button
+        >
+          Submit Decision
+        </button>
+      </p>
+
     </div>
-
-    <p>
-      <button
-        className="button button-start u-margin-bottom-default"
-        onClick={() => onSubmit({ ...outcome, nomisId })}
-        data-continue-button
-      >
-        Submit Decision
-      </button>
-    </p>
-
-  </div>
+  </DocumentTitle>
 );
 
 AssessmentComplete.propTypes = {
@@ -130,6 +140,7 @@ AssessmentComplete.propTypes = {
 };
 
 AssessmentComplete.defaultProps = {
+  title: 'Risk Assessment Complete',
   outcome: {
     reasons: [],
   },

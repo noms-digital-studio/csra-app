@@ -23,12 +23,14 @@ import HealthcareSummary from './pages/HealthcareSummary';
 import HealthcareComplete from './pages/HealthcareComplete';
 import Error404 from './pages/Error404';
 
-
 export default (store) => {
   const history = syncHistoryWithStore(browserHistory, store);
   /* eslint-disable no-unused-vars */
-  history.listen(location => window.appInsights.trackPageView());
-
+  history.listen((location) => {
+    if (window.appInsights) {
+      window.appInsights.trackPageView();
+    }
+  });
 
   return (
     <Provider store={store}>
@@ -37,20 +39,44 @@ export default (store) => {
           <Route path="/" name="home" component={SignInHoc} />
           <Route path="/before-you-start" component={BeforeYouStart} />
           <Route path="/dashboard" name="dashboard" component={DashboardHoC} />
-          <Route path="/add-offender" name="add-offender" component={AddPrisonerHoc} />
-          <Route path="/confirm-offender" name="confirm-offender" component={ConfirmOffenderHoc} />
-          <Route path="/offender-profile" name="offender-profile" component={OffenderProfileHoc} />
+          <Route
+            path="/add-offender"
+            name="add-offender"
+            component={AddPrisonerHoc}
+          />
+          <Route
+            path="/confirm-offender"
+            name="confirm-offender"
+            component={ConfirmOffenderHoc}
+          />
+          <Route
+            path="/offender-profile"
+            name="offender-profile"
+            component={OffenderProfileHoc}
+          />
           <Route path="/admin" name="admin" component={Admin} />
           <Route path="/sign-in" name="sign-in" component={SignInHoc} />
-          <Route path="/healthcare-assessment/:section" component={HealthcareAssessment} />
+          <Route
+            path="/healthcare-assessment/:section"
+            component={HealthcareAssessment}
+          />
           <Route path="/healthcare-summary" component={HealthcareSummary} />
           <Route path="/healthcare-complete" component={HealthcareComplete} />
 
           <Route path="/assessment/:section" component={RiskAssessment} />
-          <Route path="/assessment-complete" component={AssessmentCompleteHoc} />
-          <Route path="/assessment-confirmation" component={AssessmentConfirmationHoc} />
+          <Route
+            path="/assessment-complete"
+            component={AssessmentCompleteHoc}
+          />
+          <Route
+            path="/assessment-confirmation"
+            component={AssessmentConfirmationHoc}
+          />
           <Route path="/feedback" component={Feedback} />
-          <Route path="/feedback-confirmation" component={FeedbackConfirmation} />
+          <Route
+            path="/feedback-confirmation"
+            component={FeedbackConfirmation}
+          />
           <Route path="*" name="404" component={Error404} />
         </Route>
       </Router>

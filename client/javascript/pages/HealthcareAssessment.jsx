@@ -1,4 +1,5 @@
 import React from 'react';
+import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
@@ -14,12 +15,19 @@ import Questionnaire from '../components/Questionnaire';
 import routes from '../constants/routes';
 
 const HealthcareAssessment = props => (
+  <DocumentTitle title={props.title}>
   <Questionnaire
     basePath={routes.HEALTHCARE_ASSESSMENT}
     completionPath={routes.HEALTHCARE_SUMMARY}
     {...props}
   />
+  </DocumentTitle>
 );
+
+
+HealthcareAssessment.defaultProps = {
+  title: 'Healthcare Assessment',
+};
 
 const mapStateToProps = (state, ownProps) => ({
   ...ownProps,

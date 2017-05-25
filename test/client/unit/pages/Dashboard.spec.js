@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import { fakeStore } from '../test-helpers';
 
@@ -50,12 +50,12 @@ const assertGivenValuesInWhiteListAreInPage = (list, whiteList, page) => {
 describe('<Dashboard />', () => {
   context('Standalone Dashboard', () => {
     it('renders the correct number of profiles rows', () => {
-      const wrapper = shallow(<Dashboard profiles={profiles} />);
+      const wrapper = mount(<Dashboard profiles={profiles} />);
       expect(wrapper.find('[data-profile-row]').length).to.equal(2);
     });
 
     it('renders the correct profile information per row', () => {
-      const wrapper = shallow(<Dashboard profiles={profiles} />);
+      const wrapper = mount(<Dashboard profiles={profiles} />);
       const whitelist = [
         'nomisId',
         'surname',
@@ -97,7 +97,7 @@ describe('<Dashboard />', () => {
 
     it('responds to the selection of an incomplete CSRA assessment', () => {
       const callback = sinon.spy();
-      const wrapper = shallow(
+      const wrapper = mount(
         <Dashboard profiles={profiles} onOffenderSelect={callback} />,
       );
 
@@ -114,7 +114,7 @@ describe('<Dashboard />', () => {
 
     it('accepts a date', () => {
       const date = 'Fooday FooDay FooMonth FooYear';
-      const wrapper = shallow(<Dashboard date={date} />);
+      const wrapper = mount(<Dashboard date={date} />);
 
       expect(wrapper.text()).to.include(date);
     });

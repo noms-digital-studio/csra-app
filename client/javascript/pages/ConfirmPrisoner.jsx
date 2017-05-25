@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import DocumentTitle from 'react-document-title';
 import { replace } from 'react-router-redux';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
@@ -7,38 +8,53 @@ import routes from '../constants/routes';
 import { confirmPrisoner } from '../actions';
 
 const ConfirmOffender = (props) => {
-  const { prisonerDetails: prisoner, onClick } = props;
+  const { prisonerDetails: prisoner, onClick, title } = props;
   return (
-    <div>
-      <h1 className="heading-xlarge">Prisoner Added</h1>
+    <DocumentTitle title={title}>
+      <div>
+        <h1 className="heading-xlarge">Prisoner Added</h1>
 
-      <div className="grid-row">
-        <div className="column-one-half">
-          <p>
-            <span className="heading-small">Name:&nbsp;</span>
-            <span data-prisoner-name>{prisoner['first-name']} {prisoner['last-name']}</span>
-          </p>
+        <div className="grid-row">
+          <div className="column-one-half">
+            <p>
+              <span className="heading-small">Name:&nbsp;</span>
+              <span data-prisoner-name>
+                {prisoner['first-name']} {prisoner['last-name']}
+              </span>
+            </p>
 
-          <p>
-            <span className="heading-small">DOB:&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <span data-prisoner-dob>{`${prisoner['dob-day']}-${prisoner['dob-month']}-${prisoner['dob-year']}`}</span>
-          </p>
+            <p>
+              <span className="heading-small">
+                DOB:&nbsp;&nbsp;&nbsp;&nbsp;
+              </span>
+              <span
+                data-prisoner-dob
+              >{`${prisoner['dob-day']}-${prisoner['dob-month']}-${prisoner['dob-year']}`}</span>
+            </p>
+          </div>
+          <div className="column-one-half">
+            <p>
+              <span className="heading-small">NOMIS No:</span>
+              <span data-prisoner-nomis-id>{prisoner['nomis-id']}</span>
+            </p>
+          </div>
         </div>
-        <div className="column-one-half">
-          <p>
-            <span className="heading-small">NOMIS No:</span>
-            <span data-prisoner-nomis-id>{prisoner['nomis-id']}</span>
-          </p>
-        </div>
+
+        <p>
+          <button
+            data-confirm
+            onClick={() => {
+              onClick(prisoner);
+            }}
+            className="button"
+            data-confirm-button
+          >
+            Confirm
+          </button>
+        </p>
+        <Link to={routes.ADD_OFFENDER}>Edit</Link>
       </div>
-
-      <p>
-        <button data-confirm onClick={() => { onClick(prisoner) }} className="button" data-confirm-button>
-          Confirm
-        </button>
-      </p>
-      <Link to={routes.ADD_OFFENDER}>Edit</Link>
-    </div>
+    </DocumentTitle>
   );
 };
 
@@ -50,19 +66,21 @@ const mapActionsToProps = dispatch => ({
   onClick: (prisoner) => {
     dispatch(confirmPrisoner(prisoner));
     dispatch(replace(routes.DASHBOARD));
-  }
+  },
 });
 
 ConfirmOffender.propTypes = {
+  title: PropTypes.string,
   prisonerDetails: PropTypes.object,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
 };
 
 ConfirmOffender.defaultProps = {
+  title: 'Confirm Prisoner Addition',
   prisonerDetails: {},
   onClick: () => {},
 };
 
-export {ConfirmOffender};
+export { ConfirmOffender };
 
 export default connect(mapStateToProps, mapActionsToProps)(ConfirmOffender);

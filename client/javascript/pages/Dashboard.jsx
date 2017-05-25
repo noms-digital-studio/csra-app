@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { Link } from 'react-router';
@@ -25,16 +26,30 @@ class Dashboard extends Component {
         <td>{profile.firstName} {profile.surname}</td>
         <td>{profile.nomisId}</td>
         <td>{profile.dob}</td>
-        <td data-assessment-complete={not(isEmpty(profile.assessmentCompleted))}>
+        <td
+          data-assessment-complete={not(isEmpty(profile.assessmentCompleted))}
+        >
           {isEmpty(profile.assessmentCompleted)
-            ? <a onClick={() => this.props.onOffenderSelect(profile)} className="link u-link" data-start-csra-link={profile.nomisId}>
+            ? <a
+              onClick={() => this.props.onOffenderSelect(profile)}
+              className="link u-link"
+              data-start-csra-link={profile.nomisId}
+            >
                 Start
               </a>
             : <span>Complete</span>}
         </td>
-        <td data-health-assessment-complete={not(isEmpty(profile.healthAssessmentCompleted))}>
+        <td
+          data-health-assessment-complete={not(
+            isEmpty(profile.healthAssessmentCompleted),
+          )}
+        >
           {isEmpty(profile.healthAssessmentCompleted)
-            ? <a onClick={() => this.props.onOffenderHealthcareSelect(profile)} className="link u-link" data-start-healthcare-link={profile.nomisId}>
+            ? <a
+              onClick={() => this.props.onOffenderHealthcareSelect(profile)}
+              className="link u-link"
+              data-start-healthcare-link={profile.nomisId}
+            >
                 Start
               </a>
             : <span>Complete</span>}
@@ -45,7 +60,9 @@ class Dashboard extends Component {
         >
           {isEmpty(profile.assessmentCompleted)
             ? <span className="c-status-indicator" />
-            : <span className="">{profile.assessmentCompleted.recommendation}</span>}
+            : <span className="">
+              {profile.assessmentCompleted.recommendation}
+            </span>}
 
         </td>
       </tr>
@@ -54,48 +71,57 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <div>
-        <div className="c-dashboard-header">
-          <div className="grid-row">
-            <div className="column-one-half">
-              <Link to={routes.ADD_OFFENDER} className="button" data-add-prisoner-button>Add a prisoner</Link>
-            </div>
-            <div className="column-one-half u-text-align-right">
+      <DocumentTitle title={this.props.title}>
+        <div>
+
+          <div className="c-dashboard-header">
+            <div className="grid-row">
+              <div className="column-one-half">
+                <Link
+                  to={routes.ADD_OFFENDER}
+                  className="button"
+                  data-add-prisoner-button
+                >
+                  Add a prisoner
+                </Link>
+              </div>
+              <div className="column-one-half u-text-align-right" />
             </div>
           </div>
-        </div>
-        <div className="c-date-title">
-          <h1 className="heading-large">
-            <span className="heading-secondary">Prisoners to assess on:</span>
-            {this.props.date}
-          </h1>
-        </div>
-
-        {isEmpty(this.props.profiles)
-          ? <div className="u-text-align-center">
-            <h2 className="heading-large">
-                There are no prisoners to assess. Add a prisoner button
-              </h2>
+          <div className="c-date-title">
+            <h1 className="heading-large">
+              <span className="heading-secondary">Prisoners to assess on:</span>
+              {this.props.date}
+            </h1>
           </div>
-          : <table data-prisoner-table>
-            <thead>
-              <tr>
-                <th scope="col"></th>
-                <th scope="col">Name</th>
-                <th scope="col">NOMIS ID</th>
-                <th scope="col">DOB</th>
-                <th scope="col">Assessment</th>
-                <th scope="col">Healthcare</th>
-                <th className="u-text-align-center" scope="col">Cell sharing outcome</th>
-                <th scope="col" />
-              </tr>
-            </thead>
-            <tbody>
-              {this.renderProfiles()}
-            </tbody>
-          </table>}
 
-      </div>
+          {isEmpty(this.props.profiles)
+            ? <div className="u-text-align-center">
+              <h2 className="heading-large">
+                  There are no prisoners to assess. Add a prisoner button
+                </h2>
+            </div>
+            : <table data-prisoner-table>
+              <thead>
+                <tr>
+                  <th scope="col" />
+                  <th scope="col">Name</th>
+                  <th scope="col">NOMIS ID</th>
+                  <th scope="col">DOB</th>
+                  <th scope="col">Assessment</th>
+                  <th scope="col">Healthcare</th>
+                  <th className="u-text-align-center" scope="col">
+                      Cell sharing outcome
+                    </th>
+                  <th scope="col" />
+                </tr>
+              </thead>
+              <tbody>
+                {this.renderProfiles()}
+              </tbody>
+            </table>}
+        </div>
+      </DocumentTitle>
     );
   }
 }
@@ -125,6 +151,7 @@ const mapActionsToProps = dispatch => ({
 });
 
 Dashboard.propTypes = {
+  title: PropTypes.string,
   profiles: PropTypes.arrayOf(
     PropTypes.shape({
       nomisId: PropTypes.string,
@@ -141,6 +168,7 @@ Dashboard.propTypes = {
 };
 
 Dashboard.defaultProps = {
+  title: 'Dashboard',
   getViperScores: () => {},
   onOffenderSelect: () => {},
   profiles: [],
