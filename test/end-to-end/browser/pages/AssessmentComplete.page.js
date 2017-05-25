@@ -8,7 +8,6 @@ class AssessmentCompletePage extends BasePage {
   get nomisId() { return browser.getText('[data-prisoner-nomis-id]'); }
 
   clickContinue() { browser.click('[data-continue-button]'); }
-
 }
 
 export default new AssessmentCompletePage();

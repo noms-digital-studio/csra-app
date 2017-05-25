@@ -33,6 +33,7 @@ const HealthAssessment = ({
             name="role"
             defaultValue={formDefaults.role}
             required
+            data-role
           />
         </div>
 
@@ -47,6 +48,7 @@ const HealthAssessment = ({
             name="full-name"
             defaultValue={formDefaults['full-name']}
             required
+            data-name
           />
         </div>
 
@@ -67,6 +69,7 @@ const HealthAssessment = ({
               aria-describedby="hint"
               defaultValue={formDefaults.day}
               required
+              data-day
             />
           </div>
           <div className="form-group form-group-month">
@@ -82,6 +85,7 @@ const HealthAssessment = ({
               max="12"
               defaultValue={formDefaults.month}
               required
+              data-month
             />
           </div>
           <div className="form-group form-group-year">
@@ -97,6 +101,7 @@ const HealthAssessment = ({
               max="2017"
               defaultValue={formDefaults.year}
               required
+              data-year
             />
           </div>
         </div>
@@ -106,6 +111,7 @@ const HealthAssessment = ({
             type="submit"
             className="button"
             value={isComplete ? 'Save' : 'Save and continue'}
+            data-continue-button
           />
         </div>
       </form>

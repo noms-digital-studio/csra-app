@@ -1,5 +1,5 @@
 import PrisonerProfilePage from '../pages/PrisonerProfile.page';
-import CsraConfirmationPage from '../pages/CsraConfirmation.page';
+import CsraConfirmationPage from '../pages/csra/CsraConfirmation.page';
 import DashboardPage from '../pages/Dashboard.page';
 import AssessmentCompletePage from '../pages/AssessmentComplete.page';
 import AssessmentConfirmationPage from '../pages/AssessmentConfirmation.page';

@@ -7,6 +7,10 @@ class DashboardPage extends BasePage {
   clickCsraStartLinkForNomisId(nomisId) {
     browser.click(`[data-start-csra-link=${nomisId}]`);
   }
+
+  clickHealthcareStartLinkForNomisId(nomisId) {
+    browser.click(`[data-start-healthcare-link=${nomisId}]`);
+  }
 }
 
 export default new DashboardPage();

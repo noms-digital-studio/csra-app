@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import BasePage from './BasePage';
 
-class CsraYesNoPage extends BasePage {
+class YesNoPage extends BasePage {
   clickContinue() { browser.click('[data-continue-button]'); }
   selectYesRadioButton() { browser.click('#radio-yes'); }
   selectNoRadioButton() { browser.click('#radio-no'); }
@@ -17,4 +17,4 @@ class CsraYesNoPage extends BasePage {
   }
 }
 
-export default new CsraYesNoPage();
+export default YesNoPage;

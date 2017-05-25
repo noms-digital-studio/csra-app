@@ -34,7 +34,7 @@ class Dashboard extends Component {
         </td>
         <td data-health-assessment-complete={not(isEmpty(profile.healthAssessmentCompleted))}>
           {isEmpty(profile.healthAssessmentCompleted)
-            ? <a onClick={() => this.props.onOffenderHealthcareSelect(profile)} className="link u-link">
+            ? <a onClick={() => this.props.onOffenderHealthcareSelect(profile)} className="link u-link" data-start-healthcare-link={profile.nomisId}>
                 Start
               </a>
             : <span>Complete</span>}

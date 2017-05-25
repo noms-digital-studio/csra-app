@@ -1,9 +1,9 @@
 import DashboardPage from '../pages/Dashboard.page';
 import AssessmentConfirmationPage from '../pages/AssessmentConfirmation.page';
 import PrisonerProfilePage from '../pages/PrisonerProfile.page';
-import CsraConfirmationPage from '../pages/CsraConfirmation.page';
-import CsraCommentsPage from '../pages/CsraComments.page';
-import CsraYesNoPage from '../pages/CsraYesNo.page';
+import CsraConfirmationPage from '../pages/csra/CsraConfirmation.page';
+import CsraCommentsPage from '../pages/csra/CsraComments.page';
+import CsraYesNoPage from '../pages/csra/CsraYesNo.page';
 import AssessmentCompletePage from '../pages/AssessmentComplete.page';
 
 function whenAPrisonerWithNoViperIsAssessed() {

@@ -26,18 +26,18 @@ class HealthCareSummary extends Component {
             Prisoner Name:
             {' '}
             <strong className="heading-small">
-              {prisoner.firstName} {prisoner.surname}
+              <span data-prisoner-name>{prisoner.firstName} {prisoner.surname}</span>
             </strong>
           </p>
           <p>
             Date of Birth:
             {' '}
-            <strong className="heading-small">{prisoner.dob}</strong>
+            <strong className="heading-small"><span data-prisoner-dob>{prisoner.dob}</span></strong>
           </p>
           <p>
             Prisoner Number:
             {' '}
-            <strong className="heading-small">{prisoner.nomisId}</strong>
+            <strong className="heading-small"><span data-prisoner-nomis-id>{prisoner.nomisId}</span></strong>
           </p>
         </div>
 
@@ -60,7 +60,7 @@ class HealthCareSummary extends Component {
                 Healthcare Outcome
               </td>
               <td className="u-text-capitalize">
-                {riskText[answers.outcome.answer]}
+                <span data-outcome>{riskText[answers.outcome.answer]}</span>
               </td>
               <td className="change-answer">
                 <Link to={`${routes.HEALTHCARE_ASSESSMENT}/outcome`}>
@@ -75,7 +75,7 @@ class HealthCareSummary extends Component {
                 Further Comments
               </td>
               <td className="u-text-capitalize">
-                {answers.comments.comments || 'none'}
+                <span data-further-comment>{answers.comments.comments || 'none'}</span>
               </td>
               <td className="change-answer">
                 <Link to={`${routes.HEALTHCARE_ASSESSMENT}/comments`}>
@@ -90,7 +90,7 @@ class HealthCareSummary extends Component {
                 Consent to share information
               </td>
               <td className="u-text-capitalize">
-                {answers.consent.answer}
+                <span data-consent>{answers.consent.answer}</span>
               </td>
               <td className="change-answer">
                 <Link to={`${routes.HEALTHCARE_ASSESSMENT}/consent`}>
@@ -107,9 +107,9 @@ class HealthCareSummary extends Component {
                 Completed by
               </td>
               <td className="u-text-capitalize">
-                {answers.assessor['full-name']}<br />
-                {answers.assessor.role}<br />
-                {`${answers.assessor.day}-${answers.assessor.month}-${answers.assessor.year}`}
+                <span data-assessor>{answers.assessor['full-name']}<br /></span>
+                <span data-role>{answers.assessor.role}<br /></span>
+                <span data-date>{`${answers.assessor.day}-${answers.assessor.month}-${answers.assessor.year}`}</span>
               </td>
               <td className="change-answer">
                 <Link to={`${routes.HEALTHCARE_ASSESSMENT}/assessor`}>

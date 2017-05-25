@@ -5,9 +5,8 @@ class BasePage {
   get form() { return browser.element('.form'); }
   get headerUsername() { return browser.getText('[data-header-username]'); }
 
-  submitPage() {
-    this.form.submitForm();
-  }
+  submitPage() { this.form.submitForm(); }
+  clickContinue() { browser.click('[data-continue-button]'); }
 }
 
 export default BasePage;
