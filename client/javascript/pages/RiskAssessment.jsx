@@ -1,4 +1,5 @@
 import React from 'react';
+import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
@@ -6,19 +7,30 @@ import path from 'ramda/src/path';
 import not from 'ramda/src/not';
 
 import { calculateRiskFor } from '../services';
-import { getAssessmentQuestions, saveRiskAssessmentAnswer, saveExitPoint, clearExitPoint } from '../actions';
+import {
+  getAssessmentQuestions,
+  saveRiskAssessmentAnswer,
+  saveExitPoint,
+  clearExitPoint,
+} from '../actions';
 
 import Questionnaire from '../components/Questionnaire';
 
 import routes from '../constants/routes';
 
 const Assessment = props => (
-  <Questionnaire
-    basePath={routes.ASSESSMENT}
-    completionPath={routes.ASSESSMENT_COMPLETE}
-    {...props}
-  />
+  <DocumentTitle title={props.title}>
+    <Questionnaire
+      basePath={routes.ASSESSMENT}
+      completionPath={routes.ASSESSMENT_COMPLETE}
+      {...props}
+    />
+  </DocumentTitle>
 );
+
+Assessment.defaultProps = {
+  title: 'Risk assessment',
+};
 
 const mapStateToProps = (state, ownProps) => ({
   ...ownProps,

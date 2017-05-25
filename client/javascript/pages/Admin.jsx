@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import DocumentTitle from 'react-document-title';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
@@ -49,6 +50,7 @@ class Admin extends Component {
 
   render() {
     return (
+      <DocumentTitle title={this.props.title}>
       <div>
         <h1 className="heading-xlarge">Admin</h1>
 
@@ -94,8 +96,13 @@ class Admin extends Component {
         <Link href="/#/sign-in" className="button c-btn-right--xcustom" data-continue>Continue to sign in</Link>
 
       </div>
+      </DocumentTitle>
     );
   }
 }
+
+Admin.defaultProps = {
+  title: 'Secret Admin page',
+};
 
 export default connect(null, { getOffenderNomisProfiles })(Admin);

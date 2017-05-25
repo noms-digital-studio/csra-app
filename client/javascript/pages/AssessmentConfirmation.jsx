@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 import { replace } from 'react-router-redux';
 
@@ -8,12 +9,14 @@ import SelectableInput from '../components/SelectableInput';
 
 const AssessmentConfirmation = (props) => {
   const {
+    title,
     prisoner: { firstName, dob, nomisId, surname },
     outcome,
     onSubmit,
   } = props;
 
   return (
+    <DocumentTitle title={title}>
     <div>
       <div className="grid-row">
         <div className="column-two-thirds">
@@ -120,6 +123,7 @@ const AssessmentConfirmation = (props) => {
       </div>
 
     </div>
+    </DocumentTitle>
   );
 };
 
@@ -146,6 +150,7 @@ AssessmentConfirmation.propTypes = {
 };
 
 AssessmentConfirmation.defaultProps = {
+  title: 'Risk Assessment Confirmation',
   prisoner: {},
   outcome: {
     reasons: [],

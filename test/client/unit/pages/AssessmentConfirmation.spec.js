@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import { fakeStore } from '../test-helpers';
 
@@ -18,7 +18,7 @@ const prisonerDetails = {
 describe('<AssessmentConfirmation />', () => {
   context('Standalone AssessmentConfirmation', () => {
     it('accepts and correctly renders a profile', () => {
-      const wrapper = shallow(<AssessmentConfirmation prisoner={prisonerDetails} />);
+      const wrapper = mount(<AssessmentConfirmation prisoner={prisonerDetails} />);
       const pageText = wrapper.text();
       expect(pageText).to.contain('foo-name');
       expect(pageText).to.contain('foo-surname');
@@ -27,7 +27,7 @@ describe('<AssessmentConfirmation />', () => {
     });
 
     it('renders the assessment cell sharing outcome', () => {
-      const wrapper = shallow(
+      const wrapper = mount(
         <AssessmentConfirmation
           outcome={{
             recommendation: 'foo-recommendation',

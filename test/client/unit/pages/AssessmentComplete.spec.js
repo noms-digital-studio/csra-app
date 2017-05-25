@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Provider } from 'react-redux';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import { fakeStore } from '../test-helpers';
 
@@ -40,7 +40,7 @@ const csraQuestions = [
 describe('<AssessmentComplete />', () => {
   context('Standalone AssessmentComplete', () => {
     it('accepts and correctly renders a profile', () => {
-      const wrapper = shallow(
+      const wrapper = mount(
         <AssessmentComplete prisoner={prisonerDetails} />,
       );
       const pageText = wrapper.text();
@@ -56,7 +56,7 @@ describe('<AssessmentComplete />', () => {
         rating: 'low',
         reasons: ['foo-reason'],
       };
-      const wrapper = shallow(<AssessmentComplete outcome={outcome} />);
+      const wrapper = mount(<AssessmentComplete outcome={outcome} />);
 
       const pageText = wrapper.text();
 

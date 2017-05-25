@@ -4,7 +4,7 @@ describe('/ (homepage)', () => {
   });
 
   it('display the correct page title', () => {
-    expect(browser.getTitle()).equal('Assess if a prisoner can share a cell safely');
+    expect(browser.getTitle()).equal('Sign in');
   });
 
   it('displays "Your full name" on the page', () => {
