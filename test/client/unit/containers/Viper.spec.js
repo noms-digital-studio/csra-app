@@ -2,7 +2,6 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import Viper from '../../../../client/javascript/containers/Viper';
-import Aside from '../../../../client/javascript/components/asides/Index';
 
 describe('<Viper />', () => {
   const content = {
