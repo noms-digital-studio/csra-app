@@ -13,6 +13,8 @@ class HealthcareOutcome extends BasePage {
   get outcome() { return browser.getText('[data-outcome]'); }
   get comments() { return browser.getText('[data-comments]'); }
   get consent() { return browser.getText('[data-consent]'); }
+
+  clickChange() { browser.click('[data-change-consent-link]'); }
 }
 
 export default new HealthcareOutcome();

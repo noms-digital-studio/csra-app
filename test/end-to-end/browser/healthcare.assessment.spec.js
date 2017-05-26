@@ -21,10 +21,10 @@ function whenAPrisonersHealthcareResultsAreEntered() {
 
   HealthcareConsentPage.clickNoAndContinue();
   expect(HealthcareNursePage.mainHeading).to.contain('Who complete the Healthcare assessment?');
+
   HealthcareNursePage.enterRole('Nurse');
   HealthcareNursePage.enterName('Jane Doe');
   HealthcareNursePage.enterDate('21', '07', '2017');
-
   HealthcareNursePage.clickContinue();
   expect(HealthcareCompletePage.mainHeading).to.equal('Healthcare assessment completed');
   expect(HealthcareCompletePage.name).to.equal('John Lowe');
@@ -36,6 +36,10 @@ function whenAPrisonersHealthcareResultsAreEntered() {
   expect(HealthcareCompletePage.outcome).to.equal('No - Low Risk');
   expect(HealthcareCompletePage.comments).to.equal('A Healthcare Comment');
   expect(HealthcareCompletePage.consent).to.equal('No');
+
+  HealthcareCompletePage.clickChange();
+  HealthcareConsentPage.clickYesAndContinue();
+  expect(HealthcareCompletePage.consent).to.equal('Yes');
 }
 
 function thenThereHealthcareAssessmentIsComplete() {
