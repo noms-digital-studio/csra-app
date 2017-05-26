@@ -17,9 +17,9 @@ const OffenderProfile = ({
       </p>
       <h1 className="heading-xlarge">
         <span className="heading-secondary">
-          Confirm prisoner identity and begin assessment
+          Confirm identity.
         </span>
-        Prisoner details
+        Details
       </h1>
 
       <div className="c-offender-details-container u-clear-fix">
@@ -54,17 +54,6 @@ const OffenderProfile = ({
               </div>
             </div>
           </div>
-          <div className="column-one-third">
-            <div className="c-offender-profile-details">
-              <p>
-                <span className="heading-small">
-                  Offence:&nbsp;&nbsp;&nbsp;
-                </span>
-                {' '}
-                Unavailable
-              </p>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -74,7 +63,7 @@ const OffenderProfile = ({
           className="button button-start u-margin-bottom-default"
           data-continue-button
         >
-          Continue to Assessment
+          Continue to assessment
         </Link>
       </p>
 

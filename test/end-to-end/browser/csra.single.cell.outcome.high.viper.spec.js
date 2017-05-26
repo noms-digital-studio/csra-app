@@ -6,7 +6,7 @@ import whenAViolentPrisonerIsAssessed from './tasks/violentPrisonerAssessed.task
 
 function thenASingleCellIsRecommended() {
   CsraAssessmentConfirmationPage.clickConfirmAndContinue();
-  expect(DashboardPage.mainHeading).to.contain('Prisoners to assess on:');
+  expect(DashboardPage.mainHeading).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=I9876RA]');
   expect(row.getText()).to.equal('Ian Rate I9876RA 23-Mar-1988 Complete Start Single Cell');
 }

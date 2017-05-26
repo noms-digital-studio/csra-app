@@ -55,18 +55,6 @@ describe('<Questionnaire />', () => {
     expect(wrapper.text()).to.contain('foo-first-name');
   });
 
-  it('displays sections based on the params', () => {
-    const params = { section: 'foo-section' };
-
-    const wrapper = mount(
-      <Questionnaire questions={questions} params={params} />,
-    );
-
-    expect(
-      wrapper.find('[data-section-holder="Section 1 of 2"]').length,
-    ).to.equal(1);
-  });
-
   context(
     'when there are multiple questions and you are not on the last',
     () => {

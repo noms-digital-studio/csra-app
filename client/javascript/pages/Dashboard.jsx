@@ -74,52 +74,64 @@ class Dashboard extends Component {
       <DocumentTitle title={this.props.title}>
         <div>
 
-          <div className="c-dashboard-header">
-            <div className="grid-row">
-              <div className="column-one-half">
-                <Link
-                  to={routes.ADD_OFFENDER}
-                  className="button"
-                  data-add-prisoner-button
-                >
-                  Add a prisoner
-                </Link>
-              </div>
-              <div className="column-one-half u-text-align-right" />
-            </div>
-          </div>
-          <div className="c-date-title">
-            <h1 className="heading-large">
-              <span className="heading-secondary">Prisoners to assess on:</span>
-              {this.props.date}
-            </h1>
-          </div>
-
           {isEmpty(this.props.profiles)
             ? <div className="u-text-align-center">
-              <h2 className="heading-large">
-                  There are no prisoners to assess. Add a prisoner button
-                </h2>
+              <h1 className="heading-large">
+                <span>There is no one to assess.</span>
+              </h1>
+              <Link
+                to={routes.ADD_OFFENDER}
+                className="button"
+                data-add-prisoner-button
+              >
+                  Add someone to assess
+                </Link>
             </div>
-            : <table data-prisoner-table>
-              <thead>
-                <tr>
-                  <th scope="col" />
-                  <th scope="col">Name</th>
-                  <th scope="col">NOMIS ID</th>
-                  <th scope="col">DOB</th>
-                  <th scope="col">Assessment</th>
-                  <th scope="col">Healthcare</th>
-                  <th className="u-text-align-center" scope="col">
-                      Cell sharing outcome
-                    </th>
-                  <th scope="col" />
-                </tr>
-              </thead>
-              <tbody>
-                {this.renderProfiles()}
-              </tbody>
-            </table>}
+            : <div>
+              <div className="c-dashboard-header">
+                <div className="grid-row">
+                  <div className="column-one-half">
+                    <Link
+                      to={routes.ADD_OFFENDER}
+                      className="button"
+                      data-add-prisoner-button
+                    >
+                        Add someone to assess
+                      </Link>
+                  </div>
+                  <div className="column-one-half u-text-align-right" />
+                </div>
+              </div>
+              <div className="c-date-title">
+                <h1 className="heading-large">
+                  <span className="heading-secondary">
+                    Assessments on:
+                  </span>
+                  {this.props.date}
+                </h1>
+              </div>
+
+              <table data-prisoner-table>
+                <thead>
+                  <tr>
+                    <th scope="col" />
+                    <th scope="col">Name</th>
+                    <th scope="col">NOMIS ID</th>
+                    <th scope="col">DOB</th>
+                    <th scope="col">Assessment</th>
+                    <th scope="col">Healthcare</th>
+                    <th className="u-text-align-center" scope="col">
+                        Cell sharing outcome
+                      </th>
+                    <th scope="col" />
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.renderProfiles()}
+                </tbody>
+              </table>
+            </div>
+          }
         </div>
       </DocumentTitle>
     );

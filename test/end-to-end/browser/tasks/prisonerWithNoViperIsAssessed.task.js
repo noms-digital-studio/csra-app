@@ -8,23 +8,23 @@ import CsraAssessmentCompletePage from '../pages/csra/CsraAssessmentComplete.pag
 
 function whenAPrisonerWithNoViperIsAssessed() {
   DashboardPage.clickCsraStartLinkForNomisId('J6285NE');
-  expect(CsraPrisonerProfilePage.mainHeading).to.contain('Confirm prisoner identity and begin assessment');
+  expect(CsraPrisonerProfilePage.mainHeading).to.contain('Confirm identity');
   expect(CsraPrisonerProfilePage.prisonerName).to.equal('James Neo');
 
   CsraPrisonerProfilePage.clickContinue();
-  expect(CsraConfirmationPage.mainHeading).to.contain('Explain to the prisoner');
+  expect(CsraConfirmationPage.mainHeading).to.contain('Explain this');
 
   CsraConfirmationPage.confirmAndContinue();
   expect(CsraConfirmationPage.mainHeading).to.contain('No prisoner record');
 
-  CsraConfirmationPage.confirmAndContinue();
+  CsraConfirmationPage.clickContinue();
   expect(CsraCommentsPage.mainHeading).to.contain('How do you think they feel about sharing a cell at this moment?');
 
   CsraCommentsPage.commentAndContinue('sharing comment');
-  expect(CsraYesNoPage.mainHeading).to.contain('Have they indicated they might seriously hurt a cellmate?');
+  expect(CsraYesNoPage.mainHeading).to.contain('Is there any indication they might seriously hurt a cellmate?');
 
   CsraYesNoPage.clickNoAndContinue();
-  expect(CsraYesNoPage.mainHeading).to.contain('Do you think they might seriously hurt a cellmate because they\'re vulnerable?');
+  expect(CsraYesNoPage.mainHeading).to.contain('Do you think they\'re vulnerable?');
 
   CsraYesNoPage.clickNoAndContinue();
   expect(CsraYesNoPage.mainHeading).to.contain('Are they part of a gang, or likely to join a gang in prison?');
@@ -33,7 +33,7 @@ function whenAPrisonerWithNoViperIsAssessed() {
   expect(CsraYesNoPage.mainHeading).to.contain('Have they used drugs in the last month?');
 
   CsraYesNoPage.clickNoAndContinue();
-  expect(CsraYesNoPage.mainHeading).to.contain('Do they have any hostile views or prejudices that mean they shouldn\'t share a cell with a particular group?');
+  expect(CsraYesNoPage.mainHeading).to.contain('Do they have any hostile views or prejudices about a particular group?');
 
   CsraYesNoPage.clickNoAndContinue();
   expect(CsraYesNoPage.mainHeading).to.contain('Are there any other reasons why you would recommend they have a single cell?');

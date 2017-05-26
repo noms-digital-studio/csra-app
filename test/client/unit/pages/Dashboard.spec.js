@@ -49,82 +49,95 @@ const assertGivenValuesInWhiteListAreInPage = (list, whiteList, page) => {
 
 describe('<Dashboard />', () => {
   context('Standalone Dashboard', () => {
-    it('renders the correct number of profiles rows', () => {
-      const wrapper = mount(<Dashboard profiles={profiles} />);
-      expect(wrapper.find('[data-profile-row]').length).to.equal(2);
+    context('when there is no one assess', () => {
+      it('does not display a list of people to assess', () => {
+        const wrapper = mount(<Dashboard />);
+        expect(wrapper.text()).to.include('There is no one to assess.');
+        expect(wrapper.find('[data-profile-row]').length).to.equal(0);
+      });
+
+      it('provides a link to add a person to assess', () => {
+        const wrapper = mount(<Dashboard />);
+        expect(wrapper.find('[data-add-prisoner-button]').length).to.equal(1);
+      });
     });
 
-    it('renders the correct profile information per row', () => {
-      const wrapper = mount(<Dashboard profiles={profiles} />);
-      const whitelist = [
-        'nomisId',
-        'surname',
-        'firstName',
-        'dob',
-      ];
+    context('when there are people to assess', () => {
+      it('accepts a date', () => {
+        const date = 'Fooday FooDay FooMonth FooYear';
+        const wrapper = mount(<Dashboard profiles={profiles} date={date} />);
 
-      assertGivenValuesInWhiteListAreInPage(profiles, whitelist, wrapper);
-    });
+        expect(wrapper.text()).to.include(date);
+      });
 
-    it('displays a completed assessments', () => {
-      const wrapper = mount(<Dashboard profiles={profiles} />);
-      expect(wrapper.find('[data-assessment-complete=true]').length).to.equal(
-        1,
-      );
-      expect(wrapper.find('[data-assessment-complete=true]').text()).to.equal(
-        'Complete',
-      );
-    });
+      it('renders the correct number of profiles rows', () => {
+        const wrapper = mount(<Dashboard profiles={profiles} />);
+        expect(wrapper.find('[data-profile-row]').length).to.equal(2);
+      });
 
-    it('displays a completed health assessments', () => {
-      const wrapper = mount(<Dashboard profiles={profiles} />);
-      expect(
-        wrapper.find('[data-health-assessment-complete=true]').length,
-      ).to.equal(1);
-      expect(
-        wrapper.find('[data-health-assessment-complete=true]').text(),
-      ).to.equal('Complete');
-    });
+      it('renders the correct profile information per row', () => {
+        const wrapper = mount(<Dashboard profiles={profiles} />);
+        const whitelist = ['nomisId', 'surname', 'firstName', 'dob'];
 
-    it('displays the cell sharing assessment for a completed prisoner assessment', () => {
-      const wrapper = mount(<Dashboard profiles={profiles} />);
+        assertGivenValuesInWhiteListAreInPage(profiles, whitelist, wrapper);
+      });
 
-      expect(wrapper.find('[data-cell-recommendation]').length).to.equal(1);
-      expect(wrapper.find('[data-cell-recommendation]').text()).to.equal(
-        'Single Cell',
-      );
-    });
+      it('displays a completed assessments', () => {
+        const wrapper = mount(<Dashboard profiles={profiles} />);
+        expect(wrapper.find('[data-assessment-complete=true]').length).to.equal(
+          1,
+        );
+        expect(wrapper.find('[data-assessment-complete=true]').text()).to.equal(
+          'Complete',
+        );
+      });
 
-    it('responds to the selection of an incomplete CSRA assessment', () => {
-      const callback = sinon.spy();
-      const wrapper = mount(
-        <Dashboard profiles={profiles} onOffenderSelect={callback} />,
-      );
+      it('displays a completed health assessments', () => {
+        const wrapper = mount(<Dashboard profiles={profiles} />);
+        expect(
+          wrapper.find('[data-health-assessment-complete=true]').length,
+        ).to.equal(1);
+        expect(
+          wrapper.find('[data-health-assessment-complete=true]').text(),
+        ).to.equal('Complete');
+      });
 
-      const profileBtn = wrapper.find('[data-assessment-complete=false] > a');
+      it('displays the cell sharing assessment for a completed prisoner assessment', () => {
+        const wrapper = mount(<Dashboard profiles={profiles} />);
 
-      profileBtn.simulate('click');
+        expect(wrapper.find('[data-cell-recommendation]').length).to.equal(1);
+        expect(wrapper.find('[data-cell-recommendation]').text()).to.equal(
+          'Single Cell',
+        );
+      });
 
-      expect(callback.calledOnce).to.equal(true, 'callback called on click');
-      expect(callback.calledWith(profiles[1])).to.equal(
-        true,
-        'callback called with the correct props',
-      );
-    });
+      it('responds to the selection of an incomplete CSRA assessment', () => {
+        const callback = sinon.spy();
+        const wrapper = mount(
+          <Dashboard profiles={profiles} onOffenderSelect={callback} />,
+        );
 
-    it('accepts a date', () => {
-      const date = 'Fooday FooDay FooMonth FooYear';
-      const wrapper = mount(<Dashboard date={date} />);
+        const profileBtn = wrapper.find('[data-assessment-complete=false] > a');
 
-      expect(wrapper.text()).to.include(date);
-    });
+        profileBtn.simulate('click');
 
-    it('calls actions when component mounts', () => {
-      const getViperScores = sinon.spy();
+        expect(callback.calledOnce).to.equal(true, 'callback called on click');
+        expect(callback.calledWith(profiles[1])).to.equal(
+          true,
+          'callback called with the correct props',
+        );
+      });
 
-      mount(<Dashboard getViperScores={getViperScores} />);
+      it('calls actions when component mounts', () => {
+        const getViperScores = sinon.spy();
 
-      expect(getViperScores.calledOnce).to.equal(true, 'getViperScores called');
+        mount(<Dashboard getViperScores={getViperScores} />);
+
+        expect(getViperScores.calledOnce).to.equal(
+          true,
+          'getViperScores called',
+        );
+      });
     });
   });
 
@@ -181,19 +194,18 @@ describe('<Dashboard />', () => {
     });
 
     it('renders the correct profile information per row', () => {
-      const whitelist = [
-        'nomisId',
-        'surname',
-        'firstName',
-        'dob',
-      ];
+      const whitelist = ['nomisId', 'surname', 'firstName', 'dob'];
 
       assertGivenValuesInWhiteListAreInPage(profiles, whitelist, wrapper);
     });
 
     it('displays a completed assessments', () => {
-      expect(wrapper.find('[data-assessment-complete=true]').length).to.equal(1);
-      expect(wrapper.find('[data-assessment-complete=true]').text()).to.equal('Complete');
+      expect(wrapper.find('[data-assessment-complete=true]').length).to.equal(
+        1,
+      );
+      expect(wrapper.find('[data-assessment-complete=true]').text()).to.equal(
+        'Complete',
+      );
     });
 
     it('displays a completed health assessments', () => {
@@ -207,7 +219,9 @@ describe('<Dashboard />', () => {
 
     it('displays the cell sharing assessment for a completed prisoner assessment', () => {
       expect(wrapper.find('[data-cell-recommendation]').length).to.equal(1);
-      expect(wrapper.find('[data-cell-recommendation]').text()).to.equal('Single Cell');
+      expect(wrapper.find('[data-cell-recommendation]').text()).to.equal(
+        'Single Cell',
+      );
     });
 
     it('responds to the selection of an incomplete CSRA assessment', () => {

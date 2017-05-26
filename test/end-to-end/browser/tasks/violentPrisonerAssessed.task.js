@@ -6,16 +6,16 @@ import CsraAssessmentConfirmationPage from '../pages/csra/CsraAssessmentConfirma
 
 function whenAViolentPrisonerIsAssessed() {
   DashboardPage.clickCsraStartLinkForNomisId('I9876RA');
-  expect(CsraPrisonerProfilePage.mainHeading).to.contain('Confirm prisoner identity and begin assessment');
+  expect(CsraPrisonerProfilePage.mainHeading).to.contain('Confirm identity');
   expect(CsraPrisonerProfilePage.prisonerName).to.equal('Ian Rate');
 
   CsraPrisonerProfilePage.clickContinue();
-  expect(CsraConfirmationPage.mainHeading).to.contain('Explain to the prisoner');
+  expect(CsraConfirmationPage.mainHeading).to.contain('Explain this');
 
   CsraConfirmationPage.confirmAndContinue();
   expect(CsraConfirmationPage.mainHeading).to.contain('Current recommendation: single cell');
 
-  CsraConfirmationPage.confirmAndContinue();
+  CsraConfirmationPage.clickContinue();
   expect(CsraAssessmentCompletePage.mainHeading).to.contain('Assessment Complete');
   expect(CsraAssessmentCompletePage.recommendationText).to.equal('Single Cell');
   expect(CsraAssessmentCompletePage.name).to.equal('Ian Rate');

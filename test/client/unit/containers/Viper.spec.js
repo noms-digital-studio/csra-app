@@ -46,14 +46,6 @@ describe('<Viper />', () => {
     expect(wrapper.text()).to.contain('high desc');
   });
 
-  it('renders the an aside', () => {
-    const props = {
-      template: 'template',
-    };
-    const wrapper = mount(<Viper content={content} viperScore="high" aside={props} />);
-    expect(wrapper.find(Aside).length).be.equal(1);
-  });
-
   it('handles form submission', () => {
     const callback = sinon.spy();
     const wrapper = mount(<Viper content={content} viperScore="high" onSubmit={callback} />);
@@ -63,11 +55,6 @@ describe('<Viper />', () => {
     expect(callback.calledOnce).to.equal(true);
   });
 
-  it('pre-populates the forms if data is available', () => {
-    const wrapper = mount(<Viper content={content} viperScore="high" formDefaults={{ confirmation: 'accepted' }} />);
-
-    expect(wrapper.find('input[type="checkbox"]').node.checked).to.equal(true, 'Check box is checked');
-  });
 
   context('when the isComplete prop is present', () => {
     it('display "Save" on the submission button', () => {

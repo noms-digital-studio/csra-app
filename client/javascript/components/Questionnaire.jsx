@@ -11,7 +11,9 @@ import ConfirmationTemplate from '../containers/Confirmation';
 import ConfirmationWithAsideTemplate from '../containers/ConfirmationWithAside';
 import HealthcareAssessor from '../containers/HealthcareAssessor';
 import QuestionWithAsideTemplate from '../containers/QuestionWithAside';
-import QuestionWithCommentAndAsideTemplate from '../containers/QuestionWithCommentAndAside';
+import QuestionWithCommentAndAsideTemplate
+  from '../containers/QuestionWithCommentAndAside';
+import QuestionWithCommentTemplate from '../containers/QuestionWithComment';
 import QuestionWithComments from '../containers/QuestionWithTextBox';
 import Viper from '../containers/Viper';
 
@@ -25,6 +27,8 @@ function templateSelector(data) {
       return <Viper {...data} />;
     case 'default_with_aside':
       return <QuestionWithAsideTemplate {...data} />;
+    case 'default_with_comment':
+      return <QuestionWithCommentTemplate {...data} />;
     case 'default_with_comment_aside':
       return <QuestionWithCommentAndAsideTemplate {...data} />;
     case 'question_with_comments':
@@ -125,35 +129,19 @@ class Questionnaire extends Component {
       prisoner: { firstName, surname },
     } = this.props;
 
-    const { totalSections, sectionIndex, question } = sectionData(
+    const { question } = sectionData(
       questions,
       section,
     );
 
     return (
       <div className="o-question">
-        <div className="grid-row">
-          <div className="column-two-thirds">
-            <h2
-              data-section-holder={`Section ${sectionIndex + 1} of ${totalSections}`}
-              className="c-section-title"
-            >
-              <span>Section&nbsp;</span>
-              <span>{sectionIndex + 1}</span>
-              <span>&nbsp;of&nbsp;</span>
-              <span>{totalSections}</span>
-            </h2>
-
-          </div>
-          <div className="column-one-third c-prisoner-name">
-            <h2 id="subsection-title">
-              Prisoner name:
-            </h2>
-            <h3 className="bold-medium" id="subsection-title">
-              {firstName} {surname}
-            </h3>
-          </div>
+        <div className="">
+          <h3 className="bold-medium" id="subsection-title">
+            <span className="u-font-weight-normal">Assessment for:</span> {firstName} {surname}
+          </h3>
         </div>
+
         {templateSelector({
           isComplete,
           completionPath,

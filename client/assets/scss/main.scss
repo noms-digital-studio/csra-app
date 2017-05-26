@@ -308,6 +308,10 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
     text-transform: capitalize;
 }
 
+.u-font-weight-normal {
+  font-weight: normal !important;
+}
+
 @media screen and (min-width: 641px) {
     .c-header-global {
         width: 20% !important;
@@ -324,10 +328,6 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
 
     .govuk-related-items {
       margin-top: 0;
-    }
-
-    .o-question .heading-large {
-      margin-top: -56px;
     }
 
     .c-prisoner-name {

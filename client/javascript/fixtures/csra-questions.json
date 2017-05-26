@@ -1,8 +1,8 @@
 [
   {
     "section": "introduction",
-    "title": "Explain to the prisoner",
-    "description": "<p class='text'> Most people share cells in this prison.</p><p> You have some information about them already, but you're now going to ask some questions.</p> <p>The information they give will be recorded and may be used by other prison staff to support them and make everyone as safe as possible.</p>",
+    "title": "Explain this",
+    "description": "<p class='text'>Most people share cells in this prison.</p><p class='text'>The questions you're going to ask are about making sure everyone's as safe as possible.</p><p class='text'>Serious incidents between cellmates are extremely rare.</p><p class='text'>You've run a background check looking at their sentence, past behaviour and any history in prison.</p><p class='text'>Honest answers mean everyone will be safer.</p><p class='text'>The information they give will be recorded and may be used by other prison staff.</p>",
     "template": "confirmation"
   },
   {
@@ -11,15 +11,15 @@
     "content": {
       "low": {
         "title": "Current recommendation: shared cell",
-        "description": "<p class='text'>We've automatically run a background check that looks at your history in prison, offence, sentence and past behaviour. It's telling us that you may be safe to share a cell but I need to go through some questions with you before deciding.</p>"
+        "description": ""
       },
       "high": {
         "title": "Current recommendation: single cell",
-        "description": "<p class='text'>We've automatically run a background check that looks at your history in prison, sentence and past behaviour in prison. It's telling us that you should have your own cell.</p>"
+        "description": "<p className='bold-medium'>Explain to the prisoner:</p><p class='text'>We've automatically run a background check that looks at your history in prison, sentence and past behaviour in prison. It's telling us that you should have your own cell.</p>"
       },
       "unknown": {
         "title": "No prisoner record",
-        "description": "<p class='text'>You don't have a record of them on the system.</p><p>You're now going to ask them some questions"
+        "description": "<p className='bold-medium'>Explain to the prisoner:</p><p class='text'>You don't have a record of them on the system.</p><p>You're now going to ask them some questions"
       }
     },
     "template": "viper",
@@ -42,9 +42,9 @@
   },
   {
     "section": "prison-self-assessment",
-    "title": "Have they indicated they might seriously hurt a cellmate?",
+    "title": "Is there any indication they might seriously hurt a cellmate?",
     "description": "",
-    "template": "default_with_comment_aside",
+    "template": "default_with_comment",
     "formFields": {
       "input": {
         "yes": { "text": "Yes" },
@@ -61,23 +61,19 @@
         "Based on the concerns I have from your response to 'Do you think you might hurt someone you had to share cell with?' (Risk of hurting cell mate)"
       ]
     },
-    "aside": {
-      "template": "static",
-      "description": "<p class='text'></p>"
-    },
     "answerRequired": true
   },
   {
     "section": "vulnerability",
-    "title": "Do you think they might seriously hurt a cellmate because they're vulnerable?",
-    "template": "default_with_comment_aside",
+    "title": "Do you think they're vulnerable?",
+    "template": "default_with_comment",
     "formFields": {
       "input": {
         "yes": { "text": "Yes" },
         "no": { "text": "No" }
       }
     },
-    "description": "<p class='lede text'></p>",
+    "description": "<p class='lede text'>For example, they’ve previously been a victim of violence in prison or they’re in debt to another prisoner.</p>",
     "sharedCellPredicate": {
       "type": "QUESTION",
       "value": "no",
@@ -88,16 +84,12 @@
         "Based on the concerns I have from your response to Have you been hurt or threatened in prison before? (Vulnerability)"
       ]
     },
-    "aside": {
-      "template": "static",
-      "description": ""
-    },
     "answerRequired": true
   },
   {
     "section": "gang-affiliation",
     "title": "Are they part of a gang, or likely to join a gang in prison?",
-    "template": "default_with_comment_aside",
+    "template": "default_with_comment",
     "formFields": {
       "input": {
         "yes": { "text": "Yes" },
@@ -114,7 +106,7 @@
   {
     "section": "drug-misuse",
     "title": "Have they used drugs in the last month?",
-    "template": "default_with_comment_aside",
+    "template": "default_with_comment",
     "formFields": {
       "input": {
         "yes": { "text": "Yes" },
@@ -122,17 +114,13 @@
       }
     },
     "description": "<p class='lede text'></p>",
-    "aside": {
-      "template": "static",
-      "description": "<p class='text'></p><p class='text'></p>"
-    },
     "answerRequired": true
   },
   {
     "section": "prejudice",
-    "title": "Do they have any hostile views or prejudices that mean they shouldn't share a cell with a particular group?",
-    "description": "<p class='lede text'></p><p class='lede text c-text-hint'></p>",
-    "template": "default_with_comment_aside",
+    "title": "Do they have any hostile views or prejudices about a particular group?",
+    "description": "<p class='lede text'>For example, they have prejudices about race, religion, sexual orientation or particular addictions.</p>",
+    "template": "default_with_comment",
     "formFields": {
       "input": {
         "yes": { "text": "Yes" },
@@ -151,28 +139,18 @@
         "Based on the concerns I have from your response to questions related to: Gangs, drug use in the last month & you find it difficult to share a cell with a particular group. (Gang affiliation, drug misuse & prejudices and hostile views)"
       ]
     },
-    "aside": {
-      "template": "static",
-      "description": "<p class='text'></p>"
-    },
     "answerRequired": true
   },
   {
     "section": "officers-assessment",
     "title": "Are there any other reasons why you would recommend they have a single cell?",
-    "description": "<p class='lede text'></p>",
-    "commentLabel": "",
     "formFields": {
       "input": {
         "yes": { "text": "Yes" },
         "no": { "text": "No" }
       }
     },
-    "template": "default_with_comment_aside",
-    "aside": {
-      "template": "static",
-      "description": "<p class='text'></p>"
-    },
+    "template": "default_with_comment",
     "sharedCellPredicate": {
       "type": "QUESTION",
       "value": "no",

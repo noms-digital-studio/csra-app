@@ -11,17 +11,16 @@ import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
 
 function whenAPrisonersHealthcareResultsAreEntered() {
   DashboardPage.clickHealthcareStartLinkForNomisId('J1234LO');
-  expect(HealthcareOutcomePage.mainHeading).to.contain('What is the outcome of the Health Assessment?');
+  expect(HealthcareOutcomePage.mainHeading).to.contain('Does healthcare recommend a single cell?');
 
   HealthcareOutcomePage.clickNoAndContinue();
-  expect(HealthcareCommentsPage.mainHeading).to.contain('Are there any comments made by Healthcare?');
+  expect(HealthcareCommentsPage.mainHeading).to.contain('Enter all the comments on the healthcare form');
 
   HealthcareCommentsPage.commentAndContinue('a healthcare comment');
-  expect(HealthcareConsentPage.mainHeading).to.contain('Has the prisoner given consent to share their medical information?');
+  expect(HealthcareConsentPage.mainHeading).to.contain('Have they given consent to share their medical information?');
 
   HealthcareConsentPage.clickNoAndContinue();
-  expect(HealthcareNursePage.mainHeading).to.contain('Who complete the Healthcare assessment?');
-
+  expect(HealthcareNursePage.mainHeading).to.contain('Who complete the healthcare assessment?');
   HealthcareNursePage.enterRole('Nurse');
   HealthcareNursePage.enterName('Jane Doe');
   HealthcareNursePage.enterDate('21', '07', '2017');
@@ -46,7 +45,7 @@ function thenThereHealthcareAssessmentIsComplete() {
   HealthcareCompletePage.clickContinue();
   expect(HealthcareAssessmentSave.mainHeading).to.contain('Healthcare assessment saved');
   HealthcareAssessmentSave.clickContinue();
-  expect(DashboardPage.mainHeading).to.contain('Prisoners to assess on:');
+  expect(DashboardPage.mainHeading).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=J1234LO]');
   expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Start Complete');
 }

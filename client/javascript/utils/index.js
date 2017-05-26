@@ -36,7 +36,7 @@ export const todaysDate = () => {
 
   const now = new Date();
 
-  return `${dayNames[now.getDay()]} ${monthNames[now.getMonth()]} ${now.getDate()} ${now.getFullYear()}`;
+  return `${dayNames[now.getDay()]} ${now.getDate()} ${monthNames[now.getMonth()]} ${now.getFullYear()}`;
 };
 
 // Didn't want to use the shiny ES6 sets

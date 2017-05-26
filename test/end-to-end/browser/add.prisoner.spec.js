@@ -1,7 +1,7 @@
 import AddPrisonerPage from './pages/add-prisoner/AddPrisoner.page';
 import PrisonerAddedPage from './pages/add-prisoner/PrisonerAdded.page';
 import DashboardPage from './pages/Dashboard.page';
-import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
+import { givenThatTheOfficerIsSignedInWithoutLoadingData } from './tasks/officerSignsIn.task';
 
 function whenTheOfficerAddsThePrisonersDetails() {
   DashboardPage.clickAddPrisoner();
@@ -18,7 +18,7 @@ function whenTheOfficerAddsThePrisonersDetails() {
 }
 
 function thenThePrisonerIsAvailableToAssess() {
-  expect(DashboardPage.mainHeading).to.contain('Prisoners to assess on:');
+  expect(DashboardPage.mainHeading).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=A12345]');
   expect(row.getText()).to.equal('Henry Young A12345 23-5-1974 Start Start');
 }
@@ -29,7 +29,7 @@ describe('add prisoner', () => {
   });
 
   it('adds a new prisoner to the system', () => {
-    givenThatTheOfficerIsSignedIn();
+    givenThatTheOfficerIsSignedInWithoutLoadingData();
     whenTheOfficerAddsThePrisonersDetails();
     thenThePrisonerIsAvailableToAssess();
   });

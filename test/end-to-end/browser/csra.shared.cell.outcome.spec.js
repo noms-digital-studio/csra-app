@@ -6,7 +6,7 @@ import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
 
 function thenASharedCellIsRecommended() {
   CsraAssessmentConfirmationPage.clickConfirmAndContinue();
-  expect(DashboardPage.mainHeading).to.contain('Prisoners to assess on:');
+  expect(DashboardPage.mainHeading).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=J1234LO]');
   expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Complete Start Shared Cell');
 }
