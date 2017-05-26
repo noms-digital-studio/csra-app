@@ -51,6 +51,11 @@ Runs tests and linter
 yarn verify
 ```
 
+### Run E2E tests
+```
+yarn test:e2e
+```
+
 ### Run
 Starts the server on `PORT 5000` in dev mode
 ```
