@@ -4,7 +4,7 @@ import HealthcareOutcomePage from './pages/healthcare/HealthcareOutcome.page';
 import HealthcareCommentsPage from './pages/healthcare/HealthcareComments.page';
 import HealthcareConsentPage from './pages/healthcare/HealthcareConsent.page';
 import HealthcareNursePage from './pages/healthcare/HealthcareNurse.page';
-import HealthcareCompletePage from './pages/healthcare/HealthcareComplete.page';
+import HealthcareSummary from './pages/healthcare/HealthcareSummary.page';
 
 import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
 
@@ -19,29 +19,29 @@ function whenAPrisonersHealthcareResultsAreEntered() {
   expect(HealthcareConsentPage.mainHeading).to.contain('Have they given consent to share their medical information?');
 
   HealthcareConsentPage.clickNoAndContinue();
-  expect(HealthcareNursePage.mainHeading).to.contain('Who complete the healthcare assessment?');
+  expect(HealthcareNursePage.mainHeading).to.contain('Who completed the healthcare assessment?');
   HealthcareNursePage.enterRole('Nurse');
   HealthcareNursePage.enterName('Jane Doe');
   HealthcareNursePage.enterDate('21', '07', '2017');
   HealthcareNursePage.clickContinue();
-  expect(HealthcareCompletePage.mainHeading).to.equal('Healthcare summary');
-  expect(HealthcareCompletePage.name).to.equal('John Lowe');
-  expect(HealthcareCompletePage.dob).to.equal('01-Oct-1970');
-  expect(HealthcareCompletePage.nomisId).to.equal('J1234LO');
-  expect(HealthcareCompletePage.assessor).to.equal('Jane Doe');
-  expect(HealthcareCompletePage.role).to.equal('Nurse');
-  expect(HealthcareCompletePage.date).to.equal('21-07-2017');
-  expect(HealthcareCompletePage.outcome).to.equal('Shared Cell');
-  expect(HealthcareCompletePage.comments).to.equal('A Healthcare Comment');
-  expect(HealthcareCompletePage.consent).to.equal('No');
+  expect(HealthcareSummary.mainHeading).to.equal('Healthcare summary');
+  expect(HealthcareSummary.name).to.equal('John Lowe');
+  expect(HealthcareSummary.dob).to.equal('01-Oct-1970');
+  expect(HealthcareSummary.nomisId).to.equal('J1234LO');
+  expect(HealthcareSummary.assessor).to.equal('Jane Doe');
+  expect(HealthcareSummary.role).to.equal('Nurse');
+  expect(HealthcareSummary.date).to.equal('21-07-2017');
+  expect(HealthcareSummary.outcome).to.equal('Shared cell');
+  expect(HealthcareSummary.comments).to.equal('a healthcare comment');
+  expect(HealthcareSummary.consent).to.equal('no');
 
-  HealthcareCompletePage.clickChange();
+  HealthcareSummary.clickChange();
   HealthcareConsentPage.clickYesAndContinue();
-  expect(HealthcareCompletePage.consent).to.equal('Yes');
+  expect(HealthcareSummary.consent).to.equal('yes');
 }
 
 function thenThereHealthcareAssessmentIsComplete() {
-  HealthcareCompletePage.clickContinue();
+  HealthcareSummary.clickContinue();
   expect(DashboardPage.mainHeading).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=J1234LO]');
   expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Start Complete');

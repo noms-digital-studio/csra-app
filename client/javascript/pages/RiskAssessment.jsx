@@ -8,7 +8,7 @@ import not from 'ramda/src/not';
 
 import { calculateRiskFor } from '../services';
 import {
-  getAssessmentQuestions,
+  getRiskAssessmentQuestions,
   saveRiskAssessmentAnswer,
   saveExitPoint,
   clearExitPoint,
@@ -34,7 +34,7 @@ Assessment.defaultProps = {
 
 const mapStateToProps = (state, ownProps) => ({
   ...ownProps,
-  questions: state.questions.csra,
+  questions: state.questions.riskAssessment,
   prisoner: {
     firstName: state.offender.selected.firstName,
     surname: state.offender.selected.surname,
@@ -43,12 +43,12 @@ const mapStateToProps = (state, ownProps) => ({
     state.offender.selected.nomisId,
     state.offender.viperScores,
   ),
-  answers: path([state.answers.selectedPrisonerId], state.answers.csra),
+  answers: path([state.answers.selectedPrisonerId], state.answers.riskAssessment),
 });
 
 const mapActionsToProps = dispatch => ({
   getQuestions: () => {
-    dispatch(getAssessmentQuestions());
+    dispatch(getRiskAssessmentQuestions());
   },
   clearExitPoint: () => {
     dispatch(clearExitPoint());

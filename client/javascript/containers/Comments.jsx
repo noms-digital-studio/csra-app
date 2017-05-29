@@ -1,7 +1,7 @@
-import React, { PropTypes } from "react";
-import uuid from "uuid/v4";
-import Aside from "../components/asides/Index";
-import CommentBox from "../components/CommentBox";
+import React, { PropTypes } from 'react';
+import uuid from 'uuid/v4';
+import Aside from '../components/asides/Index';
+import CommentBox from '../components/CommentBox';
 
 const Comments = ({
   title,
@@ -30,14 +30,19 @@ const Comments = ({
           cssClassName="form-control form-control-3-4 u-margin-bottom-default"
         />
         <p>
-          <input type="submit" className="button" value={isComplete ? 'Save' : 'Save and continue'} data-continue-button />
+          <input
+            type="submit"
+            className="button"
+            value={isComplete ? 'Save' : 'Save and continue'}
+            data-continue-button
+          />
         </p>
       </form>
     </div>
     {Object.keys(aside).length
       ? <div className="column-third">
-          <Aside {...aside} />
-        </div>
+        <Aside {...aside} />
+      </div>
       : null}
   </div>
 );
@@ -48,16 +53,16 @@ Comments.propTypes = {
   aside: PropTypes.object,
   onSubmit: PropTypes.func,
   formDefaults: PropTypes.shape({
-    comments: PropTypes.string
+    comments: PropTypes.string,
   }),
   isComplete: PropTypes.bool,
 };
 
 Comments.defaultProps = {
   formDefaults: {
-    comments: ""
+    comments: '',
   },
-  aside: {}
+  aside: {},
 };
 
 export default Comments;

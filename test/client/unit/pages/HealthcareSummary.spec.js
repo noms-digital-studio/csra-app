@@ -41,7 +41,7 @@ const storeData = {
   offender: {
     selected: prisonerDetails,
   },
-  riskAssessmentCompletionStatus: {
+  riskAssessmentStatus: {
     completed: [],
   },
 };
@@ -73,7 +73,7 @@ describe('<HealthcareSummary />', () => {
         const healthcareOutcome = wrapper
           .find('[data-healthcare-outcome]')
           .text();
-        expect(healthcareOutcome).to.contain('single cell');
+        expect(healthcareOutcome).to.contain('Single cell');
       });
 
       it('correctly renders a low risk outcome', () => {
@@ -97,7 +97,7 @@ describe('<HealthcareSummary />', () => {
         const healthcareOutcome = wrapper
           .find('[data-healthcare-outcome]')
           .text();
-        expect(healthcareOutcome).to.contain('shared cell');
+        expect(healthcareOutcome).to.contain('Shared cell');
       });
     });
 
@@ -172,7 +172,7 @@ describe('<HealthcareSummary />', () => {
   context('when the risk assessment is incomplete', () => {
     const store = fakeStore(storeData);
 
-    it('displays a message informing the user that they can see their assessment outcome', () => {
+    it('displays a message informing the user that they have to complete the risk assessment', () => {
       const wrapper = mount(
         <Provider store={store}>
           <HealthcareSummary />
@@ -209,7 +209,7 @@ describe('<HealthcareSummary />', () => {
   context('when the risk assessment is complete', () => {
     const storeDataCompleted = {
       ...storeData,
-      riskAssessmentCompletionStatus: {
+      riskAssessmentStatus: {
         completed: [{ nomisId: 'foo-nomis-id' }],
       },
     };

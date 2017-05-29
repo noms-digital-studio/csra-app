@@ -105,8 +105,8 @@ class Dashboard extends Component {
               <div className="c-date-title">
                 <h1 className="heading-large">
                   <span className="heading-secondary">
-                    Assessments on:
-                  </span>
+                      Assessments on:
+                    </span>
                   {this.props.date}
                 </h1>
               </div>
@@ -130,8 +130,7 @@ class Dashboard extends Component {
                   {this.renderProfiles()}
                 </tbody>
               </table>
-            </div>
-          }
+            </div>}
         </div>
       </DocumentTitle>
     );
@@ -144,7 +143,7 @@ const mapStateToProps = state => ({
     healthAssessmentCompleted: state.healthcareStatus.completed.find(
       assessment => assessment.nomisId === profile.nomisId,
     ) || {},
-    assessmentCompleted: state.riskAssessmentCompletionStatus.completed.find(
+    assessmentCompleted: state.riskAssessmentStatus.completed.find(
       assessment => assessment.nomisId === profile.nomisId,
     ) || {},
   })),

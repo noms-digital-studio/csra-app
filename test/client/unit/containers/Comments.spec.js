@@ -24,9 +24,13 @@ describe('<Comments />', () => {
   });
 
   it('pre-populates the forms if data is available', () => {
-    const wrapper = mount(<Comments formDefaults={{ comments: 'foo-comment' }} />);
+    const wrapper = mount(
+      <Comments formDefaults={{ comments: 'foo-comment' }} />,
+    );
 
-    expect(wrapper.find('[data-element="commentBox"]').node.value).to.equal('foo-comment');
+    expect(wrapper.find('[data-element="commentBox"]').node.value).to.equal(
+      'foo-comment',
+    );
   });
 
   context('when the isComplete prop is present', () => {
@@ -40,7 +44,9 @@ describe('<Comments />', () => {
   context('when the isComplete prop is not present', () => {
     it('display "Save and continue" on the submission button', () => {
       const wrapper = mount(<Comments />);
-      expect(wrapper.find('input[type="submit"]').node.value).to.equal('Save and continue');
+      expect(wrapper.find('input[type="submit"]').node.value).to.equal(
+        'Save and continue',
+      );
     });
   });
 });

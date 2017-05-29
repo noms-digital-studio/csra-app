@@ -3,7 +3,7 @@ import answersReducer from '../../../../client/javascript/reducers/answers';
 describe('answersReducer', () => {
   const defaultState = {
     selectedPrisonerId: '',
-    csra: {},
+    riskAssessment: {},
     healthcare: {},
   };
 
@@ -31,7 +31,7 @@ describe('answersReducer', () => {
     const selectedPrisonerId = 'foo-id';
     const state = { ...defaultState, selectedPrisonerId };
     const assessmentTypes = {
-      csra: 'SAVE_CSRA_ANSWER',
+      riskAssessment: 'SAVE_RISK_ASSESSMENT_ANSWER',
       healthcare: 'SAVE_HEALTHCARE_ANSWER',
     };
 
@@ -58,7 +58,7 @@ describe('answersReducer', () => {
     const selectedPrisonerId = 'foo-id';
 
     const assessmentTypes = {
-      csra: 'SAVE_CSRA_ANSWER',
+      riskAssessment: 'SAVE_RISK_ASSESSMENT_ANSWER',
       healthcare: 'SAVE_HEALTHCARE_ANSWER',
     };
 
@@ -86,5 +86,26 @@ describe('answersReducer', () => {
 
       expect(answersReducer(state, action)).to.eql(expectedState);
     });
+  });
+
+  it('clears the answers for an assessment', () => {
+    const action = {
+      type: 'CLEAR_RISK_ASSESSMENT_ANSWERS',
+      payload: 'prisoner-id',
+    };
+    const initialState = {
+      ...defaultState,
+      riskAssessment: {
+        'prisoner-id': {
+          'foo-answer': { answer: 'no' },
+        },
+      },
+    };
+    const expectedState = {
+      ...initialState,
+      riskAssessment: {},
+    };
+
+    expect(answersReducer(initialState, action)).to.eql(expectedState);
   });
 });

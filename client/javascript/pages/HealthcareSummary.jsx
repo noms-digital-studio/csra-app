@@ -25,7 +25,7 @@ class HealthCareSummary extends Component {
       riskAssessmentComplete,
       onSubmit,
     } = this.props;
-    const riskText = { no: 'shared cell', yes: 'single cell' };
+    const riskText = { no: 'Shared cell', yes: 'Single cell' };
 
     return (
       <DocumentTitle title={title}>
@@ -65,7 +65,7 @@ class HealthCareSummary extends Component {
               <tr>
                 <th colSpan="2">
                   <h2 className="heading-medium">
-                    Healthcare Summary
+                    Assessment summary
                   </h2>
                 </th>
                 <th />
@@ -77,7 +77,7 @@ class HealthCareSummary extends Component {
                 <td>
                   Healthcare recommendation:
                 </td>
-                <td className="u-text-capitalize">
+                <td>
                   <span data-outcome>{riskText[answers.outcome.answer]}</span>
                 </td>
                 <td className="change-answer">
@@ -95,7 +95,7 @@ class HealthCareSummary extends Component {
                 <td>
                   Comments from the healthcare form:
                 </td>
-                <td className="u-text-capitalize">
+                <td>
                   <span data-comments>
                     {answers.comments.comments || 'none'}
                   </span>
@@ -115,7 +115,7 @@ class HealthCareSummary extends Component {
                 <td>
                   Consent given:
                 </td>
-                <td className="u-text-capitalize">
+                <td>
                   <span data-consent>{answers.consent.answer}</span>
                 </td>
                 <td className="change-answer">
@@ -135,7 +135,7 @@ class HealthCareSummary extends Component {
                 <td>
                   Completed by:
                 </td>
-                <td className="u-text-capitalize">
+                <td>
                   <span data-assessor>
                     {answers.assessor['full-name']}<br />
                   </span>
@@ -157,12 +157,6 @@ class HealthCareSummary extends Component {
           </table>
 
           <div className="form-group" data-summary-next-steps>
-            {riskAssessmentComplete
-              ? null
-              : <p>
-                  You must now complete the risk assessment questions to get a cell sharing outcome.
-                </p>}
-
             <div className="notice c-notice u-clear-fix">
               <i className="icon icon-important">
                 <span className="visually-hidden">Warning</span>
@@ -171,6 +165,12 @@ class HealthCareSummary extends Component {
                 Once submitted you cannot change these answers
               </strong>
             </div>
+
+            {riskAssessmentComplete
+              ? null
+              : <p>
+                  You must now complete the risk assessment questions to get a cell sharing outcome.
+                </p>}
 
             <button
               onClick={() => onSubmit({ riskAssessmentComplete, prisoner })}
@@ -208,7 +208,7 @@ const mapStateToProps = (state, ownProps) => ({
   ...ownProps,
   prisoner: state.offender.selected,
   answers: path([state.answers.selectedPrisonerId], state.answers.healthcare),
-  riskAssessmentComplete: !!state.riskAssessmentCompletionStatus.completed.find(
+  riskAssessmentComplete: !!state.riskAssessmentStatus.completed.find(
     assessment => assessment.nomisId === state.offender.selected.nomisId,
   ),
 });

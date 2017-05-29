@@ -1,16 +1,19 @@
-import questionnaireReducer from '../../../../client/javascript/reducers/questionnaire';
+import questionnaireReducer
+  from '../../../../client/javascript/reducers/questionnaire';
 
 describe('questionnaireReducer', () => {
   const defaultState = {
-    csra: [],
+    riskAssessment: [],
     healthcare: [],
   };
 
   it('returns a default state', () => {
-    expect(questionnaireReducer(undefined, 'UNKNOWN_ACTION')).to.eql(defaultState);
+    expect(questionnaireReducer(undefined, 'UNKNOWN_ACTION')).to.eql(
+      defaultState,
+    );
   });
 
-  it('returns the state with csra questions included', () => {
+  it('returns the state with risk assessment questions included', () => {
     const questions = [
       {
         section: 'foo-risk-indicator',
@@ -19,8 +22,8 @@ describe('questionnaireReducer', () => {
         template: 'foo-template',
       },
     ];
-    const action = { type: 'GET_ASSESSMENT_QUESTIONS', payload: questions };
-    const expectedState = { ...defaultState, csra: questions };
+    const action = { type: 'GET_RISK_ASSESSMENT_QUESTIONS', payload: questions };
+    const expectedState = { ...defaultState, riskAssessment: questions };
 
     expect(questionnaireReducer(undefined, action)).to.eql(expectedState);
   });
@@ -34,7 +37,10 @@ describe('questionnaireReducer', () => {
         template: 'foo-template',
       },
     ];
-    const action = { type: 'GET_HEALTH_ASSESSMENT_QUESTIONS', payload: questions };
+    const action = {
+      type: 'GET_HEALTH_ASSESSMENT_QUESTIONS',
+      payload: questions,
+    };
     const expectedState = { ...defaultState, healthcare: questions };
 
     expect(questionnaireReducer(undefined, action)).to.eql(expectedState);

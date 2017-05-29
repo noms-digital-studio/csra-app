@@ -2,20 +2,19 @@ import React, { PropTypes } from 'react';
 import uuid from 'uuid/v4';
 
 import Aside from '../components/asides/Index';
-import SelectableInputWithCommentGroup from '../components/SelectableInputWithCommentGroup';
+import SelectableInputWithCommentGroup
+  from '../components/SelectableInputWithCommentGroup';
 
-const QuestionWithAside = (
-  {
-    title,
-    description,
-    aside,
-    onSubmit,
-    formDefaults,
-    answerRequired,
-    formFields: { input: { yes, no } },
-    isComplete,
-  },
-) => (
+const QuestionWithAside = ({
+  title,
+  description,
+  aside,
+  onSubmit,
+  formDefaults,
+  answerRequired,
+  formFields: { input: { yes, no } },
+  isComplete,
+}) => (
   <div className="grid-row">
     <div className="column-two-thirds">
       <form
@@ -54,7 +53,12 @@ const QuestionWithAside = (
         </div>
 
         <p>
-          <input type="submit" className="button" value={isComplete ? 'Save' : 'Save and continue'} data-continue-button/>
+          <input
+            type="submit"
+            className="button"
+            value={isComplete ? 'Save' : 'Save and continue'}
+            data-continue-button
+          />
         </p>
       </form>
     </div>
@@ -65,16 +69,16 @@ const QuestionWithAside = (
 );
 
 QuestionWithAside.propTypes = {
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  aside: PropTypes.object.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  title: PropTypes.string,
+  description: PropTypes.string,
+  aside: PropTypes.object,
+  onSubmit: PropTypes.func,
   formDefaults: PropTypes.shape({
     answer: PropTypes.string,
   }),
   formFields: PropTypes.object,
   answerRequired: PropTypes.bool,
-  isComplete: PropTypes.bool
+  isComplete: PropTypes.bool,
 };
 
 QuestionWithAside.defaultProps = {

@@ -14,8 +14,7 @@ import ConfirmOffenderHoc from './pages/ConfirmPrisoner';
 import OffenderProfileHoc from './pages/OffenderProfile';
 import HealthcareAssessment from './pages/HealthcareAssessment';
 import RiskAssessment from './pages/RiskAssessment';
-import AssessmentCompleteHoc from './pages/AssessmentComplete';
-import AssessmentConfirmationHoc from './pages/AssessmentConfirmation';
+import RiskAssessmentSummary from './pages/RiskAssessmentSummary';
 import BeforeYouStart from './pages/BeforeYouStart';
 import Feedback from './pages/Feedback';
 import FeedbackConfirmation from './pages/FeedbackThankyou';
@@ -67,12 +66,7 @@ export default (store) => {
           <Route path="/risk-assessment/:section" component={RiskAssessment} />
           <Route
             path="/risk-assessment-summary"
-            component={AssessmentCompleteHoc}
-          />
-
-          <Route
-            path="/risk-assessment-confirmation"
-            component={AssessmentConfirmationHoc}
+            component={RiskAssessmentSummary}
           />
 
           <Route path="/feedback" component={Feedback} />

@@ -10,12 +10,10 @@
     "title": "Viper result",
     "content": {
       "low": {
-        "title": "Current recommendation: shared cell",
-        "description": ""
+        "title": "Current recommendation: shared cell"
       },
       "high": {
-        "title": "Current recommendation: single cell",
-        "description": "<p className='bold-medium'>Explain to the prisoner:</p><p class='text'>We've automatically run a background check that looks at your history in prison, sentence and past behaviour in prison. It's telling us that you should have your own cell.</p>"
+        "title": "Current recommendation: single cell"
       },
       "unknown": {
         "title": "No prisoner record",

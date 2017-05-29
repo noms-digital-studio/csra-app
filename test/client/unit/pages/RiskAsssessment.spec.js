@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 
 import { fakeStore } from '../test-helpers';
 
-import Assessment from '../../../../client/javascript/pages/RiskAssessment';
+import RiskAssessment from '../../../../client/javascript/pages/RiskAssessment';
 
 const questions = [
   {
@@ -36,7 +36,7 @@ const questions = [
   },
 ];
 
-describe('<Assessment />', () => {
+describe('<RiskAssessment />', () => {
   let store;
 
   beforeEach(() => {
@@ -46,7 +46,7 @@ describe('<Assessment />', () => {
         answers: {},
       },
       questions: {
-        csra: questions,
+        riskAssessment: questions,
       },
       offender: {
         selected: {
@@ -62,19 +62,19 @@ describe('<Assessment />', () => {
   it('calls actions when component mounts', () => {
     mount(
       <Provider store={store}>
-        <Assessment params={{ section: 'foo-section' }} />
+        <RiskAssessment params={{ section: 'foo-section' }} />
       </Provider>,
     );
 
     expect(
-      store.dispatch.calledWithMatch({ type: 'GET_ASSESSMENT_QUESTIONS' }),
-    ).to.equal(true, 'dispatch GET_ASSESSMENT_QUESTIONS');
+      store.dispatch.calledWithMatch({ type: 'GET_RISK_ASSESSMENT_QUESTIONS' }),
+    ).to.equal(true, 'dispatch GET_RISK_ASSESSMENT_QUESTIONS');
   });
 
   it('renders offender details', () => {
     const wrapper = mount(
       <Provider store={store}>
-        <Assessment params={{ section: 'foo-section' }} />
+        <RiskAssessment params={{ section: 'foo-section' }} />
       </Provider>,
     );
 
@@ -85,7 +85,7 @@ describe('<Assessment />', () => {
   it('calls the onSubmit action with the answer and section', () => {
     const wrapper = mount(
       <Provider store={store}>
-        <Assessment params={{ section: 'foo-section' }} />
+        <RiskAssessment params={{ section: 'foo-section' }} />
       </Provider>,
     );
 
@@ -94,10 +94,10 @@ describe('<Assessment />', () => {
 
     expect(
       store.dispatch.calledWithMatch({
-        type: 'SAVE_CSRA_ANSWER',
+        type: 'SAVE_RISK_ASSESSMENT_ANSWER',
         payload: { 'foo-section': { answer: 'yes' } },
       }),
-    ).to.equal(true, 'Dispatched SAVE_CSRA_ANSWER');
+    ).to.equal(true, 'Dispatched SAVE_RISK_ASSESSMENT_ANSWER');
 
     expect(
       store.dispatch.calledWithMatch({
@@ -110,7 +110,7 @@ describe('<Assessment />', () => {
   it('call the saveExit point action if question fails the decision engine', () => {
     const wrapper = mount(
       <Provider store={store}>
-        <Assessment params={{ section: 'bar-section' }} />
+        <RiskAssessment params={{ section: 'bar-section' }} />
       </Provider>,
     );
 

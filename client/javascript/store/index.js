@@ -8,7 +8,7 @@ import questionnaireReducer from '../reducers/questionnaire';
 import offenderReducer from '../reducers/offender';
 import loginReducer from '../reducers/login';
 import answersReducer from '../reducers/answers';
-import riskAssessmentCompletionStatusReducer from '../reducers/assessmentStatus';
+import riskAssessmentStatusReducer from '../reducers/assessmentStatus';
 import healthcareStatusReducer from '../reducers/healthcareStatus';
 
 const enhancer = composeWithDevTools(
@@ -22,7 +22,7 @@ const reducers = combineReducers({
   offender: offenderReducer,
   login: loginReducer,
   answers: answersReducer,
-  riskAssessmentCompletionStatus: riskAssessmentCompletionStatusReducer,
+  riskAssessmentStatus: riskAssessmentStatusReducer,
   healthcareStatus: healthcareStatusReducer,
 });
 

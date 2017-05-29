@@ -1,5 +1,5 @@
 import {
-  GET_ASSESSMENT_QUESTIONS,
+  GET_RISK_ASSESSMENT_QUESTIONS,
   GET_HEALTH_ASSESSMENT_QUESTIONS,
   GET_OFFENDER_NOMIS_PROFILES,
   GET_VIPER_SCORES,
@@ -8,26 +8,30 @@ import {
   SIGN_OUT,
   ADD_PRISONER,
   CONFIRM_PRISONER,
-  SAVE_CSRA_ANSWER,
+  SAVE_RISK_ASSESSMENT_ANSWER,
   SAVE_HEALTHCARE_ANSWER,
-  COMPLETE_ASSESSMENT,
+  COMPLETE_RISK_ASSESSMENT,
   SAVE_EXIT_POINT,
   CLEAR_EXIT_POINT,
   COMPLETE_HEALTH_ASSESSMENT,
   HEALTHCARE_ANSWERS_COMPLETE,
+  CLEAR_RISK_ASSESSMENT_ANSWERS,
 } from '../constants/actions';
 
-import AssessmentQuestions from '../fixtures/csra-questions.json';
-import HealthAssessmentQuestions from '../fixtures/healthcare-questions.json';
+import riskAssessmentQuestions
+  from '../fixtures/risk-assessment-questions.json';
+import healthAssessmentQuestions from '../fixtures/healthcare-questions.json';
 
 import { offenderNomisProfiles, viperScores } from '../services';
 
-export const getAssessmentQuestions = (data = AssessmentQuestions) => ({
-  type: GET_ASSESSMENT_QUESTIONS,
+export const getRiskAssessmentQuestions = (data = riskAssessmentQuestions) => ({
+  type: GET_RISK_ASSESSMENT_QUESTIONS,
   payload: data,
 });
 
-export const getHealthAssessmentQuestions = (data = HealthAssessmentQuestions) => ({
+export const getHealthAssessmentQuestions = (
+  data = healthAssessmentQuestions,
+) => ({
   type: GET_HEALTH_ASSESSMENT_QUESTIONS,
   payload: data,
 });
@@ -70,7 +74,7 @@ export const confirmPrisoner = (prisonerData) => {
 };
 
 export const saveRiskAssessmentAnswer = (key, value) => ({
-  type: SAVE_CSRA_ANSWER,
+  type: SAVE_RISK_ASSESSMENT_ANSWER,
   payload: { [key]: value },
 });
 
@@ -79,8 +83,8 @@ export const saveHealthcareAssessmentAnswer = (key, value) => ({
   payload: { [key]: value },
 });
 
-export const completeAssessmentFor = outcome => ({
-  type: COMPLETE_ASSESSMENT,
+export const completeRiskAssessmentFor = outcome => ({
+  type: COMPLETE_RISK_ASSESSMENT,
   payload: outcome,
 });
 
@@ -99,4 +103,9 @@ export const completeHealthAssessmentFor = offender => ({
 export const completeHealthAnswersFor = offender => ({
   type: HEALTHCARE_ANSWERS_COMPLETE,
   payload: offender,
+});
+
+export const clearAnswers = nomisId => ({
+  type: CLEAR_RISK_ASSESSMENT_ANSWERS,
+  payload: nomisId,
 });

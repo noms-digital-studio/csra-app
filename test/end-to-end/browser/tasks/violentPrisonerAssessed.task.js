@@ -1,33 +1,30 @@
-import CsraPrisonerProfilePage from '../pages/csra/CsraPrisonerProfile.page';
-import CsraConfirmationPage from '../pages/csra/CsraConfirmation.page';
 import DashboardPage from '../pages/Dashboard.page';
-import CsraAssessmentCompletePage from '../pages/csra/CsraAssessmentComplete.page';
-import CsraAssessmentConfirmationPage from '../pages/csra/CsraAssessmentConfirmation.page';
+import RiskAssessmentPrisonerProfilePage from '../pages/risk-assessment/RiskAssessmentPrisonerProfile.page';
+import RiskAssessmentExplanationPage from '../pages/risk-assessment/RiskAssessmentExplanation.page';
+import RiskAssessmentSummaryPage from '../pages/risk-assessment/RiskAssessmentSummary.page';
+
 
 function whenAViolentPrisonerIsAssessed() {
-  DashboardPage.clickCsraStartLinkForNomisId('I9876RA');
-  expect(CsraPrisonerProfilePage.mainHeading).to.contain('Confirm identity');
-  expect(CsraPrisonerProfilePage.prisonerName).to.equal('Ian Rate');
+  DashboardPage.clickRiskAssessmentStartLinkForNomisId('I9876RA');
+  expect(RiskAssessmentPrisonerProfilePage.mainHeading).to.contain('Confirm identity');
+  expect(RiskAssessmentPrisonerProfilePage.prisonerName).to.equal('Ian Rate');
 
-  CsraPrisonerProfilePage.clickContinue();
-  expect(CsraConfirmationPage.mainHeading).to.contain('Explain this');
+  RiskAssessmentPrisonerProfilePage.clickContinue();
+  expect(RiskAssessmentExplanationPage.mainHeading).to.contain('Explain this');
 
-  CsraConfirmationPage.confirmAndContinue();
-  expect(CsraConfirmationPage.mainHeading).to.contain('Current recommendation: single cell');
+  RiskAssessmentExplanationPage.confirmAndContinue();
+  expect(RiskAssessmentExplanationPage.mainHeading).to.contain('Current recommendation: single cell');
 
-  CsraConfirmationPage.clickContinue();
-  expect(CsraAssessmentCompletePage.mainHeading).to.contain('Assessment Complete');
-  expect(CsraAssessmentCompletePage.recommendationText).to.equal('Single Cell');
-  expect(CsraAssessmentCompletePage.name).to.equal('Ian Rate');
-  expect(CsraAssessmentCompletePage.dob).to.equal('23-Mar-1988');
-  expect(CsraAssessmentCompletePage.nomisId).to.equal('I9876RA');
+  RiskAssessmentExplanationPage.clickContinue();
 
-  CsraAssessmentCompletePage.clickContinue();
-  expect(CsraAssessmentConfirmationPage.mainHeading).to.contain('Assessment confirmation');
-  expect(CsraAssessmentConfirmationPage.outcome).to.equal('Single Cell');
-  expect(CsraAssessmentConfirmationPage.name).to.equal('Ian Rate');
-  expect(CsraAssessmentConfirmationPage.dob).to.equal('23-Mar-1988');
-  expect(CsraAssessmentConfirmationPage.nomisId).to.equal('I9876RA');
+  expect(RiskAssessmentSummaryPage.mainHeading).to.contain('Risk assessment summary');
+  expect(RiskAssessmentSummaryPage.name).to.equal('Ian Rate');
+  expect(RiskAssessmentSummaryPage.dob).to.equal('23-Mar-1988');
+  expect(RiskAssessmentSummaryPage.nomisId).to.equal('I9876RA');
+
+  expect(RiskAssessmentSummaryPage.outcome).to.contain('Single cell');
+
+  RiskAssessmentSummaryPage.clickContinue();
 }
 
 export default whenAViolentPrisonerIsAssessed;

@@ -1,7 +1,7 @@
 import {
   signIn,
   signOut,
-  getAssessmentQuestions,
+  getRiskAssessmentQuestions,
   getHealthAssessmentQuestions,
   getOffenderNomisProfiles,
   getViperScores,
@@ -10,23 +10,23 @@ import {
   confirmPrisoner,
   saveRiskAssessmentAnswer,
   saveHealthcareAssessmentAnswer,
-  completeAssessmentFor,
+  completeRiskAssessmentFor,
   completeHealthAnswersFor,
   saveExitPoint,
   clearExitPoint,
 } from '../../../../client/javascript/actions';
 
-import csraQuestions
-  from '../../../../client/javascript/fixtures/csra-questions.json';
+import riskAssessmentQuestions
+  from '../../../../client/javascript/fixtures/risk-assessment-questions.json';
 import healthcareQuestions
   from '../../../../client/javascript/fixtures/healthcare-questions.json';
 
 describe('Actions', () => {
-  describe('#getAssessmentQuestions', () => {
-    it('return a GET_ASSESSMENT_QUESTIONS action', () => {
-      expect(getAssessmentQuestions(csraQuestions)).to.eql({
-        type: 'GET_ASSESSMENT_QUESTIONS',
-        payload: csraQuestions,
+  describe('#getRiskAssessmentQuestions', () => {
+    it('return a GET_RISK_ASSESSMENT_QUESTIONS action', () => {
+      expect(getRiskAssessmentQuestions(riskAssessmentQuestions)).to.eql({
+        type: 'GET_RISK_ASSESSMENT_QUESTIONS',
+        payload: riskAssessmentQuestions,
       });
     });
   });
@@ -141,12 +141,12 @@ describe('Actions', () => {
   });
 
   describe('#saveRiskAssessmentAnswer', () => {
-    it('returns a SAVE_CSRA_ANSWER action', () => {
+    it('returns a SAVE_RISK_ASSESSMENT_ANSWER action', () => {
       const section = 'foo-risk';
       const answer = { confirmation: 'accept' };
 
       expect(saveRiskAssessmentAnswer(section, answer)).to.eql({
-        type: 'SAVE_CSRA_ANSWER',
+        type: 'SAVE_RISK_ASSESSMENT_ANSWER',
         payload: { [section]: answer },
       });
     });
@@ -164,16 +164,16 @@ describe('Actions', () => {
     });
   });
 
-  describe('#completeAssessmentFor', () => {
-    it('returns a COMPLETE_ASSESSMENT action', () => {
+  describe('#completeRiskAssessmentFor', () => {
+    it('returns a COMPLETE_RISK_ASSESSMENT action', () => {
       const outcome = {
         nomisId: 'foo-id',
         recommendation: 'foo-recommendation',
         rating: 'foo-rating',
         reasons: ['foo-reason'],
       };
-      expect(completeAssessmentFor(outcome)).to.eql({
-        type: 'COMPLETE_ASSESSMENT',
+      expect(completeRiskAssessmentFor(outcome)).to.eql({
+        type: 'COMPLETE_RISK_ASSESSMENT',
         payload: outcome,
       });
     });

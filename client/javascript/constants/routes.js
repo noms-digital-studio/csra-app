@@ -9,7 +9,6 @@ export default {
   ADD_OFFENDER: '/add-offender',
   CONFIRM_OFFENDER: '/confirm-offender',
   RISK_ASSESSMENT_SUMMARY: '/risk-assessment-summary',
-  RISK_ASSESSMENT_CONFIRMATION: '/risk-assessment-confirmation',
   FEEDBACK: '/feedback',
   FEEDBACK_CONFIRMATION: '/feedback-confirmation',
   HEALTHCARE_SUMMARY: '/healthcare-summary',

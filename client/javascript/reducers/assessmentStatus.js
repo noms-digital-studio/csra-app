@@ -1,4 +1,4 @@
-import { COMPLETE_ASSESSMENT, SAVE_EXIT_POINT, CLEAR_EXIT_POINT } from '../constants/actions';
+import { COMPLETE_RISK_ASSESSMENT, SAVE_EXIT_POINT, CLEAR_EXIT_POINT } from '../constants/actions';
 
 const defaultState = {
   completed: [],
@@ -7,7 +7,7 @@ const defaultState = {
 
 export default (state = defaultState, { type, payload }) => {
   switch (type) {
-    case COMPLETE_ASSESSMENT:
+    case COMPLETE_RISK_ASSESSMENT:
       return {
         ...state,
         exitPoint: '',

@@ -30,7 +30,7 @@
   },
   {
     "section": "assessor",
-    "title": "Who complete the healthcare assessment?",
+    "title": "Who completed the healthcare assessment?",
     "template": "healthcare_assessment",
     "answerRequired": true
   }
