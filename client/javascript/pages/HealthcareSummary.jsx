@@ -1,11 +1,16 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 import { replace } from 'react-router-redux';
-import { completeHealthAnswersFor } from '../actions';
 import path from 'ramda/src/path';
+
+import {
+  completeHealthAnswersFor,
+  completeHealthAssessmentFor,
+} from '../actions';
+
 import routes from '../constants/routes';
-import { Link } from 'react-router';
 
 class HealthCareSummary extends Component {
   componentDidMount() {
@@ -13,14 +18,19 @@ class HealthCareSummary extends Component {
   }
 
   render() {
-    const { prisoner, answers, title } = this.props;
-    const riskText = { no: 'no - low risk', yes: 'yes - high risk' };
+    const {
+      prisoner,
+      answers,
+      title,
+      riskAssessmentComplete,
+      onSubmit,
+    } = this.props;
+    const riskText = { no: 'shared cell', yes: 'single cell' };
 
     return (
       <DocumentTitle title={title}>
         <div>
-          <h1 className="heading-xlarge">Healthcare assessment completed</h1>
-          <p>The healthcare information has been captured for the prisoner</p>
+          <h1 className="heading-xlarge">Healthcare summary</h1>
 
           <div data-profile>
             <h2 className="heading-medium">Prisoner Details</h2>
@@ -41,7 +51,7 @@ class HealthCareSummary extends Component {
               </strong>
             </p>
             <p>
-              Prisoner Number:
+              NOMIS ID:
               {' '}
               <strong className="heading-small">
                 <span data-prisoner-nomis-id>{prisoner.nomisId}</span>
@@ -49,7 +59,7 @@ class HealthCareSummary extends Component {
             </p>
           </div>
 
-          <table className="check-your-answers">
+          <table className="check-your-answers c-answers-table">
 
             <thead>
               <tr>
@@ -65,13 +75,16 @@ class HealthCareSummary extends Component {
             <tbody>
               <tr data-healthcare-outcome>
                 <td>
-                  Healthcare Outcome
+                  Healthcare recommendation:
                 </td>
                 <td className="u-text-capitalize">
                   <span data-outcome>{riskText[answers.outcome.answer]}</span>
                 </td>
                 <td className="change-answer">
-                  <Link to={`${routes.HEALTHCARE_ASSESSMENT}/outcome`} data-change-outcome-link>
+                  <Link
+                    to={`${routes.HEALTHCARE_ASSESSMENT}/outcome`}
+                    data-change-outcome-link
+                  >
                     Change
                     {' '}
                     <span className="visuallyhidden">healthcare outcome</span>
@@ -80,7 +93,7 @@ class HealthCareSummary extends Component {
               </tr>
               <tr data-healthcare-comments>
                 <td>
-                  Further Comments
+                  Comments from the healthcare form:
                 </td>
                 <td className="u-text-capitalize">
                   <span data-comments>
@@ -88,7 +101,10 @@ class HealthCareSummary extends Component {
                   </span>
                 </td>
                 <td className="change-answer">
-                  <Link to={`${routes.HEALTHCARE_ASSESSMENT}/comments`} data-change-comments-link>
+                  <Link
+                    to={`${routes.HEALTHCARE_ASSESSMENT}/comments`}
+                    data-change-comments-link
+                  >
                     Change
                     {' '}
                     <span className="visuallyhidden">further comments</span>
@@ -97,13 +113,16 @@ class HealthCareSummary extends Component {
               </tr>
               <tr data-healthcare-consent>
                 <td>
-                  Consent to share information
+                  Consent given:
                 </td>
                 <td className="u-text-capitalize">
                   <span data-consent>{answers.consent.answer}</span>
                 </td>
                 <td className="change-answer">
-                  <Link to={`${routes.HEALTHCARE_ASSESSMENT}/consent`} data-change-consent-link>
+                  <Link
+                    to={`${routes.HEALTHCARE_ASSESSMENT}/consent`}
+                    data-change-consent-link
+                  >
                     Change
                     {' '}
                     <span className="visuallyhidden">
@@ -114,7 +133,7 @@ class HealthCareSummary extends Component {
               </tr>
               <tr data-healthcare-assessor>
                 <td>
-                  Completed by
+                  Completed by:
                 </td>
                 <td className="u-text-capitalize">
                   <span data-assessor>
@@ -126,7 +145,10 @@ class HealthCareSummary extends Component {
                   >{`${answers.assessor.day}-${answers.assessor.month}-${answers.assessor.year}`}</span>
                 </td>
                 <td className="change-answer">
-                  <Link to={`${routes.HEALTHCARE_ASSESSMENT}/assessor`} data-change-completed-by-link>
+                  <Link
+                    to={`${routes.HEALTHCARE_ASSESSMENT}/assessor`}
+                    data-change-completed-by-link
+                  >
                     Change <span className="visuallyhidden">completed by</span>
                   </Link>
                 </td>
@@ -134,21 +156,32 @@ class HealthCareSummary extends Component {
             </tbody>
           </table>
 
-          <h2 className="heading-medium">Next steps</h2>
+          <div className="form-group" data-summary-next-steps>
+            {riskAssessmentComplete
+              ? null
+              : <p>
+                  You must now complete the risk assessment questions to get a cell sharing outcome.
+                </p>}
 
-          <p className="text">
-            The healthcare assessment has been saved, but the prisoner assessment must still
-            be completed before their assessment out come can be made.
-          </p>
+            <div className="notice c-notice u-clear-fix">
+              <i className="icon icon-important">
+                <span className="visually-hidden">Warning</span>
+              </i>
+              <strong className="bold-small">
+                Once submitted you cannot change these answers
+              </strong>
+            </div>
 
-          <div className="form-group">
-            <Link
-              to={routes.HEALTHCARE_COMPLETE}
+            <button
+              onClick={() => onSubmit({ riskAssessmentComplete, prisoner })}
               className="button"
               data-continue-button
             >
-              Save and Continue
-            </Link>
+              {riskAssessmentComplete
+                ? 'Submit and see cell sharing outcome'
+                : 'Submit and return to prisoner list'}
+            </button>
+
           </div>
         </div>
       </DocumentTitle>
@@ -156,22 +189,41 @@ class HealthCareSummary extends Component {
   }
 }
 
-HealthCareSummary.defaultProps = {
-  title: 'Healthcare Summary',
-};
-
 HealthCareSummary.propTypes = {
+  title: PropTypes.string,
   prisoner: PropTypes.object,
   answers: PropTypes.object,
+  riskAssessmentComplete: PropTypes.bool,
   completeHealthAnswersFor: PropTypes.func,
+  onSubmit: PropTypes.func,
+};
+
+HealthCareSummary.defaultProps = {
+  title: 'Healthcare Summary',
+  completeHealthAnswersFor: () => {},
+  onSubmit: () => {},
 };
 
 const mapStateToProps = (state, ownProps) => ({
   ...ownProps,
   prisoner: state.offender.selected,
   answers: path([state.answers.selectedPrisonerId], state.answers.healthcare),
+  riskAssessmentComplete: !!state.riskAssessmentCompletionStatus.completed.find(
+    assessment => assessment.nomisId === state.offender.selected.nomisId,
+  ),
 });
 
-export default connect(mapStateToProps, {
-  completeHealthAnswersFor,
-})(HealthCareSummary);
+const mapActionsToProps = dispatch => ({
+  onSubmit: ({ prisoner, riskAssessmentComplete }) => {
+    dispatch(completeHealthAssessmentFor(prisoner));
+    if (riskAssessmentComplete) {
+      dispatch(replace(routes.FULL_ASSESSMENT_COMPLETE));
+    } else {
+      dispatch(replace(routes.DASHBOARD));
+    }
+  },
+  completeHealthAnswersFor: profile =>
+    dispatch(completeHealthAnswersFor(profile)),
+});
+
+export default connect(mapStateToProps, mapActionsToProps)(HealthCareSummary);

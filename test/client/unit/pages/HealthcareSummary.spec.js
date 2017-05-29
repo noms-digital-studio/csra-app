@@ -4,7 +4,8 @@ import { mount } from 'enzyme';
 
 import { fakeStore } from '../test-helpers';
 
-import HealthcareSummary from '../../../../client/javascript/pages/HealthcareSummary';
+import HealthcareSummary
+  from '../../../../client/javascript/pages/HealthcareSummary';
 
 const prisonerDetails = {
   firstName: 'foo-name',
@@ -40,6 +41,9 @@ const storeData = {
   offender: {
     selected: prisonerDetails,
   },
+  riskAssessmentCompletionStatus: {
+    completed: [],
+  },
 };
 
 describe('<HealthcareSummary />', () => {
@@ -66,15 +70,23 @@ describe('<HealthcareSummary />', () => {
             <HealthcareSummary />
           </Provider>,
         );
-        const healthcareOutcome = wrapper.find('[data-healthcare-outcome]').text();
-        expect(healthcareOutcome).to.contain('yes - high risk');
+        const healthcareOutcome = wrapper
+          .find('[data-healthcare-outcome]')
+          .text();
+        expect(healthcareOutcome).to.contain('single cell');
       });
 
       it('correctly renders a low risk outcome', () => {
-        const healthcareAnswersLow = { ...healthcareAnswers, outcome: { answer: 'no' } };
+        const healthcareAnswersLow = {
+          ...healthcareAnswers,
+          outcome: { answer: 'no' },
+        };
         const storeDataLow = {
           ...storeData,
-          answers: { ...storeData.answers, healthcare: { 'foo-nomis-id': healthcareAnswersLow } },
+          answers: {
+            ...storeData.answers,
+            healthcare: { 'foo-nomis-id': healthcareAnswersLow },
+          },
         };
         const store = fakeStore(storeDataLow);
         const wrapper = mount(
@@ -82,8 +94,10 @@ describe('<HealthcareSummary />', () => {
             <HealthcareSummary />
           </Provider>,
         );
-        const healthcareOutcome = wrapper.find('[data-healthcare-outcome]').text();
-        expect(healthcareOutcome).to.contain('no - low risk');
+        const healthcareOutcome = wrapper
+          .find('[data-healthcare-outcome]')
+          .text();
+        expect(healthcareOutcome).to.contain('shared cell');
       });
     });
 
@@ -95,15 +109,23 @@ describe('<HealthcareSummary />', () => {
             <HealthcareSummary />
           </Provider>,
         );
-        const healthcareComments = wrapper.find('[data-healthcare-comments]').text();
+        const healthcareComments = wrapper
+          .find('[data-healthcare-comments]')
+          .text();
         expect(healthcareComments).to.contain('none');
       });
 
       it('correctly renders comments', () => {
-        const healthcareAnswersWithComments = { ...healthcareAnswers, comments: { comments: 'some foo comment' } };
+        const healthcareAnswersWithComments = {
+          ...healthcareAnswers,
+          comments: { comments: 'some foo comment' },
+        };
         const storeDataLow = {
           ...storeData,
-          answers: { ...storeData.answers, healthcare: { 'foo-nomis-id': healthcareAnswersWithComments } },
+          answers: {
+            ...storeData.answers,
+            healthcare: { 'foo-nomis-id': healthcareAnswersWithComments },
+          },
         };
         const store = fakeStore(storeDataLow);
         const wrapper = mount(
@@ -111,7 +133,9 @@ describe('<HealthcareSummary />', () => {
             <HealthcareSummary />
           </Provider>,
         );
-        const healthcareComments = wrapper.find('[data-healthcare-comments]').text();
+        const healthcareComments = wrapper
+          .find('[data-healthcare-comments]')
+          .text();
         expect(healthcareComments).to.contain('some foo comment');
       });
     });
@@ -123,7 +147,9 @@ describe('<HealthcareSummary />', () => {
           <HealthcareSummary />
         </Provider>,
       );
-      const healthcareComments = wrapper.find('[data-healthcare-consent]').text();
+      const healthcareComments = wrapper
+        .find('[data-healthcare-consent]')
+        .text();
       expect(healthcareComments).to.contain('no');
     });
 
@@ -134,10 +160,88 @@ describe('<HealthcareSummary />', () => {
           <HealthcareSummary />
         </Provider>,
       );
-      const healthcareAssessor = wrapper.find('[data-healthcare-assessor]').text();
+      const healthcareAssessor = wrapper
+        .find('[data-healthcare-assessor]')
+        .text();
       expect(healthcareAssessor).to.contain('Foo fullname');
       expect(healthcareAssessor).to.contain('foo role');
       expect(healthcareAssessor).to.contain('20-12-1984');
+    });
+  });
+
+  context('when the risk assessment is incomplete', () => {
+    const store = fakeStore(storeData);
+
+    it('displays a message informing the user that they can see their assessment outcome', () => {
+      const wrapper = mount(
+        <Provider store={store}>
+          <HealthcareSummary />
+        </Provider>,
+      );
+
+      expect(wrapper.find('[data-summary-next-steps]').text()).to.contain(
+        'You must now complete the risk assessment questions to get a cell sharing outcome.',
+      );
+
+      expect(wrapper.find('[data-summary-next-steps] button').text()).to.equal(
+        'Submit and return to prisoner list',
+      );
+    });
+
+    it('on submission it navigates to the prisoner list', () => {
+      const wrapper = mount(
+        <Provider store={store}>
+          <HealthcareSummary />
+        </Provider>,
+      );
+
+      wrapper.find('[data-summary-next-steps] button').simulate('click');
+
+      expect(
+        store.dispatch.calledWithMatch({
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: { method: 'replace', args: ['/dashboard'] },
+        }),
+      ).to.equal(true, 'Changed path to /dashboard');
+    });
+  });
+
+  context('when the risk assessment is complete', () => {
+    const storeDataCompleted = {
+      ...storeData,
+      riskAssessmentCompletionStatus: {
+        completed: [{ nomisId: 'foo-nomis-id' }],
+      },
+    };
+    const store = fakeStore(storeDataCompleted);
+
+    it('displays a message informing the user that they can see their assessment outcome', () => {
+      const wrapper = mount(
+        <Provider store={store}>
+          <HealthcareSummary />
+        </Provider>,
+      );
+
+      expect(wrapper.find('[data-summary-next-steps] button').text()).to.equal(
+        'Submit and see cell sharing outcome',
+      );
+    });
+
+    it('on submission it navigates to the full assessment page', () => {
+      const wrapper = mount(
+        <Provider store={store}>
+          <HealthcareSummary />
+        </Provider>,
+      );
+
+      wrapper.find('[data-summary-next-steps] button').simulate('click');
+
+      expect(
+        store.dispatch.calledWithMatch({
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: { method: 'replace', args: ['/full-assessment-complete'] },
+        }),
+      ).to.equal(true, 'Changed path to /full-assessment-complete');
     });
   });
 });

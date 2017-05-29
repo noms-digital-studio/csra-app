@@ -25,14 +25,14 @@ function whenAPrisonersHealthcareResultsAreEntered() {
   HealthcareNursePage.enterName('Jane Doe');
   HealthcareNursePage.enterDate('21', '07', '2017');
   HealthcareNursePage.clickContinue();
-  expect(HealthcareCompletePage.mainHeading).to.equal('Healthcare assessment completed');
+  expect(HealthcareCompletePage.mainHeading).to.equal('Healthcare summary');
   expect(HealthcareCompletePage.name).to.equal('John Lowe');
   expect(HealthcareCompletePage.dob).to.equal('01-Oct-1970');
   expect(HealthcareCompletePage.nomisId).to.equal('J1234LO');
   expect(HealthcareCompletePage.assessor).to.equal('Jane Doe');
   expect(HealthcareCompletePage.role).to.equal('Nurse');
   expect(HealthcareCompletePage.date).to.equal('21-07-2017');
-  expect(HealthcareCompletePage.outcome).to.equal('No - Low Risk');
+  expect(HealthcareCompletePage.outcome).to.equal('Shared Cell');
   expect(HealthcareCompletePage.comments).to.equal('A Healthcare Comment');
   expect(HealthcareCompletePage.consent).to.equal('No');
 
@@ -43,8 +43,6 @@ function whenAPrisonersHealthcareResultsAreEntered() {
 
 function thenThereHealthcareAssessmentIsComplete() {
   HealthcareCompletePage.clickContinue();
-  expect(HealthcareAssessmentSave.mainHeading).to.contain('Healthcare assessment saved');
-  HealthcareAssessmentSave.clickContinue();
   expect(DashboardPage.mainHeading).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=J1234LO]');
   expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Start Complete');
