@@ -1,7 +1,6 @@
 import AdminPage from './pages/Admin.page';
 import DashboardPage from './pages/Dashboard.page';
 import HealthcareOutcomePage from './pages/healthcare/HealthcareOutcome.page';
-import HealthcareAssessmentSave from './pages/healthcare/HealthcareAssessmentSave.page';
 import HealthcareCommentsPage from './pages/healthcare/HealthcareComments.page';
 import HealthcareConsentPage from './pages/healthcare/HealthcareConsent.page';
 import HealthcareNursePage from './pages/healthcare/HealthcareNurse.page';
