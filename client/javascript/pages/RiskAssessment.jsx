@@ -21,8 +21,8 @@ import routes from '../constants/routes';
 const Assessment = props => (
   <DocumentTitle title={props.title}>
     <Questionnaire
-      basePath={routes.ASSESSMENT}
-      completionPath={routes.ASSESSMENT_COMPLETE}
+      basePath={routes.RISK_ASSESSMENT}
+      completionPath={routes.RISK_ASSESSMENT_SUMMARY}
       {...props}
     />
   </DocumentTitle>

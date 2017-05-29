@@ -123,9 +123,9 @@ const HealthAssessment = ({
 );
 
 HealthAssessment.propTypes = {
-  title: PropTypes.string.isRequired,
-  aside: PropTypes.object.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  title: PropTypes.string,
+  aside: PropTypes.object,
+  onSubmit: PropTypes.func,
   formDefaults: PropTypes.shape({
     role: PropTypes.string,
     'full-name': PropTypes.string,

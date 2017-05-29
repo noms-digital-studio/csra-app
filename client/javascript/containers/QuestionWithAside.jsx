@@ -66,10 +66,9 @@ const QuestionWithAside = ({
 );
 
 QuestionWithAside.propTypes = {
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  aside: PropTypes.object.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  title: PropTypes.string,
+  description: PropTypes.string,
+  onSubmit: PropTypes.func,
   formDefaults: PropTypes.shape({
     answer: PropTypes.string,
   }),

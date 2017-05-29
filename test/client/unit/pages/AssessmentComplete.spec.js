@@ -94,7 +94,7 @@ describe('<AssessmentComplete />', () => {
 
     beforeEach(() => {
       store = fakeStore({
-        assessmentStatus: {
+        riskAssessmentCompletionStatus: {
           exitPoint: 'foo-section',
         },
         questions: {
@@ -138,7 +138,7 @@ describe('<AssessmentComplete />', () => {
 
     it('renders the outcome of a low risk assessment', () => {
       const lowRiskStore = fakeStore({
-        assessmentStatus: {
+        riskAssessmentCompletionStatus: {
           exitPoint: '',
         },
         questions: {
@@ -167,7 +167,7 @@ describe('<AssessmentComplete />', () => {
 
     it('renders the outcome of a unknown risk assessment', () => {
       const unknownRiskStore = fakeStore({
-        assessmentStatus: {
+        riskAssessmentCompletionStatus: {
           exitPoint: '',
         },
         questions: {
@@ -209,8 +209,8 @@ describe('<AssessmentComplete />', () => {
       expect(
         store.dispatch.calledWithMatch({
           type: '@@router/CALL_HISTORY_METHOD',
-          payload: { method: 'replace', args: ['/assessment-confirmation'] },
-        })).to.equal(true, 'Changed path to /assessment-confirmation');
+          payload: { method: 'replace', args: ['/risk-assessment-confirmation'] },
+        })).to.equal(true, 'Changed path to /risk-assessment-confirmation');
     });
   });
 });

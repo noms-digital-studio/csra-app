@@ -102,9 +102,9 @@ describe('<Assessment />', () => {
     expect(
       store.dispatch.calledWithMatch({
         type: '@@router/CALL_HISTORY_METHOD',
-        payload: { method: 'push', args: ['/assessment/bar-section'] },
+        payload: { method: 'push', args: ['/risk-assessment/bar-section'] },
       }),
-    ).to.equal(true, 'Changed path to /assessment/bar-section');
+    ).to.equal(true, 'Changed path to /risk-assessment/bar-section');
   });
 
   it('call the saveExit point action if question fails the decision engine', () => {

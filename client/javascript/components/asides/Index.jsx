@@ -9,7 +9,7 @@ const selectAside = (template, data) => {
             return <ViolenceRisk {...data} />
         case 'static':
             return <Static {...data} />
-        default: 
+        default:
             return null;
     }
 };
@@ -19,7 +19,7 @@ const Aside = ({ template, title, description }) => {
 }
 
 Aside.propTypes = {
-    template: PropTypes.string.isRequired,
+    template: PropTypes.string,
     title: PropTypes.string,
     description: PropTypes.string
 };

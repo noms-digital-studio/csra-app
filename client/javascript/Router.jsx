@@ -20,7 +20,7 @@ import BeforeYouStart from './pages/BeforeYouStart';
 import Feedback from './pages/Feedback';
 import FeedbackConfirmation from './pages/FeedbackThankyou';
 import HealthcareSummary from './pages/HealthcareSummary';
-import HealthcareComplete from './pages/HealthcareComplete';
+import FullAssessmentComplete from './pages/FullAssessmentComplete';
 import Error404 from './pages/Error404';
 
 export default (store) => {
@@ -28,12 +28,15 @@ export default (store) => {
 
   return (
     <Provider store={store}>
-      <Router history={history} onUpdate={() => {
-        window.scrollTo(0, 0);
-        if (window.appInsights) {
-          window.appInsights.trackPageView();
-        }
-      }}>
+      <Router
+        history={history}
+        onUpdate={() => {
+          window.scrollTo(0, 0);
+          if (window.appInsights) {
+            window.appInsights.trackPageView();
+          }
+        }}
+      >
         <Route component={Layout}>
           <Route path="/" name="home" component={SignInHoc} />
           <Route path="/before-you-start" component={BeforeYouStart} />
@@ -60,22 +63,30 @@ export default (store) => {
             component={HealthcareAssessment}
           />
           <Route path="/healthcare-summary" component={HealthcareSummary} />
-          <Route path="/healthcare-complete" component={HealthcareComplete} />
 
-          <Route path="/assessment/:section" component={RiskAssessment} />
+          <Route path="/risk-assessment/:section" component={RiskAssessment} />
           <Route
-            path="/assessment-complete"
+            path="/risk-assessment-summary"
             component={AssessmentCompleteHoc}
           />
+
           <Route
-            path="/assessment-confirmation"
+            path="/risk-assessment-confirmation"
             component={AssessmentConfirmationHoc}
           />
+
           <Route path="/feedback" component={Feedback} />
+
           <Route
             path="/feedback-confirmation"
             component={FeedbackConfirmation}
           />
+
+          <Route
+            path="/full-assessment-complete"
+            component={FullAssessmentComplete}
+          />
+
           <Route path="*" name="404" component={Error404} />
         </Route>
       </Router>

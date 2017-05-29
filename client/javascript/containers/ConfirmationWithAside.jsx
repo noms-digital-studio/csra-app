@@ -39,9 +39,9 @@ const ConfirmationWithAside = (
 );
 
 ConfirmationWithAside.propTypes = {
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  title: PropTypes.string,
+  description: PropTypes.string,
+  onSubmit: PropTypes.func,
   aside: PropTypes.object,
   formDefaults: PropTypes.shape({
     confirmation: PropTypes.string,

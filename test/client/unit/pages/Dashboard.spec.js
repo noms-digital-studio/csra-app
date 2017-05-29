@@ -147,7 +147,7 @@ describe('<Dashboard />', () => {
 
     beforeEach(() => {
       store = fakeStore({
-        assessmentStatus: {
+        riskAssessmentCompletionStatus: {
           completed: [
             {
               nomisId: 'foo-id',

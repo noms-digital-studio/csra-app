@@ -1,13 +1,13 @@
-import assessmentStatusReducer from '../../../../client/javascript/reducers/assessmentStatus';
+import riskAssessmentCompletionStatusReducer from '../../../../client/javascript/reducers/assessmentStatus';
 
-describe('#assessmentStatusReducer', () => {
+describe('#riskAssessmentCompletionStatusReducer', () => {
   const defaultState = {
     exitPoint: '',
     completed: [],
   };
 
   it('returns a default state', () => {
-    expect(assessmentStatusReducer(undefined, 'UNKNOWN_ACTION')).to.eql(defaultState);
+    expect(riskAssessmentCompletionStatusReducer(undefined, 'UNKNOWN_ACTION')).to.eql(defaultState);
   });
 
   it('adds an exitPoint to the state', () => {
@@ -20,7 +20,7 @@ describe('#assessmentStatusReducer', () => {
       exitPoint: 'foo-risk-indicator',
     };
 
-    expect(assessmentStatusReducer(undefined, action)).to.eql(expectedState);
+    expect(riskAssessmentCompletionStatusReducer(undefined, action)).to.eql(expectedState);
   });
 
   it('resets the exit point', () => {
@@ -38,7 +38,7 @@ describe('#assessmentStatusReducer', () => {
       exitPoint: '',
     };
 
-    expect(assessmentStatusReducer(state, action)).to.eql(expectedState);
+    expect(riskAssessmentCompletionStatusReducer(state, action)).to.eql(expectedState);
   });
 
   it('adds a nomis-id to the completed list', () => {
@@ -62,6 +62,6 @@ describe('#assessmentStatusReducer', () => {
       completed: [outcome],
     };
 
-    expect(assessmentStatusReducer(state, action)).to.eql(expectedState);
+    expect(riskAssessmentCompletionStatusReducer(state, action)).to.eql(expectedState);
   });
 });

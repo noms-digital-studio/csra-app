@@ -59,7 +59,7 @@ const OffenderProfile = ({
 
       <p>
         <Link
-          to={`${routes.ASSESSMENT}/introduction`}
+          to={`${routes.RISK_ASSESSMENT}/introduction`}
           className="button button-start u-margin-bottom-default"
           data-continue-button
         >

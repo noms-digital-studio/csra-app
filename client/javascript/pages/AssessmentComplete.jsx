@@ -152,7 +152,7 @@ const mapStateToProps = state => ({
   prisoner: state.offender.selected,
   outcome: extractDecision(
     state.questions.csra,
-    state.assessmentStatus.exitPoint,
+    state.riskAssessmentCompletionStatus.exitPoint,
     viperScoreFor(state.offender.selected.nomisId, state.offender.viperScores),
   ),
 });
@@ -160,7 +160,7 @@ const mapStateToProps = state => ({
 const mapActionsToProps = dispatch => ({
   onSubmit: (outcome) => {
     dispatch(completeAssessmentFor(outcome));
-    dispatch(replace(routes.ASSESSMENT_CONFIRMATION));
+    dispatch(replace(routes.RISK_ASSESSMENT_CONFIRMATION));
   },
 });
 

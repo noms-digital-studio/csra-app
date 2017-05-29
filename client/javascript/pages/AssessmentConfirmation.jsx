@@ -127,9 +127,9 @@ const AssessmentConfirmation = (props) => {
   );
 };
 
-const mapStateToProps = ({ offender, assessmentStatus }) => ({
+const mapStateToProps = ({ offender, riskAssessmentCompletionStatus }) => ({
   prisoner: offender.selected,
-  outcome: assessmentStatus.completed.find(
+  outcome: riskAssessmentCompletionStatus.completed.find(
     assessment => assessment.nomisId === offender.selected.nomisId,
   ),
 });

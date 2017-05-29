@@ -144,7 +144,7 @@ const mapStateToProps = state => ({
     healthAssessmentCompleted: state.healthcareStatus.completed.find(
       assessment => assessment.nomisId === profile.nomisId,
     ) || {},
-    assessmentCompleted: state.assessmentStatus.completed.find(
+    assessmentCompleted: state.riskAssessmentCompletionStatus.completed.find(
       assessment => assessment.nomisId === profile.nomisId,
     ) || {},
   })),

@@ -57,7 +57,7 @@ describe('<AssessmentConfirmation />', () => {
 
     beforeEach(() => {
       store = fakeStore({
-        assessmentStatus: {
+        riskAssessmentCompletionStatus: {
           completed: [
             {
               nomisId: 'foo-nomis-id',
