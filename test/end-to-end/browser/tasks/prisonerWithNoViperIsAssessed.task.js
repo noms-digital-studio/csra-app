@@ -45,13 +45,13 @@ function whenAPrisonerWithNoViperIsAssessed() {
 
   expect(RiskAssessmentSummaryPage.outcome).to.contain('Single cell');
   expect(RiskAssessmentSummaryPage.initialFeelings).to.contain('sharing comment');
-  expect(RiskAssessmentSummaryPage.harm).to.contain('no');
-  expect(RiskAssessmentSummaryPage.vulnerability).to.contain('no');
-  expect(RiskAssessmentSummaryPage.gang).to.contain('no');
+  expect(RiskAssessmentSummaryPage.harm).to.contain('No');
+  expect(RiskAssessmentSummaryPage.vulnerability).to.contain('No');
+  expect(RiskAssessmentSummaryPage.gang).to.contain('No');
 
-  expect(RiskAssessmentSummaryPage.narcotics).to.contain('no');
-  expect(RiskAssessmentSummaryPage.prejudice).to.contain('no');
-  expect(RiskAssessmentSummaryPage.officerComments).to.contain('no');
+  expect(RiskAssessmentSummaryPage.narcotics).to.contain('No');
+  expect(RiskAssessmentSummaryPage.prejudice).to.contain('No');
+  expect(RiskAssessmentSummaryPage.officerComments).to.contain('No');
 
 
   RiskAssessmentSummaryPage.clickContinue();
