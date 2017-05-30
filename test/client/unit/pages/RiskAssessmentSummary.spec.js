@@ -128,6 +128,31 @@ describe('<RiskAssessmentSummary />', () => {
       expect(outcomeText).to.contain('Single cell');
     });
 
+    it('hides the change button if the viperscore is high', () => {
+      const highRiskStore = fakeStore({
+        ...state,
+        riskAssessmentStatus: {
+          exitPoint: 'foo-section'
+        },
+        offender: {
+          selected: prisonerDetails,
+          viperScores: [
+            {
+              nomisId: 'foo-nomis-id',
+              viperScore: 0.79
+            }
+          ]
+        }
+      });
+      const wrapper = mount(
+        <Provider store={highRiskStore}>
+          <RiskAssessmentSummary />
+        </Provider>
+      );
+
+      expect(wrapper.find('data-change-answers').length).to.equal(0);
+    });
+
     it('renders the outcome of a unknown risk assessment', () => {
       const unknownRiskStore = fakeStore({
         ...state,
