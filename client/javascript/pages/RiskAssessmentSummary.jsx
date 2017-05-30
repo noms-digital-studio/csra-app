@@ -67,6 +67,7 @@ const RiskAssessmentSummary = ({
   outcome,
   healthcareAssessmentComplete,
   answers,
+  viperScore,
 }) => (
   <DocumentTitle title={title}>
     <div>
@@ -169,17 +170,18 @@ const RiskAssessmentSummary = ({
         </tbody>
       </table>
 
-      <p className="u-margin-bottom-large">
-        <a
-          data-change-answers
-          className="link u-link"
-          onClick={() => {
-            onClear(prisoner.nomisId);
-          }}
-        >
-          Change answers
-        </a>
-      </p>
+      {viperScore !== 'high' &&
+        <p className="u-margin-bottom-large">
+          <a
+            data-change-answers
+            className="link u-link"
+            onClick={() => {
+              onClear(prisoner.nomisId);
+            }}
+          >
+            Change answers
+          </a>
+        </p>}
 
       <div className="form-group" data-summary-next-steps>
         <div className="notice c-notice u-clear-fix">
@@ -218,6 +220,7 @@ const RiskAssessmentSummary = ({
 );
 
 RiskAssessmentSummary.propTypes = {
+  viperScore: PropTypes.string,
   outcome: PropTypes.shape({
     recommendation: PropTypes.string,
     rating: PropTypes.string,
@@ -248,6 +251,10 @@ RiskAssessmentSummary.defaultProps = {
 
 const mapStateToProps = state => ({
   prisoner: state.offender.selected,
+  viperScore: viperScoreFor(
+    state.offender.selected.nomisId,
+    state.offender.viperScores,
+  ),
   outcome: extractDecision(
     state.questions.riskAssessment,
     state.riskAssessmentStatus.exitPoint,
