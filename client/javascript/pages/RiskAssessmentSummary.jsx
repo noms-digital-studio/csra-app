@@ -38,6 +38,27 @@ const extractDecision = (questions, exitPoint, viperScore) => {
   };
 };
 
+const renderAnswerWithComments = (question, answer, dataTags) =>
+  (answer
+    ? <tr {...dataTags}>
+      <td className="heading-small">
+        {question}
+      </td>
+      <td>
+        <p>{answer.answer}</p>
+        {answer[`reasons-${answer.answer}`] &&
+        <p data-comments>
+          <span className="heading-small u-d-block">
+                Comments
+              </span>
+          <span>
+            {answer[`reasons-${answer.answer}`]}
+          </span>
+        </p>}
+      </td>
+    </tr>
+    : null);
+
 const RiskAssessmentSummary = ({
   title,
   prisoner,
@@ -105,106 +126,46 @@ const RiskAssessmentSummary = ({
                 </td>
               <td>
                 <span data-comments>
-                  {answers['how-do-you-feel'].comments ||
-                      'No comments'}
+                  {answers['how-do-you-feel'].comments || 'No comments'}
                 </span>
               </td>
             </tr>
             : null}
-          {answers['prison-self-assessment']
-            ? <tr data-risk-assessment-harm>
-              <td className="heading-small">
-                  Have they indicated they’d seriously hurt a cellmate:
-                </td>
-              <td>
-                {answers['prison-self-assessment'].answer}
-                <p data-comments>
-                  {answers['prison-self-assessment'][
-                      `reasons-${answers['prison-self-assessment'].answer}`
-                    ] || ''}
-                </p>
-              </td>
-            </tr>
-            : null}
 
-          {answers.vulnerability
-            ? <tr data-risk-assessment-vulnerability>
-              <td className="heading-small">
-                  Vulnerable:
-                </td>
-              <td>
-                {answers.vulnerability.answer}
-                <p data-comments>
-                  {answers.vulnerability[
-                      `reasons-${answers.vulnerability.answer}`
-                    ] || ''}
-                </p>
-              </td>
-            </tr>
-            : null}
+          {renderAnswerWithComments(
+            'Have they indicated they’d seriously hurt a cellmate:',
+            answers['prison-self-assessment'],
+            { 'data-risk-assessment-harm': true },
+          )}
 
-          {answers['gang-affiliation']
-            ? <tr data-risk-assessment-gang>
-              <td className="heading-small">
-                  In a gang, or likely to join one:
-                </td>
-              <td>
-                {answers['gang-affiliation'].answer}
-                <p data-comments>
-                  {answers['gang-affiliation'][
-                      `reasons-${answers['gang-affiliation'].answer}`
-                    ] || ''}
-                </p>
-              </td>
-            </tr>
-            : null}
+          {renderAnswerWithComments('Vulnerable:', answers.vulnerability, {
+            'data-risk-assessment-vulnerability': true,
+          })}
 
-          {answers['drug-misuse']
-            ? <tr data-risk-assessment-narcotics>
-              <td className="heading-small">
-                  Drug or alcohol dependent:
-                </td>
-              <td>
-                {answers['drug-misuse'].answer}
-                <p data-comments>
-                  {answers['drug-misuse'][
-                      `reasons-${answers['drug-misuse'].answer}`
-                    ] || ''}
-                </p>
-              </td>
-            </tr>
-            : null}
+          {renderAnswerWithComments(
+            'In a gang, or likely to join one:',
+            answers['gang-affiliation'],
+            { 'data-risk-assessment-gang': true },
+          )}
 
-          {answers.prejudice
-            ? <tr data-risk-assessment-prejudice>
-              <td className="heading-small">
-                  Hostile or prejudiced views:
-                </td>
-              <td>
-                {answers.prejudice.answer}
-                <p data-comments>
-                  {answers.prejudice[`reasons-${answers.prejudice.answer}`] ||
-                      ''}
-                </p>
-              </td>
-            </tr>
-            : null}
+          {renderAnswerWithComments(
+            'Drug or alcohol dependent:',
+            answers['drug-misuse'],
+            { 'data-risk-assessment-narcotics': true },
+          )}
 
-          {answers['officers-assessment']
-            ? <tr data-risk-assessment-officer-comments>
-              <td className="heading-small">
-                  Any other reasons they should have single cell:
-                </td>
-              <td>
-                {answers['officers-assessment'].answer}
-                <p data-comments>
-                  {answers['officers-assessment'][
-                      `reasons-${answers['officers-assessment'].answer}`
-                    ] || ''}
-                </p>
-              </td>
-            </tr>
-            : null}
+          {renderAnswerWithComments(
+            'Hostile or prejudiced views:',
+            answers.prejudice,
+            { 'data-risk-assessment-prejudice': true },
+          )}
+
+          {renderAnswerWithComments(
+            'Any other reasons they should have single cell:',
+            answers.prejudice,
+            { 'data-risk-assessment-officer-comments': true },
+          )}
+
         </tbody>
       </table>
 

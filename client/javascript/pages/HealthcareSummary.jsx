@@ -168,7 +168,7 @@ class HealthCareSummary extends Component {
 
             {riskAssessmentComplete
               ? null
-              : <p>
+              : <p className="u-margin-bottom-medium">
                   You must now complete the risk assessment questions to get a cell sharing outcome.
                 </p>}
 

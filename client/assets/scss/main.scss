@@ -249,11 +249,19 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
   vertical-align: top;
 }
 
-.c-answers-table-vat p {
-  margin-top: 0;
-  margin-bottom: 0;
+.c-answers-table-vat td {
+  width: 50%;
 }
 
+.c-answers-table-vat p:first-child {
+  margin-top: 0;
+  text-transform: capitalize;
+}
+
+
+.c-answers-table-vat p:last-child {
+  margin-bottom: 0;
+}
 .c-notice {
   margin-bottom: 2em;
 }
