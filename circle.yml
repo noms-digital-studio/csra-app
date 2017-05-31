@@ -31,16 +31,17 @@ deployment:
     branch: master
     commands:
       - NODE_ENV=production yarn build:
-      # Push to the deploy-to-mock branch which will trigger
-      # a deployment to the Azure MOCK stage
       - yarn record-build-info:
-          environment:
-            BUILD_NUMBER: $CIRCLE_BUILD_NUM
-            GIT_REF: $CIRCLE_SHA1
+        environment:
+          BUILD_NUMBER: $CIRCLE_BUILD_NUM
+          GIT_REF: $CIRCLE_SHA1
+          GIT_DATE: $(TZ=UTC git log --format=%cd -n1 --date=iso-strict-local $CIRCLE_SHA1)
       - git add --force --verbose build-info.json public/dist
       - git config user.name "Circle CI"
       - git config user.email "circle@circleci.com"
       - git commit -m "Deployment of $CIRCLE_SHA1"
+      # Push to the deploy-to-mock branch which will trigger
+      # a deployment to the Azure MOCK environment
       - git push --force origin HEAD:deploy-to-mock
       - yarn wait-for-deploy:
           environment:

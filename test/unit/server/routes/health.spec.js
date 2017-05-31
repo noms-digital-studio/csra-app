@@ -12,39 +12,43 @@ describe('GET /health', () => {
     app.use('/health', healthEndpoint);
   });
 
-  it('responds with { status: "OK" }', (done) => {
-    request(app)
+  it('responds with { status: "OK" }',
+    () => request(app)
       .get('/health')
       .expect('Content-Type', /json/)
-      .expect(200, {
-        status: 'OK',
-      }, done);
-  });
+      .expect(200)
+      .expect((res) => {
+        expect(res.body).to.have.property('status', 'OK');
+      }),
+  );
 
   context('when the build-info.json file is present', () => {
-    const filePath = path.resolve(__dirname, '../../../../build-info.json');
+    const projectRoot = path.resolve(__dirname, '../../../../');
+    const buildJson = path.resolve(projectRoot, 'build-info.json');
 
-    before(() => {
-      const buildInfo = { buildNumber: 'foo', gitRef: 'bar' };
-      fs.writeFileSync(filePath, JSON.stringify(buildInfo), { encoding: 'utf-8' });
+    before((done) => {
+      fs.writeFile(buildJson, JSON.stringify({
+        buildNumber: '123',
+        gitRef: 'deadbeeffaceddeaffadeddad',
+        any: { other: 'stuff' },
+      }, null, 2), done);
+
+      // flush require cache since we changed the file
+      delete require.cache[require.resolve(buildJson)];
     });
 
-    after(() => {
-      rimraf.sync(filePath);
-    });
+    after(done => rimraf(buildJson, done));
 
-    it('responds with the build information inside the status ended', (done) => {
-      const server = express();
-      server.use('/health', healthEndpoint);
-
-      request(app)
-      .get('/health')
-      .expect('Content-Type', /json/)
-      .expect(200, {
-        status: 'OK',
-        buildNumber: 'foo',
-        gitRef: 'bar',
-      }, done);
-    });
+    it('adds the build info into the status response',
+      () => request(app)
+        .get('/health')
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .expect((res) => {
+          expect(res.body).to.have.property('buildNumber', '123');
+          expect(res.body).to.have.property('gitRef', 'deadbeeffaceddeaffadeddad');
+          expect(res.body).to.have.deep.property('any.other', 'stuff');
+        }),
+    );
   });
 });
