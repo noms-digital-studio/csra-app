@@ -11,7 +11,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "start:dev": "rimraf public/dist && DEBUG=csra* node ./bin/www",
-    "lint": "eslint client server test --cache --max-warnings 0",
+    "lint": "eslint . --cache --max-warnings 0",
     "test": "mocha test/*.spec.js test/**/*.spec.js test/unit/**/*.spec.js test/unit/**/**/*.spec.js test/client/**/*.spec.js test/client/**/**/*.spec.js",
     "verify": "yarn lint && yarn test",
     "test:watch": "yarn test -- --watch",
@@ -82,14 +82,13 @@
     "superagent-no-cache": "^0.1.1",
     "superagent-throttle": "^0.2.1",
     "uuid": "3.0.1",
-    "webpack-cleanup-plugin": "0.5.1",
     "webpack-dev-middleware": "1.10.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.6",
     "babel-core": "^6.23.1",
     "babel-eslint": "^7.2.1",
-    "babel-loader": "^6.3.2",
+    "babel-loader": "^7.0.0",
     "babel-plugin-transform-class-properties": "^6.23.0",
     "babel-plugin-transform-function-bind": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
@@ -107,7 +106,6 @@
     "compression-webpack-plugin": "^0.3.2",
     "css-loader": "^0.26.2",
     "cssnano": "^3.10.0",
-    "dotenv": "4.0.0",
     "enzyme": "^2.8.0",
     "eslint": "^3.18.0",
     "eslint-config-airbnb": "^14.1.0",
