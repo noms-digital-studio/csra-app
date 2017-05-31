@@ -13,13 +13,12 @@ import config from '../config';
 
 const router = express.Router();
 
-const isDeveloping = config.env !== 'production';
 const renderData = {
   appinsightsKey: config.appinsightsKey,
 };
 const templatePath = path.join(__dirname, '../../public/dist/index.html');
 
-if (isDeveloping) {
+if (config.dev) {
   const compiler = webpack(webpackConfig);
   const middleware = webpackMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath,
