@@ -74,7 +74,7 @@ Deploy the application to the STAGE environment and run the E2E tests against ST
 
 *Note when running this script you will need firefox and jq installed*
 ```
-Firefox can be installed by going to: 
+Firefox can be installed by going to:
 
 https://www.mozilla.org/en-GB/firefox/new/
 ```
@@ -107,4 +107,26 @@ Response:
   "buildNumber": "63",
   "gitRef": "6fb33281f349f57068de83efa1585c3e5bcaa56f"
 }
+```
+
+## Database connections
+
+This can be left out in dev mode, and any API routes which use the database will fail.
+
+In production the DB connection config is required. The variable should be set like this:
+
+DB_URI=mssql://username:password@server-host:1433/database-name?encrypt=true
+
+### Migrations
+
+Migrations are managed using [knex](http://knexjs.org/#Migrations-CLI).
+
+You can execute them with
+```
+yarn run migrate
+```
+
+Other knex commands can be run via
+```
+yarn run knex -- <other args>
 ```
