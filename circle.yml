@@ -32,10 +32,10 @@ deployment:
     commands:
       - NODE_ENV=production yarn build:
       - yarn record-build-info:
-        environment:
-          BUILD_NUMBER: $CIRCLE_BUILD_NUM
-          GIT_REF: $CIRCLE_SHA1
-          GIT_DATE: $(TZ=UTC git log --format=%cd -n1 --date=iso-strict-local $CIRCLE_SHA1)
+          environment:
+            BUILD_NUMBER: $CIRCLE_BUILD_NUM
+            GIT_REF: $CIRCLE_SHA1
+            GIT_DATE: $(TZ=UTC git log --format=%cd -n1 --date=iso-strict-local $CIRCLE_SHA1)
       - git add --force --verbose build-info.json public/dist
       - git config user.name "Circle CI"
       - git config user.email "circle@circleci.com"
