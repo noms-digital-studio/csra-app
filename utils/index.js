@@ -13,5 +13,5 @@ function writeFile(path, contents, callback) {
 }
 
 module.exports.recordBuildInfoTo = (target, contents, callback) => {
-  writeFile(target, JSON.stringify(contents), callback);
+  writeFile(target, JSON.stringify(contents, null, 2), callback);
 };

@@ -16,7 +16,7 @@ describe('Record build info', () => {
     recordBuildInfoTo(file, buildInfo, () => {
       fs.readFile(file, 'utf-8', (error, data) => {
         if (error) return done(error);
-        expect(data).equal(JSON.stringify(buildInfo));
+        expect(JSON.parse(data)).eql(buildInfo);
         done();
       });
     });

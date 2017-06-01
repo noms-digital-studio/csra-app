@@ -103,9 +103,13 @@ Request: ```curl http://localhost:5000/health ```
 Response:
 ```
 {
-  "status": "OK",
-  "buildNumber": "63",
-  "gitRef": "6fb33281f349f57068de83efa1585c3e5bcaa56f"
+  "buildNumber": "123",
+  "gitRef": "6fb33281f349f57068de83efa1585c3e5bcaa56f",
+  "gitDate": "2017-05-31T15:35:26+00:00",
+  "questionHash": {
+    "risk": "f0bced7986884fd9ea6186880870fd7a64776beb",
+    "healthcare": "1ed3fe4ab79f3351947438a15f017f11d47fd89d"
+  }
 }
 ```
 
