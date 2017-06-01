@@ -2,11 +2,10 @@
 
 /* eslint-disable no-console */
 
-const fs = require('fs');
-const crypto = require('crypto');
 const path = require('path');
 
 const { recordBuildInfoTo } = require('../utils/index');
+const { calculateHash } = require('../utils/question-hash');
 
 const target = path.resolve(__dirname, '../build-info.json');
 
@@ -15,13 +14,6 @@ const getEnvironmentVariable = (name) => {
     return process.env[name];
   }
   throw new Error(`Missing env var ${name}`);
-};
-
-const calculateHash = (name) => {
-  const filename = require.resolve(`../client/javascript/fixtures/${name}-questions.json`);
-  const hash = crypto.createHash('sha1');
-  hash.update(fs.readFileSync(filename));
-  return hash.digest('hex');
 };
 
 const buildInfo = {

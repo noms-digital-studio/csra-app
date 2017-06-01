@@ -1,21 +1,12 @@
 import express from 'express';
 
-function getBuildInfo() {
-  try {
-    // eslint-disable-next-line global-require,import/no-unresolved
-    return require('../../build-info.json');
-  } catch (ex) {
-    return {};
-  }
-}
-
-export default function createRouter(db) {
+export default function createRouter(db, appInfo) {
   const router = express.Router();
 
   router.get('/', (req, res) => {
     const result = {
       status: 'OK',
-      ...getBuildInfo(),
+      ...appInfo.getBuildInfo(),
       checks: {},
     };
 

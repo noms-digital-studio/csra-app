@@ -1,6 +1,3 @@
-import path from 'path';
-import fs from 'fs';
-import rimraf from 'rimraf';
 import request from 'supertest';
 import sinon from 'sinon';
 import express from 'express';
@@ -9,13 +6,16 @@ import createHealthEndpoint from '../../../../server/routes/health';
 describe('GET /health', () => {
   let app;
   let fakeDB;
+  let getBuildInfo;
   beforeEach(() => {
     app = express();
     fakeDB = {
       raw: x => x,
       select: sinon.stub().resolves(),
     };
-    app.use('/health', createHealthEndpoint(fakeDB));
+    getBuildInfo = sinon.stub();
+    const fakeAppInfo = { getBuildInfo };
+    app.use('/health', createHealthEndpoint(fakeDB, fakeAppInfo));
   });
 
   it('responds with { status: "OK" }',
@@ -46,24 +46,14 @@ describe('GET /health', () => {
     );
   });
 
-  context('when the build-info.json file is present', () => {
-    const projectRoot = path.resolve(__dirname, '../../../../');
-    const buildJson = path.resolve(projectRoot, 'build-info.json');
-
-    beforeEach((done) => {
-      fs.writeFile(buildJson, JSON.stringify({
+  context('when the build-info is present', () => {
+    beforeEach(() => {
+      getBuildInfo.returns({
         buildNumber: '123',
         gitRef: 'deadbeeffaceddeaffadeddad',
         any: { other: 'stuff' },
-      }, null, 2), done);
-
-      // attempt to flush require cache since we changed the file
-      try {
-        delete require.cache[require.resolve(buildJson)];
-      } catch (ex) { /* ignore errors*/ }
+      });
     });
-
-    afterEach(done => rimraf(buildJson, done));
 
     it('adds the build info into the status response',
       () => request(app)

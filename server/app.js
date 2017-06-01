@@ -6,12 +6,12 @@ import index from './routes/index';
 
 import { HEALTH_ENDPOINT } from './constants/routes';
 
-export default function createApp(db) {
+export default function createApp(db, appInfo) {
   const app = express();
 
   app.use(express.static(path.join(__dirname, '..', 'public')));
 
-  app.use(HEALTH_ENDPOINT, createHealthRoute(db));
+  app.use(HEALTH_ENDPOINT, createHealthRoute(db, appInfo));
   app.use('/', index);
 
   // catch 404 and forward to error handler
@@ -22,7 +22,7 @@ export default function createApp(db) {
   });
 
   // error handler
-  /* eslint-disable no-unused-vars */
+  // eslint-disable-next-line no-unused-vars
   app.use((error, req, res, next) => {
     const errorMessage = error.message || 'error';
     const errorStatus = error.status || 500;

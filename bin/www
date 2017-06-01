@@ -27,14 +27,11 @@ function normalizePort(val) {
 }
 
 const config = require('../server/config').default;
-const createDB = require('../server/db').default;
-const createApp = require('../server/app').default;
 
 console.log('booting csra');
 const start = Date.now();
 
-const db = createDB();
-const app = createApp(db);
+const app = require('../server/index').default;
 
 const port = normalizePort(config.port);
 app.set('port', port);
