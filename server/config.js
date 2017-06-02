@@ -5,6 +5,7 @@
 // Load any extra environment variables from .env
 require('dotenv').config();
 
+
 const production = process.env.NODE_ENV === 'production';
 
 function neededInProd(name) {
@@ -17,10 +18,25 @@ function neededInProd(name) {
   return null;
 }
 
-export default {
+const config = {
   dev: !production,
   port: process.env.PORT || '5000',
   appinsightsKey: process.env.APPINSIGHTS_INSTRUMENTATIONKEY || '',
 
-  db: neededInProd('DB_URI'),
+  db: {},
 };
+
+const url = require('url');
+
+const dbUri = neededInProd('DB_URI');
+if (dbUri) {
+  const parsed = url.parse(dbUri);
+  const auth = parsed.auth.split(':');
+  config.db.server = parsed.hostname;
+  config.db.user = auth[0];
+  config.db.password = auth[1];
+  config.db.name = parsed.pathname.slice(1);
+}
+
+
+export default config;

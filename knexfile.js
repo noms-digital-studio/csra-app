@@ -8,5 +8,13 @@ const config = require('./server/config').default;
 
 module.exports = {
   client: 'mssql',
-  connection: config.db,
+  connection: {
+    server: config.db.server,
+    user: config.db.user,
+    password: config.db.password,
+    database: config.db.name,
+    options: {
+      encrypt: true,
+    },
+  },
 };
