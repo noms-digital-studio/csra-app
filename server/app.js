@@ -1,17 +1,25 @@
 import path from 'path';
 import express from 'express';
+import morgan from 'morgan';
+import { json } from 'body-parser';
+
+import config from './config';
 
 import createHealthRoute from './routes/health';
+import createAssessmentRoute from './routes/assessment';
 import index from './routes/index';
 
-import { HEALTH_ENDPOINT } from './constants/routes';
-
-export default function createApp(db, appInfo) {
+export default function createApp(db, appInfo, assessment) {
   const app = express();
+
+  app.use(json());
+
+  app.use(morgan(config.dev ? 'dev' : 'short'));
 
   app.use(express.static(path.join(__dirname, '..', 'public')));
 
-  app.use(HEALTH_ENDPOINT, createHealthRoute(db, appInfo));
+  app.use('/health', createHealthRoute(db, appInfo));
+  app.use('/api/assessment', createAssessmentRoute(assessment));
   app.use('/', index);
 
   // catch 404 and forward to error handler

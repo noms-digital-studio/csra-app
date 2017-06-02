@@ -30,20 +30,20 @@ describe('bin/record-build-info', () => {
       info = JSON.parse(fs.readFileSync(buildInfoPath, 'utf-8'));
     });
 
-    it('should have buildNumber', () =>
+    it('has buildNumber', () =>
       expect(info).to.have.property('buildNumber', '123'));
-    it('should have gitRef', () =>
+    it('has gitRef', () =>
       expect(info).to.have.property('gitRef', 'deadbeeffaceddeaffadeddad'));
-    it('should have gitDate', () =>
+    it('has gitDate', () =>
       expect(info).to.have.property('gitDate', '2017-05-31T15:35:26+00:00'));
 
-    it('should have questionHash collection', () =>
+    it('has questionHash collection', () =>
       expect(info).to.have.property('questionHash'));
-    it('should have questionHash for risk', () =>
+    it('has questionHash for risk', () =>
       expect(info.questionHash)
         .to.have.property('risk')
         .which.matches(/[\da-f]{40}/));
-    it('should have questionHash for healthcare', () =>
+    it('has questionHash for healthcare', () =>
       expect(info.questionHash)
         .to.have.property('healthcare')
         .which.matches(/[\da-f]{40}/));
