@@ -1,6 +1,9 @@
 import path from 'path';
 import express from 'express';
+import morgan from 'morgan';
 import { json } from 'body-parser';
+
+import config from './config';
 
 import createHealthRoute from './routes/health';
 import createAssessmentRoute from './routes/assessment';
@@ -10,6 +13,8 @@ export default function createApp(db, appInfo, assessment) {
   const app = express();
 
   app.use(json());
+
+  app.use(morgan(config.dev ? 'dev' : 'short'));
 
   app.use(express.static(path.join(__dirname, '..', 'public')));
 
