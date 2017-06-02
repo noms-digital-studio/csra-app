@@ -1,12 +1,4 @@
-function checkForErrors() {
-  return false;
-}
-
 function record(db, appInfo, assessment) {
-  const errors = checkForErrors(assessment);
-  if (errors) {
-    return Promise.reject(errors);
-  }
   return db
     .insert({
       nomis_id: assessment.nomis_id,

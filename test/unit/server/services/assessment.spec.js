@@ -60,10 +60,6 @@ describe('assessment service', () => {
     ],
   };
 
-  describe('validation', () => {
-    it('should have some and be tested');
-  });
-
   describe('recording risk assessment into DB', () => {
     before(() => {
       setup();
@@ -89,19 +85,19 @@ describe('assessment service', () => {
       let row;
       before(() => { row = fakeDB.insert.lastCall.args[0]; });
 
-      it('should set nomis_id from request',
+      it('sets nomis_id from request',
         () => expect(row.nomis_id).to.eql('AS223213'));
-      it('should set type from request',
+      it('sets type from request',
         () => expect(row.type).to.eql('risk'));
-      it('should set outcome from request',
+      it('sets outcome from request',
         () => expect(row.outcome).to.eql('single'));
-      it('should set questions_hash from app-info',
+      it('sets questions_hash from app-info',
         () => expect(row.questions_hash).to.eql('fadedface'));
-      it('should set git_version from app-info',
+      it('sets git_version from app-info',
         () => expect(row.git_version).to.eql('deadbeef'));
-      it('should set git_date from app-info',
+      it('sets git_date from app-info',
         () => expect(row.git_date).to.eql(new Date('2017-06-02T11:15:00')));
-      it('should set questions encoded as JSON from request',
+      it('sets questions encoded as JSON from request',
         () => expect(JSON.parse(row.questions)).to.eql({
           Q1: {
             question_id: 'Q1',
@@ -109,7 +105,7 @@ describe('assessment service', () => {
             answer: 'Yep',
           },
         }));
-      it('should set reasons encoded as JSON from request',
+      it('sets reasons encoded as JSON from request',
         () => expect(JSON.parse(row.reasons)).to.eql([
           {
             question_id: 'Q1',
@@ -144,19 +140,19 @@ describe('assessment service', () => {
       let row;
       before(() => { row = fakeDB.insert.lastCall.args[0]; });
 
-      it('should set nomis_id from request',
+      it('sets nomis_id from request',
         () => expect(row.nomis_id).to.eql('AQ125676'));
-      it('should set type from request',
+      it('sets type from request',
         () => expect(row.type).to.eql('healthcare'));
-      it('should set outcome from request',
+      it('sets outcome from request',
         () => expect(row.outcome).to.eql('shared'));
-      it('should set questions_hash from app-info',
+      it('sets questions_hash from app-info',
         () => expect(row.questions_hash).to.eql('cafeace'));
-      it('should set git_version from app-info',
+      it('sets git_version from app-info',
         () => expect(row.git_version).to.eql('deadbeef'));
-      it('should set git_date from app-info',
+      it('sets git_date from app-info',
         () => expect(row.git_date).to.eql(new Date('2017-06-02T11:15:00')));
-      it('should set questions encoded as JSON from request',
+      it('sets questions encoded as JSON from request',
         () => expect(JSON.parse(row.questions)).to.eql({
           Q1: {
             question_id: 'Q1',
@@ -164,7 +160,7 @@ describe('assessment service', () => {
             answer: 'No',
           },
         }));
-      it('should set reasons encoded as JSON from request',
+      it('sets reasons encoded as JSON from request',
         () => expect(JSON.parse(row.reasons)).to.eql([
           {
             question_id: 'Q1',
@@ -176,7 +172,7 @@ describe('assessment service', () => {
 
   describe('database errors', () => {
     beforeEach(() => setup());
-    it('should pass through the DB error', () => {
+    it('passes through the DB error', () => {
       const fakeError = new Error('Connection failed or something');
       fakeDB.returning.rejects(fakeError);
 

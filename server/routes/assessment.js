@@ -11,7 +11,6 @@ export default function createRouter(assessment) {
           data: { id: result.assessment_id },
         }),
         (err) => {
-          // TODO: proper logging lib for server stuff?
           // eslint-disable-next-line no-console
           console.warn('Failed to save assessment', err.stack);
           res.status(500);
