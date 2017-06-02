@@ -204,7 +204,6 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
     text-align: left;
     margin: 2em 0 0 0;
     padding: 1em;
-    border-top: solid 1px $grey-2;
 }
 
 .c-icon-button {
@@ -241,8 +240,6 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
   padding-bottom: 1.5em;
 }
 
-
-
 .c-answers-table-vat {
   vertical-align: top;
 }
@@ -262,6 +259,7 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
 .c-notice {
   margin-bottom: 2em;
 }
+
 
 /*******************
 * Utilities

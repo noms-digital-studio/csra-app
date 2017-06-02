@@ -1,3 +1,4 @@
+import not from 'ramda/src/not';
 import defaultViperScores from '../fixtures/viper.json';
 import defaultOffenderProfiles from '../fixtures/nomis.json';
 
@@ -7,7 +8,7 @@ export const calculateRiskFor = (nomisId, riskScores = []) => {
     offender => offender.nomisId === nomisId,
   );
 
-  if (!offenderRiskScore) return 'unknown';
+  if (not(offenderRiskScore)) return 'unknown';
 
   const { viperScore } = offenderRiskScore;
 
@@ -27,7 +28,7 @@ export const viperScores = () => {
 };
 
 export const readSingleFile = (file, callback) => {
-  if (!file) return;
+  if (not(file)) return;
 
   const reader = new FileReader();
   reader.onload = ({ target: { result } }) => {
@@ -64,9 +65,11 @@ export const assessmentCanContinue = (question, answers, viperScore) => {
   }
 
   if (question.sharedCellPredicate.type === 'QUESTION') {
-    return question.sharedCellPredicate.dependents.some(
-      section => answers[section] === question.sharedCellPredicate.value,
-    );
+    return question.sharedCellPredicate.dependents.some((section) => {
+      if (not(answers[section])) return true;
+
+      return answers[section] === question.sharedCellPredicate.value;
+    });
   }
 
   if (question.sharedCellPredicate.type === 'VIPER_SCORE') {
@@ -76,7 +79,7 @@ export const assessmentCanContinue = (question, answers, viperScore) => {
     );
   }
 
-  /* eslint-disable no-console */
+  // eslint-disable-next-line no-console
   console.error(
     `Received an invalid sharedCellPredicate type: ${question.sharedCellPredicate.type}`,
   );
@@ -84,12 +87,64 @@ export const assessmentCanContinue = (question, answers, viperScore) => {
 };
 
 export const cellAssignment = ({
-  healthcareSharedCell,
-  riskAssessmentSharedCell,
+  healthcare,
+  riskAssessment,
 }) => {
-  if (healthcareSharedCell && riskAssessmentSharedCell) {
+  if (healthcare.sharedCell && riskAssessment.sharedCell) {
+    if (riskAssessment.conditions) {
+      return 'shared cell with conditions';
+    }
     return 'shared cell';
   }
 
   return 'single cell';
+};
+
+const extractReasons = (questions, answers) => {
+  const questionsWithPredicates = questions.filter(
+    question => !!question.sharedCellPredicate,
+  );
+
+  const reasons = questionsWithPredicates.reduce((reasonsList, question) => {
+    if (not(answers[question.section])) return reasonsList;
+
+    if (answers[question.section].answer === 'yes') {
+      return [...reasonsList, ...question.sharedCellPredicate.reasons];
+    }
+
+    return reasonsList;
+  }, []);
+
+  return reasons;
+};
+
+export const extractDecision = ({ questions, answers, exitPoint, viperScore }) => {
+  if (exitPoint) {
+    return {
+      recommendation: 'single cell',
+      rating: 'high',
+    };
+  }
+
+  if (viperScore === 'unknown') {
+    return {
+      recommendation: 'single cell',
+      rating: 'unknown',
+    };
+  }
+
+  const conditions = extractReasons(questions, answers);
+
+  if (conditions.length) {
+    return {
+      recommendation: 'shared cell with conditions',
+      rating: 'low',
+      reasons: conditions,
+    };
+  }
+
+  return {
+    recommendation: 'shared cell',
+    rating: 'low',
+  };
 };

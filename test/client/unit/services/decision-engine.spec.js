@@ -53,9 +53,8 @@ describe('Decision Engine', () => {
         section: 'introduction',
       };
       const answers = {};
-      const viperScore = undefined;
 
-      expect(assessmentCanContinue(question, answers, viperScore)).to.equal(true);
+      expect(assessmentCanContinue(question, answers)).to.equal(true);
     });
 
     it('continues when the answer does not satisfy the sharedCellPredicate', () => {
@@ -66,9 +65,8 @@ describe('Decision Engine', () => {
       const answers = {
         vulnerability: 'no',
       };
-      const viperScore = undefined;
 
-      expect(assessmentCanContinue(question, answers, viperScore)).to.equal(true);
+      expect(assessmentCanContinue(question, answers)).to.equal(true);
     });
 
     it('does not continues when the answer satisfies the sharedCellPredicate', () => {
@@ -79,9 +77,8 @@ describe('Decision Engine', () => {
       const answers = {
         vulnerability: 'yes',
       };
-      const viperScore = undefined;
 
-      expect(assessmentCanContinue(question, answers, viperScore)).to.equal(false);
+      expect(assessmentCanContinue(question, answers)).to.equal(false);
     });
   });
 
@@ -102,9 +99,25 @@ describe('Decision Engine', () => {
         drugs: 'no',
       };
 
-      const viperScore = undefined;
+      expect(assessmentCanContinue(question, answers)).to.equal(true);
+    });
 
-      expect(assessmentCanContinue(question, answers, viperScore)).to.equal(true);
+    it('continues when the answers to sharedCellPredicate have not been anwsered yet', () => {
+      const question = {
+        section: 'prejudice',
+        sharedCellPredicate: {
+          type: 'QUESTION',
+          value: 'no',
+          dependents: ['prejudice', 'gangs', 'drugs'],
+        },
+      };
+
+      const answers = {
+        prejudice: 'yes',
+      };
+
+
+      expect(assessmentCanContinue(question, answers)).to.equal(true);
     });
 
     it('does not continues when the answer satisfies the sharedCellPredicate', () => {
@@ -123,9 +136,7 @@ describe('Decision Engine', () => {
         drugs: 'yes',
       };
 
-      const viperScore = undefined;
-
-      expect(assessmentCanContinue(question, answers, viperScore)).to.equal(false);
+      expect(assessmentCanContinue(question, answers)).to.equal(false);
     });
   });
 });

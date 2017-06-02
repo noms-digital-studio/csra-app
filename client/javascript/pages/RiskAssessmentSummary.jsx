@@ -5,41 +5,16 @@ import { replace } from 'react-router-redux';
 import path from 'ramda/src/path';
 
 import { completeRiskAssessmentFor, clearAnswers } from '../actions';
-import { calculateRiskFor as viperScoreFor } from '../services';
+import {
+  calculateRiskFor as viperScoreFor,
+  extractDecision,
+} from '../services';
 
 import PrisonerProfile from '../components/PrisonerProfile';
-import RiskAssessmentSummaryTable from '../components/connected/RiskAssessmentSummaryTable';
+import RiskAssessmentSummaryTable
+  from '../components/connected/RiskAssessmentSummaryTable';
 
 import routes from '../constants/routes';
-
-const extractDecision = (questions, exitPoint, viperScore) => {
-  if (exitPoint) {
-    const question = questions.find(item => item.section === exitPoint);
-    return {
-      recommendation: 'Single cell',
-      rating: 'high',
-      reasons: question.sharedCellPredicate.reasons,
-    };
-  }
-
-  if (viperScore === 'unknown') {
-    return {
-      recommendation: 'Single cell',
-      rating: 'unknown',
-      reasons: [
-        'Based on the fact that a Viper Score was not available for you.',
-      ],
-    };
-  }
-
-  return {
-    recommendation: 'Shared cell',
-    rating: 'low',
-    reasons: [
-      'Take into consideration any prejudices and hostile views. Ensure that the nature of these views is taken into account when allocating a cell mate. Inform the keyworker to monitor the impact on other prisoners.',
-    ],
-  };
-};
 
 const RiskAssessmentSummary = ({
   title,
@@ -56,7 +31,9 @@ const RiskAssessmentSummary = ({
 
       <PrisonerProfile {...prisoner} />
 
-      <RiskAssessmentSummaryTable title="Assessment Summary" />
+      <div className="u-margin-bottom-large">
+        <RiskAssessmentSummaryTable title="Assessment Summary" />
+      </div>
 
       {viperScore !== 'high' &&
         <p className="u-margin-bottom-large">
@@ -141,11 +118,18 @@ const mapStateToProps = state => ({
     state.offender.selected.nomisId,
     state.offender.viperScores,
   ),
-  outcome: extractDecision(
-    state.questions.riskAssessment,
-    state.riskAssessmentStatus.exitPoint,
-    viperScoreFor(state.offender.selected.nomisId, state.offender.viperScores),
-  ),
+  outcome: extractDecision({
+    questions: state.questions.riskAssessment,
+    answers: path(
+      [state.answers.selectedPrisonerId],
+      state.answers.riskAssessment,
+    ),
+    exitPoint: state.riskAssessmentStatus.exitPoint,
+    viperScore: viperScoreFor(
+      state.offender.selected.nomisId,
+      state.offender.viperScores,
+    ),
+  }),
   answers: path(
     [state.answers.selectedPrisonerId],
     state.answers.riskAssessment,
@@ -163,7 +147,7 @@ const mapActionsToProps = dispatch => ({
   onSubmit: ({ healthcareAssessmentComplete, outcome, nomisId }) => {
     dispatch(completeRiskAssessmentFor({ ...outcome, nomisId }));
     if (healthcareAssessmentComplete) {
-      dispatch(replace(routes.FULL_ASSESSMENT_COMPLETE));
+      dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
     } else {
       dispatch(replace(routes.DASHBOARD));
     }

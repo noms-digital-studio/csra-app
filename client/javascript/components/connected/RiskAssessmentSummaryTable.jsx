@@ -2,39 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import path from 'ramda/src/path';
 
-import { calculateRiskFor as viperScoreFor } from '../../services';
+import { calculateRiskFor as viperScoreFor, extractDecision } from '../../services';
 
 import QNASummaryTable from '../QNASummaryTable';
-
-
-const extractDecision = (questions, exitPoint, viperScore) => {
-  if (exitPoint) {
-    const question = questions.find(item => item.section === exitPoint);
-    return {
-      recommendation: 'Single cell',
-      rating: 'high',
-      reasons: question.sharedCellPredicate.reasons,
-    };
-  }
-
-  if (viperScore === 'unknown') {
-    return {
-      recommendation: 'Single cell',
-      rating: 'unknown',
-      reasons: [
-        'Based on the fact that a Viper Score was not available for you.',
-      ],
-    };
-  }
-
-  return {
-    recommendation: 'Shared cell',
-    rating: 'low',
-    reasons: [
-      'Take into consideration any prejudices and hostile views. Ensure that the nature of these views is taken into account when allocating a cell mate. Inform the keyworker to monitor the impact on other prisoners.',
-    ],
-  };
-};
 
 const RiskAssessmentSummaryTable = props => <QNASummaryTable {...props} />;
 
@@ -44,11 +14,15 @@ const mapStateToProps = (state) => {
     state.answers.riskAssessment,
   );
 
-  const outcome = extractDecision(
-    state.questions.riskAssessment,
-    state.riskAssessmentStatus.exitPoint,
-    viperScoreFor(state.offender.selected.nomisId, state.offender.viperScores),
-  );
+  const outcome = state.riskAssessmentStatus.completed.find(
+    item => item.nomisId === state.offender.selected.nomisId,
+  ) || extractDecision({
+    questions: state.questions.riskAssessment,
+    answers,
+    exitPoint: state.riskAssessmentStatus.exitPoint,
+    viperScore: viperScoreFor(state.offender.selected.nomisId, state.offender.viperScores),
+  });
+
 
   return {
     questionsAnswers: [
@@ -59,7 +33,7 @@ const mapStateToProps = (state) => {
       },
       {
         question: 'How they feel about sharing a cell:',
-        answer: { answer: answers['how-do-you-feel'].comments || 'No Comment' },
+        answer: answers['how-do-you-feel'] ? { answer: answers['how-do-you-feel'].comments || 'No comments' } : undefined,
         dataTags: { 'data-risk-assessment-feeling': true },
       },
       {
@@ -89,7 +63,7 @@ const mapStateToProps = (state) => {
       },
       {
         question: 'Any other reasons they should have single cell:',
-        answer: answers.prejudice,
+        answer: answers['officers-assessment'],
         dataTags: { 'data-risk-assessment-officer-comments': true },
       },
     ],

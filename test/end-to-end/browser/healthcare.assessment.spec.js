@@ -31,7 +31,7 @@ function whenAPrisonersHealthcareResultsAreEntered() {
   expect(HealthcareSummary.assessor).to.equal('Jane Doe');
   expect(HealthcareSummary.role).to.equal('Nurse');
   expect(HealthcareSummary.date).to.equal('21-07-2017');
-  expect(HealthcareSummary.outcome).to.equal('Shared cell');
+  expect(HealthcareSummary.outcome).to.equal('shared cell');
   expect(HealthcareSummary.comments).to.equal('a healthcare comment');
   expect(HealthcareSummary.consent).to.equal('no');
 

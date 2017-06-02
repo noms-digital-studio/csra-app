@@ -8,7 +8,7 @@ import isEmpty from 'ramda/src/isEmpty';
 import not from 'ramda/src/not';
 
 import { getViperScores, selectOffender } from '../actions';
-import { todaysDate } from '../utils';
+import { todaysDate, capitalize } from '../utils';
 
 import routes from '../constants/routes';
 
@@ -61,7 +61,7 @@ class Dashboard extends Component {
           {isEmpty(profile.assessmentCompleted)
             ? <span className="c-status-indicator" />
             : <span className="">
-              {profile.assessmentCompleted.recommendation}
+              {capitalize(profile.assessmentCompleted.recommendation)}
             </span>}
 
         </td>
@@ -183,7 +183,7 @@ Dashboard.defaultProps = {
   getViperScores: () => {},
   onOffenderSelect: () => {},
   profiles: [],
-  date: todaysDate(),
+  date: todaysDate(new Date()),
 };
 
 export { Dashboard };

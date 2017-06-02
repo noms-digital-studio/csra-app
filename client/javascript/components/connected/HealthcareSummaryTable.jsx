@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import path from 'ramda/src/path';
 import QuestionAnswerRow from '../QuestionAnswerRow';
 
-const riskText = { no: 'Shared cell', yes: 'Single cell' };
+const riskText = { no: 'shared cell', yes: 'single cell' };
 
 const HealthcareSummaryTable = ({ answers }) => (
   <table className="check-your-answers c-answers-table">
@@ -24,7 +24,7 @@ const HealthcareSummaryTable = ({ answers }) => (
       />
       <QuestionAnswerRow
         question={'Comments from the healthcare form:'}
-        answer={{ answer: answers.comments.comments || 'No Comments' }}
+        answer={{ answer: answers.comments.comments || 'No comments' }}
         dataTags={{ 'data-healthcare-comments': true }}
       />
       <QuestionAnswerRow
@@ -34,7 +34,7 @@ const HealthcareSummaryTable = ({ answers }) => (
       />
 
       <tr data-healthcare-assessor>
-        <td>
+        <td className="heading-small">
           Completed by:
         </td>
         <td>

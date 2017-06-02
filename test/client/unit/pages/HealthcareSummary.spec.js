@@ -112,7 +112,7 @@ describe('<HealthcareSummary />', () => {
         const healthcareComments = wrapper
           .find('[data-healthcare-comments]')
           .text();
-        expect(healthcareComments).to.contain('none');
+        expect(healthcareComments).to.contain('None');
       });
 
       it('correctly renders comments', () => {
@@ -136,7 +136,7 @@ describe('<HealthcareSummary />', () => {
         const healthcareComments = wrapper
           .find('[data-healthcare-comments]')
           .text();
-        expect(healthcareComments).to.contain('some foo comment');
+        expect(healthcareComments).to.contain('Some foo comment');
       });
     });
 
@@ -150,7 +150,7 @@ describe('<HealthcareSummary />', () => {
       const healthcareComments = wrapper
         .find('[data-healthcare-consent]')
         .text();
-      expect(healthcareComments).to.contain('no');
+      expect(healthcareComments).to.contain('No');
     });
 
     it('correctly renders assessor details', () => {
@@ -164,7 +164,7 @@ describe('<HealthcareSummary />', () => {
         .find('[data-healthcare-assessor]')
         .text();
       expect(healthcareAssessor).to.contain('Foo fullname');
-      expect(healthcareAssessor).to.contain('foo role');
+      expect(healthcareAssessor).to.contain('Foo role');
       expect(healthcareAssessor).to.contain('20-12-1984');
     });
   });
@@ -239,9 +239,9 @@ describe('<HealthcareSummary />', () => {
       expect(
         store.dispatch.calledWithMatch({
           type: '@@router/CALL_HISTORY_METHOD',
-          payload: { method: 'replace', args: ['/full-assessment-complete'] },
+          payload: { method: 'replace', args: ['/full-assessment-outcome'] },
         }),
-      ).to.equal(true, 'Changed path to /full-assessment-complete');
+      ).to.equal(true, 'Changed path to /full-assessment-outcome');
     });
   });
 });
