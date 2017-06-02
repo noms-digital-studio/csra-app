@@ -17,4 +17,5 @@ module.exports = {
       encrypt: true,
     },
   },
+  acquireConnectionTimeout: 5000,
 };
