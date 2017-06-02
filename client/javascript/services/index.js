@@ -3,7 +3,9 @@ import defaultOffenderProfiles from '../fixtures/nomis.json';
 
 export const calculateRiskFor = (nomisId, riskScores = []) => {
   const LOW_RISK_THRESHOLD = 0.59;
-  const offenderRiskScore = riskScores.find(offender => offender.nomisId === nomisId);
+  const offenderRiskScore = riskScores.find(
+    offender => offender.nomisId === nomisId,
+  );
 
   if (!offenderRiskScore) return 'unknown';
 
@@ -68,10 +70,26 @@ export const assessmentCanContinue = (question, answers, viperScore) => {
   }
 
   if (question.sharedCellPredicate.type === 'VIPER_SCORE') {
-    return viperScore === 'unknown' || viperScore === question.sharedCellPredicate.value;
+    return (
+      viperScore === 'unknown' ||
+      viperScore === question.sharedCellPredicate.value
+    );
   }
 
   /* eslint-disable no-console */
-  console.error(`Received an invalid sharedCellPredicate type: ${question.sharedCellPredicate.type}`);
+  console.error(
+    `Received an invalid sharedCellPredicate type: ${question.sharedCellPredicate.type}`,
+  );
   return false;
+};
+
+export const cellAssignment = ({
+  healthcareSharedCell,
+  riskAssessmentSharedCell,
+}) => {
+  if (healthcareSharedCell && riskAssessmentSharedCell) {
+    return 'shared cell';
+  }
+
+  return 'single cell';
 };
