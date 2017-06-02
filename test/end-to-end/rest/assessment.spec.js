@@ -1,5 +1,4 @@
 import request from 'supertest';
-import { expect } from 'chai';
 
 const baseUrl = process.env.APP_BASE_URL;
 
