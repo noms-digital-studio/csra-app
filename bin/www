@@ -1,46 +1,15 @@
 #!/usr/bin/env node
 
-/**
- * Module dependencies.
- */
+/* eslint-disable no-console */
+
 require('babel-register')();
-
-
-const debug = require('debug')('csra:server');
 const http = require('http');
 
 const appInsights = require('../utils/applicationinsights');
-const app = require('../server/app').default;
-
-const config = require('../server/config').default;
-
-debug('booting %s', 'csra');
-
-/**
- * Get port from environment and store in Express.
- */
-
-const port = normalizePort(config.port);
-app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
-const server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
  */
-
 function normalizePort(val) {
   const parsedPort = parseInt(val, 10);
 
@@ -57,41 +26,37 @@ function normalizePort(val) {
   return false;
 }
 
-/**
- * Event listener for HTTP server "error" event.
- */
+const config = require('../server/config').default;
 
-function onError(error) {
+console.log('booting csra');
+const start = Date.now();
+
+const app = require('../server/index').default;
+
+const port = normalizePort(config.port);
+app.set('port', port);
+
+const server = http.createServer(app);
+server.listen(port);
+server.on('error', (error) => {
   if (error.syscall !== 'listen') {
     throw error;
   }
-
   const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
-
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
-      console.error(`${bind} requires elevated privileges`);
-      process.exit(1);
-      break;
+      throw new Error(`${bind} requires elevated privileges`);
     case 'EADDRINUSE':
-      console.error(`${bind} is already in use`);
-      process.exit(1);
-      break;
+      throw new Error(`${bind} is already in use`);
     default:
       throw error;
   }
-}
-
-/**
- * Event listener for HTTP server "listening" event.
- */
-const start = Date.now();
-
-function onListening() {
+});
+server.on('listening', () => {
   const duration = Date.now() - start;
   const addr = server.address();
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
-  debug(`Listening on ${bind}`);
+  console.log(`Listening on ${bind}`);
   appInsights.client.trackMetric('server startup time', duration);
-}
+});
