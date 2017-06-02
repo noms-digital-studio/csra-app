@@ -25,7 +25,7 @@ describe('assessment service', () => {
     nomis_id: 'AS223213',
     type: 'risk',
     outcome: 'single',
-    viper: 0.123,
+    viper: 0.12,
     questions: {
       Q1: {
         question_id: 'Q1',
@@ -44,7 +44,7 @@ describe('assessment service', () => {
     nomis_id: 'AQ125676',
     type: 'healthcare',
     outcome: 'shared',
-    viper: 0.456,
+    viper: 0.45,
     questions: {
       Q1: {
         question_id: 'Q1',
@@ -91,6 +91,8 @@ describe('assessment service', () => {
         () => expect(row.type).to.eql('risk'));
       it('sets outcome from request',
         () => expect(row.outcome).to.eql('single'));
+      it('sets viper from request',
+        () => expect(row.viper).to.eql(0.12));
       it('sets questions_hash from app-info',
         () => expect(row.questions_hash).to.eql('fadedface'));
       it('sets git_version from app-info',
@@ -146,6 +148,8 @@ describe('assessment service', () => {
         () => expect(row.type).to.eql('healthcare'));
       it('sets outcome from request',
         () => expect(row.outcome).to.eql('shared'));
+      it('sets viper from request',
+        () => expect(row.viper).to.eql(0.45));
       it('sets questions_hash from app-info',
         () => expect(row.questions_hash).to.eql('cafeace'));
       it('sets git_version from app-info',

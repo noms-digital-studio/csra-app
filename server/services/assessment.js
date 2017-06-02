@@ -4,6 +4,7 @@ function record(db, appInfo, assessment) {
       nomis_id: assessment.nomis_id,
       type: assessment.type,
       outcome: assessment.outcome,
+      viper: assessment.viper,
       questions_hash: appInfo.getQuestionHash(assessment.type),
       git_version: appInfo.getGitRef(),
       git_date: appInfo.getGitDate(),

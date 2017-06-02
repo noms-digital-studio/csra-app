@@ -6,7 +6,7 @@ const riskAssessment = {
   nomis_id: 'AS223213',
   type: 'risk',
   outcome: 'single',
-  viper: 0.123,
+  viper: 0.12,
   questions: {
     Q1: {
       question_id: 'Q1',
@@ -25,7 +25,7 @@ const healthcareAssessment = {
   nomis_id: 'AS223213',
   type: 'healthcare',
   outcome: 'single',
-  viper: 0.123,
+  viper: 0.12,
   questions: {
     Q1: {
       question_id: 'Q1',
