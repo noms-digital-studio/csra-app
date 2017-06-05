@@ -134,3 +134,21 @@ Other knex commands can be run via
 ```
 yarn run knex -- <other args>
 ```
+
+### Local database setup
+```
+docker pull microsoft/mssql-server-linux
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=<password>' -p 1433:1433 -d microsoft/mssql-server-linux
+npm install -g sql-cli
+mssql -s localhost -u sa -p <password>
+create database csra
+.quit
+yarn run knex -- migrate:currentVersion
+yarn run migrate
+```
+
+### Local database manual querying 
+```
+mssql -s localhost -u sa -p <password> -d csra
+select * from assessments
+```
