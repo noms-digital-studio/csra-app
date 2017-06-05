@@ -136,18 +136,36 @@ yarn run knex -- <other args>
 ```
 
 ### Local database setup
+
+To run the database locally, use the [docker image](https://hub.docker.com/r/microsoft/mssql-server-linux/).
 ```
 docker pull microsoft/mssql-server-linux
 docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=<password>' -p 1433:1433 -d microsoft/mssql-server-linux
+```
+
+After you have a database, you'll need to create the database and application user. On real environments this is handled by the terraform code.
+```
 npm install -g sql-cli
 mssql -s localhost -u sa -p <password>
-create database csra
+USE master;
+EXEC sp_configure 'contained database authentication', 1;
+RECONFIGURE WITH OVERRIDE;
+CREATE DATABASE csra CONTAINMENT = PARTIAL COLLATE SQL_Latin1_General_CP1_CI_AS;
+USE csra;
+CREATE USER app WITH PASSWORD = {somesufficientlygoodpassword};
 .quit
+```
+
+And then run the migrations as with any other environment.
+```
 yarn run knex -- migrate:currentVersion
 yarn run migrate
 ```
 
-### Local database manual querying 
+### Local database manual querying
+
+The `sql-cli` package installed above gives you a commandline client called `mssql`.
+
 ```
 mssql -s localhost -u sa -p <password> -d csra
 select * from assessments
