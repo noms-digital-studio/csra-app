@@ -163,6 +163,7 @@ exports.config = {
     global.AssertionError = chai.AssertionError;
     global.Assertion = chai.Assertion;
     global.assert = chai.assert;
+    chai.use(require('chai-string'));
     chai.Should();
   },
   //
