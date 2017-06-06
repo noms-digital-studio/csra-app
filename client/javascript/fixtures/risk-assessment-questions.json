@@ -16,7 +16,7 @@
         "title": "Current recommendation: Single cell"
       },
       "unknown": {
-        "title": "Current recommendation: Single cell"
+        "title": "Current recommendation: Unknown"
       }
     },
     "template": "viper",

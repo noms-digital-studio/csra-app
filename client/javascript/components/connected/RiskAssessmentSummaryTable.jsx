@@ -27,7 +27,7 @@ const mapStateToProps = (state) => {
   return {
     questionsAnswers: [
       {
-        question: 'Initial recommendation:',
+        question: 'Recommendation:',
         answer: { answer: outcome.recommendation },
         dataTags: { 'data-risk-assessment-outcome': true },
       },
