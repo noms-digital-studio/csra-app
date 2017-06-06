@@ -204,7 +204,6 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
     text-align: left;
     margin: 2em 0 0 0;
     padding: 1em;
-    border-top: solid 1px $grey-2;
 }
 
 .c-icon-button {
@@ -241,10 +240,6 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
   padding-bottom: 1.5em;
 }
 
-.c-answers-table {
-  margin-bottom: 3em;
-}
-
 .c-answers-table-vat {
   vertical-align: top;
 }
@@ -255,7 +250,6 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
 
 .c-answers-table-vat p:first-child {
   margin-top: 0;
-  text-transform: capitalize;
 }
 
 
@@ -265,6 +259,7 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
 .c-notice {
   margin-bottom: 2em;
 }
+
 
 /*******************
 * Utilities
@@ -293,15 +288,15 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
 }
 
 .u-margin-bottom-small {
-    margin-bottom: 25px;
+    margin-bottom: 1em;
 }
 
 .u-margin-bottom-medium {
-    margin-bottom: 50px;
+    margin-bottom: 2em;
 }
 
 .u-margin-bottom-large {
-    margin-bottom: 70px;
+    margin-bottom: 3em;
 }
 
 .u-no-margin-top {

@@ -19,7 +19,9 @@ import BeforeYouStart from './pages/BeforeYouStart';
 import Feedback from './pages/Feedback';
 import FeedbackConfirmation from './pages/FeedbackThankyou';
 import HealthcareSummary from './pages/HealthcareSummary';
+import FullAssessmentOutcome from './pages/FullAssessmentOutcome';
 import FullAssessmentComplete from './pages/FullAssessmentComplete';
+
 import Error404 from './pages/Error404';
 
 export default (store) => {
@@ -74,6 +76,11 @@ export default (store) => {
           <Route
             path="/feedback-confirmation"
             component={FeedbackConfirmation}
+          />
+
+          <Route
+            path="/full-assessment-outcome"
+            component={FullAssessmentOutcome}
           />
 
           <Route

@@ -1,22 +1,16 @@
 [
   {
-    "section": "introduction",
-    "title": "Explain this",
-    "description": "<p class='text'>Most people share cells in this prison.</p><p class='text'>The questions you're going to ask are about making sure everyone's as safe as possible.</p><p class='text'>Serious incidents between cellmates are extremely rare.</p><p class='text'>You've run a background check looking at their sentence, past behaviour and any history in prison.</p><p class='text'>Honest answers mean everyone will be safer.</p><p class='text'>The information they give will be recorded and may be used by other prison staff.</p>",
-    "template": "confirmation"
-  },
-  {
     "section": "risk-of-violence",
     "title": "Viper result",
     "content": {
       "low": {
-        "title": "Current recommendation: Shared cell"
+        "title": "Shared cell"
       },
       "high": {
-        "title": "Current recommendation: Single cell"
+        "title": "Single cell"
       },
       "unknown": {
-        "title": "Current recommendation: Single cell"
+        "title": "Single cell"
       }
     },
     "template": "viper",
@@ -31,13 +25,13 @@
   },
   {
     "section": "how-do-you-feel",
-    "title": "How do you think they feel about sharing a cell at this moment?",
-    "description": "Record anything you feel is relevant.",
+    "title": "foo-title-0",
+    "description": "foo-description",
     "template": "comments"
   },
   {
     "section": "prison-self-assessment",
-    "title": "Is there any indication they might seriously hurt a cellmate?",
+    "title": "foo-title",
     "description": "",
     "template": "default_with_comment",
     "formFields": {
@@ -58,7 +52,7 @@
   },
   {
     "section": "vulnerability",
-    "title": "Do you think they're vulnerable?",
+    "title": "foo-title-1",
     "template": "default_with_comment",
     "formFields": {
       "input": {
@@ -66,7 +60,7 @@
         "no": { "text": "No" }
       }
     },
-    "description": "<p class='lede text'>For example, they’ve previously been a victim of violence in prison or they’re in debt to another prisoner.</p>",
+    "description": "foo-description",
     "sharedCellPredicate": {
       "type": "QUESTION",
       "value": "no",
@@ -79,18 +73,13 @@
   },
   {
     "section": "gang-affiliation",
-    "title": "Are they part of a gang, or likely to join a gang in prison?",
+    "title": "foo-title-2",
     "template": "default_with_comment",
     "formFields": {
       "input": {
         "yes": { "text": "Yes" },
         "no": { "text": "No" }
       }
-    },
-    "description": "<p class='lede text c-text-hint'></p>",
-    "aside": {
-      "template": "static",
-      "description": "<p class='text'></p>"
     },
     "sharedCellPredicate": {
       "type": "QUESTION",
@@ -100,13 +89,13 @@
         "gang-affiliation",
         "drug-misuse"
       ],
-      "reasons": ["Has indicated gang affiliation"]
+      "reasons": ["foo-reason"]
     },
     "answerRequired": true
   },
   {
     "section": "drug-misuse",
-    "title": "Have they used drugs in the last month?",
+    "title": "foo-title-3",
     "template": "default_with_comment",
     "formFields": {
       "input": {
@@ -114,7 +103,6 @@
         "no": { "text": "No" }
       }
     },
-    "description": "<p class='lede text'></p>",
     "sharedCellPredicate": {
       "type": "QUESTION",
       "value": "no",
@@ -123,14 +111,13 @@
         "gang-affiliation",
         "drug-misuse"
       ],
-      "reasons": ["Has indicated drug use"]
+      "reasons": ["foo-reason"]
     },
     "answerRequired": true
   },
   {
     "section": "prejudice",
-    "title": "Do they have any hostile views or prejudices about a particular group?",
-    "description": "<p class='lede text'>For example, they have prejudices about race, religion, sexual orientation or particular addictions.</p>",
+    "title": "foo-title-3",
     "template": "default_with_comment",
     "formFields": {
       "input": {
@@ -146,13 +133,13 @@
         "gang-affiliation",
         "drug-misuse"
       ],
-      "reasons": ["Has indicated prejudice and hostile views"]
+      "reasons": ["foo-reason"]
     },
     "answerRequired": true
   },
   {
     "section": "officers-assessment",
-    "title": "Are there any other reasons why you would recommend they have a single cell?",
+    "title": "foo-title-5",
     "formFields": {
       "input": {
         "yes": { "text": "Yes" },
@@ -167,7 +154,7 @@
         "officers-assessment"
       ],
       "reasons": [
-        "Based on the concerns I have (officers views)"
+        "foo-reason"
       ]
     },
     "answerRequired": true

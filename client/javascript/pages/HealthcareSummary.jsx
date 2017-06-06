@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { replace } from 'react-router-redux';
 import path from 'ramda/src/path';
 
+import { capitalize } from '../utils';
+
 import {
   completeHealthAnswersFor,
   completeHealthAssessmentFor,
@@ -25,7 +27,7 @@ class HealthCareSummary extends Component {
       riskAssessmentComplete,
       onSubmit,
     } = this.props;
-    const riskText = { no: 'Shared cell', yes: 'Single cell' };
+    const riskText = { no: 'shared cell', yes: 'single cell' };
 
     return (
       <DocumentTitle title={title}>
@@ -59,7 +61,7 @@ class HealthCareSummary extends Component {
             </p>
           </div>
 
-          <table className="check-your-answers c-answers-table">
+          <table className="check-your-answers c-answers-table u-margin-bottom-large">
 
             <thead>
               <tr>
@@ -78,7 +80,7 @@ class HealthCareSummary extends Component {
                   Healthcare recommendation:
                 </td>
                 <td>
-                  <span data-outcome>{riskText[answers.outcome.answer]}</span>
+                  <span data-outcome>{capitalize(riskText[answers.outcome.answer])}</span>
                 </td>
                 <td className="change-answer">
                   <Link
@@ -97,7 +99,7 @@ class HealthCareSummary extends Component {
                 </td>
                 <td>
                   <span data-comments>
-                    {answers.comments.comments || 'none'}
+                    {capitalize(answers.comments.comments || 'none')}
                   </span>
                 </td>
                 <td className="change-answer">
@@ -116,7 +118,7 @@ class HealthCareSummary extends Component {
                   Consent given:
                 </td>
                 <td>
-                  <span data-consent>{answers.consent.answer}</span>
+                  <span data-consent>{capitalize(answers.consent.answer)}</span>
                 </td>
                 <td className="change-answer">
                   <Link
@@ -137,9 +139,9 @@ class HealthCareSummary extends Component {
                 </td>
                 <td>
                   <span data-assessor>
-                    {answers.assessor['full-name']}<br />
+                    {capitalize(answers.assessor['full-name'])}<br />
                   </span>
-                  <span data-role>{answers.assessor.role}<br /></span>
+                  <span data-role>{capitalize(answers.assessor.role)}<br /></span>
                   <span
                     data-date
                   >{`${answers.assessor.day}-${answers.assessor.month}-${answers.assessor.year}`}</span>
@@ -173,7 +175,14 @@ class HealthCareSummary extends Component {
                 </p>}
 
             <button
-              onClick={() => onSubmit({ riskAssessmentComplete, prisoner })}
+              onClick={() =>
+                onSubmit({
+                  riskAssessmentComplete,
+                  prisoner: {
+                    recommendation: riskText[answers.outcome.answer],
+                    nomisId: prisoner.nomisId,
+                  },
+                })}
               className="button"
               data-continue-button
             >
@@ -217,7 +226,7 @@ const mapActionsToProps = dispatch => ({
   onSubmit: ({ prisoner, riskAssessmentComplete }) => {
     dispatch(completeHealthAssessmentFor(prisoner));
     if (riskAssessmentComplete) {
-      dispatch(replace(routes.FULL_ASSESSMENT_COMPLETE));
+      dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
     } else {
       dispatch(replace(routes.DASHBOARD));
     }

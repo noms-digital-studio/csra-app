@@ -10,19 +10,19 @@ function whenAViolentPrisonerIsAssessed() {
   expect(RiskAssessmentPrisonerProfilePage.prisonerName).to.equal('Ian Rate');
 
   RiskAssessmentPrisonerProfilePage.clickContinue();
-  expect(RiskAssessmentExplanationPage.mainHeading).to.contain('Explain this');
+  expect(RiskAssessmentExplanationPage.mainHeading).to.equal('Explain this');
 
   RiskAssessmentExplanationPage.confirmAndContinue();
-  expect(RiskAssessmentExplanationPage.mainHeading).to.contain('Current recommendation: single cell');
+  expect(RiskAssessmentExplanationPage.mainHeading).to.equalIgnoreCase('Current recommendation: single cell');
 
   RiskAssessmentExplanationPage.clickContinue();
 
-  expect(RiskAssessmentSummaryPage.mainHeading).to.contain('Risk assessment summary');
-  expect(RiskAssessmentSummaryPage.name).to.equal('Ian Rate');
-  expect(RiskAssessmentSummaryPage.dob).to.equal('23-Mar-1988');
-  expect(RiskAssessmentSummaryPage.nomisId).to.equal('I9876RA');
+  expect(RiskAssessmentSummaryPage.mainHeading).to.equal('Risk assessment summary');
+  expect(RiskAssessmentSummaryPage.name).to.equalIgnoreCase('Ian Rate');
+  expect(RiskAssessmentSummaryPage.dob).to.equalIgnoreCase('23-Mar-1988');
+  expect(RiskAssessmentSummaryPage.nomisId).to.equalIgnoreCase('I9876RA');
 
-  expect(RiskAssessmentSummaryPage.outcome).to.contain('Single cell');
+  expect(RiskAssessmentSummaryPage.outcome).to.equalIgnoreCase('single cell');
 
   RiskAssessmentSummaryPage.clickContinue();
 }

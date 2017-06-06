@@ -6,8 +6,7 @@ export const allFormFieldsComplete = (formData = {}, expectedKeys = []) => {
   return expectedKeys.every(key => !!formData[key]);
 };
 
-export const todaysDate = () => {
-  // Array of day names
+export const todaysDate = (date) => {
   const dayNames = [
     'Sunday',
     'Monday',
@@ -18,7 +17,6 @@ export const todaysDate = () => {
     'Saturday',
   ];
 
-  // Array of month Names
   const monthNames = [
     'January',
     'February',
@@ -34,12 +32,9 @@ export const todaysDate = () => {
     'December',
   ];
 
-  const now = new Date();
-
-  return `${dayNames[now.getDay()]} ${now.getDate()} ${monthNames[now.getMonth()]} ${now.getFullYear()}`;
+  return `${dayNames[date.getDay()]} ${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
 };
 
-// Didn't want to use the shiny ES6 sets
 export const addUniqElementToList = (item, list) => {
   if (list.find(elm => deepEqual(elm, item))) {
     return list;
@@ -47,3 +42,6 @@ export const addUniqElementToList = (item, list) => {
 
   return list.concat([item]);
 };
+
+export const capitalize = (str = '') =>
+  str.replace(/^./, match => match.toUpperCase());

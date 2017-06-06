@@ -12,5 +12,6 @@ export default {
   FEEDBACK: '/feedback',
   FEEDBACK_CONFIRMATION: '/feedback-confirmation',
   HEALTHCARE_SUMMARY: '/healthcare-summary',
+  FULL_ASSESSMENT_OUTCOME: '/full-assessment-outcome',
   FULL_ASSESSMENT_COMPLETE: '/full-assessment-complete',
 };
