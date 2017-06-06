@@ -38,13 +38,13 @@ const HealthcareSummaryTable = ({ answers }) => (
           Completed by:
         </td>
         <td>
-          <span data-assessor>
-            {answers.assessor['full-name']}<br />
+          <span data-assessor>{answers.assessor['full-name']}</span>
+          <br />
+          <span data-role>{answers.assessor.role}</span>
+          <br />
+          <span data-date>
+            {`${answers.assessor.day}-${answers.assessor.month}-${answers.assessor.year}`}
           </span>
-          <span data-role>{answers.assessor.role}<br /></span>
-          <span
-            data-date
-          >{`${answers.assessor.day}-${answers.assessor.month}-${answers.assessor.year}`}</span>
         </td>
       </tr>
     </tbody>
@@ -52,10 +52,7 @@ const HealthcareSummaryTable = ({ answers }) => (
 );
 
 const mapStateToProps = state => ({
-  answers: path(
-    [state.answers.selectedPrisonerId],
-    state.answers.healthcare,
-  ),
+  answers: path([state.answers.selectedPrisonerId], state.answers.healthcare),
 });
 
 export default connect(mapStateToProps)(HealthcareSummaryTable);

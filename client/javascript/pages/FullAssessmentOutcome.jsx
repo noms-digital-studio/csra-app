@@ -31,15 +31,13 @@ const FullAssessmentOutcome = ({
       sharedCell: new RegExp('shared cell').test(
         riskAssessmentOutcome.recommendation,
       ),
-      conditions: riskAssessmentOutcome.recommendation ===
-        'shared cell with conditions',
+      conditions: riskAssessmentOutcome.recommendation === 'shared cell with conditions',
     },
   });
 
   return (
     <DocumentTitle title={title}>
       <div>
-
         <div className="grid-row">
           <div className="column-two-thirds">
             <h1 className="heading-xlarge">
