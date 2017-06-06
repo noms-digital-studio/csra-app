@@ -5,11 +5,11 @@ import { capitalize } from '../utils';
 
 const QuestionAnswerRow = ({ question, answer, dataTags }) =>
   (not(isEmpty(answer))
-    ? <tr {...dataTags}>
+    ? <tr>
       <td className="heading-small">
         {question}
       </td>
-      <td>
+      <td {...dataTags}>
         <p>{capitalize(answer.answer)}</p>
         {answer[`reasons-${answer.answer}`] &&
         <p data-comments>

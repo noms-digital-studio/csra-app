@@ -11,47 +11,47 @@ function whenALowRiskPrisonerIsAssessed() {
   expect(RiskAssessmentPrisonerProfilePage.prisonerName).to.equal('John Lowe');
 
   RiskAssessmentPrisonerProfilePage.clickContinue();
-  expect(RiskAssessmentExplanationPage.mainHeading).to.contain('Explain this');
+  expect(RiskAssessmentExplanationPage.mainHeading).to.equal('Explain this');
 
   RiskAssessmentExplanationPage.confirmAndContinue();
-  expect(RiskAssessmentExplanationPage.mainHeading).to.contain('Current recommendation: shared cell');
+  expect(RiskAssessmentExplanationPage.mainHeading).to.equalIgnoreCase('Current recommendation: shared cell');
 
   RiskAssessmentExplanationPage.clickContinue();
-  expect(RiskAssessmentCommentsPage.mainHeading).to.contain('How do you think they feel about sharing a cell at this moment?');
+  expect(RiskAssessmentCommentsPage.mainHeading).to.equal('How do you think they feel about sharing a cell at this moment?');
 
   RiskAssessmentCommentsPage.commentAndContinue('sharing comment');
-  expect(RiskAssessmentYesNoPage.mainHeading).to.contain('Is there any indication they might seriously hurt a cellmate?');
+  expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Is there any indication they might seriously hurt a cellmate?');
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
-  expect(RiskAssessmentYesNoPage.mainHeading).to.contain('Do you think they\'re vulnerable?');
+  expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Do you think they\'re vulnerable?');
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
-  expect(RiskAssessmentYesNoPage.mainHeading).to.contain('Are they part of a gang, or likely to join a gang in prison?');
+  expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Are they part of a gang, or likely to join a gang in prison?');
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
-  expect(RiskAssessmentYesNoPage.mainHeading).to.contain('Have they used drugs in the last month?');
+  expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Have they used drugs in the last month?');
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
-  expect(RiskAssessmentYesNoPage.mainHeading).to.contain('Do they have any hostile views or prejudices about a particular group?');
+  expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Do they have any hostile views or prejudices about a particular group?');
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
-  expect(RiskAssessmentYesNoPage.mainHeading).to.contain('Are there any other reasons why you would recommend they have a single cell?');
+  expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Are there any other reasons why you would recommend they have a single cell?');
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
-  expect(RiskAssessmentSummaryPage.mainHeading).to.contain('Risk assessment summary');
-  expect(RiskAssessmentSummaryPage.name).to.equal('John Lowe');
-  expect(RiskAssessmentSummaryPage.dob).to.equal('01-Oct-1970');
-  expect(RiskAssessmentSummaryPage.nomisId).to.equal('J1234LO');
+  expect(RiskAssessmentSummaryPage.mainHeading).to.equal('Risk assessment summary');
+  expect(RiskAssessmentSummaryPage.name).to.equalIgnoreCase('John Lowe');
+  expect(RiskAssessmentSummaryPage.dob).to.equalIgnoreCase('01-Oct-1970');
+  expect(RiskAssessmentSummaryPage.nomisId).to.equalIgnoreCase('J1234LO');
 
-  expect(RiskAssessmentSummaryPage.outcome).to.contain('Shared cell');
-  expect(RiskAssessmentSummaryPage.initialFeelings).to.contain('sharing comment');
-  expect(RiskAssessmentSummaryPage.harm).to.contain('No');
-  expect(RiskAssessmentSummaryPage.vulnerability).to.contain('No');
-  expect(RiskAssessmentSummaryPage.gang).to.contain('No');
+  expect(RiskAssessmentSummaryPage.outcome).to.equalIgnoreCase('shared cell');
+  expect(RiskAssessmentSummaryPage.initialFeelings).to.equalIgnoreCase('sharing comment');
+  expect(RiskAssessmentSummaryPage.harm).to.equalIgnoreCase('no');
+  expect(RiskAssessmentSummaryPage.vulnerability).to.equalIgnoreCase('no');
+  expect(RiskAssessmentSummaryPage.gang).to.equalIgnoreCase('no');
 
-  expect(RiskAssessmentSummaryPage.narcotics).to.contain('No');
-  expect(RiskAssessmentSummaryPage.prejudice).to.contain('No');
-  expect(RiskAssessmentSummaryPage.officerComments).to.contain('No');
+  expect(RiskAssessmentSummaryPage.narcotics).to.equalIgnoreCase('no');
+  expect(RiskAssessmentSummaryPage.prejudice).to.equalIgnoreCase('no');
+  expect(RiskAssessmentSummaryPage.officerComments).to.equalIgnoreCase('no');
 
   RiskAssessmentSummaryPage.clickContinue();
 }

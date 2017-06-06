@@ -8,6 +8,7 @@ import HealthcareSummary from './pages/healthcare/HealthcareSummary.page';
 
 import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
 
+
 function whenAPrisonersHealthcareResultsAreEntered() {
   DashboardPage.clickHealthcareStartLinkForNomisId('J1234LO');
   expect(HealthcareOutcomePage.mainHeading).to.contain('Does healthcare recommend a single cell?');
@@ -25,19 +26,19 @@ function whenAPrisonersHealthcareResultsAreEntered() {
   HealthcareNursePage.enterDate('21', '07', '2017');
   HealthcareNursePage.clickContinue();
   expect(HealthcareSummary.mainHeading).to.equal('Healthcare summary');
-  expect(HealthcareSummary.name).to.equal('John Lowe');
-  expect(HealthcareSummary.dob).to.equal('01-Oct-1970');
-  expect(HealthcareSummary.nomisId).to.equal('J1234LO');
-  expect(HealthcareSummary.assessor).to.equal('Jane Doe');
-  expect(HealthcareSummary.role).to.equal('Nurse');
-  expect(HealthcareSummary.date).to.equal('21-07-2017');
-  expect(HealthcareSummary.outcome).to.equal('shared cell');
-  expect(HealthcareSummary.comments).to.equal('a healthcare comment');
-  expect(HealthcareSummary.consent).to.equal('no');
+  expect(HealthcareSummary.name).to.equalIgnoreCase('John Lowe');
+  expect(HealthcareSummary.dob).to.equalIgnoreCase('01-Oct-1970');
+  expect(HealthcareSummary.nomisId).to.equalIgnoreCase('J1234LO');
+  expect(HealthcareSummary.assessor).to.equalIgnoreCase('Jane Doe');
+  expect(HealthcareSummary.role).to.equalIgnoreCase('nurse');
+  expect(HealthcareSummary.date).to.equalIgnoreCase('21-07-2017');
+  expect(HealthcareSummary.outcome).to.equalIgnoreCase('shared cell');
+  expect(HealthcareSummary.comments).to.equalIgnoreCase('a healthcare comment');
+  expect(HealthcareSummary.consent).to.equalIgnoreCase('no');
 
   HealthcareSummary.clickChange();
   HealthcareConsentPage.clickYesAndContinue();
-  expect(HealthcareSummary.consent).to.equal('yes');
+  expect(HealthcareSummary.consent).to.equalIgnoreCase('yes');
 }
 
 function thenThereHealthcareAssessmentIsComplete() {
