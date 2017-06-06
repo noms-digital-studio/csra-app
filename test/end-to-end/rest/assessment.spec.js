@@ -6,7 +6,7 @@ const riskAssessment = {
   nomis_id: 'AS223213',
   type: 'risk',
   outcome: 'single',
-  viper: 0.123,
+  viper: 0.12,
   questions: {
     Q1: {
       question_id: 'Q1',
@@ -25,7 +25,7 @@ const healthcareAssessment = {
   nomis_id: 'AS223213',
   type: 'healthcare',
   outcome: 'single',
-  viper: 0.123,
+  viper: 0.12,
   questions: {
     Q1: {
       question_id: 'Q1',
@@ -68,7 +68,7 @@ describe('POST /api/assessment', function block() {
           .which.is.a('number');
       }),
   );
-  it.skip('rejects an invalid assessment', () =>
+  it('rejects an invalid assessment', () =>
     request(baseUrl)
       .post('/api/assessment')
       .send({ some: 'junk' })
@@ -76,6 +76,7 @@ describe('POST /api/assessment', function block() {
       .then((res) => {
         expect(res.body.status).to.equal('ERROR');
         expect(res.body).to.have.property('error');
+        expect(res.body.error).to.have.property('code', 'validation');
       }),
   );
 });
