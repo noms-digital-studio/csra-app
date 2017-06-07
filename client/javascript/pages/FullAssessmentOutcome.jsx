@@ -92,7 +92,7 @@ const FullAssessmentOutcome = ({
             />
           </div>
 
-          <button className="button">
+          <button className="button" data-continue-button>
             Complete Assessment
           </button>
         </form>

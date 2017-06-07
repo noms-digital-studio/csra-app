@@ -5,6 +5,7 @@ class RiskAssessmentExplanationPage extends BasePage {
   clickContinue() {
     browser.click('[data-continue-button]');
   }
+
   clickCheckbox() {
     browser.click('[data-confirm-checkbox]');
   }
