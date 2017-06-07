@@ -5,11 +5,15 @@ import HealthcareNursePage from '../pages/healthcare/HealthcareNurse.page';
 import DashboardPage from '../pages/Dashboard.page';
 import HealthcareSummary from '../pages/healthcare/HealthcareSummary.page';
 
-function whenAPrisonersHealthcareResultsAreEntered() {
+function whenAPrisonersHealthcareResultsAreEntered(singleCellRecommended) {
   DashboardPage.clickHealthcareStartLinkForNomisId('J1234LO');
   expect(HealthcareOutcomePage.mainHeading).to.contain('Does healthcare recommend a single cell?');
 
-  HealthcareOutcomePage.clickNoAndContinue();
+  if (singleCellRecommended) {
+    HealthcareOutcomePage.clickYesAndContinue();
+  } else {
+    HealthcareOutcomePage.clickNoAndContinue();
+  }
   expect(HealthcareCommentsPage.mainHeading).to.contain('Enter all the comments on the healthcare form');
 
   HealthcareCommentsPage.commentAndContinue('a healthcare comment');
@@ -28,7 +32,11 @@ function whenAPrisonersHealthcareResultsAreEntered() {
   expect(HealthcareSummary.assessor).to.equalIgnoreCase('Jane Doe');
   expect(HealthcareSummary.role).to.equalIgnoreCase('nurse');
   expect(HealthcareSummary.date).to.equalIgnoreCase('21-07-2017');
-  expect(HealthcareSummary.outcome).to.equalIgnoreCase('shared cell');
+  if (singleCellRecommended) {
+    expect(HealthcareSummary.outcome).to.equalIgnoreCase('single cell');
+  } else {
+    expect(HealthcareSummary.outcome).to.equalIgnoreCase('shared cell');
+  }
   expect(HealthcareSummary.comments).to.equalIgnoreCase('a healthcare comment');
   expect(HealthcareSummary.consent).to.equalIgnoreCase('no');
 

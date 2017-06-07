@@ -9,7 +9,7 @@ function thenASingleCellIsRecommended() {
   expect(row.getText()).to.equal('Ian Rate I9876RA 23-Mar-1988 Complete Start Single cell');
 }
 
-describe('Risk assessment (High viper score)', () => {
+describe('Risk assessment (High VIPER score)', () => {
   before(() => {
     AdminPage.visit();
     expect(AdminPage.mainHeading).to.equal('Admin');

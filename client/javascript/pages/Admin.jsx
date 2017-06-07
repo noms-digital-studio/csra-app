@@ -89,7 +89,7 @@ class Admin extends Component {
         </button>
 
         <h3 className="heading-medium">Reset</h3>
-        <button onClick={() => this.clearBrowser()} className="button">
+        <button onClick={() => this.clearBrowser()} className="button" data-clear-button>
           Clear Browser Session and Local Storage
         </button>
 

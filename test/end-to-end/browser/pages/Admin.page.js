@@ -13,6 +13,10 @@ class AdminPage extends BasePage {
     browser.click('[data-continue]');
   }
 
+  clickClearButton() {
+    browser.click('[data-clear-button]');
+  }
+
   loadTestUsers() {
     this.clickLoadDataButton();
     this.clickContinueButton();

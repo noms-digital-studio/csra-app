@@ -13,7 +13,7 @@ describe('CSRA assessment', () => {
 
   it('Record a prisoner`s healthcare details', () => {
     givenThatTheOfficerIsSignedIn();
-    whenAPrisonersHealthcareResultsAreEntered();
+    whenAPrisonersHealthcareResultsAreEntered(false);
     thenTheHealthcareAssessmentIsComplete();
   });
 });

@@ -15,8 +15,12 @@ class FullAssessmentOutcomePage extends BasePage {
     return browser.getText('[data-prisoner-nomis-id]');
   }
 
-  get recommendation() {
+  get riskRecommendation() {
     return browser.getText('[data-risk-assessment-outcome]');
+  }
+
+  get healthRecommendation() {
+    return browser.getText('[data-healthcare-outcome]');
   }
 
   clickCheckbox() {

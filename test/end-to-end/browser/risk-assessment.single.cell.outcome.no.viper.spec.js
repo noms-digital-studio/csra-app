@@ -9,7 +9,7 @@ function thenASingleCellIsRecommended() {
   expect(row.getText()).to.equal('James Neo J6285NE 03-Dec-1958 Complete Start Single cell');
 }
 
-describe('Risk assessment (No Viperscore)', () => {
+describe('Risk assessment (No VIPER score)', () => {
   before(() => {
     AdminPage.visit();
     expect(AdminPage.mainHeading).to.equal('Admin');
