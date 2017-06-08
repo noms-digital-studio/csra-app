@@ -22,7 +22,7 @@ describe('Both assessments (Single cell outcome)', () => {
     browser.reload();
   });
 
-  function thenTheFullAssessmentIsCompleted(riskRecommendation, healthRecommendation) {
+  function thenTheFullAssessmentIsCompletedWith({ riskRecommendation, healthRecommendation }) {
     HealthcareSummary.clickContinue();
     expect(FullAssessmentOutcomePage.mainHeading).to.equal('Risk and healthcare assessment outcome');
     expect(FullAssessmentOutcomePage.name).to.equalIgnoreCase('John Lowe');
@@ -46,7 +46,7 @@ describe('Both assessments (Single cell outcome)', () => {
     whenAVulnerablePrisonerIsAssessed();
     thenASingleCellIsRecommended();
     whenHealthcareRecommendsSharedCell();
-    thenTheFullAssessmentIsCompleted('single', 'shared');
+    thenTheFullAssessmentIsCompletedWith({ riskRecommendation: 'single', healthRecommendation: 'shared' });
   });
 
   it('Assesses a prisoner that healthcare deem as a risk', () => {
@@ -54,6 +54,6 @@ describe('Both assessments (Single cell outcome)', () => {
     whenALowRiskPrisonerIsAssessed();
     thenASharedCellIsRecommended();
     whenHealthcareRecommendsSingleCell();
-    thenTheFullAssessmentIsCompleted('shared', 'single');
+    thenTheFullAssessmentIsCompletedWith({ riskRecommendation: 'shared', healthRecommendation: 'single' });
   });
 });
