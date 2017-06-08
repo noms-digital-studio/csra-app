@@ -28,6 +28,7 @@ describe('<QnASummaryTable/>', () => {
     const wrapper = mount(
       <QnASummaryTable questionsAnswers={questionAnswers} />,
     );
+
     const rows = wrapper.find(QuestionAnswerRow);
 
     questionAnswers.forEach((qNa, index) => {
