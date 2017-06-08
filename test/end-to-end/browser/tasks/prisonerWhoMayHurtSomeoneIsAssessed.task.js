@@ -42,5 +42,4 @@ function thenASingleCellIsRecommended() {
   expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Complete Start Single cell');
 }
 
-export { thenASingleCellIsRecommended };
-export default whenAPrisonerWhoMayHurtSomeoneIsAssessed;
+export { thenASingleCellIsRecommended, whenAPrisonerWhoMayHurtSomeoneIsAssessed };

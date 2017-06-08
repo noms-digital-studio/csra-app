@@ -22,5 +22,4 @@ function givenThatTheOfficerIsSignedInWithoutLoadingData() {
   expect(DashboardPage.mainHeading).to.equal('There is no one to assess.');
 }
 
-export { givenThatTheOfficerIsSignedInWithoutLoadingData };
-export default givenThatTheOfficerIsSignedIn;
+export { givenThatTheOfficerIsSignedInWithoutLoadingData, givenThatTheOfficerIsSignedIn };

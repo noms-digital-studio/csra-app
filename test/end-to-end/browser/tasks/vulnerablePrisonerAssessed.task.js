@@ -5,7 +5,7 @@ import RiskAssessmentCommentsPage from '../pages/risk-assessment/RiskAssessmentC
 import RiskAssessmentYesNoPage from '../pages/risk-assessment/RiskAssessmentYesNo.page';
 import RiskAssessmentSummaryPage from '../pages/risk-assessment/RiskAssessmentSummary.page';
 
-function whenAVulnerableRiskPrisonerIsAssessed() {
+function whenAVulnerablePrisonerIsAssessed() {
   DashboardPage.clickRiskAssessmentStartLinkForNomisId('J1234LO');
   expect(RiskAssessmentPrisonerProfilePage.mainHeading).to.contain('Confirm identity');
   expect(RiskAssessmentPrisonerProfilePage.prisonerName).to.equal('John Lowe');
@@ -45,5 +45,4 @@ function thenASingleCellIsRecommended() {
   expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Complete Start Single cell');
 }
 
-export { thenASingleCellIsRecommended };
-export default whenAVulnerableRiskPrisonerIsAssessed;
+export { thenASingleCellIsRecommended, whenAVulnerablePrisonerIsAssessed };

@@ -82,7 +82,9 @@ function thenASharedCellWithConditionsIsRecommended() {
   aSharedCellIsRecommended('Shared cell with conditions');
 }
 
-export { thenASharedCellIsRecommended };
-export { whenALowRiskPrisonerWhoUsesDrugsIsAssessed };
-export { thenASharedCellWithConditionsIsRecommended };
-export default whenALowRiskPrisonerIsAssessed;
+export {
+  thenASharedCellIsRecommended,
+  whenALowRiskPrisonerWhoUsesDrugsIsAssessed,
+  thenASharedCellWithConditionsIsRecommended,
+  whenALowRiskPrisonerIsAssessed,
+};

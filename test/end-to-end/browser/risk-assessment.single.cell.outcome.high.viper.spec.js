@@ -1,6 +1,6 @@
 import AdminPage from './pages/Admin.page';
 import DashboardPage from './pages/Dashboard.page';
-import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
+import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
 import whenAViolentPrisonerIsAssessed from './tasks/violentPrisonerAssessed.task';
 
 function thenASingleCellIsRecommended() {

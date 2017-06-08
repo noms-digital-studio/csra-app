@@ -1,9 +1,7 @@
-/* eslint-disable import/no-duplicates */
 import AdminPage from './pages/Admin.page';
-import whenALowRiskPrisonerIsAssessed from './tasks/lowRiskPrisonerAssessed.task';
-import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
-import { thenASharedCellIsRecommended } from './tasks/lowRiskPrisonerAssessed.task';
-import whenHealthcareRecommendsSharedCell from './tasks/prisonersHealthcareResultsAreEntered.task';
+import { thenASharedCellIsRecommended, whenALowRiskPrisonerIsAssessed } from './tasks/lowRiskPrisonerAssessed.task';
+import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
+import { whenHealthcareRecommendsSharedCell } from './tasks/prisonersHealthcareResultsAreEntered.task';
 import HealthcareSummary from './pages/healthcare/HealthcareSummary.page';
 import FullAssessmentOutcomePage from './pages/FullAssessmentOutcome.page';
 import FullAssessmentCompletePage from './pages/FullAssessmentComplete.page';

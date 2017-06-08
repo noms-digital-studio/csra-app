@@ -56,6 +56,8 @@ function whenHealthcareRecommendsSharedCell() {
   aPrisonersHealthcareResultsAreEntered(false);
 }
 
-export { thenTheHealthcareAssessmentIsComplete };
-export { whenHealthcareRecommendsSingleCell };
-export default whenHealthcareRecommendsSharedCell;
+export {
+  thenTheHealthcareAssessmentIsComplete,
+  whenHealthcareRecommendsSingleCell,
+  whenHealthcareRecommendsSharedCell,
+};

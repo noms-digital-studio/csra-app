@@ -1,8 +1,9 @@
-/* eslint-disable import/no-duplicates */
 import AdminPage from './pages/Admin.page';
-import { whenALowRiskPrisonerWhoUsesDrugsIsAssessed } from './tasks/lowRiskPrisonerAssessed.task';
-import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
-import { thenASharedCellWithConditionsIsRecommended } from './tasks/lowRiskPrisonerAssessed.task';
+import {
+  whenALowRiskPrisonerWhoUsesDrugsIsAssessed,
+  thenASharedCellWithConditionsIsRecommended,
+} from './tasks/lowRiskPrisonerAssessed.task';
+import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
 
 describe('Risk assessment (shared cell outcome with conditions)', () => {
   before(() => {

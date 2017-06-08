@@ -1,16 +1,14 @@
-/* eslint-disable import/no-duplicates */
 import AdminPage from './pages/Admin.page';
-import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
-import whenHealthcareRecommendsSharedCell from './tasks/prisonersHealthcareResultsAreEntered.task';
-import { whenHealthcareRecommendsSingleCell } from './tasks/prisonersHealthcareResultsAreEntered.task';
+import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
+import { whenHealthcareRecommendsSharedCell,
+  whenHealthcareRecommendsSingleCell,
+} from './tasks/prisonersHealthcareResultsAreEntered.task';
 import HealthcareSummary from './pages/healthcare/HealthcareSummary.page';
 import FullAssessmentOutcomePage from './pages/FullAssessmentOutcome.page';
 import FullAssessmentCompletePage from './pages/FullAssessmentComplete.page';
 import DashboardPage from './pages/Dashboard.page';
-import whenAVulnerablePrisonerIsAssessed from './tasks/vulnerablePrisonerAssessed.task';
-import { thenASingleCellIsRecommended } from './tasks/vulnerablePrisonerAssessed.task';
-import whenALowRiskPrisonerIsAssessed from './tasks/lowRiskPrisonerAssessed.task';
-import { thenASharedCellIsRecommended } from './tasks/lowRiskPrisonerAssessed.task';
+import { whenAVulnerablePrisonerIsAssessed, thenASingleCellIsRecommended } from './tasks/vulnerablePrisonerAssessed.task';
+import { whenALowRiskPrisonerIsAssessed, thenASharedCellIsRecommended } from './tasks/lowRiskPrisonerAssessed.task';
 
 describe('Both assessments (Single cell outcome)', () => {
   beforeEach(() => {

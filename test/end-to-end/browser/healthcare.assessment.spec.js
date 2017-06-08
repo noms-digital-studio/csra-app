@@ -1,8 +1,9 @@
-/* eslint-disable import/no-duplicates */
 import AdminPage from './pages/Admin.page';
-import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
-import whenHealthcareRecommendsSharedCell from './tasks/prisonersHealthcareResultsAreEntered.task';
-import { thenTheHealthcareAssessmentIsComplete } from './tasks/prisonersHealthcareResultsAreEntered.task';
+import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
+import {
+  whenHealthcareRecommendsSharedCell,
+  thenTheHealthcareAssessmentIsComplete,
+} from './tasks/prisonersHealthcareResultsAreEntered.task';
 
 describe('Healthcare assessment', () => {
   before(() => {
