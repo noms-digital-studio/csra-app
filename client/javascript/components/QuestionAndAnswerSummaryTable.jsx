@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import QuestionAnswerRow from './QuestionAnswerRow';
 
-const QnASummaryTable = ({ title, questionsAnswers }) => (
+const QuestionAndAnswerSummaryTable = ({ title, questionsAnswers }) => (
   <table className="check-your-answers c-answers-table">
     <thead>
       <tr>
@@ -21,7 +21,7 @@ const QnASummaryTable = ({ title, questionsAnswers }) => (
   </table>
 );
 
-QnASummaryTable.propTypes = {
+QuestionAndAnswerSummaryTable.propTypes = {
   title: PropTypes.string,
   questionsAnswers: PropTypes.arrayOf(
     PropTypes.shape({
@@ -35,8 +35,8 @@ QnASummaryTable.propTypes = {
   ),
 };
 
-QnASummaryTable.defaultProps = {
+QuestionAndAnswerSummaryTable.defaultProps = {
   questionsAnswers: [],
 };
 
-export default QnASummaryTable;
+export default QuestionAndAnswerSummaryTable;

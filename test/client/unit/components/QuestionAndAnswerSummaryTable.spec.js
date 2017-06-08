@@ -1,14 +1,14 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
-import QnASummaryTable
-  from '../../../../client/javascript/components/QnASummaryTable';
+import QuestionAndAnswerSummaryTable
+  from '../../../../client/javascript/components/QuestionAndAnswerSummaryTable';
 import QuestionAnswerRow
   from '../../../../client/javascript/components/QuestionAnswerRow';
 
-describe('<QnASummaryTable/>', () => {
+describe('<QuestionAndAnswerSummaryTable/>', () => {
   it('renders a title', () => {
-    const wrapper = shallow(<QnASummaryTable title="foo-title" />);
+    const wrapper = shallow(<QuestionAndAnswerSummaryTable title="foo-title" />);
     expect(wrapper.text()).to.contain('foo-title');
   });
 
@@ -26,7 +26,7 @@ describe('<QnASummaryTable/>', () => {
       },
     ];
     const wrapper = mount(
-      <QnASummaryTable questionsAnswers={questionAnswers} />,
+      <QuestionAndAnswerSummaryTable questionsAnswers={questionAnswers} />,
     );
 
     const rows = wrapper.find(QuestionAnswerRow);
