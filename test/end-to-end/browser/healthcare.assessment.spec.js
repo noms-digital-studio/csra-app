@@ -1,10 +1,10 @@
 /* eslint-disable import/no-duplicates */
 import AdminPage from './pages/Admin.page';
 import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
-import whenAPrisonersHealthcareResultsAreEntered from './tasks/prisonersHealthcareResultsAreEntered.task';
+import whenHealthcareRecommendsSharedCell from './tasks/prisonersHealthcareResultsAreEntered.task';
 import { thenTheHealthcareAssessmentIsComplete } from './tasks/prisonersHealthcareResultsAreEntered.task';
 
-describe('CSRA assessment', () => {
+describe('Healthcare assessment', () => {
   before(() => {
     AdminPage.visit();
     expect(AdminPage.mainHeading).to.equal('Admin');
@@ -13,7 +13,7 @@ describe('CSRA assessment', () => {
 
   it('Record a prisoner`s healthcare details', () => {
     givenThatTheOfficerIsSignedIn();
-    whenAPrisonersHealthcareResultsAreEntered(false);
+    whenHealthcareRecommendsSharedCell();
     thenTheHealthcareAssessmentIsComplete();
   });
 });

@@ -1,7 +1,8 @@
 /* eslint-disable import/no-duplicates */
 import AdminPage from './pages/Admin.page';
 import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
-import whenAPrisonersHealthcareResultsAreEntered from './tasks/prisonersHealthcareResultsAreEntered.task';
+import whenHealthcareRecommendsSharedCell from './tasks/prisonersHealthcareResultsAreEntered.task';
+import { whenHealthcareRecommendsSingleCell } from './tasks/prisonersHealthcareResultsAreEntered.task';
 import HealthcareSummary from './pages/healthcare/HealthcareSummary.page';
 import FullAssessmentOutcomePage from './pages/FullAssessmentOutcome.page';
 import FullAssessmentCompletePage from './pages/FullAssessmentComplete.page';
@@ -42,19 +43,19 @@ describe('Both assessments (Single cell outcome)', () => {
     expect(row.getText()).to.equalIgnoreCase(`John Lowe J1234LO 01-Oct-1970 Complete Complete ${riskRecommendation} Cell`);
   }
 
-  it('Assesses a vulnerable risk prisoner', () => {
+  it('Assesses a vulnerable prisoner', () => {
     givenThatTheOfficerIsSignedIn();
     whenAVulnerablePrisonerIsAssessed();
     thenASingleCellIsRecommended();
-    whenAPrisonersHealthcareResultsAreEntered(false);
+    whenHealthcareRecommendsSharedCell();
     thenTheFullAssessmentIsCompleted('single', 'shared');
   });
 
-  it('Assesses a healthcare risk prisoner', () => {
+  it('Assesses a prisoner that healthcare deem as a risk', () => {
     givenThatTheOfficerIsSignedIn();
     whenALowRiskPrisonerIsAssessed();
     thenASharedCellIsRecommended();
-    whenAPrisonersHealthcareResultsAreEntered(true);
+    whenHealthcareRecommendsSingleCell();
     thenTheFullAssessmentIsCompleted('shared', 'single');
   });
 });

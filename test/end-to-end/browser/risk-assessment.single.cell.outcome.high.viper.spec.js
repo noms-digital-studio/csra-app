@@ -9,14 +9,14 @@ function thenASingleCellIsRecommended() {
   expect(row.getText()).to.equal('Ian Rate I9876RA 23-Mar-1988 Complete Start Single cell');
 }
 
-describe('Risk assessment (High VIPER score)', () => {
+describe('Risk assessment for a prisonaer with a high VIPER score (single cell outcome)', () => {
   before(() => {
     AdminPage.visit();
     expect(AdminPage.mainHeading).to.equal('Admin');
     AdminPage.loadTestUsers();
   });
 
-  it('Assesses a violent prisoner', () => {
+  it('Assesses a prisoner with a high viper score', () => {
     givenThatTheOfficerIsSignedIn();
     whenAViolentPrisonerIsAssessed();
     thenASingleCellIsRecommended();

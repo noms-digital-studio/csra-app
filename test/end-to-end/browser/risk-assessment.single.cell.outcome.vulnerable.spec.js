@@ -4,7 +4,7 @@ import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
 import whenAVulnerableRiskPrisonerIsAssessed from './tasks/vulnerablePrisonerAssessed.task';
 import { thenASingleCellIsRecommended } from './tasks/vulnerablePrisonerAssessed.task';
 
-describe('Risk assessment (vulnerable)', () => {
+describe('Risk assessment for a vulnerable prisoner (single cell outcome)', () => {
   before(() => {
     AdminPage.visit();
     expect(AdminPage.mainHeading).to.equal('Admin');

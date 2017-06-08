@@ -5,7 +5,7 @@ import HealthcareNursePage from '../pages/healthcare/HealthcareNurse.page';
 import DashboardPage from '../pages/Dashboard.page';
 import HealthcareSummary from '../pages/healthcare/HealthcareSummary.page';
 
-function whenAPrisonersHealthcareResultsAreEntered(singleCellRecommended) {
+function aPrisonersHealthcareResultsAreEntered(singleCellRecommended) {
   DashboardPage.clickHealthcareStartLinkForNomisId('J1234LO');
   expect(HealthcareOutcomePage.mainHeading).to.contain('Does healthcare recommend a single cell?');
 
@@ -32,11 +32,7 @@ function whenAPrisonersHealthcareResultsAreEntered(singleCellRecommended) {
   expect(HealthcareSummary.assessor).to.equalIgnoreCase('Jane Doe');
   expect(HealthcareSummary.role).to.equalIgnoreCase('nurse');
   expect(HealthcareSummary.date).to.equalIgnoreCase('21-07-2017');
-  if (singleCellRecommended) {
-    expect(HealthcareSummary.outcome).to.equalIgnoreCase('single cell');
-  } else {
-    expect(HealthcareSummary.outcome).to.equalIgnoreCase('shared cell');
-  }
+  expect(HealthcareSummary.outcome).to.equalIgnoreCase(singleCellRecommended ? 'single cell' : 'shared cell');
   expect(HealthcareSummary.comments).to.equalIgnoreCase('a healthcare comment');
   expect(HealthcareSummary.consent).to.equalIgnoreCase('no');
 
@@ -52,5 +48,14 @@ function thenTheHealthcareAssessmentIsComplete() {
   expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Start Complete');
 }
 
+function whenHealthcareRecommendsSingleCell() {
+  aPrisonersHealthcareResultsAreEntered(true);
+}
+
+function whenHealthcareRecommendsSharedCell() {
+  aPrisonersHealthcareResultsAreEntered(false);
+}
+
 export { thenTheHealthcareAssessmentIsComplete };
-export default whenAPrisonersHealthcareResultsAreEntered;
+export { whenHealthcareRecommendsSingleCell };
+export default whenHealthcareRecommendsSharedCell;

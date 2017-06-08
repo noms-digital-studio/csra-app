@@ -3,7 +3,7 @@ import AdminPage from './pages/Admin.page';
 import whenALowRiskPrisonerIsAssessed from './tasks/lowRiskPrisonerAssessed.task';
 import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
 import { thenASharedCellIsRecommended } from './tasks/lowRiskPrisonerAssessed.task';
-import whenAPrisonersHealthcareResultsAreEntered from './tasks/prisonersHealthcareResultsAreEntered.task';
+import whenHealthcareRecommendsSharedCell from './tasks/prisonersHealthcareResultsAreEntered.task';
 import HealthcareSummary from './pages/healthcare/HealthcareSummary.page';
 import FullAssessmentOutcomePage from './pages/FullAssessmentOutcome.page';
 import FullAssessmentCompletePage from './pages/FullAssessmentComplete.page';
@@ -38,7 +38,7 @@ describe('Both assessments (Shared cell outcome)', () => {
     givenThatTheOfficerIsSignedIn();
     whenALowRiskPrisonerIsAssessed();
     thenASharedCellIsRecommended();
-    whenAPrisonersHealthcareResultsAreEntered(false);
+    whenHealthcareRecommendsSharedCell();
     thenTheFullAssessmentIsCompleted();
   });
 });
