@@ -1,8 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 import { replace } from 'react-router-redux';
-import path from 'ramda/src/path';
 
 import { cellAssignment } from '../services';
 import { capitalize } from '../utils';
@@ -56,7 +55,7 @@ const FullAssessmentOutcome = ({
           </div>
         </div>
 
-        <h2 className="heading-large">
+        <h2 data-recommended-outcome className="heading-large">
           Recommended outcome: {capitalize(finalOutcome)}
         </h2>
 
@@ -69,9 +68,11 @@ const FullAssessmentOutcome = ({
 
         <PrisonerProfile {...prisoner} />
 
-        <RiskAssessmentSummaryTable title="Risk assessment summary" />
+        <div data-risk-summary>
+          <RiskAssessmentSummaryTable title="Risk assessment summary" />
+        </div>
 
-        <div className="u-margin-bottom-large">
+        <div data-health-summary className="u-margin-bottom-large">
           <HealthcareSummaryTable title="Healthcare assessment summary" />
         </div>
 
