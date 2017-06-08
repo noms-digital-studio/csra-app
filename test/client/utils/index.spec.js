@@ -1,4 +1,9 @@
-import { allFormFieldsComplete, addUniqElementToList } from '../../../client/javascript/utils';
+import {
+  allFormFieldsComplete,
+  addUniqElementToList,
+  parseDate,
+  capitalize,
+} from '../../../client/javascript/utils';
 
 describe('Utils', () => {
   describe('#allFormFieldsComplete', () => {
@@ -40,6 +45,23 @@ describe('Utils', () => {
       expect(addUniqElementToList(1, [1])).to.eql([1]);
       expect(addUniqElementToList({}, [{}])).to.eql([{}]);
       expect(addUniqElementToList([1], [[1]])).to.eql([[1]]);
+    });
+  });
+
+  describe('#parseDate', () => {
+    it('parse the date to a human readable for format', () => {
+      const date = new Date(1496928311510);
+      const expected = 'Thursday 8 June 2017';
+      expect(parseDate(date)).to.equal(expected);
+    });
+  });
+
+  describe('#', () => {
+    it('capitalizes the first letter of a sentence', () => {
+      const text = 'foo bar baz';
+      const expected = 'Foo bar baz';
+
+      expect(capitalize(text)).to.equal(expected);
     });
   });
 });

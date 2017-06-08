@@ -8,7 +8,7 @@ import isEmpty from 'ramda/src/isEmpty';
 import not from 'ramda/src/not';
 
 import { getViperScores, selectOffender } from '../actions';
-import { todaysDate, capitalize } from '../utils';
+import { parseDate, capitalize } from '../utils';
 
 import routes from '../constants/routes';
 
@@ -183,7 +183,7 @@ Dashboard.defaultProps = {
   getViperScores: () => {},
   onOffenderSelect: () => {},
   profiles: [],
-  date: todaysDate(new Date()),
+  date: parseDate(new Date()),
 };
 
 export { Dashboard };

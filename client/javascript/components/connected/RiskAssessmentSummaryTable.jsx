@@ -4,9 +4,9 @@ import path from 'ramda/src/path';
 
 import { calculateRiskFor as viperScoreFor, extractDecision } from '../../services';
 
-import QNASummaryTable from '../QNASummaryTable';
+import QnASummaryTable from '../QnASummaryTable';
 
-const RiskAssessmentSummaryTable = props => <QNASummaryTable {...props} />;
+const RiskAssessmentSummaryTable = props => <QnASummaryTable {...props} />;
 
 const mapStateToProps = (state) => {
   const answers = path(

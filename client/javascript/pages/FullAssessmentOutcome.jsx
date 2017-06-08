@@ -122,14 +122,11 @@ FullAssessmentOutcome.propTypes = {
 FullAssessmentOutcome.defaultProps = {
   title: 'Assessment Outcome',
   prisoner: {},
+  onSubmit: () => {}
 };
 
 const mapStateToProps = (state, ownProps) => ({
   ...ownProps,
-  questions: {
-    healthcare: state.questions.healthcare,
-    riskAssessment: state.questions.riskAssessment,
-  },
   prisoner: state.offender.selected,
   riskAssessmentOutcome: state.riskAssessmentStatus.completed.find(
     item => item.nomisId === state.offender.selected.nomisId,
@@ -137,16 +134,6 @@ const mapStateToProps = (state, ownProps) => ({
   healthcareOutcome: state.healthcareStatus.completed.find(
     item => item.nomisId === state.offender.selected.nomisId,
   ),
-  answers: {
-    riskAssessment: path(
-      [state.answers.selectedPrisonerId],
-      state.answers.riskAssessment,
-    ),
-    healthcare: path(
-      [state.answers.selectedPrisonerId],
-      state.answers.healthcare,
-    ),
-  },
 });
 
 const mapActionsToProps = dispatch => ({

@@ -29,7 +29,7 @@ QuestionAnswerRow.propTypes = {
   answer: PropTypes.shape({
     answer: PropTypes.string,
   }),
-  dataTags: PropTypes.objectOf(PropTypes.string),
+  dataTags: PropTypes.objectOf(PropTypes.bool),
 };
 
 QuestionAnswerRow.defaultProps = {

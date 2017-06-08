@@ -5,6 +5,7 @@ const jsdom = require('jsdom');
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const sinon = require('sinon');
+const chaiString = require('chai-string');
 
 const { JSDOM } = jsdom;
 const { document } = new JSDOM(undefined, { url: 'http://example.com' }).window;
@@ -18,6 +19,7 @@ const exposedProperties = [
 
 // Test Assertion libraries
 chai.use(chaiAsPromised);
+chai.use(chaiString);
 
 global.expect = chai.expect;
 global.sinon = sinon;

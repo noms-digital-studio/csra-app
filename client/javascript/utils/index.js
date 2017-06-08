@@ -6,7 +6,7 @@ export const allFormFieldsComplete = (formData = {}, expectedKeys = []) => {
   return expectedKeys.every(key => !!formData[key]);
 };
 
-export const todaysDate = (date) => {
+export const parseDate = (date) => {
   const dayNames = [
     'Sunday',
     'Monday',

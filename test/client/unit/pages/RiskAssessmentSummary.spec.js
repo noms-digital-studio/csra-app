@@ -78,7 +78,9 @@ describe('<RiskAssessmentSummary />', () => {
             <RiskAssessmentSummary />
           </Provider>,
         );
+
         const profileText = wrapper.find('[data-profile]').text();
+
         expect(profileText).to.contain('foo-name');
         expect(profileText).to.contain('foo-surname');
         expect(profileText).to.contain('foo-date');
