@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+import { post } from 'superagent';
 import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
@@ -85,6 +87,7 @@ const RiskAssessmentSummary = ({
 );
 
 RiskAssessmentSummary.propTypes = {
+  title: PropTypes.string,
   viperScore: PropTypes.string,
   outcome: PropTypes.shape({
     recommendation: PropTypes.string,
@@ -139,12 +142,42 @@ const mapStateToProps = state => ({
   ),
 });
 
+function postAssessmentToBackend(nomisId) {
+  const aTestRiskAssessment = {
+    nomis_id: nomisId,
+    type: 'risk',
+    outcome: 'single',
+    viper: 0.12,
+    questions: {
+      Q1: {
+        question_id: 'Q1',
+        question: 'A test question about XXX?',
+        answer: 'Yes',
+      },
+    },
+    reasons: [
+      {
+        question_id: 'Q1',
+        reason: 'They said yes',
+      },
+    ],
+  };
+
+  const target = `${window.location.origin}/api/assessment`;
+  console.log('posting test data to endpoint: ', target);
+  post(target, aTestRiskAssessment, (err, res) => {
+    console.log('response: ', JSON.stringify(res, null, 2));
+    console.log('error: ', err);
+  });
+}
 const mapActionsToProps = dispatch => ({
   onClear: (nomisId) => {
     dispatch(clearAnswers(nomisId));
     dispatch(replace(`${routes.RISK_ASSESSMENT}/introduction`));
   },
   onSubmit: ({ healthcareAssessmentComplete, outcome, nomisId }) => {
+    postAssessmentToBackend(nomisId);
+
     dispatch(completeRiskAssessmentFor({ ...outcome, nomisId }));
     if (healthcareAssessmentComplete) {
       dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
