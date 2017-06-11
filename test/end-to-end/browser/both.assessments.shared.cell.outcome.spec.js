@@ -1,5 +1,5 @@
 import AdminPage from './pages/Admin.page';
-import { thenASharedCellIsRecommended, whenALowRiskPrisonerIsAssessed } from './tasks/lowRiskPrisonerAssessed.task';
+import { thenTheAssessmentIsCompleted, whenALowRiskPrisonerIsAssessed } from './tasks/lowRiskPrisonerAssessed.task';
 import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
 import { whenHealthcareRecommendsSharedCell } from './tasks/prisonersHealthcareResultsAreEntered.task';
 import HealthcareSummary from './pages/healthcare/HealthcareSummary.page';
@@ -35,7 +35,7 @@ describe('Both assessments (Shared cell outcome)', () => {
   it('Assesses a low risk prisoner', () => {
     givenThatTheOfficerIsSignedIn();
     whenALowRiskPrisonerIsAssessed();
-    thenASharedCellIsRecommended();
+    thenTheAssessmentIsCompleted();
     whenHealthcareRecommendsSharedCell();
     thenTheFullAssessmentIsCompleted();
   });

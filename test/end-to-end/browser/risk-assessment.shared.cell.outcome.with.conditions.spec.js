@@ -1,7 +1,7 @@
 import AdminPage from './pages/Admin.page';
 import {
   whenALowRiskPrisonerWhoUsesDrugsIsAssessed,
-  thenASharedCellWithConditionsIsRecommended,
+  thenTheAssessmentIsCompleted,
 } from './tasks/lowRiskPrisonerAssessed.task';
 import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
 
@@ -19,6 +19,6 @@ describe('Risk assessment (shared cell outcome with conditions)', () => {
   it('Assesses a low risk prisoner who uses drugs', () => {
     givenThatTheOfficerIsSignedIn();
     whenALowRiskPrisonerWhoUsesDrugsIsAssessed();
-    thenASharedCellWithConditionsIsRecommended();
+    thenTheAssessmentIsCompleted();
   });
 });

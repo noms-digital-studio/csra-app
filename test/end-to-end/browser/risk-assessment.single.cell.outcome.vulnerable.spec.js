@@ -1,6 +1,6 @@
 import AdminPage from './pages/Admin.page';
 import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
-import { thenASingleCellIsRecommended, whenAVulnerablePrisonerIsAssessed } from './tasks/vulnerablePrisonerAssessed.task';
+import { thenTheAssessmentIsCompleted, whenAVulnerablePrisonerIsAssessed } from './tasks/vulnerablePrisonerAssessed.task';
 
 describe('Risk assessment for a vulnerable prisoner (single cell outcome)', () => {
   before(() => {
@@ -12,6 +12,6 @@ describe('Risk assessment for a vulnerable prisoner (single cell outcome)', () =
   it('Assesses a vulnerable prisoner', () => {
     givenThatTheOfficerIsSignedIn();
     whenAVulnerablePrisonerIsAssessed();
-    thenASingleCellIsRecommended();
+    thenTheAssessmentIsCompleted();
   });
 });

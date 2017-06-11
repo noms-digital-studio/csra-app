@@ -18,13 +18,14 @@ const profiles = [
     dob: 'foo-age',
     assessmentCompleted: {
       nomisId: 'foo-id',
-      recommendation: 'Single Cell',
+      recommendation: 'Foo cell',
       rating: 'High',
       reasons: ['foo-reason'],
     },
     healthAssessmentCompleted: {
       nomisId: 'foo-id',
     },
+    outcome: 'Foo outcome',
   },
   {
     nomisId: 'bar-id',
@@ -33,6 +34,7 @@ const profiles = [
     dob: 'foo-age',
     assessmentCompleted: {},
     healthAssessmentCompleted: {},
+    outcome: undefined,
   },
 ];
 
@@ -107,7 +109,7 @@ describe('<Dashboard />', () => {
 
         expect(wrapper.find('[data-cell-recommendation]').length).to.equal(1);
         expect(wrapper.find('[data-cell-recommendation]').text()).to.equal(
-          'Single Cell',
+          'Foo outcome',
         );
       });
 
@@ -151,7 +153,7 @@ describe('<Dashboard />', () => {
           completed: [
             {
               nomisId: 'foo-id',
-              recommendation: 'Single Cell',
+              recommendation: 'Foo cell',
               rating: 'High',
               reasons: ['foo-reason'],
             },
@@ -163,6 +165,9 @@ describe('<Dashboard />', () => {
               nomisId: 'foo-id',
             },
           ],
+        },
+        assessmentOutcomes: {
+          'foo-id': 'Foo outcome',
         },
         offender: {
           profiles: [
@@ -220,7 +225,7 @@ describe('<Dashboard />', () => {
     it('displays the cell sharing assessment for a completed prisoner assessment', () => {
       expect(wrapper.find('[data-cell-recommendation]').length).to.equal(1);
       expect(wrapper.find('[data-cell-recommendation]').text()).to.equal(
-        'Single Cell',
+        'Foo outcome',
       );
     });
 

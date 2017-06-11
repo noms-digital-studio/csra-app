@@ -45,4 +45,14 @@ function thenASingleCellIsRecommended() {
   expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Complete Start Single cell');
 }
 
-export { thenASingleCellIsRecommended, whenAVulnerablePrisonerIsAssessed };
+function thenTheAssessmentIsCompleted() {
+  expect(DashboardPage.mainHeading).to.contain('Assessments on:');
+  const row = browser.element('[data-profile-row=J1234LO]');
+  expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Complete Start');
+}
+
+export {
+  thenASingleCellIsRecommended,
+  whenAVulnerablePrisonerIsAssessed,
+  thenTheAssessmentIsCompleted,
+};

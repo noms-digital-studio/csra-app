@@ -16,6 +16,7 @@ import {
   COMPLETE_HEALTH_ASSESSMENT,
   HEALTHCARE_ANSWERS_COMPLETE,
   CLEAR_RISK_ASSESSMENT_ANSWERS,
+  SAVE_OUTCOME,
 } from '../constants/actions';
 
 import riskAssessmentQuestions
@@ -108,4 +109,9 @@ export const completeHealthAnswersFor = offender => ({
 export const clearAnswers = nomisId => ({
   type: CLEAR_RISK_ASSESSMENT_ANSWERS,
   payload: nomisId,
+});
+
+export const storeOutcome = ({ nomisId, outcome }) => ({
+  type: SAVE_OUTCOME,
+  payload: { nomisId, outcome },
 });

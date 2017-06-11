@@ -3,13 +3,13 @@ import DashboardPage from './pages/Dashboard.page';
 import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
 import whenAViolentPrisonerIsAssessed from './tasks/violentPrisonerAssessed.task';
 
-function thenASingleCellIsRecommended() {
+function thenTheAssessmentIsCompleted() {
   expect(DashboardPage.mainHeading).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=I9876RA]');
-  expect(row.getText()).to.equal('Ian Rate I9876RA 23-Mar-1988 Complete Start Single cell');
+  expect(row.getText()).to.equal('Ian Rate I9876RA 23-Mar-1988 Complete Start');
 }
 
-describe('Risk assessment for a prisonaer with a high VIPER score (single cell outcome)', () => {
+describe('Risk assessment for a prisoner with a high VIPER score', () => {
   before(() => {
     AdminPage.visit();
     expect(AdminPage.mainHeading).to.equal('Admin');
@@ -19,6 +19,6 @@ describe('Risk assessment for a prisonaer with a high VIPER score (single cell o
   it('Assesses a prisoner with a high viper score', () => {
     givenThatTheOfficerIsSignedIn();
     whenAViolentPrisonerIsAssessed();
-    thenASingleCellIsRecommended();
+    thenTheAssessmentIsCompleted();
   });
 });

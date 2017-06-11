@@ -1,6 +1,6 @@
 import AdminPage from './pages/Admin.page';
 import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
-import { thenASharedCellIsRecommended, whenALowRiskPrisonerIsAssessed } from './tasks/lowRiskPrisonerAssessed.task';
+import { thenTheAssessmentIsCompleted, whenALowRiskPrisonerIsAssessed } from './tasks/lowRiskPrisonerAssessed.task';
 
 describe('Risk assessment (shared cell outcome)', () => {
   before(() => {
@@ -12,6 +12,6 @@ describe('Risk assessment (shared cell outcome)', () => {
   it('Assesses a low risk prisoner', () => {
     givenThatTheOfficerIsSignedIn();
     whenALowRiskPrisonerIsAssessed();
-    thenASharedCellIsRecommended();
+    thenTheAssessmentIsCompleted();
   });
 });

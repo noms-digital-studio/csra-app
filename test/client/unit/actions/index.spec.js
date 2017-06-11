@@ -14,6 +14,7 @@ import {
   completeHealthAnswersFor,
   saveExitPoint,
   clearExitPoint,
+  storeOutcome,
 } from '../../../../client/javascript/actions';
 
 import riskAssessmentQuestions
@@ -207,6 +208,16 @@ describe('Actions', () => {
   describe('#clearExitPoint', () => {
     it('returns a CLEAR_EXIT_POINT action', () => {
       expect(clearExitPoint()).to.eql({ type: 'CLEAR_EXIT_POINT' });
+    });
+  });
+
+  describe('#storeOutcome', () => {
+    it('returns a SAVE_OUTCOME action', () => {
+      const outcome = { nomisId: 'foo-nomis-id', outcome: 'foo-outcome' };
+      expect(storeOutcome(outcome)).to.eql({
+        type: 'SAVE_OUTCOME',
+        payload: outcome,
+      });
     });
   });
 });

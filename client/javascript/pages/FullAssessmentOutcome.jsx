@@ -5,6 +5,7 @@ import { replace } from 'react-router-redux';
 
 import { cellAssignment } from '../services';
 import { capitalize } from '../utils';
+import { storeOutcome } from '../actions';
 
 import PrisonerProfile from '../components/PrisonerProfile';
 import RiskAssessmentSummaryTable
@@ -62,7 +63,7 @@ const FullAssessmentOutcome = ({
         <div>
           {(riskAssessmentOutcome.reasons && finalOutcome !== 'single cell') &&
             <ul className="list list-bullet">
-              {riskAssessmentOutcome.reasons.map(reason => <li>{reason}</li>)}
+              {riskAssessmentOutcome.reasons.map((reason, index) => <li key={index}>{reason}</li>)}
             </ul>}
         </div>
 
@@ -79,7 +80,7 @@ const FullAssessmentOutcome = ({
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            onSubmit();
+            onSubmit({ nomisId: prisoner.nomisId, outcome: finalOutcome });
           }}
         >
           <div className="u-clear-fix u-margin-bottom-medium">
@@ -138,7 +139,10 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapActionsToProps = dispatch => ({
-  onSubmit: () => dispatch(replace(routes.FULL_ASSESSMENT_COMPLETE)),
+  onSubmit: (outcome) => {
+    dispatch(storeOutcome(outcome));
+    dispatch(replace(routes.FULL_ASSESSMENT_COMPLETE));
+  },
 });
 
 export default connect(mapStateToProps, mapActionsToProps)(

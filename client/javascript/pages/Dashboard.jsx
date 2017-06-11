@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { Link } from 'react-router';
 
+import path from 'ramda/src/path';
 import isEmpty from 'ramda/src/isEmpty';
 import not from 'ramda/src/not';
 
@@ -30,43 +31,43 @@ class Dashboard extends Component {
           data-assessment-complete={not(isEmpty(profile.assessmentCompleted))}
         >
           {isEmpty(profile.assessmentCompleted)
-            ? <a
-              onClick={() => this.props.onOffenderSelect(profile)}
-              className="link u-link"
-              data-start-csra-link={profile.nomisId}
-            >
-                Start
-              </a>
-            : <span>Complete</span>}
+              ? <a
+                onClick={() => this.props.onOffenderSelect(profile)}
+                className="link u-link"
+                data-start-csra-link={profile.nomisId}
+              >
+                  Start
+                </a>
+              : <span>Complete</span>}
         </td>
         <td
           data-health-assessment-complete={not(
-            isEmpty(profile.healthAssessmentCompleted),
-          )}
+              isEmpty(profile.healthAssessmentCompleted),
+            )}
         >
           {isEmpty(profile.healthAssessmentCompleted)
-            ? <a
-              onClick={() => this.props.onOffenderHealthcareSelect(profile)}
-              className="link u-link"
-              data-start-healthcare-link={profile.nomisId}
-            >
-                Start
-              </a>
-            : <span>Complete</span>}
+              ? <a
+                onClick={() => this.props.onOffenderHealthcareSelect(profile)}
+                className="link u-link"
+                data-start-healthcare-link={profile.nomisId}
+              >
+                  Start
+                </a>
+              : <span>Complete</span>}
         </td>
         <td
-          data-cell-recommendation={profile.assessmentCompleted.recommendation}
+          data-cell-recommendation={profile.outcome}
           className="u-text-align-center"
         >
-          {isEmpty(profile.assessmentCompleted)
-            ? <span className="c-status-indicator" />
-            : <span className="">
-              {capitalize(profile.assessmentCompleted.recommendation)}
-            </span>}
+          {profile.outcome
+              ? <span className="">
+                {capitalize(profile.outcome)}
+              </span>
+              : <span className="c-status-indicator" />}
 
         </td>
       </tr>
-    ));
+      ));
   }
 
   render() {
@@ -146,6 +147,7 @@ const mapStateToProps = state => ({
     assessmentCompleted: state.riskAssessmentStatus.completed.find(
       assessment => assessment.nomisId === profile.nomisId,
     ) || {},
+    outcome: path([profile.nomisId], state.assessmentOutcomes),
   })),
 });
 
@@ -171,6 +173,7 @@ Dashboard.propTypes = {
       dob: PropTypes.string,
       assessmentCompleted: PropTypes.object,
       healthAssessmentCompleted: PropTypes.object,
+      outcome: PropTypes.string,
     }),
   ),
   getViperScores: PropTypes.func,
