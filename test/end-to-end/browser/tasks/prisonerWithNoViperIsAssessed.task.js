@@ -14,7 +14,7 @@ function whenAPrisonerWithNoViperIsAssessed() {
   expect(RiskAssessmentExplanationPage.mainHeading).to.equal('Explain this');
 
   RiskAssessmentExplanationPage.confirmAndContinue();
-  expect(RiskAssessmentExplanationPage.mainHeading).to.equal('Current recommendation: Unknown');
+  expect(RiskAssessmentExplanationPage.mainHeading).to.equal('No predictor data available:');
 
   RiskAssessmentExplanationPage.clickContinue();
   expect(RiskAssessmentCommentsPage.mainHeading).to.equal('How do you think they feel about sharing a cell at this moment?');

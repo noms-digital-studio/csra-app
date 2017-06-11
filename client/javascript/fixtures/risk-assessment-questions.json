@@ -16,7 +16,8 @@
         "title": "Current recommendation: Single cell"
       },
       "unknown": {
-        "title": "Current recommendation: Unknown"
+        "title": "No predictor data available:",
+        "description": "<p>The predictor hasn’t found any information about this person, so at this stage it can’t make an initial recommendation.</p><p>This could be because:</p><ul class='list list-bullet text'><li>they’re new to the prison system</li><li>there’s a technical reason the information isn’t currently available</li></ul><h3 class='heading-medium'>What you need to do</h3><p>Continue the risk assessment, but also refer to any other sources of information available.</p><p class='u-margin-bottom-large'>You must make sure you explain this to the prisoner and they understand.</p>"
       }
     },
     "template": "viper",
