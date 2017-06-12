@@ -3,10 +3,10 @@ import request from 'supertest';
 const baseUrl = process.env.APP_BASE_URL;
 
 const riskAssessment = {
-  nomis_id: 'AS223213',
+  nomisId: 'AS223213',
   type: 'risk',
-  outcome: 'single',
-  viper: 0.12,
+  outcome: 'single cell',
+  viperScore: 0.12,
   questions: {
     Q1: {
       question_id: 'Q1',
@@ -22,10 +22,10 @@ const riskAssessment = {
   ],
 };
 const healthcareAssessment = {
-  nomis_id: 'AS223213',
+  nomisId: 'AS223213',
   type: 'healthcare',
-  outcome: 'single',
-  viper: 0.12,
+  outcome: 'single cell',
+  viperScore: 0.12,
   questions: {
     Q1: {
       question_id: 'Q1',

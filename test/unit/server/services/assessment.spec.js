@@ -22,10 +22,10 @@ describe('assessment service', () => {
   }
 
   const validRiskAssessment = {
-    nomis_id: 'AS223213',
+    nomisId: 'AS223213',
     type: 'risk',
-    outcome: 'single',
-    viper: 0.12,
+    outcome: 'single cell',
+    viperScore: 0.12,
     questions: {
       Q1: {
         question_id: 'Q1',
@@ -41,10 +41,10 @@ describe('assessment service', () => {
     ],
   };
   const validHealthcareAssessment = {
-    nomis_id: 'AQ125676',
+    nomisId: 'AQ125676',
     type: 'healthcare',
-    outcome: 'shared',
-    viper: 0.45,
+    outcome: 'shared cell',
+    viperScore: 0.45,
     questions: {
       Q1: {
         question_id: 'Q1',
@@ -79,7 +79,7 @@ describe('assessment service', () => {
     describe('rules', () => {
       function allows(data, label) {
         const payload = Object.assign({}, validRiskAssessment, data);
-        it(`allowss ${label || JSON.stringify(data)}`, () =>
+        it(`allows ${label || JSON.stringify(data)}`, () =>
           expect(assessment.record(payload)).to.be.fulfilled);
       }
       function doesNotAllow(data, label) {
@@ -94,28 +94,29 @@ describe('assessment service', () => {
       doesNotAllow({ type: 'something-else' });
       doesNotAllow({ type: undefined }, 'missing "type"');
 
-      allows({ outcome: 'single' });
-      allows({ outcome: 'shared' });
-      allows({ outcome: 'shared-with-conditions' });
+      allows({ outcome: 'single cell' });
+      allows({ outcome: 'shared cell' });
+      allows({ outcome: 'shared with conditions' });
       doesNotAllow({ outcome: 'release' });
       doesNotAllow({ outcome: 'shoe' });
       doesNotAllow({ outcome: undefined }, 'missing "outcome"');
 
-      allows({ nomis_id: 'AB123456' });
-      allows({ nomis_id: '12345678' });
-      allows({ nomis_id: 'R345678' });
-      doesNotAllow({ nomis_id: '12434thisisclearlytoolong' });
-      doesNotAllow({ nomis_id: undefined }, 'missing "nomis_id"');
+      allows({ nomisId: 'AB123456' });
+      allows({ nomisId: '12345678' });
+      allows({ nomisId: 'R345678' });
+      doesNotAllow({ nomisId: '12434thisisclearlytoolong' });
+      doesNotAllow({ nomisId: undefined }, 'missing "nomisId"');
 
-      allows({ viper: 0 });
-      allows({ viper: 1 });
-      allows({ viper: 0.1 });
-      allows({ viper: 0.11 });
-      allows({ viper: 0.99 });
-      allows({ viper: undefined }, 'missing "viper"');
-      doesNotAllow({ viper: -1 });
-      doesNotAllow({ viper: 1.1 });
-      doesNotAllow({ viper: 0.123 });
+      allows({ viperScore: 0 });
+      allows({ viperScore: 1 });
+      allows({ viperScore: 0.1 });
+      allows({ viperScore: 0.11 });
+      allows({ viperScore: 0.99 });
+      allows({ viperScore: undefined }, 'missing "viperScore"');
+      allows({ viperScore: -1 });
+      doesNotAllow({ viperScore: -2 });
+      doesNotAllow({ viperScore: 1.1 });
+      doesNotAllow({ viperScore: 0.123 });
 
       allows({ questions: {
         Q1: { question_id: 'Q1', question: 'Whither?', answer: '42' },
@@ -133,9 +134,6 @@ describe('assessment service', () => {
       doesNotAllow({ questions: { Q1: {
         question_id: null, question: '??', answer: '42',
       } } }, 'missing question_id in a question');
-      doesNotAllow({ questions: { Q1: {
-        question_id: 'Q1', question: '??', answer: '',
-      } } }, 'missing answer in a question');
       doesNotAllow({ questions: { Q1: {
         question_id: 'Q1', question: '', answer: '42',
       } } }, 'missing question in a question');
@@ -189,12 +187,12 @@ describe('assessment service', () => {
       let row;
       before(() => { row = fakeDB.insert.lastCall.args[0]; });
 
-      it('sets nomis_id from request',
+      it('sets nomisId from request',
         () => expect(row.nomis_id).to.eql('AS223213'));
       it('sets type from request',
         () => expect(row.type).to.eql('risk'));
       it('sets outcome from request',
-        () => expect(row.outcome).to.eql('single'));
+        () => expect(row.outcome).to.eql('single cell'));
       it('sets viper from request',
         () => expect(row.viper).to.eql(0.12));
       it('sets questions_hash from app-info',
@@ -251,7 +249,7 @@ describe('assessment service', () => {
       it('sets type from request',
         () => expect(row.type).to.eql('healthcare'));
       it('sets outcome from request',
-        () => expect(row.outcome).to.eql('shared'));
+        () => expect(row.outcome).to.eql('shared cell'));
       it('sets viper from request',
         () => expect(row.viper).to.eql(0.45));
       it('sets questions_hash from app-info',
