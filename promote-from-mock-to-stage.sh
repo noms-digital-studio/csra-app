@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 # This script requires the 'jq' command line tool
 brew install jq
