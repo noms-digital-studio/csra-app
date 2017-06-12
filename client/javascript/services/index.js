@@ -118,18 +118,11 @@ const extractReasons = (questions, answers) => {
   return reasons;
 };
 
-export const extractDecision = ({ questions, answers, exitPoint, viperScore }) => {
+export const extractDecision = ({ questions, answers, exitPoint }) => {
   if (exitPoint) {
     return {
       recommendation: 'single cell',
       rating: 'high',
-    };
-  }
-
-  if (viperScore === 'unknown') {
-    return {
-      recommendation: 'single cell',
-      rating: 'unknown',
     };
   }
 

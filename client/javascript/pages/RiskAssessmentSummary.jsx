@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { post } from 'superagent';
 import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
@@ -128,10 +127,6 @@ const mapStateToProps = state => ({
       state.answers.riskAssessment,
     ),
     exitPoint: state.riskAssessmentStatus.exitPoint,
-    viperScore: viperScoreFor(
-      state.offender.selected.nomisId,
-      state.offender.viperScores,
-    ),
   }),
   answers: path(
     [state.answers.selectedPrisonerId],
@@ -166,7 +161,9 @@ function postAssessmentToBackend(nomisId) {
   const target = `${window.location.origin}/api/assessment`;
   console.log('posting test data to endpoint: ', target);
   post(target, aTestRiskAssessment, (err, res) => {
+    // eslint-disable-next-line no-console
     console.log('response: ', JSON.stringify(res, null, 2));
+    // eslint-disable-next-line no-console
     console.log('error: ', err);
   });
 }

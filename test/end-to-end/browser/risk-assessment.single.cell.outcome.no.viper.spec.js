@@ -9,7 +9,7 @@ function thenTheAssessmentIsCompleted() {
   expect(row.getText()).to.equal('James Neo J6285NE 03-Dec-1958 Complete Start');
 }
 
-describe('Risk assessment for a prisoner with no VIPER score (single cell outcome)', () => {
+describe('Risk assessment for a prisoner with no VIPER score (shared cell outcome)', () => {
   before(() => {
     AdminPage.visit();
     expect(AdminPage.mainHeading).to.equal('Admin');

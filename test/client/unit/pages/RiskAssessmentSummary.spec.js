@@ -150,7 +150,7 @@ describe('<RiskAssessmentSummary />', () => {
         const unknownRiskStore = fakeStore({
           ...state,
           riskAssessmentStatus: {
-            exitPoint: '',
+            exitPoint: 'foo-exit-point',
             completed: [],
           },
           offender: {
@@ -171,7 +171,7 @@ describe('<RiskAssessmentSummary />', () => {
       });
     });
 
-    context('when the viperscore is unknown', () => {
+    context('when the viper score is unknown', () => {
       it('renders the outcome of a unknown risk assessment', () => {
         const unknownRiskStore = fakeStore({
           ...state,
@@ -193,7 +193,7 @@ describe('<RiskAssessmentSummary />', () => {
         const outcomeText = wrapper
           .find('[data-risk-assessment-outcome]')
           .text();
-        expect(outcomeText).to.contain('Single cell');
+        expect(outcomeText).to.contain('Shared cell');
       });
     });
 

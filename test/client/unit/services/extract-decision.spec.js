@@ -8,13 +8,6 @@ describe('#extractDecision', () => {
     });
   });
 
-  it('returns a single cell outcome if the viperScore is unknown', () => {
-    expect(extractDecision({ viperScore: 'unknown' })).to.eql({
-      recommendation: 'single cell',
-      rating: 'unknown',
-    });
-  });
-
   it('returns share cell with conditions if some answers that are part of a group negate the shareCellPredicate', () => {
     const questions = [
       {

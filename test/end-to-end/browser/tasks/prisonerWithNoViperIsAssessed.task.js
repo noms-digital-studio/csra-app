@@ -43,7 +43,7 @@ function whenAPrisonerWithNoViperIsAssessed() {
   expect(RiskAssessmentSummaryPage.dob).to.equalIgnoreCase('03-Dec-1958');
   expect(RiskAssessmentSummaryPage.nomisId).to.equalIgnoreCase('J6285NE');
 
-  expect(RiskAssessmentSummaryPage.outcome).to.equalIgnoreCase('Single cell');
+  expect(RiskAssessmentSummaryPage.outcome).to.equalIgnoreCase('Shared cell');
   expect(RiskAssessmentSummaryPage.initialFeelings).to.equalIgnoreCase('sharing comment');
   expect(RiskAssessmentSummaryPage.harm).to.equalIgnoreCase('No');
   expect(RiskAssessmentSummaryPage.vulnerability).to.equalIgnoreCase('No');

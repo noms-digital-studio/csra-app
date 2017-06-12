@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import path from 'ramda/src/path';
 
-import { calculateRiskFor as viperScoreFor, extractDecision } from '../../services';
+import { extractDecision } from '../../services';
 
 import QuestionAndAnswerSummaryTable from '../QuestionAndAnswerSummaryTable';
 
@@ -20,9 +20,7 @@ const mapStateToProps = (state) => {
     questions: state.questions.riskAssessment,
     answers,
     exitPoint: state.riskAssessmentStatus.exitPoint,
-    viperScore: viperScoreFor(state.offender.selected.nomisId, state.offender.viperScores),
   });
-
 
   return {
     questionsAnswers: [
