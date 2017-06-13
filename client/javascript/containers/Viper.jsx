@@ -7,29 +7,31 @@ const Viper = ({
   formDefaults: { confirmation },
   viperScore,
   isComplete,
-}) => (
-  <div>
-    <div className="grid-row">
-      <div className="column-two-thirds">
-        <h1 className="heading-large">{content[viperScore].title}</h1>
-        <div
-          dangerouslySetInnerHTML={{ __html: content[viperScore].description }}
-        />
+}) => {
+  return (
+    <div>
+      <div className="grid-row">
+        <div className="column-two-thirds">
+          <h1 className="heading-large">{content[viperScore].title}</h1>
+          <div
+            dangerouslySetInnerHTML={{ __html: content[viperScore].description }}
+          />
 
-        <form className="c-confirmation-form" onSubmit={onSubmit} key={uuid()}>
-          <p>
-            <input
-              type="submit"
-              className="button"
-              value={isComplete ? 'Save' : 'Save and continue'}
-              data-continue-button
-            />
-          </p>
-        </form>
+          <form className="c-confirmation-form" onSubmit={onSubmit} key={uuid()}>
+            <p>
+              <input
+                type="submit"
+                className="button"
+                value={isComplete ? 'Save' : 'Save and continue'}
+                data-continue-button
+              />
+            </p>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 Viper.propTypes = {
   content: PropTypes.object,

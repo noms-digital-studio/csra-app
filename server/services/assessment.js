@@ -2,10 +2,10 @@ import Joi from 'joi';
 
 const schema = Joi.object({
   type: Joi.string().valid('risk', 'healthcare'),
-  outcome: Joi.string().valid('single', 'shared', 'shared-with-conditions'),
-  nomis_id: Joi.string().max(10),
-  viper: Joi.number().optional()
-    .min(0).max(1)
+  outcome: Joi.string().valid('single cell', 'shared cell', 'shared with conditions'),
+  nomisId: Joi.string().max(10),
+  viperScore: Joi.number().optional()
+    .min(-1).max(1)
     .precision(2)
     .strict(),
   questions: Joi.object()
@@ -13,7 +13,7 @@ const schema = Joi.object({
     .pattern(/./, Joi.object({
       question_id: Joi.string(),
       question: Joi.string(),
-      answer: Joi.string(),
+      answer: Joi.string().allow('').optional(),
     }).unknown()),
   reasons: Joi.array().items(Joi.object({
     question_id: Joi.string(),
@@ -38,10 +38,10 @@ function record(db, appInfo, rawAssessment) {
 
   return db
     .insert({
-      nomis_id: assessment.nomis_id,
+      nomis_id: assessment.nomisId,
       type: assessment.type,
       outcome: assessment.outcome,
-      viper: assessment.viper,
+      viper: assessment.viperScore,
       questions_hash: appInfo.getQuestionHash(assessment.type),
       git_version: appInfo.getGitRef(),
       git_date: appInfo.getGitDate(),
