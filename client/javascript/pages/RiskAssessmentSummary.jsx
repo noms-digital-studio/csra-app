@@ -113,7 +113,7 @@ RiskAssessmentSummary.propTypes = {
 };
 
 RiskAssessmentSummary.defaultProps = {
-  title: 'Risk Assessment Complete',
+  title: 'Risk Assessment Summary',
   outcome: {
     reasons: [],
   },
