@@ -32,6 +32,22 @@ const healthcareAnswers = {
 };
 
 const storeData = {
+  questions: {
+    healthcare: [
+      {
+        section: 'outcome',
+      },
+      {
+        section: 'comments',
+      },
+      {
+        section: 'consent',
+      },
+      {
+        section: 'assessor',
+      },
+    ],
+  },
   answers: {
     selectedPrisonerId: 'foo-nomis-id',
     healthcare: {
@@ -40,6 +56,12 @@ const storeData = {
   },
   offender: {
     selected: prisonerDetails,
+    viperScores: [
+      {
+        nomisId: 'foo-nomis-id',
+        viperScore: 0.13,
+      },
+    ],
   },
   riskAssessmentStatus: {
     completed: [],
