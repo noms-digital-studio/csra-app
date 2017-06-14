@@ -7,12 +7,28 @@ import path from 'ramda/src/path';
 
 import { capitalize } from '../utils';
 
+import postAssessmentToBackend from '../services/postAssessmentToBackend';
+
 import {
   completeHealthAnswersFor,
   completeHealthAssessmentFor,
 } from '../actions';
 
 import routes from '../constants/routes';
+
+
+const joinAssessorValues = accessor =>
+  `${accessor.role}, ${accessor['full-name']}, ${accessor.day}-${accessor.month}-${accessor.year}`;
+
+
+const normalizeAssessorAnswerIn = answers =>
+  Object.keys(answers).reduce((acc, key) => {
+    if (key === 'assessor') {
+      return { ...acc, [key]: { answer: joinAssessorValues(answers[key]) } };
+    }
+    return { ...acc, [key]: answers[key] };
+  }, {});
+
 
 class HealthCareSummary extends Component {
   componentDidMount() {
@@ -26,6 +42,8 @@ class HealthCareSummary extends Component {
       title,
       riskAssessmentComplete,
       onSubmit,
+      viperScore,
+      questions,
     } = this.props;
     const riskText = { no: 'shared cell', yes: 'single cell' };
 
@@ -182,6 +200,13 @@ class HealthCareSummary extends Component {
                     recommendation: riskText[answers.outcome.answer],
                     nomisId: prisoner.nomisId,
                   },
+                  postData: {
+                    nomisId: prisoner.nomisId,
+                    outcome: riskText[answers.outcome.answer],
+                    viperScore: viperScore.viperScore,
+                    questions,
+                    answers: normalizeAssessorAnswerIn(answers),
+                  },
                 })}
               className="button"
               data-continue-button
@@ -205,6 +230,8 @@ HealthCareSummary.propTypes = {
   riskAssessmentComplete: PropTypes.bool,
   completeHealthAnswersFor: PropTypes.func,
   onSubmit: PropTypes.func,
+  viperScore: PropTypes.object,
+  questions: PropTypes.array,
 };
 
 HealthCareSummary.defaultProps = {
@@ -213,6 +240,9 @@ HealthCareSummary.defaultProps = {
   onSubmit: () => {},
 };
 
+const findViperScore = (nomisId, viperScores) =>
+  viperScores.find(item => item.nomisId === nomisId) || -1;
+
 const mapStateToProps = (state, ownProps) => ({
   ...ownProps,
   prisoner: state.offender.selected,
@@ -220,10 +250,17 @@ const mapStateToProps = (state, ownProps) => ({
   riskAssessmentComplete: !!state.riskAssessmentStatus.completed.find(
     assessment => assessment.nomisId === state.offender.selected.nomisId,
   ),
+  viperScore: findViperScore(
+    state.offender.selected.nomisId,
+    state.offender.viperScores,
+  ),
+  questions: state.questions.healthcare,
 });
 
 const mapActionsToProps = dispatch => ({
-  onSubmit: ({ prisoner, riskAssessmentComplete }) => {
+  onSubmit: ({ prisoner, riskAssessmentComplete, postData }) => {
+    postAssessmentToBackend('healthcare', postData);
+
     dispatch(completeHealthAssessmentFor(prisoner));
     if (riskAssessmentComplete) {
       dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));

@@ -52,12 +52,7 @@ describe('assessment service', () => {
         answer: 'No',
       },
     },
-    reasons: [
-      {
-        question_id: 'Q1',
-        reason: 'They are not very healthy',
-      },
-    ],
+    reasons: [],
   };
 
   describe('validation', () => {
@@ -266,13 +261,6 @@ describe('assessment service', () => {
             answer: 'No',
           },
         }));
-      it('sets reasons encoded as JSON from request',
-        () => expect(JSON.parse(row.reasons)).to.eql([
-          {
-            question_id: 'Q1',
-            reason: 'They are not very healthy',
-          },
-        ]));
     });
   });
 

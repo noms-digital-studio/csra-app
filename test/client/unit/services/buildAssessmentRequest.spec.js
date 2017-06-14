@@ -1,7 +1,7 @@
-import buildRiskAssessmentRequest from '../../../../client/javascript/services/buildRiskAssessmentRequest';
+import buildAssessmentRequest from '../../../../client/javascript/services/buildAssessmentRequest';
 
-describe('#buildRiskAssessmentRequest', () => {
-  it('returns a risk assessment request for question data with no reasons', () => {
+describe('#buildAssessmentRequest', () => {
+  it('returns a assessment request for question data with no reasons', () => {
     const questions = [
       {
         section: 'foo-section',
@@ -20,7 +20,7 @@ describe('#buildRiskAssessmentRequest', () => {
       'bar-section': {},
     };
 
-    const request = buildRiskAssessmentRequest({
+    const request = buildAssessmentRequest('foo-type', {
       nomisId: 'foo-nomis-id',
       outcome: 'Single cell',
       viperScore: 0.71,
@@ -32,7 +32,7 @@ describe('#buildRiskAssessmentRequest', () => {
       {
         nomisId: 'foo-nomis-id',
         outcome: 'Single cell',
-        type: 'risk',
+        type: 'foo-type',
         viperScore: 0.71,
         questions: {
           'bar-section': {
@@ -50,7 +50,7 @@ describe('#buildRiskAssessmentRequest', () => {
       });
   });
 
-  it('returns a risk assessment request for question data with predicate and no reasons', () => {
+  it('returns a assessment request for question data with predicate and no reasons', () => {
     const questions = [
       {
         section: 'foo-section',
@@ -70,7 +70,7 @@ describe('#buildRiskAssessmentRequest', () => {
       },
     };
 
-    const request = buildRiskAssessmentRequest({
+    const request = buildAssessmentRequest('footype', {
       nomisId: 'foo-nomis-id',
       outcome: 'Single cell',
       viperScore: 0.11,
@@ -82,7 +82,7 @@ describe('#buildRiskAssessmentRequest', () => {
       {
         nomisId: 'foo-nomis-id',
         outcome: 'Single cell',
-        type: 'risk',
+        type: 'footype',
         viperScore: 0.11,
         questions: {
           'foo-section': {
@@ -95,7 +95,7 @@ describe('#buildRiskAssessmentRequest', () => {
       });
   });
 
-  it('returns a risk assessment request for a full journey', () => {
+  it('returns a assessment request for a full journey', () => {
     const questions = [
       {
         section: 'foo-section',
@@ -136,7 +136,7 @@ describe('#buildRiskAssessmentRequest', () => {
       },
     };
 
-    const request = buildRiskAssessmentRequest({
+    const request = buildAssessmentRequest('footype', {
       nomisId: 'foo-nomis-id',
       outcome: 'Shared cell',
       viperScore: 0.11,
@@ -148,7 +148,7 @@ describe('#buildRiskAssessmentRequest', () => {
       {
         nomisId: 'foo-nomis-id',
         outcome: 'Shared cell',
-        type: 'risk',
+        type: 'footype',
         viperScore: 0.11,
         questions: {
           'foo-section': {
