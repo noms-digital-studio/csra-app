@@ -197,6 +197,7 @@ describe('<RiskAssessmentSummary />', () => {
       });
     });
 
+
     context('when the assessment is complete', () => {
       it('allows the user to change answers', () => {
         const store = fakeStore(state);
@@ -225,7 +226,26 @@ describe('<RiskAssessmentSummary />', () => {
           }),
         ).to.equal(true, 'Changed path to /risk-assessment/introduction');
       });
+
+      it('marks the assessment as complete on submission', () => {
+        const store = fakeStore(state);
+        const wrapper = mount(
+          <Provider store={store}>
+            <RiskAssessmentSummary />
+          </Provider>,
+        );
+
+        wrapper.find('[data-summary-next-steps] button').simulate('click');
+
+        expect(
+          store.dispatch.calledWithMatch({
+            type: 'COMPLETE_RISK_ASSESSMENT',
+            payload: { recommendation: 'shared cell', nomisId: 'foo-nomis-id' },
+          }),
+        ).to.equal(true, 'triggered complete assessment');
+      });
     });
+
 
     context('when the health care assessment is incomplete', () => {
       const store = fakeStore(state);
@@ -293,6 +313,7 @@ describe('<RiskAssessmentSummary />', () => {
         );
 
         wrapper.find('[data-summary-next-steps] button').simulate('click');
+
 
         expect(
           store.dispatch.calledWithMatch({

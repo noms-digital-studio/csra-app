@@ -173,7 +173,7 @@ const mapActionsToProps = dispatch => ({
       answers,
     });
 
-    dispatch(completeRiskAssessmentFor({ ...outcome, nomisId }));
+    dispatch(completeRiskAssessmentFor({ recommendation: outcome, nomisId }));
     if (healthcareAssessmentComplete) {
       dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
     } else {
