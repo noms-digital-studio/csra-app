@@ -152,7 +152,7 @@ EXEC sp_configure 'contained database authentication', 1;
 RECONFIGURE WITH OVERRIDE;
 CREATE DATABASE csra CONTAINMENT = PARTIAL COLLATE SQL_Latin1_General_CP1_CI_AS;
 USE csra;
-CREATE USER app WITH PASSWORD = {somesufficientlygoodpassword};
+CREATE USER <database-user> WITH PASSWORD = '<database-user-password>';
 .quit
 ```
 
@@ -167,6 +167,6 @@ yarn run migrate
 The `sql-cli` package installed above gives you a commandline client called `mssql`.
 
 ```
-mssql -s localhost -u sa -p <password> -d csra
+mssql -s localhost -u <database-user> -p <password> -d csra
 select * from assessments
 ```
