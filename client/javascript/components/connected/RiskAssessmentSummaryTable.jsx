@@ -50,7 +50,7 @@ const mapStateToProps = (state) => {
         dataTags: { 'data-risk-assessment-gang': true },
       },
       {
-        question: 'Drug or alcohol dependent:',
+        question: 'Drugs:',
         answer: answers['drug-misuse'],
         dataTags: { 'data-risk-assessment-narcotics': true },
       },
