@@ -9,6 +9,7 @@ import RiskAssessmentYesNoPage
   from '../pages/risk-assessment/RiskAssessmentYesNo.page';
 import RiskAssessmentSummaryPage
   from '../pages/risk-assessment/RiskAssessmentSummary.page';
+import db from '../../../util/db';
 
 function aLowRiskPrisonerIsAssessed(usesDrugs) {
   DashboardPage.clickRiskAssessmentStartLinkForNomisId('J1234LO');
@@ -107,12 +108,25 @@ function aSharedCellIsRecommended(sharedText) {
   );
 }
 
-function thenTheAssessmentIsCompleted() {
-  expect(DashboardPage.mainHeading).to.contain('Assessments on:');
+function thenTheAssessmentIsCompleted(resolve) {
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=J1234LO]');
   expect(row.getText()).to.equal(
     'John Lowe J1234LO 01-Oct-1970 Complete Start',
   );
+
+  const assessmentId = row.getAttribute('data-profile-id');
+  console.log('assessmentId2: ', assessmentId);
+
+  db.select().table('assessments').where('assessment_id', Number(assessmentId)). then(
+    (result) => {
+      console.log('results: ', result);
+      expect(result[0].nomis_id).to.equal('J1234LO');
+
+      // TODO timestamp (present), questions_hash (present), git_version (present),
+      // git_date (present), type, outcome, questions, reasons, viper
+      resolve();
+    });
 }
 
 function thenASharedCellIsRecommended() {

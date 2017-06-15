@@ -1,6 +1,7 @@
 import AdminPage from './pages/Admin.page';
 import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
 import { thenTheAssessmentIsCompleted, whenALowRiskPrisonerIsAssessed } from './tasks/lowRiskPrisonerAssessed.task';
+import db from '../../util/db';
 
 describe('Risk assessment (shared cell outcome)', () => {
   before(() => {
@@ -9,9 +10,11 @@ describe('Risk assessment (shared cell outcome)', () => {
     AdminPage.loadTestUsers();
   });
 
-  it('Assesses a low risk prisoner', () => {
-    givenThatTheOfficerIsSignedIn();
-    whenALowRiskPrisonerIsAssessed();
-    thenTheAssessmentIsCompleted();
+  it('Assesses a low risk prisoner', async function() {
+    return new Promise((resolve) => {
+      givenThatTheOfficerIsSignedIn();
+      whenALowRiskPrisonerIsAssessed();
+      thenTheAssessmentIsCompleted(resolve);
+    });
   });
 });

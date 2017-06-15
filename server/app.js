@@ -9,7 +9,7 @@ import createHealthRoute from './routes/health';
 import createAssessmentRoute from './routes/assessment';
 import index from './routes/index';
 
-export default function createApp(db, appInfo, assessment) {
+export default function createApp(db, appInfo, assessmentService) {
   const app = express();
 
   app.use(json());
@@ -19,7 +19,7 @@ export default function createApp(db, appInfo, assessment) {
   app.use(express.static(path.join(__dirname, '..', 'public')));
 
   app.use('/health', createHealthRoute(db, appInfo));
-  app.use('/api/assessment', createAssessmentRoute(assessment));
+  app.use('/api/assessment', createAssessmentRoute(assessmentService));
   app.use('/', index);
 
   // catch 404 and forward to error handler

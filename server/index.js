@@ -9,7 +9,7 @@ const buildInfo = config.dev ? null : require('../build-info.json');
 
 const db = createDB();
 const appInfo = createAppInfoService(buildInfo);
-const assessment = createAssessmentService(db, appInfo);
-const app = createApp(db, appInfo, assessment);
+const assessmentService = createAssessmentService(db, appInfo);
+const app = createApp(db, appInfo, assessmentService);
 
 export default app;

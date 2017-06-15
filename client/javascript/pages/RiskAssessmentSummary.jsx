@@ -171,14 +171,15 @@ const mapActionsToProps = dispatch => ({
       viperScore,
       questions,
       answers,
+    }, (assessmentId) => {
+      dispatch(completeRiskAssessmentFor({ recommendation: outcome, nomisId, assessmentId }));
+      if (healthcareAssessmentComplete) {
+        dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
+      } else {
+        dispatch(replace(routes.DASHBOARD));
+      }
     });
 
-    dispatch(completeRiskAssessmentFor({ recommendation: outcome, nomisId }));
-    if (healthcareAssessmentComplete) {
-      dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
-    } else {
-      dispatch(replace(routes.DASHBOARD));
-    }
   },
 });
 
