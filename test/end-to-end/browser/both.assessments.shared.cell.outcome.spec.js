@@ -36,7 +36,7 @@ describe('Both assessments (Shared cell outcome)', () => {
     return new Promise((resolve) => {
       givenThatTheOfficerIsSignedIn();
       whenALowRiskPrisonerIsAssessed();
-      thenTheAssessmentIsCompleted(resolve);
+      thenTheAssessmentIsCompleted(resolve, 'shared cell');
       whenHealthcareRecommendsSharedCell();
       thenTheFullAssessmentIsCompleted();
     });

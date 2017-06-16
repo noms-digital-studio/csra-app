@@ -16,9 +16,11 @@ describe('Risk assessment (shared cell outcome with conditions)', () => {
     browser.reload();
   });
 
-  it('Assesses a low risk prisoner who uses drugs', () => {
+  it('Assesses a low risk prisoner who uses drugs', async () => new Promise((resolve) => {
     givenThatTheOfficerIsSignedIn();
     whenALowRiskPrisonerWhoUsesDrugsIsAssessed();
-    thenTheAssessmentIsCompleted();
-  });
+    thenTheAssessmentIsCompleted(resolve,
+        'shared with conditions',
+        '[{"question_id":"drug-misuse","reason":"Has indicated drug use"}]');
+  }));
 });

@@ -80,7 +80,7 @@ describe('Both assessments (Single cell outcome)', () => {
     return new Promise((resolve) => {
       givenThatTheOfficerIsSignedIn();
       whenALowRiskPrisonerIsAssessed();
-      thenTheAssessmentIsCompleted(resolve);
+      thenTheAssessmentIsCompleted(resolve, 'shared cell');
       whenHealthcareRecommendsSingleCell();
       thenTheFullAssessmentIsCompletedWith({
         riskRecommendation: 'shared',

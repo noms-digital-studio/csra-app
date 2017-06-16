@@ -108,7 +108,7 @@ function aSharedCellIsRecommended(sharedText) {
   );
 }
 
-function thenTheAssessmentIsCompleted(resolve) {
+function thenTheAssessmentIsCompleted(resolve, sharedText, reasons) {
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=J1234LO]');
   expect(row.getText()).to.equal(
@@ -161,7 +161,8 @@ function thenTheAssessmentIsCompleted(resolve) {
         answer: 'no',
       },
     },
-    'shared cell');
+    reasons,
+    sharedText);
 }
 
 function thenASharedCellIsRecommended() {

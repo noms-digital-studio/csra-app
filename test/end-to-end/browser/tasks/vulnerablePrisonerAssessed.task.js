@@ -52,7 +52,6 @@ function thenTheAssessmentIsCompleted(resolve) {
   expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Complete Start');
   const assessmentId = row.getAttribute('data-profile-id');
 
-
   checkLowRiskValuesWhereWrittenToDatabase(resolve,
     assessmentId,
     {
@@ -70,6 +69,7 @@ function thenTheAssessmentIsCompleted(resolve) {
       },
       vulnerability: {question_id: 'vulnerability', question: "Do you think they're vulnerable?", answer: 'yes' },
     },
+    '[]',
     'single cell',
   )
   ;

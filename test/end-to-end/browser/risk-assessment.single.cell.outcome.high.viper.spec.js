@@ -4,7 +4,7 @@ import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
 import whenAViolentPrisonerIsAssessed from './tasks/violentPrisonerAssessed.task';
 
 function thenTheAssessmentIsCompleted() {
-  expect(DashboardPage.mainHeading).to.contain('Assessments on:');
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=I9876RA]');
   expect(row.getText()).to.equal('Ian Rate I9876RA 23-Mar-1988 Complete Start');
 }
