@@ -1,7 +1,7 @@
 import AdminPage from './pages/Admin.page';
-import { thenTheAssessmentIsCompleted, whenALowRiskPrisonerIsAssessed } from './tasks/lowRiskPrisonerAssessed.task';
-import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
-import { whenHealthcareRecommendsSharedCell } from './tasks/prisonersHealthcareResultsAreEntered.task';
+import {thenTheAssessmentIsCompleted, whenALowRiskPrisonerIsAssessed} from './tasks/lowRiskPrisonerAssessed.task';
+import {givenThatTheOfficerIsSignedIn} from './tasks/officerSignsIn.task';
+import {whenHealthcareRecommendsSharedCell} from './tasks/prisonersHealthcareResultsAreEntered.task';
 import HealthcareSummary from './pages/healthcare/HealthcareSummary.page';
 import FullAssessmentOutcomePage from './pages/FullAssessmentOutcome.page';
 import FullAssessmentCompletePage from './pages/FullAssessmentComplete.page';
@@ -32,11 +32,13 @@ describe('Both assessments (Shared cell outcome)', () => {
     expect(row.getText()).to.equalIgnoreCase('John Lowe J1234LO 01-Oct-1970 Complete Complete Shared Cell');
   }
 
-  it('Assesses a low risk prisoner', () => {
-    givenThatTheOfficerIsSignedIn();
-    whenALowRiskPrisonerIsAssessed();
-    thenTheAssessmentIsCompleted();
-    whenHealthcareRecommendsSharedCell();
-    thenTheFullAssessmentIsCompleted();
+  it('Assesses a low risk prisoner', async function () {
+    return new Promise((resolve) => {
+      givenThatTheOfficerIsSignedIn();
+      whenALowRiskPrisonerIsAssessed();
+      thenTheAssessmentIsCompleted(resolve);
+      whenHealthcareRecommendsSharedCell();
+      thenTheFullAssessmentIsCompleted();
+    });
   });
 });

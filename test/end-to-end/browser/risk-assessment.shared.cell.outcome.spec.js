@@ -10,7 +10,7 @@ describe('Risk assessment (shared cell outcome)', () => {
     AdminPage.loadTestUsers();
   });
 
-  it('Assesses a low risk prisoner', async function() {
+  it('Assesses a low risk prisoner', async function () {
     return new Promise((resolve) => {
       givenThatTheOfficerIsSignedIn();
       whenALowRiskPrisonerIsAssessed();

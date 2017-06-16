@@ -9,7 +9,7 @@ import RiskAssessmentYesNoPage
   from '../pages/risk-assessment/RiskAssessmentYesNo.page';
 import RiskAssessmentSummaryPage
   from '../pages/risk-assessment/RiskAssessmentSummary.page';
-import db from '../../../util/db';
+import checkLowRiskValuesWhereWrittenToDatabase from '../db/dbAssertions';
 
 function aLowRiskPrisonerIsAssessed(usesDrugs) {
   DashboardPage.clickRiskAssessmentStartLinkForNomisId('J1234LO');
@@ -114,64 +114,54 @@ function thenTheAssessmentIsCompleted(resolve) {
   expect(row.getText()).to.equal(
     'John Lowe J1234LO 01-Oct-1970 Complete Start',
   );
-
   const assessmentId = row.getAttribute('data-profile-id');
-  db.select().table('assessments').where('assessment_id', Number(assessmentId)).then(
-    (result) => {
-      expect(result[0].nomis_id).to.equal('J1234LO');
-      expect(result[0].timestamp).to.not.equal(undefined, 'expected a timestamp');
-      expect(result[0].questions_hash).to.not.equal(undefined, 'expected a questions_hash');
-      expect(result[0].git_version).to.not.equal(undefined, 'expected a git_version');
-      expect(result[0].git_date).to.not.equal(undefined, 'expected a git_date');
-      expect(result[0].type).to.equal('risk');
-      expect(result[0].outcome).to.equal('shared cell');
-      expect(result[0].reasons).to.equal('[]');
-      expect(JSON.parse(result[0].questions)).to.eql({
-        introduction: {
-          question_id: 'introduction',
-          question: 'Explain this',
-          answer: '',
-        },
-        'risk-of-violence': { question_id: 'risk-of-violence', question: 'Viper result', answer: '' },
-        'how-do-you-feel': {
-          question_id: 'how-do-you-feel',
-          question: 'How do you think they feel about sharing a cell at this moment?',
-          answer: 'sharing comment',
-        },
-        'prison-self-assessment': {
-          question_id: 'prison-self-assessment',
-          question: 'Is there any indication they might seriously hurt a cellmate?',
-          answer: 'no',
-        },
-        vulnerability: {
-          question_id: 'vulnerability',
-          question: "Do you think they're vulnerable?",
-          answer: 'no',
-        },
-        'gang-affiliation': {
-          question_id: 'gang-affiliation',
-          question: 'Are they part of a gang, or likely to join a gang in prison?',
-          answer: 'no',
-        },
-        'drug-misuse': {
-          question_id: 'drug-misuse',
-          question: 'Have they used drugs in the last month?',
-          answer: 'no',
-        },
-        prejudice: {
-          question_id: 'prejudice',
-          question: 'Do they have any hostile views or prejudices about a particular group?',
-          answer: 'no',
-        },
-        'officers-assessment': {
-          question_id: 'officers-assessment',
-          question: 'Are there any other reasons why you would recommend they have a single cell?',
-          answer: 'no',
-        },
-      });
-      expect(result[0].viper).to.equal(0.35);
-      resolve();
-    });
+
+  checkLowRiskValuesWhereWrittenToDatabase(resolve,
+    assessmentId,
+    {
+      introduction: {
+        question_id: 'introduction',
+        question: 'Explain this',
+        answer: '',
+      },
+      'risk-of-violence': { question_id: 'risk-of-violence', question: 'Viper result', answer: '' },
+      'how-do-you-feel': {
+        question_id: 'how-do-you-feel',
+        question: 'How do you think they feel about sharing a cell at this moment?',
+        answer: 'sharing comment',
+      },
+      'prison-self-assessment': {
+        question_id: 'prison-self-assessment',
+        question: 'Is there any indication they might seriously hurt a cellmate?',
+        answer: 'no',
+      },
+      vulnerability: {
+        question_id: 'vulnerability',
+        question: "Do you think they're vulnerable?",
+        answer: 'no',
+      },
+      'gang-affiliation': {
+        question_id: 'gang-affiliation',
+        question: 'Are they part of a gang, or likely to join a gang in prison?',
+        answer: 'no',
+      },
+      'drug-misuse': {
+        question_id: 'drug-misuse',
+        question: 'Have they used drugs in the last month?',
+        answer: 'no',
+      },
+      prejudice: {
+        question_id: 'prejudice',
+        question: 'Do they have any hostile views or prejudices about a particular group?',
+        answer: 'no',
+      },
+      'officers-assessment': {
+        question_id: 'officers-assessment',
+        question: 'Are there any other reasons why you would recommend they have a single cell?',
+        answer: 'no',
+      },
+    },
+    'shared cell');
 }
 
 function thenASharedCellIsRecommended() {
