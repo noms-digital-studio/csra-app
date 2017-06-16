@@ -126,7 +126,49 @@ function thenTheAssessmentIsCompleted(resolve) {
       expect(result[0].type).to.equal('risk');
       expect(result[0].outcome).to.equal('shared cell');
       expect(result[0].reasons).to.equal('[]');
-      expect(result[0].questions).to.equal('{"introduction":{"question_id":"introduction","question":"Explain this","answer":""},"risk-of-violence":{"question_id":"risk-of-violence","question":"Viper result","answer":""},"how-do-you-feel":{"question_id":"how-do-you-feel","question":"How do you think they feel about sharing a cell at this moment?","answer":"sharing comment"},"prison-self-assessment":{"question_id":"prison-self-assessment","question":"Is there any indication they might seriously hurt a cellmate?","answer":"no"},"vulnerability":{"question_id":"vulnerability","question":"Do you think they\'re vulnerable?","answer":"no"},"gang-affiliation":{"question_id":"gang-affiliation","question":"Are they part of a gang, or likely to join a gang in prison?","answer":"no"},"drug-misuse":{"question_id":"drug-misuse","question":"Have they used drugs in the last month?","answer":"no"},"prejudice":{"question_id":"prejudice","question":"Do they have any hostile views or prejudices about a particular group?","answer":"no"},"officers-assessment":{"question_id":"officers-assessment","question":"Are there any other reasons why you would recommend they have a single cell?","answer":"no"}}');
+      expect(JSON.parse(result[0].questions)).to.eql({
+        introduction: {
+          question_id: 'introduction',
+          question: 'Explain this',
+          answer: '',
+        },
+        'risk-of-violence': { question_id: 'risk-of-violence', question: 'Viper result', answer: '' },
+        'how-do-you-feel': {
+          question_id: 'how-do-you-feel',
+          question: 'How do you think they feel about sharing a cell at this moment?',
+          answer: 'sharing comment',
+        },
+        'prison-self-assessment': {
+          question_id: 'prison-self-assessment',
+          question: 'Is there any indication they might seriously hurt a cellmate?',
+          answer: 'no',
+        },
+        vulnerability: {
+          question_id: 'vulnerability',
+          question: "Do you think they're vulnerable?",
+          answer: 'no',
+        },
+        'gang-affiliation': {
+          question_id: 'gang-affiliation',
+          question: 'Are they part of a gang, or likely to join a gang in prison?',
+          answer: 'no',
+        },
+        'drug-misuse': {
+          question_id: 'drug-misuse',
+          question: 'Have they used drugs in the last month?',
+          answer: 'no',
+        },
+        prejudice: {
+          question_id: 'prejudice',
+          question: 'Do they have any hostile views or prejudices about a particular group?',
+          answer: 'no',
+        },
+        'officers-assessment': {
+          question_id: 'officers-assessment',
+          question: 'Are there any other reasons why you would recommend they have a single cell?',
+          answer: 'no',
+        },
+      });
       expect(result[0].viper).to.equal(0.35);
       resolve();
     });
