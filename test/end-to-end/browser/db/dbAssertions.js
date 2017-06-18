@@ -13,7 +13,7 @@ function checkLowRiskValuesWhereWrittenToDatabase(resolve, assessmentId, questio
       expect(result[0].reasons).to.equal(reasons || '[]');
       console.log('thing1: ', result[0].questions);
       console.log('thing2: ', questionData);
-      // expect(JSON.parse(result[0].questions)).to.eql(questionData);
+      expect(JSON.parse(result[0].questions)).to.eql(questionData);
       expect(result[0].viper).to.equal(0.35);
       resolve();
     });

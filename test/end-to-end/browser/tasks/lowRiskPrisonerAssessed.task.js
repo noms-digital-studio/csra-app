@@ -108,7 +108,7 @@ function aSharedCellIsRecommended(sharedText) {
   );
 }
 
-function thenTheAssessmentIsCompleted(resolve, sharedText, reasons) {
+function thenTheAssessmentIsCompleted(resolve, sharedText, reasons, hasUsedDrugs) {
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=J1234LO]');
   expect(row.getText()).to.equal(
@@ -148,7 +148,7 @@ function thenTheAssessmentIsCompleted(resolve, sharedText, reasons) {
       'drug-misuse': {
         question_id: 'drug-misuse',
         question: 'Have they used drugs in the last month?',
-        answer: 'no',
+        answer: hasUsedDrugs ? 'yes' : 'no',
       },
       prejudice: {
         question_id: 'prejudice',

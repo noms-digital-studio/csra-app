@@ -21,6 +21,7 @@ describe('Risk assessment (shared cell outcome with conditions)', () => {
     whenALowRiskPrisonerWhoUsesDrugsIsAssessed();
     thenTheAssessmentIsCompleted(resolve,
         'shared with conditions',
-        '[{"question_id":"drug-misuse","reason":"Has indicated drug use"}]');
+        '[{"question_id":"drug-misuse","reason":"Has indicated drug use"}]',
+        true);
   }));
 });
