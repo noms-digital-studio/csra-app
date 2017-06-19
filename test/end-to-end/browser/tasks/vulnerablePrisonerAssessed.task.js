@@ -41,22 +41,24 @@ function whenAVulnerablePrisonerIsAssessed() {
 }
 
 function thenASingleCellIsRecommended() {
-  expect(DashboardPage.mainHeading).to.contain('Assessments on:');
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=J1234LO]');
   expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Complete Start Single cell');
 }
 
-function thenTheAssessmentIsCompleted(resolve) {
+function thenTheAssessmentIsCompleted({ resolve, reject }) {
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=J1234LO]');
   expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Complete Start');
-  const assessmentId = row.getAttribute('data-profile-id');
+  const assessmentId = row.getAttribute('data-risk-assessment-id');
 
-  checkLowRiskValuesWhereWrittenToDatabase(resolve,
+  checkLowRiskValuesWhereWrittenToDatabase({
+    resolve,
+    reject,
     assessmentId,
-    {
-      introduction: {question_id: 'introduction', question: 'Explain this', answer: '' },
-      'risk-of-violence': {question_id: 'risk-of-violence', question: 'Viper result', answer: '' },
+    questionData: {
+      introduction: { question_id: 'introduction', question: 'Explain this', answer: '' },
+      'risk-of-violence': { question_id: 'risk-of-violence', question: 'Viper result', answer: '' },
       'how-do-you-feel': {
         question_id: 'how-do-you-feel',
         question: 'How do you think they feel about sharing a cell at this moment?',
@@ -67,11 +69,11 @@ function thenTheAssessmentIsCompleted(resolve) {
         question: 'Is there any indication they might seriously hurt a cellmate?',
         answer: 'no',
       },
-      vulnerability: {question_id: 'vulnerability', question: "Do you think they're vulnerable?", answer: 'yes' },
+      vulnerability: { question_id: 'vulnerability', question: "Do you think they're vulnerable?", answer: 'yes' },
     },
-    '[]',
-    'single cell',
-  )
+    reasons: '[]',
+    sharedText: 'single cell',
+  })
   ;
 }
 

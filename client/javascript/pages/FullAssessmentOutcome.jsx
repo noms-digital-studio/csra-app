@@ -40,7 +40,7 @@ const FullAssessmentOutcome = ({
       <div>
         <div className="grid-row">
           <div className="column-two-thirds">
-            <h1 className="heading-xlarge">
+            <h1 data-title="full-outcome" className="heading-xlarge">
               Risk and healthcare assessment outcome
             </h1>
           </div>

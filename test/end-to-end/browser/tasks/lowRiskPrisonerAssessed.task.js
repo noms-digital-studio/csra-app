@@ -108,17 +108,19 @@ function aSharedCellIsRecommended(sharedText) {
   );
 }
 
-function thenTheAssessmentIsCompleted(resolve, sharedText, reasons, hasUsedDrugs) {
+function thenTheAssessmentIsCompleted({ resolve, reject, sharedText, reasons, hasUsedDrugs }) {
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=J1234LO]');
   expect(row.getText()).to.equal(
     'John Lowe J1234LO 01-Oct-1970 Complete Start',
   );
-  const assessmentId = row.getAttribute('data-profile-id');
+  const assessmentId = row.getAttribute('data-risk-assessment-id');
 
-  checkLowRiskValuesWhereWrittenToDatabase(resolve,
+  checkLowRiskValuesWhereWrittenToDatabase({
+    resolve,
+    reject,
     assessmentId,
-    {
+    questionData: {
       introduction: {
         question_id: 'introduction',
         question: 'Explain this',
@@ -162,7 +164,8 @@ function thenTheAssessmentIsCompleted(resolve, sharedText, reasons, hasUsedDrugs
       },
     },
     reasons,
-    sharedText);
+    sharedText,
+  });
 }
 
 function thenASharedCellIsRecommended() {

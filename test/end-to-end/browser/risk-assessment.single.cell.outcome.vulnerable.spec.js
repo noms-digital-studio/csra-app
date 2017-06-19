@@ -9,11 +9,9 @@ describe('Risk assessment for a vulnerable prisoner (single cell outcome)', () =
     AdminPage.loadTestUsers();
   });
 
-  it('Assesses a vulnerable prisoner', async function () {
-    return new Promise((resolve) => {
-      givenThatTheOfficerIsSignedIn();
-      whenAVulnerablePrisonerIsAssessed();
-      thenTheAssessmentIsCompleted(resolve);
-    });
-  });
+  it('Assesses a vulnerable prisoner', async () => new Promise((resolve, reject) => {
+    givenThatTheOfficerIsSignedIn();
+    whenAVulnerablePrisonerIsAssessed();
+    thenTheAssessmentIsCompleted({ resolve, reject });
+  }));
 });

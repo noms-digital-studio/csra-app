@@ -1,5 +1,5 @@
 import AdminPage from './pages/Admin.page';
-import {givenThatTheOfficerIsSignedIn} from './tasks/officerSignsIn.task';
+import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
 import {
   whenHealthcareRecommendsSharedCell,
   whenHealthcareRecommendsSingleCell,
@@ -30,12 +30,13 @@ describe('Both assessments (Single cell outcome)', () => {
   });
 
   function thenTheFullAssessmentIsCompletedWith({
-                                                  riskRecommendation,
-                                                  healthRecommendation,
-                                                  finalRecommendation,
-                                                }) {
+    riskRecommendation,
+    healthRecommendation,
+    finalRecommendation,
+  }) {
     HealthcareSummary.clickContinue();
-    expect(FullAssessmentOutcomePage.mainHeading).to.equal(
+
+    expect(FullAssessmentOutcomePage.waitForMainHeadingWithDataId('full-outcome')).to.equal(
       'Risk and healthcare assessment outcome',
     );
     expect(FullAssessmentOutcomePage.name).to.equalIgnoreCase('John Lowe');
@@ -62,31 +63,27 @@ describe('Both assessments (Single cell outcome)', () => {
     );
   }
 
-  it('Assesses a vulnerable prisoner', async function () {
-    return new Promise((resolve) => {
-      givenThatTheOfficerIsSignedIn();
-      whenAVulnerablePrisonerIsAssessed();
-      thenRiskAssessmentIsComplete(resolve);
-      whenHealthcareRecommendsSharedCell();
-      thenTheFullAssessmentIsCompletedWith({
-        riskRecommendation: 'single',
-        healthRecommendation: 'shared',
-        finalRecommendation: 'single',
-      });
+  it('Assesses a vulnerable prisoner', async () => new Promise((resolve, reject) => {
+    givenThatTheOfficerIsSignedIn();
+    whenAVulnerablePrisonerIsAssessed();
+    thenRiskAssessmentIsComplete({ resolve, reject });
+    whenHealthcareRecommendsSharedCell();
+    thenTheFullAssessmentIsCompletedWith({
+      riskRecommendation: 'single',
+      healthRecommendation: 'shared',
+      finalRecommendation: 'single',
     });
-  });
+  }));
 
-  it('Assesses a prisoner that healthcare deem as a risk', async function () {
-    return new Promise((resolve) => {
-      givenThatTheOfficerIsSignedIn();
-      whenALowRiskPrisonerIsAssessed();
-      thenTheAssessmentIsCompleted(resolve, 'shared cell');
-      whenHealthcareRecommendsSingleCell();
-      thenTheFullAssessmentIsCompletedWith({
-        riskRecommendation: 'shared',
-        healthRecommendation: 'single',
-        finalRecommendation: 'single',
-      });
+  it('Assesses a prisoner that healthcare deem as a risk', async () => new Promise((resolve, reject) => {
+    givenThatTheOfficerIsSignedIn();
+    whenALowRiskPrisonerIsAssessed();
+    thenTheAssessmentIsCompleted({ resolve, reject, sharedText: 'shared cell' });
+    whenHealthcareRecommendsSingleCell();
+    thenTheFullAssessmentIsCompletedWith({
+      riskRecommendation: 'shared',
+      healthRecommendation: 'single',
+      finalRecommendation: 'single',
     });
-  });
+  }));
 });

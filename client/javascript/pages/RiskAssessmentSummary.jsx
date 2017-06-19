@@ -179,7 +179,6 @@ const mapActionsToProps = dispatch => ({
         dispatch(replace(routes.DASHBOARD));
       }
     });
-
   },
 });
 
