@@ -4,7 +4,7 @@ import RiskAssessmentExplanationPage from '../pages/risk-assessment/RiskAssessme
 import RiskAssessmentCommentsPage from '../pages/risk-assessment/RiskAssessmentComments.page';
 import RiskAssessmentYesNoPage from '../pages/risk-assessment/RiskAssessmentYesNo.page';
 import RiskAssessmentSummaryPage from '../pages/risk-assessment/RiskAssessmentSummary.page';
-import checkLowRiskValuesWhereWrittenToDatabase from '../db/dbAssertions';
+import checkThatAssessmentDataWasWrittenToDatabase from '../db/dbAssertions';
 
 function whenAVulnerablePrisonerIsAssessed() {
   DashboardPage.clickRiskAssessmentStartLinkForNomisId('J1234LO');
@@ -52,9 +52,10 @@ function thenTheAssessmentIsCompleted({ resolve, reject }) {
   expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Complete Start');
   const assessmentId = row.getAttribute('data-risk-assessment-id');
 
-  checkLowRiskValuesWhereWrittenToDatabase({
+  checkThatAssessmentDataWasWrittenToDatabase({
     resolve,
     reject,
+    nomisId: 'J1234LO',
     assessmentId,
     questionData: {
       introduction: { question_id: 'introduction', question: 'Explain this', answer: '' },
@@ -71,7 +72,6 @@ function thenTheAssessmentIsCompleted({ resolve, reject }) {
       },
       vulnerability: { question_id: 'vulnerability', question: "Do you think they're vulnerable?", answer: 'yes' },
     },
-    reasons: '[]',
     sharedText: 'single cell',
   })
   ;

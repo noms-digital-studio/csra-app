@@ -1,21 +1,22 @@
 import db from '../../../util/db';
 
-const checkLowRiskValuesWhereWrittenToDatabase = ({
+const checkThatAssessmentDataWasWrittenToDatabase = ({
   resolve,
   reject,
-  assessmentType,
+  nomisId,
+  assessmentType = 'risk',
   assessmentId,
   questionData,
-  reasons,
-  sharedText,
+  reasons = [],
+  sharedText = 'single cell',
 }) => {
   db
     .select()
     .table('assessments')
     .where('assessment_id', Number(assessmentId))
     .then((result) => {
-      expect(result[0].nomis_id).to.equal('J1234LO');
-      expect(result[0].timestamp).to.not.equal(
+      expect(result[0].nomis_id).to.equal(nomisId);
+      expect(result[0].timestamp).to.not.be.equal(
         undefined,
         'expected a timestamp',
       );
@@ -28,9 +29,9 @@ const checkLowRiskValuesWhereWrittenToDatabase = ({
         'expected a git_version',
       );
       expect(result[0].git_date).to.not.equal(undefined, 'expected a git_date');
-      expect(result[0].type).to.equal(assessmentType || 'risk');
-      expect(result[0].outcome).to.equal(sharedText || 'single cell');
-      expect(result[0].reasons).to.equal(reasons || '[]');
+      expect(result[0].type).to.equal(assessmentType);
+      expect(result[0].outcome).to.equal(sharedText);
+      expect(JSON.parse(result[0].reasons)).to.eql(reasons);
       expect(JSON.parse(result[0].questions)).to.eql(questionData);
       expect(result[0].viper).to.equal(0.35);
       resolve();
@@ -38,4 +39,4 @@ const checkLowRiskValuesWhereWrittenToDatabase = ({
     .catch(error => reject(error));
 };
 
-export default checkLowRiskValuesWhereWrittenToDatabase;
+export default checkThatAssessmentDataWasWrittenToDatabase;

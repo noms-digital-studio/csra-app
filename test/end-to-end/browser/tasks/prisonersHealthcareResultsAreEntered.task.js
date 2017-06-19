@@ -6,7 +6,7 @@ import HealthcareNursePage from '../pages/healthcare/HealthcareNurse.page';
 import DashboardPage from '../pages/Dashboard.page';
 import HealthcareSummary from '../pages/healthcare/HealthcareSummary.page';
 
-import checkLowRiskValuesWhereWrittenToDatabase from '../db/dbAssertions';
+import checkThatAssessmentDataWasWrittenToDatabase from '../db/dbAssertions';
 
 function aPrisonersHealthcareResultsAreEntered(singleCellRecommended) {
   DashboardPage.clickHealthcareStartLinkForNomisId('J1234LO');
@@ -67,9 +67,10 @@ function thenTheHealthcareAssessmentIsComplete({ resolve, reject, sharedText }) 
 
   const assessmentId = row.getAttribute('data-health-assessment-id');
 
-  checkLowRiskValuesWhereWrittenToDatabase({
+  checkThatAssessmentDataWasWrittenToDatabase({
     resolve,
     reject,
+    nomisId: 'J1234LO',
     assessmentId,
     assessmentType: 'healthcare',
     questionData: {
@@ -94,7 +95,6 @@ function thenTheHealthcareAssessmentIsComplete({ resolve, reject, sharedText }) 
         answer: 'Nurse, Jane Doe, 21-07-2017',
       },
     },
-    reasons: null,
     sharedText,
   });
 }

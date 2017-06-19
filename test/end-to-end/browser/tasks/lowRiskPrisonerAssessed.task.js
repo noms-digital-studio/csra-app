@@ -9,7 +9,7 @@ import RiskAssessmentYesNoPage
   from '../pages/risk-assessment/RiskAssessmentYesNo.page';
 import RiskAssessmentSummaryPage
   from '../pages/risk-assessment/RiskAssessmentSummary.page';
-import checkLowRiskValuesWhereWrittenToDatabase from '../db/dbAssertions';
+import checkThatAssessmentDataWasWrittenToDatabase from '../db/dbAssertions';
 
 function aLowRiskPrisonerIsAssessed(usesDrugs) {
   DashboardPage.clickRiskAssessmentStartLinkForNomisId('J1234LO');
@@ -116,9 +116,10 @@ function thenTheAssessmentIsCompleted({ resolve, reject, sharedText, reasons, ha
   );
   const assessmentId = row.getAttribute('data-risk-assessment-id');
 
-  checkLowRiskValuesWhereWrittenToDatabase({
+  checkThatAssessmentDataWasWrittenToDatabase({
     resolve,
     reject,
+    nomisId: 'J1234LO',
     assessmentId,
     questionData: {
       introduction: {
