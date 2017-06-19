@@ -91,7 +91,7 @@ describe('assessment service', () => {
 
       allows({ outcome: 'single cell' });
       allows({ outcome: 'shared cell' });
-      allows({ outcome: 'shared with conditions' });
+      allows({ outcome: 'shared cell with conditions' });
       doesNotAllow({ outcome: 'release' });
       doesNotAllow({ outcome: 'shoe' });
       doesNotAllow({ outcome: undefined }, 'missing "outcome"');

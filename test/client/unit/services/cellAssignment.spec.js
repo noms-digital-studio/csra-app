@@ -45,7 +45,7 @@ describe('#Full assessment Decision engine', () => {
     });
   });
 
-  context('when the risk assessment outcome is shared with conditions', () => {
+  context('when the risk assessment outcome is shared cell with conditions', () => {
     context('and the outcome of both assessments are a variation of shared cell', () => {
       it('returns the outcome of a both assessments are as shared cell with conditions', () => {
         expect(

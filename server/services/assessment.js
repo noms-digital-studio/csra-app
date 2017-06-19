@@ -2,7 +2,7 @@ import Joi from 'joi';
 
 const schema = Joi.object({
   type: Joi.string().valid('risk', 'healthcare'),
-  outcome: Joi.string().valid('single cell', 'shared cell', 'shared with conditions'),
+  outcome: Joi.string().valid('single cell', 'shared cell', 'shared cell with conditions'),
   nomisId: Joi.string().max(10),
   viperScore: Joi.number().optional()
     .min(-1).max(1)

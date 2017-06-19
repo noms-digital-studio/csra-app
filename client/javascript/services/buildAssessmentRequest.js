@@ -65,15 +65,6 @@ const buildQuestionAnswers = (questions, answers) =>
     };
   }, {});
 
-// Work around for outcome column too small
-const buildOutcome = (outcome) => {
-  if (outcome === 'shared cell with conditions') {
-    return 'shared with conditions';
-  }
-
-  return outcome;
-};
-
 const buildViperScore = (viperScore) => {
   if (viperScore) {
     return viperScore;
@@ -87,7 +78,7 @@ const buildAssessmentRequest = (
   { nomisId, outcome, viperScore, questions, answers },
 ) => ({
   nomisId,
-  outcome: buildOutcome(outcome),
+  outcome,
   type: assessmentType,
   viperScore: buildViperScore(viperScore),
   questions: buildQuestionAnswers(questions, answers),

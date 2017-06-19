@@ -22,7 +22,7 @@ describe('Risk assessment (shared cell outcome with conditions)', () => {
     thenTheAssessmentIsCompleted({
       resolve,
       reject,
-      sharedText: 'shared with conditions',
+      sharedText: 'shared cell with conditions',
       reasons: '[{"question_id":"drug-misuse","reason":"Has indicated drug use"}]',
       hasUsedDrugs: true });
   }));
