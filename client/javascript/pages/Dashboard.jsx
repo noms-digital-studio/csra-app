@@ -20,7 +20,12 @@ class Dashboard extends Component {
 
   renderProfiles() {
     return this.props.profiles.map(profile => (
-      <tr data-profile-row={profile.nomisId} key={profile.nomisId}>
+      <tr
+        data-profile-row={profile.nomisId}
+        key={profile.nomisId}
+        data-risk-assessment-id={profile.assessmentCompleted.assessmentId}
+        data-health-assessment-id={profile.healthAssessmentCompleted.assessmentId}
+      >
         <td>
           <span className="c-profile-holder" />
         </td>
@@ -104,7 +109,7 @@ class Dashboard extends Component {
                 </div>
               </div>
               <div className="c-date-title">
-                <h1 className="heading-large">
+                <h1 data-title="dashboard" className="heading-large">
                   <span className="heading-secondary">
                       Assessments on:
                     </span>

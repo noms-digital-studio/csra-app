@@ -16,7 +16,9 @@ describe('Both assessments (Shared cell outcome)', () => {
 
   function thenTheFullAssessmentIsCompleted() {
     HealthcareSummary.clickContinue();
-    expect(FullAssessmentOutcomePage.mainHeading).to.equal('Risk and healthcare assessment outcome');
+    expect(FullAssessmentOutcomePage.waitForMainHeadingWithDataId('full-outcome')).to.equal(
+      'Risk and healthcare assessment outcome',
+    );
     expect(FullAssessmentOutcomePage.name).to.equalIgnoreCase('John Lowe');
     expect(FullAssessmentOutcomePage.dob).to.equalIgnoreCase('01-Oct-1970');
     expect(FullAssessmentOutcomePage.nomisId).to.equalIgnoreCase('J1234LO');
@@ -32,11 +34,11 @@ describe('Both assessments (Shared cell outcome)', () => {
     expect(row.getText()).to.equalIgnoreCase('John Lowe J1234LO 01-Oct-1970 Complete Complete Shared Cell');
   }
 
-  it('Assesses a low risk prisoner', () => {
+  it('Assesses a low risk prisoner', async () => new Promise((resolve, reject) => {
     givenThatTheOfficerIsSignedIn();
     whenALowRiskPrisonerIsAssessed();
-    thenTheAssessmentIsCompleted();
+    thenTheAssessmentIsCompleted({ resolve, reject, sharedText: 'shared cell' });
     whenHealthcareRecommendsSharedCell();
     thenTheFullAssessmentIsCompleted();
-  });
+  }));
 });

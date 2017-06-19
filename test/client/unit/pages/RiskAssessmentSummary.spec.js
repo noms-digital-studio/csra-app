@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
+import superagent from 'superagent';
 
 import { fakeStore } from '../test-helpers';
 
@@ -41,6 +42,15 @@ const riskAssessmentAnswers = {
 };
 
 describe('<RiskAssessmentSummary />', () => {
+  let postStub;
+  before(() => {
+    postStub = sinon.stub(superagent, 'post');
+    postStub.yields(null, { body: { data: { id: 123 } } });
+  });
+  after(() => {
+    postStub.restore();
+  });
+
   context('Connected RiskAssessmentSummary', () => {
     const state = {
       answers: {
@@ -240,7 +250,7 @@ describe('<RiskAssessmentSummary />', () => {
         expect(
           store.dispatch.calledWithMatch({
             type: 'COMPLETE_RISK_ASSESSMENT',
-            payload: { recommendation: 'shared cell', nomisId: 'foo-nomis-id' },
+            payload: { recommendation: 'shared cell', nomisId: 'foo-nomis-id', assessmentId: 123 },
           }),
         ).to.equal(true, 'triggered complete assessment');
       });

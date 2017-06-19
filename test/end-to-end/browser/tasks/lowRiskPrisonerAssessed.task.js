@@ -9,6 +9,7 @@ import RiskAssessmentYesNoPage
   from '../pages/risk-assessment/RiskAssessmentYesNo.page';
 import RiskAssessmentSummaryPage
   from '../pages/risk-assessment/RiskAssessmentSummary.page';
+import checkThatAssessmentDataWasWrittenToDatabase from '../db/dbAssertions';
 
 function aLowRiskPrisonerIsAssessed(usesDrugs) {
   DashboardPage.clickRiskAssessmentStartLinkForNomisId('J1234LO');
@@ -107,12 +108,65 @@ function aSharedCellIsRecommended(sharedText) {
   );
 }
 
-function thenTheAssessmentIsCompleted() {
-  expect(DashboardPage.mainHeading).to.contain('Assessments on:');
+function thenTheAssessmentIsCompleted({ resolve, reject, sharedText, reasons, hasUsedDrugs }) {
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=J1234LO]');
   expect(row.getText()).to.equal(
     'John Lowe J1234LO 01-Oct-1970 Complete Start',
   );
+  const assessmentId = row.getAttribute('data-risk-assessment-id');
+
+  checkThatAssessmentDataWasWrittenToDatabase({
+    resolve,
+    reject,
+    nomisId: 'J1234LO',
+    assessmentId,
+    questionData: {
+      introduction: {
+        question_id: 'introduction',
+        question: 'Explain this',
+        answer: '',
+      },
+      'risk-of-violence': { question_id: 'risk-of-violence', question: 'Viper result', answer: '' },
+      'how-do-you-feel': {
+        question_id: 'how-do-you-feel',
+        question: 'How do you think they feel about sharing a cell at this moment?',
+        answer: 'sharing comment',
+      },
+      'prison-self-assessment': {
+        question_id: 'prison-self-assessment',
+        question: 'Is there any indication they might seriously hurt a cellmate?',
+        answer: 'no',
+      },
+      vulnerability: {
+        question_id: 'vulnerability',
+        question: "Do you think they're vulnerable?",
+        answer: 'no',
+      },
+      'gang-affiliation': {
+        question_id: 'gang-affiliation',
+        question: 'Are they part of a gang, or likely to join a gang in prison?',
+        answer: 'no',
+      },
+      'drug-misuse': {
+        question_id: 'drug-misuse',
+        question: 'Have they used drugs in the last month?',
+        answer: hasUsedDrugs ? 'yes' : 'no',
+      },
+      prejudice: {
+        question_id: 'prejudice',
+        question: 'Do they have any hostile views or prejudices about a particular group?',
+        answer: 'no',
+      },
+      'officers-assessment': {
+        question_id: 'officers-assessment',
+        question: 'Are there any other reasons why you would recommend they have a single cell?',
+        answer: 'no',
+      },
+    },
+    reasons,
+    sharedText,
+  });
 }
 
 function thenASharedCellIsRecommended() {

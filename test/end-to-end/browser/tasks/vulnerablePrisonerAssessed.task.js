@@ -4,6 +4,7 @@ import RiskAssessmentExplanationPage from '../pages/risk-assessment/RiskAssessme
 import RiskAssessmentCommentsPage from '../pages/risk-assessment/RiskAssessmentComments.page';
 import RiskAssessmentYesNoPage from '../pages/risk-assessment/RiskAssessmentYesNo.page';
 import RiskAssessmentSummaryPage from '../pages/risk-assessment/RiskAssessmentSummary.page';
+import checkThatAssessmentDataWasWrittenToDatabase from '../db/dbAssertions';
 
 function whenAVulnerablePrisonerIsAssessed() {
   DashboardPage.clickRiskAssessmentStartLinkForNomisId('J1234LO');
@@ -40,15 +41,40 @@ function whenAVulnerablePrisonerIsAssessed() {
 }
 
 function thenASingleCellIsRecommended() {
-  expect(DashboardPage.mainHeading).to.contain('Assessments on:');
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=J1234LO]');
   expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Complete Start Single cell');
 }
 
-function thenTheAssessmentIsCompleted() {
-  expect(DashboardPage.mainHeading).to.contain('Assessments on:');
+function thenTheAssessmentIsCompleted({ resolve, reject }) {
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=J1234LO]');
   expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Complete Start');
+  const assessmentId = row.getAttribute('data-risk-assessment-id');
+
+  checkThatAssessmentDataWasWrittenToDatabase({
+    resolve,
+    reject,
+    nomisId: 'J1234LO',
+    assessmentId,
+    questionData: {
+      introduction: { question_id: 'introduction', question: 'Explain this', answer: '' },
+      'risk-of-violence': { question_id: 'risk-of-violence', question: 'Viper result', answer: '' },
+      'how-do-you-feel': {
+        question_id: 'how-do-you-feel',
+        question: 'How do you think they feel about sharing a cell at this moment?',
+        answer: 'sharing comment',
+      },
+      'prison-self-assessment': {
+        question_id: 'prison-self-assessment',
+        question: 'Is there any indication they might seriously hurt a cellmate?',
+        answer: 'no',
+      },
+      vulnerability: { question_id: 'vulnerability', question: "Do you think they're vulnerable?", answer: 'yes' },
+    },
+    sharedText: 'single cell',
+  })
+  ;
 }
 
 export {

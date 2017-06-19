@@ -1,5 +1,4 @@
 require('dotenv').config();
-require('babel-register')();
 
 exports.config = {
   //
@@ -61,7 +60,7 @@ exports.config = {
   sync: true,
   //
   // Level of logging verbosity: silent | verbose | command | data | result | error
-  logLevel: 'command',
+  logLevel: 'error',
   //
   // Enables colors for log output.
   coloredLogs: true,
@@ -152,6 +151,8 @@ exports.config = {
   // Gets executed before test execution begins. At this point you can access all global
   // variables, such as `browser`. It is the perfect place to define custom commands.
   before(capabilities, specs) {
+    require('babel-register')();
+
     var sinon = require('sinon');
     // http://sinonjs.org/
     var chai = require('chai');

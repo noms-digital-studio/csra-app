@@ -1,6 +1,8 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
+import superagent from 'superagent';
+
 
 import { fakeStore } from '../test-helpers';
 
@@ -69,6 +71,15 @@ const storeData = {
 };
 
 describe('<HealthcareSummary />', () => {
+  let postStub;
+  before(() => {
+    postStub = sinon.stub(superagent, 'post');
+    postStub.yields(null, { body: { data: { id: 123 } } });
+  });
+  after(() => {
+    postStub.restore();
+  });
+
   context('Connected HealthcareSummary', () => {
     it('accepts and correctly renders a prisoner`s details', () => {
       const store = fakeStore(storeData);
@@ -225,6 +236,23 @@ describe('<HealthcareSummary />', () => {
           payload: { method: 'replace', args: ['/dashboard'] },
         }),
       ).to.equal(true, 'Changed path to /dashboard');
+    });
+
+    it('marks the assessment as complete on submission', () => {
+      const wrapper = mount(
+        <Provider store={store}>
+          <HealthcareSummary />
+        </Provider>,
+      );
+
+      wrapper.find('[data-summary-next-steps] button').simulate('click');
+
+      expect(
+        store.dispatch.calledWithMatch({
+          type: 'COMPLETE_HEALTH_ASSESSMENT',
+          payload: { nomisId: 'foo-nomis-id', assessmentId: 123 },
+        }),
+      ).to.equal(true, 'triggered complete assessment');
     });
   });
 
