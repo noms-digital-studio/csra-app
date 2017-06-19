@@ -237,6 +237,23 @@ describe('<HealthcareSummary />', () => {
         }),
       ).to.equal(true, 'Changed path to /dashboard');
     });
+
+    it('marks the assessment as complete on submission', () => {
+      const wrapper = mount(
+        <Provider store={store}>
+          <HealthcareSummary />
+        </Provider>,
+      );
+
+      wrapper.find('[data-summary-next-steps] button').simulate('click');
+
+      expect(
+        store.dispatch.calledWithMatch({
+          type: 'COMPLETE_HEALTH_ASSESSMENT',
+          payload: { nomisId: 'foo-nomis-id', assessmentId: 123 },
+        }),
+      ).to.equal(true, 'triggered complete assessment');
+    });
   });
 
   context('when the risk assessment is complete', () => {

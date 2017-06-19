@@ -250,7 +250,7 @@ describe('<RiskAssessmentSummary />', () => {
         expect(
           store.dispatch.calledWithMatch({
             type: 'COMPLETE_RISK_ASSESSMENT',
-            payload: { recommendation: 'shared cell', nomisId: 'foo-nomis-id' },
+            payload: { recommendation: 'shared cell', nomisId: 'foo-nomis-id', assessmentId: 123 },
           }),
         ).to.equal(true, 'triggered complete assessment');
       });
