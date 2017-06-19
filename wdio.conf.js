@@ -45,7 +45,7 @@ exports.config = {
       // 5 instance gets started at a time.
       maxInstances: 5,
       //
-      browserName: 'chrome', // options: chrome || firefox || phantomjs
+      browserName: 'phantomjs', // options: chrome || firefox || phantomjs
     },
   ],
   //
@@ -60,7 +60,7 @@ exports.config = {
   sync: true,
   //
   // Level of logging verbosity: silent | verbose | command | data | result | error
-  logLevel: 'command',
+  logLevel: 'error',
   //
   // Enables colors for log output.
   coloredLogs: true,
