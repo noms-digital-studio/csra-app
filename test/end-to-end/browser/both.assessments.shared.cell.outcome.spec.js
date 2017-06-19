@@ -34,7 +34,7 @@ describe('Both assessments (Shared cell outcome)', () => {
     expect(row.getText()).to.equalIgnoreCase('John Lowe J1234LO 01-Oct-1970 Complete Complete Shared Cell');
   }
 
-  it('Assesses a low risk prisoner', async () => new Promise((resolve, reject) => {
+  it('Assesses a low risk prisoner', () => new Promise((resolve, reject) => {
     givenThatTheOfficerIsSignedIn();
     whenALowRiskPrisonerIsAssessed();
     thenTheAssessmentIsCompleted({ resolve, reject, sharedText: 'shared cell' });

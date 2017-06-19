@@ -63,7 +63,7 @@ describe('Both assessments (Single cell outcome)', () => {
     );
   }
 
-  it('Assesses a vulnerable prisoner', async () => new Promise((resolve, reject) => {
+  it('Assesses a vulnerable prisoner', () => new Promise((resolve, reject) => {
     givenThatTheOfficerIsSignedIn();
     whenAVulnerablePrisonerIsAssessed();
     thenRiskAssessmentIsComplete({ resolve, reject });
@@ -75,7 +75,7 @@ describe('Both assessments (Single cell outcome)', () => {
     });
   }));
 
-  it('Assesses a prisoner that healthcare deem as a risk', async () => new Promise((resolve, reject) => {
+  it('Assesses a prisoner that healthcare deem as a risk', () => new Promise((resolve, reject) => {
     givenThatTheOfficerIsSignedIn();
     whenALowRiskPrisonerIsAssessed();
     thenTheAssessmentIsCompleted({ resolve, reject, sharedText: 'shared cell' });

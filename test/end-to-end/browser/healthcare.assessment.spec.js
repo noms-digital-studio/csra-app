@@ -12,7 +12,7 @@ describe('Healthcare assessment', () => {
     AdminPage.loadTestUsers();
   });
 
-  it('Record a prisoner`s healthcare details', async () => new Promise((resolve, reject) => {
+  it('Record a prisoner`s healthcare details', () => new Promise((resolve, reject) => {
     givenThatTheOfficerIsSignedIn();
     whenHealthcareRecommendsSharedCell();
     thenTheHealthcareAssessmentIsComplete({ resolve, reject, sharedText: 'shared cell' });

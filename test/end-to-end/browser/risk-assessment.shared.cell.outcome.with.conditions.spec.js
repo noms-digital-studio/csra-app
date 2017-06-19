@@ -16,7 +16,7 @@ describe('Risk assessment (shared cell outcome with conditions)', () => {
     browser.reload();
   });
 
-  it('Assesses a low risk prisoner who uses drugs', async () =>
+  it('Assesses a low risk prisoner who uses drugs', () =>
     new Promise((resolve, reject) => {
       givenThatTheOfficerIsSignedIn();
       whenALowRiskPrisonerWhoUsesDrugsIsAssessed();
