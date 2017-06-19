@@ -259,14 +259,14 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapActionsToProps = dispatch => ({
   onSubmit: ({ prisoner, riskAssessmentComplete, postData }) => {
-    postAssessmentToBackend('healthcare', postData);
-
-    dispatch(completeHealthAssessmentFor(prisoner));
-    if (riskAssessmentComplete) {
-      dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
-    } else {
-      dispatch(replace(routes.DASHBOARD));
-    }
+    postAssessmentToBackend('healthcare', postData, (assessmentId) => {
+      dispatch(completeHealthAssessmentFor({ nomisId: prisoner.nomisId, assessmentId }));
+      if (riskAssessmentComplete) {
+        dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
+      } else {
+        dispatch(replace(routes.DASHBOARD));
+      }
+    });
   },
   completeHealthAnswersFor: profile =>
     dispatch(completeHealthAnswersFor(profile)),

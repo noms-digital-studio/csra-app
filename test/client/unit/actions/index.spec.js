@@ -170,8 +170,7 @@ describe('Actions', () => {
       const outcome = {
         nomisId: 'foo-id',
         recommendation: 'foo-recommendation',
-        rating: 'foo-rating',
-        reasons: ['foo-reason'],
+        assessmentId: 'foo-nomis-id',
       };
       expect(completeRiskAssessmentFor(outcome)).to.eql({
         type: 'COMPLETE_RISK_ASSESSMENT',
@@ -183,10 +182,7 @@ describe('Actions', () => {
   describe('#completeHealthAnswersFor', () => {
     it('returns a HEALTHCARE_ANSWERS_COMPLETE action', () => {
       const offender = {
-        nomisId: 'AA12345',
-        surname: 'bar',
-        firstName: 'foo',
-        dob: '01-10-1997',
+        nomisId: 'foo-nomis-id',
       };
       expect(completeHealthAnswersFor(offender)).to.eql({
         type: 'HEALTHCARE_ANSWERS_COMPLETE',

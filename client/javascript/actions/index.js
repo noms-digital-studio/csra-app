@@ -84,9 +84,9 @@ export const saveHealthcareAssessmentAnswer = (key, value) => ({
   payload: { [key]: value },
 });
 
-export const completeRiskAssessmentFor = outcome => ({
+export const completeRiskAssessmentFor = ({ recommendation, nomisId, assessmentId }) => ({
   type: COMPLETE_RISK_ASSESSMENT,
-  payload: outcome,
+  payload: { recommendation, nomisId, assessmentId },
 });
 
 export const saveExitPoint = riskFactor => ({
@@ -96,14 +96,14 @@ export const saveExitPoint = riskFactor => ({
 
 export const clearExitPoint = () => ({ type: CLEAR_EXIT_POINT });
 
-export const completeHealthAssessmentFor = offender => ({
+export const completeHealthAssessmentFor = ({ nomisId, assessmentId }) => ({
   type: COMPLETE_HEALTH_ASSESSMENT,
-  payload: offender,
+  payload: { nomisId, assessmentId },
 });
 
-export const completeHealthAnswersFor = offender => ({
+export const completeHealthAnswersFor = ({ nomisId }) => ({
   type: HEALTHCARE_ANSWERS_COMPLETE,
-  payload: offender,
+  payload: { nomisId },
 });
 
 export const clearAnswers = nomisId => ({

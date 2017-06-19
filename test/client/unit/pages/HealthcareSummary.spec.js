@@ -1,6 +1,8 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
+import superagent from 'superagent';
+
 
 import { fakeStore } from '../test-helpers';
 
@@ -69,6 +71,15 @@ const storeData = {
 };
 
 describe('<HealthcareSummary />', () => {
+  let postStub;
+  before(() => {
+    postStub = sinon.stub(superagent, 'post');
+    postStub.yields(null, { body: { data: { id: 123 } } });
+  });
+  after(() => {
+    postStub.restore();
+  });
+
   context('Connected HealthcareSummary', () => {
     it('accepts and correctly renders a prisoner`s details', () => {
       const store = fakeStore(storeData);
