@@ -9,7 +9,7 @@ import RiskAssessmentYesNoPage
   from '../pages/risk-assessment/RiskAssessmentYesNo.page';
 import RiskAssessmentSummaryPage
   from '../pages/risk-assessment/RiskAssessmentSummary.page';
-import checkThatAssessmentDataWasWrittenToDatabase from '../db/dbAssertions';
+import checkThatAssessmentDataWasWrittenToDatabase from '../../utils/dbAssertions';
 
 function aLowRiskPrisonerIsAssessed(usesDrugs) {
   DashboardPage.clickRiskAssessmentStartLinkForNomisId('J1234LO');

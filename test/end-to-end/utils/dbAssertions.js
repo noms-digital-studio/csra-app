@@ -1,4 +1,4 @@
-import db from '../../../util/db';
+import db from '../../util/db';
 
 const checkThatAssessmentDataWasWrittenToDatabase = ({
   resolve,
@@ -15,6 +15,7 @@ const checkThatAssessmentDataWasWrittenToDatabase = ({
     .table('assessments')
     .where('assessment_id', Number(assessmentId))
     .then((result) => {
+      expect(result[0]).to.not.equal(undefined, `Did not get a result from database for assessmentId: ${assessmentId}`);
       expect(result[0].nomis_id).to.equal(nomisId);
       expect(result[0].timestamp).to.not.be.equal(
         undefined,

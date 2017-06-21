@@ -6,7 +6,7 @@ import HealthcareNursePage from '../pages/healthcare/HealthcareNurse.page';
 import DashboardPage from '../pages/Dashboard.page';
 import HealthcareSummary from '../pages/healthcare/HealthcareSummary.page';
 
-import checkThatAssessmentDataWasWrittenToDatabase from '../db/dbAssertions';
+import checkThatAssessmentDataWasWrittenToDatabase from '../../utils/dbAssertions';
 
 function aPrisonersHealthcareResultsAreEntered(singleCellRecommended) {
   DashboardPage.clickHealthcareStartLinkForNomisId('J1234LO');

@@ -1,4 +1,5 @@
 import request from 'supertest';
+import checkThatAssessmentDataWasWrittenToDatabase from '../utils/dbAssertions';
 
 const baseUrl = process.env.APP_BASE_URL;
 
@@ -6,7 +7,7 @@ const riskAssessment = {
   nomisId: 'AS223213',
   type: 'risk',
   outcome: 'single cell',
-  viperScore: 0.12,
+  viperScore: 0.35,
   questions: {
     Q1: {
       question_id: 'Q1',
@@ -21,11 +22,12 @@ const riskAssessment = {
     },
   ],
 };
+
 const healthcareAssessment = {
   nomisId: 'AS223213',
   type: 'healthcare',
   outcome: 'single cell',
-  viperScore: 0.12,
+  viperScore: 0.35,
   questions: {
     Q1: {
       question_id: 'Q1',
@@ -44,7 +46,7 @@ const healthcareAssessment = {
 describe('POST /api/assessment', function block() {
   this.timeout(5000);
 
-  it('records a risk assessment', () =>
+  it('records a risk assessment', () => new Promise((resolve, reject) => {
     request(baseUrl)
       .post('/api/assessment')
       .send(riskAssessment)
@@ -54,9 +56,23 @@ describe('POST /api/assessment', function block() {
         expect(res.body.data)
           .to.have.property('id')
           .which.is.a('number');
-      }),
-  );
-  it('records a health assessment', () =>
+        return res;
+      })
+      .then((res) => {
+        const assessmentId = res.body.data.id;
+        checkThatAssessmentDataWasWrittenToDatabase({
+          resolve,
+          reject,
+          nomisId: riskAssessment.nomisId,
+          assessmentId,
+          questionData: riskAssessment.questions,
+          reasons: riskAssessment.reasons,
+          sharedText: riskAssessment.outcome,
+        });
+      });
+  }));
+
+  it('records a health assessment', () => new Promise((resolve, reject) => {
     request(baseUrl)
       .post('/api/assessment')
       .send(healthcareAssessment)
@@ -66,8 +82,23 @@ describe('POST /api/assessment', function block() {
         expect(res.body.data)
           .to.have.property('id')
           .which.is.a('number');
-      }),
-  );
+        return res;
+      })
+      .then((res) => {
+        const assessmentId = res.body.data.id;
+        checkThatAssessmentDataWasWrittenToDatabase({
+          resolve,
+          reject,
+          nomisId: healthcareAssessment.nomisId,
+          assessmentType: healthcareAssessment.type,
+          assessmentId,
+          questionData: healthcareAssessment.questions,
+          reasons: healthcareAssessment.reasons,
+          sharedText: healthcareAssessment.outcome,
+        });
+      });
+  }));
+
   it('rejects an invalid assessment', () =>
     request(baseUrl)
       .post('/api/assessment')
