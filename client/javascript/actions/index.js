@@ -3,6 +3,7 @@ import {
   GET_HEALTH_ASSESSMENT_QUESTIONS,
   GET_OFFENDER_NOMIS_PROFILES,
   GET_VIPER_SCORES,
+  ADD_VIPER_SCORE,
   SELECT_OFFENDER,
   SIGN_IN,
   SIGN_OUT,
@@ -47,6 +48,11 @@ export const getOffenderNomisProfiles = (
 export const getViperScores = (scores = viperScores()) => ({
   type: GET_VIPER_SCORES,
   payload: scores.output,
+});
+
+export const addViperScore = ({ nomisId, viperScore }) => ({
+  type: ADD_VIPER_SCORE,
+  payload: { nomisId, viperScore },
 });
 
 export const selectOffender = offender => ({

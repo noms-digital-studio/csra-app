@@ -2,11 +2,17 @@ import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
+
 import routes from '../constants/routes';
+import { retrieveViperScoreFor } from '../services';
+import { addViperScore } from '../actions';
 
 const OffenderProfile = ({
   details: { firstName, dob, nomisId, surname },
   title,
+  onSubmit,
+  viperScores,
 }) => (
   <DocumentTitle title={title}>
     <div>
@@ -58,22 +64,17 @@ const OffenderProfile = ({
       </div>
 
       <p>
-        <Link
-          to={`${routes.RISK_ASSESSMENT}/introduction`}
+        <button
+          onClick={() => onSubmit(nomisId, viperScores)}
           className="button button-start u-margin-bottom-default"
           data-continue-button
         >
           Continue to assessment
-        </Link>
+        </button>
       </p>
-
     </div>
   </DocumentTitle>
 );
-
-const mapStateToProps = state => ({
-  details: state.offender.selected,
-});
 
 OffenderProfile.propTypes = {
   title: PropTypes.string,
@@ -83,12 +84,44 @@ OffenderProfile.propTypes = {
     nomisId: PropTypes.string,
     surname: PropTypes.string,
   }),
+  viperScores: PropTypes.arrayOf(
+    PropTypes.shape({
+      nomisId: PropTypes.string,
+      viperScore: PropTypes.number,
+    }),
+  ),
+  onSubmit: PropTypes.func,
 };
 
 OffenderProfile.defaultProps = {
   title: 'Confirm Prisoner',
+  onSubmit: () => {},
+  viperScores: [],
 };
 
-export { OffenderProfile };
+const mapStateToProps = state => ({
+  details: state.offender.selected,
+  viperScores: state.offender.viperScores,
+});
 
-export default connect(mapStateToProps)(OffenderProfile);
+const mapActionsToProps = dispatch => ({
+  onSubmit: (nomisId, viperScores) => {
+    const viperScoreExist = viperScores.findIndex(
+      item => item.nomisId === nomisId,
+    );
+    if (viperScoreExist === -1) {
+      retrieveViperScoreFor(nomisId, (error, response) => {
+        if (error) {
+          dispatch(push(`${routes.RISK_ASSESSMENT}/introduction`));
+        } else {
+          dispatch(addViperScore(response));
+          dispatch(push(`${routes.RISK_ASSESSMENT}/introduction`));
+        }
+      });
+    } else {
+      dispatch(push(`${routes.RISK_ASSESSMENT}/introduction`));
+    }
+  },
+});
+
+export default connect(mapStateToProps, mapActionsToProps)(OffenderProfile);
