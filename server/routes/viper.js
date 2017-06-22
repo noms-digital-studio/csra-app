@@ -1,19 +1,20 @@
 import express from 'express';
 
-const router = express.Router();
+export default function createRouter(viperService) {
+  const router = express.Router();
 
-router.get('/:nomisId', (req, res) => {
-  // eslint-disable-next-line
-  const viperScores = require('../../client/javascript/fixtures/viper.json').output;
-  const nomisId = req.params.nomisId;
-  const viperScore = viperScores.find(item => item.nomisId === nomisId);
+  router.get('/:nomisId', async (req, res) => {
+    const nomisId = req.params.nomisId;
+    try {
+      const viperRating = await viperService.rating(nomisId);
+      const payload = { nomisId, viperRating };
+      res.status(200);
+      res.json(payload);
+    } catch (exception) {
+      res.status(404);
+      res.json({ messasge: `Error retrieving viper rating for nomisId: ${nomisId}. The cause was: ${exception}` });
+    }
+  });
 
-  if (viperScore) {
-    res.status(200).json(viperScore);
-  } else {
-    res.status(404).json({ error: 'Resource not found' });
-  }
-});
-
-
-export default router;
+  return router;
+}
