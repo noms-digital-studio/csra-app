@@ -115,6 +115,7 @@ function thenTheAssessmentIsCompleted({ resolve, reject, sharedText, reasons, ha
     'John Lowe J1234LO 01-Oct-1970 Complete Start',
   );
   const assessmentId = row.getAttribute('data-risk-assessment-id');
+  expect(assessmentId).to.not.equal(undefined, 'expected to find data-risk-assessment-id on the page');
 
   checkThatAssessmentDataWasWrittenToDatabase({
     resolve,
