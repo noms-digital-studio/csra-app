@@ -44,8 +44,7 @@ describe('viper service', () => {
     before(() => setup());
 
     it('passes on the db error', () => {
-      fakeDB.where = sinon.stub().resolves([]);
-      fakeDB.where.rejects(new Error('Connection failed or something'));
+      fakeDB.where = sinon.stub().rejects(new Error('Connection failed or something'));
 
       return expect(viperService.rating('A123'))
         .to.be.rejectedWith(Error, 'Connection failed or something');
