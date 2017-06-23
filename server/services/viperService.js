@@ -1,5 +1,5 @@
 
-function scoreFor(db, nomisId) {
+function ratingFor(db, nomisId) {
   return db
     .select()
     .table('viper')
@@ -8,5 +8,5 @@ function scoreFor(db, nomisId) {
 }
 
 export default function createViperService(db) {
-  return { rating: nomisId => scoreFor(db, nomisId) };
+  return { rating: nomisId => ratingFor(db, nomisId) };
 }
