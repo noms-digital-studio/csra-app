@@ -67,7 +67,7 @@ const mapActionsToProps = dispatch => ({
   onClick: (prisoner) => {
     retrieveViperScoreFor(prisoner['nomis-id'], (error, response) => {
       if (not(error)) {
-        dispatch(addViperScore(response));
+        dispatch(addViperScore({ viperScore: response.viperRating, nomisId: response.nomisId }));
       }
 
       dispatch(confirmPrisoner(prisoner));

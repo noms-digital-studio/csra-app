@@ -25,7 +25,7 @@ describe('Both assessments (Shared cell outcome)', () => {
       FullAssessmentOutcomePage.waitForMainHeadingWithDataId('full-outcome'),
     ).to.equal('Risk and healthcare assessment outcome');
     expect(FullAssessmentOutcomePage.name).to.equalIgnoreCase('John Lowe');
-    expect(FullAssessmentOutcomePage.dob).to.equalIgnoreCase('01-Oct-1970');
+    expect(FullAssessmentOutcomePage.dob).to.equalIgnoreCase('01-10-1970');
     expect(FullAssessmentOutcomePage.nomisId).to.equalIgnoreCase('J1234LO');
 
     expect(FullAssessmentOutcomePage.recommendOutcome).to.match(/shared cell/i);
@@ -40,9 +40,7 @@ describe('Both assessments (Shared cell outcome)', () => {
     FullAssessmentCompletePage.clickContinue();
     expect(DashboardPage.mainHeading).to.contain('Assessments on:');
     const row = browser.element('[data-profile-row=J1234LO]');
-    expect(row.getText()).to.equalIgnoreCase(
-      'John Lowe J1234LO 01-Oct-1970 Complete Complete Shared Cell',
-    );
+    expect(row.getText()).to.equalIgnoreCase('John Lowe J1234LO 01-10-1970 Complete Complete Shared Cell');
   }
 
   it('Assesses a low risk prisoner', () =>

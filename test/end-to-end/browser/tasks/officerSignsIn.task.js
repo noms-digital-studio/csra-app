@@ -9,7 +9,6 @@ function givenThatTheOfficerIsSignedIn() {
   expect(BeforeYouStartPage.headerUsername).to.equal('officer1');
   expect(BeforeYouStartPage.mainHeading).to.equal('Cell sharing risk assessment');
   BeforeYouStartPage.clickContinue();
-  expect(DashboardPage.mainHeading).to.contain('Assessments on:');
 }
 
 function givenThatTheOfficerIsSignedInWithoutLoadingData() {

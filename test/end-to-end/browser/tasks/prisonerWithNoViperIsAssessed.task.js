@@ -40,7 +40,7 @@ function whenAPrisonerWithNoViperIsAssessed() {
   RiskAssessmentYesNoPage.clickNoAndContinue();
   expect(RiskAssessmentSummaryPage.mainHeading).to.equal('Risk assessment summary');
   expect(RiskAssessmentSummaryPage.name).to.equalIgnoreCase('James Neo');
-  expect(RiskAssessmentSummaryPage.dob).to.equalIgnoreCase('03-Dec-1958');
+  expect(RiskAssessmentSummaryPage.dob).to.equalIgnoreCase('03-12-1958');
   expect(RiskAssessmentSummaryPage.nomisId).to.equalIgnoreCase('J6285NE');
 
   expect(RiskAssessmentSummaryPage.outcome).to.equalIgnoreCase('Shared cell');

@@ -40,7 +40,7 @@ describe('Both assessments (Single cell outcome)', () => {
       'Risk and healthcare assessment outcome',
     );
     expect(FullAssessmentOutcomePage.name).to.equalIgnoreCase('John Lowe');
-    expect(FullAssessmentOutcomePage.dob).to.equalIgnoreCase('01-Oct-1970');
+    expect(FullAssessmentOutcomePage.dob).to.equalIgnoreCase('01-10-1970');
     expect(FullAssessmentOutcomePage.nomisId).to.equalIgnoreCase('J1234LO');
 
     expect(FullAssessmentOutcomePage.recommendOutcome).to.match(new RegExp(`${finalRecommendation} cell`, 'i'));
@@ -62,7 +62,7 @@ describe('Both assessments (Single cell outcome)', () => {
     expect(DashboardPage.mainHeading).to.contain('Assessments on:');
     const row = browser.element('[data-profile-row=J1234LO]');
     expect(row.getText()).to.equalIgnoreCase(
-      `John Lowe J1234LO 01-Oct-1970 Complete Complete ${finalRecommendation} cell`,
+      `John Lowe J1234LO 01-10-1970 Complete Complete ${finalRecommendation} cell`,
     );
   }
 

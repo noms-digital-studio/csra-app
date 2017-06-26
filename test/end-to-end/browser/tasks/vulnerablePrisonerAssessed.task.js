@@ -29,7 +29,7 @@ function whenAVulnerablePrisonerIsAssessed() {
 
   expect(RiskAssessmentSummaryPage.mainHeading).to.equal('Risk assessment summary');
   expect(RiskAssessmentSummaryPage.name).to.equalIgnoreCase('John Lowe');
-  expect(RiskAssessmentSummaryPage.dob).to.equalIgnoreCase('01-Oct-1970');
+  expect(RiskAssessmentSummaryPage.dob).to.equalIgnoreCase('01-10-1970');
   expect(RiskAssessmentSummaryPage.nomisId).to.equalIgnoreCase('J1234LO');
 
   expect(RiskAssessmentSummaryPage.outcome).to.equalIgnoreCase('single cell');
@@ -43,13 +43,13 @@ function whenAVulnerablePrisonerIsAssessed() {
 function thenASingleCellIsRecommended() {
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=J1234LO]');
-  expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Complete Start Single cell');
+  expect(row.getText()).to.equal('John Lowe J1234LO 01-10-1970 Complete Start Single cell');
 }
 
 function thenTheAssessmentIsCompleted() {
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=J1234LO]');
-  expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Complete Start');
+  expect(row.getText()).to.equal('John Lowe J1234LO 01-10-1970 Complete Start');
   const assessmentId = row.getAttribute('data-risk-assessment-id');
 
   return checkThatAssessmentDataWasWrittenToDatabase({

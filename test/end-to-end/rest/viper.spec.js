@@ -4,7 +4,7 @@ import db from '../../util/db';
 
 const baseUrl = process.env.APP_BASE_URL;
 
-describe('/api/viper', () => {
+describe('/api/viper/:nomisId', () => {
   it('returns a viper rating for a known nomis id', function test(done) {
     this.timeout(5000);
     const nomisId = uuid().substring(0, 8);

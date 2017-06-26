@@ -38,7 +38,7 @@ function aPrisonersHealthcareResultsAreEntered(singleCellRecommended) {
   HealthcareNursePage.clickContinue();
   expect(HealthcareSummary.mainHeading).to.equal('Healthcare summary');
   expect(HealthcareSummary.name).to.equalIgnoreCase('John Lowe');
-  expect(HealthcareSummary.dob).to.equalIgnoreCase('01-Oct-1970');
+  expect(HealthcareSummary.dob).to.equalIgnoreCase('01-10-1970');
   expect(HealthcareSummary.nomisId).to.equalIgnoreCase('J1234LO');
   expect(HealthcareSummary.assessor).to.equalIgnoreCase('Jane Doe');
   expect(HealthcareSummary.role).to.equalIgnoreCase('nurse');
@@ -62,7 +62,7 @@ function thenTheHealthcareAssessmentIsComplete({ sharedText }) {
 
   const row = browser.element('[data-profile-row=J1234LO]');
   expect(row.getText()).to.equal(
-    'John Lowe J1234LO 01-Oct-1970 Start Complete',
+    'John Lowe J1234LO 01-10-1970 Start Complete',
   );
 
   const assessmentId = row.getAttribute('data-health-assessment-id');
