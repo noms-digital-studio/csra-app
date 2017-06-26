@@ -16,10 +16,8 @@ import {
 
 import routes from '../constants/routes';
 
-
 const joinAssessorValues = accessor =>
   `${accessor.role}, ${accessor['full-name']}, ${accessor.day}-${accessor.month}-${accessor.year}`;
-
 
 const normalizeAssessorAnswerIn = answers =>
   Object.keys(answers).reduce((acc, key) => {
@@ -28,7 +26,6 @@ const normalizeAssessorAnswerIn = answers =>
     }
     return { ...acc, [key]: answers[key] };
   }, {});
-
 
 class HealthCareSummary extends Component {
   componentDidMount() {
@@ -98,7 +95,9 @@ class HealthCareSummary extends Component {
                   Healthcare recommendation:
                 </td>
                 <td>
-                  <span data-outcome>{capitalize(riskText[answers.outcome.answer])}</span>
+                  <span data-outcome>
+                    {capitalize(riskText[answers.outcome.answer])}
+                  </span>
                 </td>
                 <td className="change-answer">
                   <Link
@@ -159,7 +158,9 @@ class HealthCareSummary extends Component {
                   <span data-assessor>
                     {capitalize(answers.assessor['full-name'])}<br />
                   </span>
-                  <span data-role>{capitalize(answers.assessor.role)}<br /></span>
+                  <span data-role>
+                    {capitalize(answers.assessor.role)}<br />
+                  </span>
                   <span
                     data-date
                   >{`${answers.assessor.day}-${answers.assessor.month}-${answers.assessor.year}`}</span>
@@ -260,7 +261,13 @@ const mapStateToProps = (state, ownProps) => ({
 const mapActionsToProps = dispatch => ({
   onSubmit: ({ prisoner, riskAssessmentComplete, postData }) => {
     postAssessmentToBackend('healthcare', postData, (assessmentId) => {
-      dispatch(completeHealthAssessmentFor({ nomisId: prisoner.nomisId, assessmentId }));
+      dispatch(
+        completeHealthAssessmentFor({
+          nomisId: prisoner.nomisId,
+          assessmentId,
+          recommendation: postData.outcome,
+        }),
+      );
       if (riskAssessmentComplete) {
         dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
       } else {

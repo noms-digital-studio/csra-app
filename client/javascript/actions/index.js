@@ -102,9 +102,9 @@ export const saveExitPoint = riskFactor => ({
 
 export const clearExitPoint = () => ({ type: CLEAR_EXIT_POINT });
 
-export const completeHealthAssessmentFor = ({ nomisId, assessmentId }) => ({
+export const completeHealthAssessmentFor = ({ nomisId, assessmentId, recommendation }) => ({
   type: COMPLETE_HEALTH_ASSESSMENT,
-  payload: { nomisId, assessmentId },
+  payload: { nomisId, assessmentId, recommendation },
 });
 
 export const completeHealthAnswersFor = ({ nomisId }) => ({

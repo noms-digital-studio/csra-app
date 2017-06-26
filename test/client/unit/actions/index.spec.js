@@ -12,6 +12,7 @@ import {
   saveRiskAssessmentAnswer,
   saveHealthcareAssessmentAnswer,
   completeRiskAssessmentFor,
+  completeHealthAssessmentFor,
   completeHealthAnswersFor,
   saveExitPoint,
   clearExitPoint,
@@ -185,6 +186,20 @@ describe('Actions', () => {
       };
       expect(completeRiskAssessmentFor(outcome)).to.eql({
         type: 'COMPLETE_RISK_ASSESSMENT',
+        payload: outcome,
+      });
+    });
+  });
+
+  describe('#completeHealthAssessmentFor', () => {
+    it('returns a COMPLETE_HEALTH_ASSESSMENT action', () => {
+      const outcome = {
+        nomisId: 'foo-id',
+        recommendation: 'foo-recommendation',
+        assessmentId: 'foo-nomis-id',
+      };
+      expect(completeHealthAssessmentFor(outcome)).to.eql({
+        type: 'COMPLETE_HEALTH_ASSESSMENT',
         payload: outcome,
       });
     });

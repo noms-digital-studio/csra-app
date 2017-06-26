@@ -250,7 +250,7 @@ describe('<HealthcareSummary />', () => {
       expect(
         store.dispatch.calledWithMatch({
           type: 'COMPLETE_HEALTH_ASSESSMENT',
-          payload: { nomisId: 'foo-nomis-id', assessmentId: 123 },
+          payload: { nomisId: 'foo-nomis-id', assessmentId: 123, recommendation: 'single cell' },
         }),
       ).to.equal(true, 'triggered complete assessment');
     });
