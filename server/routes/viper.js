@@ -2,7 +2,7 @@ import express from 'express';
 
 const router = express.Router();
 
-router.get('/:nomisId', async (req, res) => {
+router.get('/:nomisId', (req, res) => {
   // eslint-disable-next-line
   const viperScores = require('../../client/javascript/fixtures/viper.json').output;
   const nomisId = req.params.nomisId;
