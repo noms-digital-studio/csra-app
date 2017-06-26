@@ -54,7 +54,7 @@ function aPrisonersHealthcareResultsAreEntered(singleCellRecommended) {
   expect(HealthcareSummary.consent).to.equalIgnoreCase('yes');
 }
 
-function thenTheHealthcareAssessmentIsComplete({ resolve, reject, sharedText }) {
+function thenTheHealthcareAssessmentIsComplete({ sharedText }) {
   HealthcareSummary.clickContinue();
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain(
     'Assessments on:',
@@ -67,9 +67,7 @@ function thenTheHealthcareAssessmentIsComplete({ resolve, reject, sharedText }) 
 
   const assessmentId = row.getAttribute('data-health-assessment-id');
 
-  checkThatAssessmentDataWasWrittenToDatabase({
-    resolve,
-    reject,
+  return checkThatAssessmentDataWasWrittenToDatabase({
     nomisId: 'J1234LO',
     assessmentId,
     assessmentType: 'healthcare',

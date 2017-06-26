@@ -19,6 +19,10 @@ class FullAssessmentOutcomePage extends BasePage {
     return browser.getText('[data-risk-assessment-outcome]');
   }
 
+  get recommendOutcome() {
+    return browser.getText('[data-recommended-outcome]');
+  }
+
   get healthRecommendation() {
     return browser.getText('[data-healthcare-outcome]');
   }

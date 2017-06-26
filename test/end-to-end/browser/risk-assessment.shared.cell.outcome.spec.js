@@ -12,6 +12,8 @@ describe('Risk assessment (shared cell outcome)', () => {
   it('Assesses a low risk prisoner', () => new Promise((resolve, reject) => {
     givenThatTheOfficerIsSignedIn();
     whenALowRiskPrisonerIsAssessed();
-    thenTheAssessmentIsCompleted({ resolve, reject, sharedText: 'shared cell' });
+    thenTheAssessmentIsCompleted({ sharedText: 'shared cell' })
+      .then(resolve)
+      .catch(reject);
   }));
 });
