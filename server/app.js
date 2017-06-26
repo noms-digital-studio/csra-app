@@ -7,7 +7,8 @@ import config from './config';
 
 import createHealthRoute from './routes/health';
 import createAssessmentRoute from './routes/assessment';
-import index from './routes/index';
+import indexRoute from './routes/index';
+import viperRoute from './routes/viper';
 
 export default function createApp(db, appInfo, assessmentService) {
   const app = express();
@@ -20,7 +21,8 @@ export default function createApp(db, appInfo, assessmentService) {
 
   app.use('/health', createHealthRoute(db, appInfo));
   app.use('/api/assessment', createAssessmentRoute(assessmentService));
-  app.use('/', index);
+  app.use('/api/viper', viperRoute);
+  app.use('/', indexRoute);
 
   // catch 404 and forward to error handler
   app.use((req, res, next) => {

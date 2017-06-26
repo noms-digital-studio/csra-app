@@ -20,7 +20,7 @@ const Comments = ({
         className="form"
         onSubmit={onSubmit}
       >
-        <h1 className="heading-large">{title}</h1>
+        <h1 data-title={title} className="heading-large">{title}</h1>
         <p className="lede text c-text-hint">{description}</p>
         <CommentBox
           id="commentBox"

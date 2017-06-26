@@ -2,11 +2,14 @@ import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
+
 import routes from '../constants/routes';
 
 const OffenderProfile = ({
   details: { firstName, dob, nomisId, surname },
   title,
+  onSubmit,
 }) => (
   <DocumentTitle title={title}>
     <div>
@@ -58,22 +61,17 @@ const OffenderProfile = ({
       </div>
 
       <p>
-        <Link
-          to={`${routes.RISK_ASSESSMENT}/introduction`}
+        <button
+          onClick={onSubmit}
           className="button button-start u-margin-bottom-default"
           data-continue-button
         >
           Continue to assessment
-        </Link>
+        </button>
       </p>
-
     </div>
   </DocumentTitle>
 );
-
-const mapStateToProps = state => ({
-  details: state.offender.selected,
-});
 
 OffenderProfile.propTypes = {
   title: PropTypes.string,
@@ -83,12 +81,22 @@ OffenderProfile.propTypes = {
     nomisId: PropTypes.string,
     surname: PropTypes.string,
   }),
+  onSubmit: PropTypes.func,
 };
 
 OffenderProfile.defaultProps = {
   title: 'Confirm Prisoner',
+  onSubmit: () => {},
 };
 
-export { OffenderProfile };
+const mapStateToProps = state => ({
+  details: state.offender.selected,
+});
 
-export default connect(mapStateToProps)(OffenderProfile);
+const mapActionsToProps = dispatch => ({
+  onSubmit: () => {
+    dispatch(push(`${routes.RISK_ASSESSMENT}/introduction`));
+  },
+});
+
+export default connect(mapStateToProps, mapActionsToProps)(OffenderProfile);

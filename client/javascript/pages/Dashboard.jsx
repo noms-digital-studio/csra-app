@@ -8,16 +8,12 @@ import path from 'ramda/src/path';
 import isEmpty from 'ramda/src/isEmpty';
 import not from 'ramda/src/not';
 
-import { getViperScores, selectOffender } from '../actions';
+import { selectOffender } from '../actions';
 import { parseDate, capitalize } from '../utils';
 
 import routes from '../constants/routes';
 
 class Dashboard extends Component {
-  componentDidMount() {
-    this.props.getViperScores();
-  }
-
   renderProfiles() {
     return this.props.profiles.map(profile => (
       <tr
@@ -157,7 +153,6 @@ const mapStateToProps = state => ({
 });
 
 const mapActionsToProps = dispatch => ({
-  getViperScores: () => dispatch(getViperScores()),
   onOffenderSelect: (offender) => {
     dispatch(selectOffender(offender));
     dispatch(push(routes.PRISONER_PROFILE));
@@ -181,14 +176,12 @@ Dashboard.propTypes = {
       outcome: PropTypes.string,
     }),
   ),
-  getViperScores: PropTypes.func,
   onOffenderSelect: PropTypes.func,
   date: PropTypes.string,
 };
 
 Dashboard.defaultProps = {
   title: 'Dashboard',
-  getViperScores: () => {},
   onOffenderSelect: () => {},
   profiles: [],
   date: parseDate(new Date()),

@@ -1,56 +1,65 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import { fakeStore } from '../test-helpers';
 
-import ConnectedOffenderProfile, {
-  OffenderProfile,
-} from '../../../../client/javascript/pages/OffenderProfile';
+import ConnectedOffenderProfile
+  from '../../../../client/javascript/pages/OffenderProfile';
 
 const selected = {
   firstName: 'forename',
   surname: 'surname',
   dob: '17-Nov-1999',
-  nomisId: 'AA54321XX',
+  nomisId: 'foo-nomis-id',
 };
 
 describe('<OffenderProfile />', () => {
-  context('Standalone OffenderProfile', () => {
-    it('accepts and correctly renders a profile', () => {
-      const wrapper = shallow(<OffenderProfile details={selected} />);
-      const pageText = wrapper.find('[data-offender-profile-details]').first().text();
-      expect(pageText).to.contain('forename');
-      expect(pageText).to.contain('surname');
-      expect(pageText).to.contain('17-Nov-1999');
-      expect(pageText).to.contain('AA54321XX');
-    });
-  });
-
   context('Connected OffenderProfile', () => {
-    let wrapper;
     let store;
 
     beforeEach(() => {
       store = fakeStore({
-        offender: {
-          selected,
-        },
+        offender: { selected },
       });
+    });
 
-      wrapper = mount(
+    context('when user clicks the continue button', () => {
+      it('navigate to the dashboard', () => {
+        const wrapper = mount(
+          <Provider store={store}>
+            <ConnectedOffenderProfile />
+          </Provider>,
+        );
+
+        wrapper.find('[data-continue-button]').simulate('click');
+
+        expect(
+          store.dispatch.calledWithMatch({
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              method: 'push',
+              args: ['/risk-assessment/introduction'],
+            },
+          }),
+        ).to.equal(true, 'Changed path to /risk-assessment/introduction');
+      });
+    });
+
+    it('accepts and correctly renders a profile', () => {
+      const wrapper = mount(
         <Provider store={store}>
           <ConnectedOffenderProfile />
         </Provider>,
       );
-    });
-
-    it('accepts and correctly renders a profile', () => {
-      const pageText = wrapper.find('[data-offender-profile-details]').first().text();
+      const pageText = wrapper
+        .find('[data-offender-profile-details]')
+        .first()
+        .text();
       expect(pageText).to.contain('forename');
       expect(pageText).to.contain('surname');
       expect(pageText).to.contain('17-Nov-1999');
-      expect(pageText).to.contain('AA54321XX');
+      expect(pageText).to.contain('foo-nomis-id');
     });
   });
 });

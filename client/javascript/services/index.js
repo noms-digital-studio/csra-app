@@ -1,4 +1,6 @@
 import not from 'ramda/src/not';
+import superagent from 'superagent';
+
 import defaultViperScores from '../fixtures/viper.json';
 import defaultOffenderProfiles from '../fixtures/nomis.json';
 
@@ -86,10 +88,7 @@ export const assessmentCanContinue = (question, answers, viperScore) => {
   return false;
 };
 
-export const cellAssignment = ({
-  healthcare,
-  riskAssessment,
-}) => {
+export const cellAssignment = ({ healthcare, riskAssessment }) => {
   if (healthcare.sharedCell && riskAssessment.sharedCell) {
     if (riskAssessment.conditions) {
       return 'shared cell with conditions';
@@ -140,4 +139,16 @@ export const extractDecision = ({ questions, answers, exitPoint }) => {
     recommendation: 'shared cell',
     rating: 'low',
   };
+};
+
+export const retrieveViperScoreFor = (nomisId, callback) => {
+  const url = `${window.location.origin}/api/viper/${nomisId}`;
+
+  superagent.get(url, (error, response) => {
+    if (error) {
+      return callback('failed to retrieve viper result');
+    }
+
+    return callback(null, response.body);
+  });
 };

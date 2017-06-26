@@ -91,4 +91,15 @@ describe('#offenderReducer', () => {
 
     expect(offenderReducer(state, action)).to.eql(expectedState);
   });
+
+  it('returns the state with a new viperScore', () => {
+    const viperScore = { nomisId: 'foo-nomis-id', viperScore: 0.5 };
+    const action = { type: 'ADD_VIPER_SCORE', payload: viperScore };
+    const expectedState = {
+      ...defaultState,
+      viperScores: [viperScore],
+    };
+
+    expect(offenderReducer(defaultState, action)).to.eql(expectedState);
+  });
 });

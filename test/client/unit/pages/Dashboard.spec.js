@@ -4,8 +4,6 @@ import { mount } from 'enzyme';
 
 import { fakeStore } from '../test-helpers';
 
-import viperScores from '../../../../client/javascript/fixtures/viper.json';
-
 import ConnectedDashboard, {
   Dashboard,
 } from '../../../../client/javascript/pages/Dashboard';
@@ -127,17 +125,6 @@ describe('<Dashboard />', () => {
         expect(callback.calledWith(profiles[1])).to.equal(
           true,
           'callback called with the correct props',
-        );
-      });
-
-      it('calls actions when component mounts', () => {
-        const getViperScores = sinon.spy();
-
-        mount(<Dashboard getViperScores={getViperScores} />);
-
-        expect(getViperScores.calledOnce).to.equal(
-          true,
-          'getViperScores called',
         );
       });
     });
@@ -269,15 +256,6 @@ describe('<Dashboard />', () => {
           payload: { method: 'push', args: ['/healthcare-assessment/outcome'] },
         }),
       ).to.equal(true, 'dispatch /healthcare-assessment/outcome');
-    });
-
-    it('calls actions when component mounts', () => {
-      expect(
-        store.dispatch.calledWithMatch({
-          type: 'GET_VIPER_SCORES',
-          payload: viperScores.output,
-        }),
-      ).to.equals(true, 'dispatch GET_VIPER_SCORES');
     });
   });
 });

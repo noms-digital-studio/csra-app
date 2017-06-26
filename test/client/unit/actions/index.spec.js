@@ -5,6 +5,7 @@ import {
   getHealthAssessmentQuestions,
   getOffenderNomisProfiles,
   getViperScores,
+  addViperScore,
   selectOffender,
   addPrisoner,
   confirmPrisoner,
@@ -67,6 +68,16 @@ describe('Actions', () => {
       expect(getViperScores(scores)).to.eql({
         type: 'GET_VIPER_SCORES',
         payload: scores.output,
+      });
+    });
+  });
+
+  describe('#addViperScore', () => {
+    it('returns a ADD_VIPER_SCORE action', () => {
+      const score = { nomisId: 'FOO', viperScore: 1 };
+      expect(addViperScore(score)).to.eql({
+        type: 'ADD_VIPER_SCORE',
+        payload: score,
       });
     });
   });
