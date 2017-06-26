@@ -3,9 +3,10 @@ import DocumentTitle from 'react-document-title';
 import { replace } from 'react-router-redux';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import not from 'ramda/src/not';
 import routes from '../constants/routes';
-
-import { confirmPrisoner } from '../actions';
+import { retrieveViperScoreFor } from '../services';
+import { confirmPrisoner, addViperScore } from '../actions';
 
 const ConfirmOffender = (props) => {
   const { prisonerDetails: prisoner, onClick, title } = props;
@@ -64,14 +65,25 @@ const mapStateToProps = state => ({
 
 const mapActionsToProps = dispatch => ({
   onClick: (prisoner) => {
-    dispatch(confirmPrisoner(prisoner));
-    dispatch(replace(routes.DASHBOARD));
+    retrieveViperScoreFor(prisoner['nomis-id'], (error, response) => {
+      if (not(error)) {
+        dispatch(addViperScore(response));
+      }
+
+      dispatch(confirmPrisoner(prisoner));
+      dispatch(replace(routes.DASHBOARD));
+    });
   },
 });
 
 ConfirmOffender.propTypes = {
   title: PropTypes.string,
-  prisonerDetails: PropTypes.object,
+  prisonerDetails: PropTypes.shape({
+    nomisId: PropTypes.string,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    dob: PropTypes.string,
+  }),
   onClick: PropTypes.func,
 };
 
@@ -80,7 +92,5 @@ ConfirmOffender.defaultProps = {
   prisonerDetails: {},
   onClick: () => {},
 };
-
-export { ConfirmOffender };
 
 export default connect(mapStateToProps, mapActionsToProps)(ConfirmOffender);

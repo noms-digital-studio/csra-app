@@ -5,14 +5,11 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
 import routes from '../constants/routes';
-import { retrieveViperScoreFor } from '../services';
-import { addViperScore } from '../actions';
 
 const OffenderProfile = ({
   details: { firstName, dob, nomisId, surname },
   title,
   onSubmit,
-  viperScores,
 }) => (
   <DocumentTitle title={title}>
     <div>
@@ -65,7 +62,7 @@ const OffenderProfile = ({
 
       <p>
         <button
-          onClick={() => onSubmit(nomisId, viperScores)}
+          onClick={onSubmit}
           className="button button-start u-margin-bottom-default"
           data-continue-button
         >
@@ -84,43 +81,21 @@ OffenderProfile.propTypes = {
     nomisId: PropTypes.string,
     surname: PropTypes.string,
   }),
-  viperScores: PropTypes.arrayOf(
-    PropTypes.shape({
-      nomisId: PropTypes.string,
-      viperScore: PropTypes.number,
-    }),
-  ),
   onSubmit: PropTypes.func,
 };
 
 OffenderProfile.defaultProps = {
   title: 'Confirm Prisoner',
   onSubmit: () => {},
-  viperScores: [],
 };
 
 const mapStateToProps = state => ({
   details: state.offender.selected,
-  viperScores: state.offender.viperScores,
 });
 
 const mapActionsToProps = dispatch => ({
-  onSubmit: (nomisId, viperScores) => {
-    const viperScoreExist = viperScores.findIndex(
-      item => item.nomisId === nomisId,
-    );
-    if (viperScoreExist === -1) {
-      retrieveViperScoreFor(nomisId, (error, response) => {
-        if (error) {
-          dispatch(push(`${routes.RISK_ASSESSMENT}/introduction`));
-        } else {
-          dispatch(addViperScore(response));
-          dispatch(push(`${routes.RISK_ASSESSMENT}/introduction`));
-        }
-      });
-    } else {
-      dispatch(push(`${routes.RISK_ASSESSMENT}/introduction`));
-    }
+  onSubmit: () => {
+    dispatch(push(`${routes.RISK_ASSESSMENT}/introduction`));
   },
 });
 

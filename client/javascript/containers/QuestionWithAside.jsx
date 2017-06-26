@@ -23,7 +23,7 @@ const QuestionWithAside = ({
         className="form"
         onSubmit={onSubmit}
       >
-        <h1 className="heading-large">{title}</h1>
+        <h1 data-title={title} className="heading-large">{title}</h1>
         <div dangerouslySetInnerHTML={{ __html: description }} />
 
         <div className="form-group">

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
-import superagent from 'superagent';
 
 import { fakeStore } from '../test-helpers';
 
@@ -21,124 +20,29 @@ describe('<OffenderProfile />', () => {
 
     beforeEach(() => {
       store = fakeStore({
-        offender: {
-          selected,
-          viperScores: [],
-        },
+        offender: { selected },
       });
     });
 
     context('when user clicks the continue button', () => {
-      context('and the viperScore is already available in the application state', () => {
-        it('does not call the addViperScore action', () => {
-          const storeWithViperScore = fakeStore({
-            offender: {
-              selected,
-              viperScores: [{ nomisId: 'foo-nomis-id', viperScore: 0.50 }],
+      it('navigate to the dashboard', () => {
+        const wrapper = mount(
+          <Provider store={store}>
+            <ConnectedOffenderProfile />
+          </Provider>,
+        );
+
+        wrapper.find('[data-continue-button]').simulate('click');
+
+        expect(
+          store.dispatch.calledWithMatch({
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              method: 'push',
+              args: ['/risk-assessment/introduction'],
             },
-          });
-          const wrapper = mount(
-            <Provider store={storeWithViperScore}>
-              <ConnectedOffenderProfile />
-            </Provider>,
-          );
-
-          wrapper.find('[data-continue-button]').simulate('click');
-
-          expect(storeWithViperScore.dispatch.calledWithMatch({
-            type: 'ADD_VIPER_SCORE',
-            payload: { nomisId: 'foo-nomis-id', viperScore: 0.50 },
-          })).to.equal(false, 'should not have called ADD_VIPER_SCORE action');
-
-          expect(
-            storeWithViperScore.dispatch.calledWithMatch({
-              type: '@@router/CALL_HISTORY_METHOD',
-              payload: {
-                method: 'push',
-                args: ['/risk-assessment/introduction'],
-              },
-            }),
-          ).to.equal(true, 'Changed path to /risk-assessment/introduction');
-        });
-      });
-
-      context('and the viperScore is not available in the application state', () => {
-        context('and the is server error returned', () => {
-          it('does not call the addViperScore action', () => {
-            const getStub = sinon.stub(superagent, 'get');
-            getStub.yields('some error');
-
-            const storeWithViperScore = fakeStore({
-              offender: {
-                selected,
-                viperScores: [{ nomisId: 'foo-nomis-id', viperScore: 0.50 }],
-              },
-            });
-            const wrapper = mount(
-              <Provider store={storeWithViperScore}>
-                <ConnectedOffenderProfile />
-              </Provider>,
-            );
-
-            wrapper.find('[data-continue-button]').simulate('click');
-
-            expect(storeWithViperScore.dispatch.calledWithMatch({
-              type: 'ADD_VIPER_SCORE',
-              payload: { nomisId: 'foo-nomis-id', viperScore: 0.50 },
-            })).to.equal(false, 'should not have called ADD_VIPER_SCORE action');
-
-            expect(
-              storeWithViperScore.dispatch.calledWithMatch({
-                type: '@@router/CALL_HISTORY_METHOD',
-                payload: {
-                  method: 'push',
-                  args: ['/risk-assessment/introduction'],
-                },
-              }),
-            ).to.equal(true, 'Changed path to /risk-assessment/introduction');
-
-            getStub.restore();
-          });
-        });
-      });
-
-      context('and the viperScore is not available in the application state', () => {
-        it('calls the addViperScore action', () => {
-          const getStub = sinon.stub(superagent, 'get');
-          getStub.yields(null, {
-            body: {
-              nomisId: 'foo-nomis-id',
-              viperScore: 0.50,
-            },
-          });
-
-          const wrapper = mount(
-            <Provider store={store}>
-              <ConnectedOffenderProfile />
-            </Provider>,
-          );
-
-          wrapper.find('[data-continue-button]').simulate('click');
-
-          expect(
-            store.dispatch.calledWithMatch({
-              type: 'ADD_VIPER_SCORE',
-              payload: { nomisId: 'foo-nomis-id', viperScore: 0.50 },
-            }),
-          ).to.equal(true, 'should have called ADD_VIPER_SCORE action');
-
-          expect(
-            store.dispatch.calledWithMatch({
-              type: '@@router/CALL_HISTORY_METHOD',
-              payload: {
-                method: 'push',
-                args: ['/risk-assessment/introduction'],
-              },
-            }),
-          ).to.equal(true, 'Changed path to /risk-assessment/introduction');
-
-          getStub.restore();
-        });
+          }),
+        ).to.equal(true, 'Changed path to /risk-assessment/introduction');
       });
     });
 

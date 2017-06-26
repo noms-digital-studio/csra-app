@@ -12,7 +12,7 @@ const Viper = ({
     <div>
       <div className="grid-row">
         <div className="column-two-thirds">
-          <h1 className="heading-large">{content[viperScore].title}</h1>
+          <h1 data-title="viper" className="heading-large">{content[viperScore].title}</h1>
           <div
             dangerouslySetInnerHTML={{ __html: content[viperScore].description }}
           />

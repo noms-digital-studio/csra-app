@@ -18,7 +18,7 @@ function whenTheOfficerAddsThePrisonersDetails() {
 }
 
 function thenThePrisonerIsAvailableToAssess() {
-  expect(DashboardPage.mainHeading).to.contain('Assessments on:');
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=A12345]');
   expect(row.getText()).to.equal('Henry Young A12345 23-5-1974 Start Start');
 }

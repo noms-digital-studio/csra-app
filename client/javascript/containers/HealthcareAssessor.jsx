@@ -20,7 +20,7 @@ const HealthAssessment = ({
         className="form"
         onSubmit={onSubmit}
       >
-        <h1 className="heading-large">{title}</h1>
+        <h1 data-title={title} className="heading-large">{title}</h1>
 
         <div className="form-group">
           <label htmlFor="role" className="form-label-bold">

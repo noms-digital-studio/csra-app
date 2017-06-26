@@ -49,6 +49,8 @@ class Admin extends Component {
 
   addDefaultPrisoners() {
     this.props.getOffenderNomisProfiles();
+    this.props.getViperScores();
+
     this.setState({
       error: false,
       success: true,
