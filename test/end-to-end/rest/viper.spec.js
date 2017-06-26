@@ -35,7 +35,7 @@ describe('/api/viper', () => {
       .end((err, res) => {
         if (err) done(err);
         expect(res.body).to.have.property('messasge')
-          .which.equals(`Error retrieving viper rating for nomisId: ${nomisId}. The cause was: TypeError: Cannot read property 'rating' of undefined`);
+          .which.equals(`Error retrieving viper rating for nomisId: ${nomisId}. The cause was: Not found`);
         done();
       });
   });

@@ -1,5 +1,10 @@
 import express from 'express';
 
+function errorResponse(res, nomisId, cause) {
+  res.status(404);
+  res.json({ messasge: `Error retrieving viper rating for nomisId: ${nomisId}. The cause was: ${cause}` });
+}
+
 export default function createRouter(viperService) {
   const router = express.Router();
 
@@ -7,12 +12,15 @@ export default function createRouter(viperService) {
     const nomisId = req.params.nomisId;
     try {
       const viperRating = await viperService.rating(nomisId);
-      const payload = { nomisId, viperRating };
+      if (viperRating === null) {
+        return errorResponse(res, nomisId, 'Not found');
+      }
+
       res.status(200);
-      res.json(payload);
+      res.json({ nomisId, viperRating });
+      return res;
     } catch (exception) {
-      res.status(404);
-      res.json({ messasge: `Error retrieving viper rating for nomisId: ${nomisId}. The cause was: ${exception}` });
+      return errorResponse(res, nomisId, exception);
     }
   });
 

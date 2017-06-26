@@ -25,7 +25,19 @@ describe('GET /viper/:nomisId', () => {
       });
   });
 
-  it('responds with status OK (404) and an error message when a rating is not found', () => {
+  it('responds with status not found (404) and an error message when a rating is not found', () => {
+    fakeViperService.rating = sinon.stub().resolves(null);
+
+    return request(app)
+      .get('/viper/A123')
+      .expect('Content-Type', /json/)
+      .expect(404)
+      .expect((res) => {
+        expect(res.body).to.eql({ messasge: 'Error retrieving viper rating for nomisId: A123. The cause was: Not found' });
+      });
+  });
+
+  it('responds with status not found (404) and an error message when an error occurs', () => {
     fakeViperService.rating = sinon.stub().rejects(new Error('Some strange viperService error'));
 
     return request(app)

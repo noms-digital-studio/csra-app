@@ -30,12 +30,12 @@ describe('viper service', () => {
         });
     });
 
-    it('does not return a viper rating for an unknown nomis id', () => {
+    it('returns null for an unknown nomis id', () => {
       fakeDB.where = sinon.stub().resolves([]);
 
       return viperService.rating('A123')
-        .catch((error) => {
-          expect(error.message).to.equal("Cannot read property 'rating' of undefined");
+        .then((result) => {
+          expect(result).to.equal(null);
         });
     });
   });

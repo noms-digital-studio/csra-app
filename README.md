@@ -95,6 +95,8 @@ If these are installed then all you need to run is the following:
 
 ### Viper Rating: GET `/api/viper/{nomisId}`
 
+Returns the Viper rating and status 200 for a known Nomis ID or 404 when not found.
+
 e.g. 
 
 Request: ```curl http://localhost:5000/api/viper/J1234LO```
