@@ -20,10 +20,7 @@ describe('viper service', () => {
 
       return viperService.rating('A123')
         .then((result) => {
-          expect(fakeDB.select.callCount).to.eql(1);
-          expect(fakeDB.table.callCount).to.eql(1);
           expect(fakeDB.table.lastCall.args[0]).to.eql('viper');
-          expect(fakeDB.where.callCount).to.eql(1);
           expect(fakeDB.where.lastCall.args[0]).to.eql('nomis_id');
           expect(fakeDB.where.lastCall.args[1]).to.eql('A123');
           expect(result).to.equal(0.90);
