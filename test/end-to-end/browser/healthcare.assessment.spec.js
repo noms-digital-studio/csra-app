@@ -15,6 +15,8 @@ describe('Healthcare assessment', () => {
   it('Record a prisoner`s healthcare details', () => new Promise((resolve, reject) => {
     givenThatTheOfficerIsSignedIn();
     whenHealthcareRecommendsSharedCell();
-    thenTheHealthcareAssessmentIsComplete({ resolve, reject, sharedText: 'shared cell' });
+    thenTheHealthcareAssessmentIsComplete({ sharedText: 'shared cell' })
+    .then(resolve)
+    .catch(reject);
   }));
 });

@@ -46,15 +46,13 @@ function thenASingleCellIsRecommended() {
   expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Complete Start Single cell');
 }
 
-function thenTheAssessmentIsCompleted({ resolve, reject }) {
+function thenTheAssessmentIsCompleted() {
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=J1234LO]');
   expect(row.getText()).to.equal('John Lowe J1234LO 01-Oct-1970 Complete Start');
   const assessmentId = row.getAttribute('data-risk-assessment-id');
 
-  checkThatAssessmentDataWasWrittenToDatabase({
-    resolve,
-    reject,
+  return checkThatAssessmentDataWasWrittenToDatabase({
     nomisId: 'J1234LO',
     assessmentId,
     questionData: {

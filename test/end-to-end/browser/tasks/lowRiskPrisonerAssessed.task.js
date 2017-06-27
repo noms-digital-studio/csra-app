@@ -108,7 +108,7 @@ function aSharedCellIsRecommended(sharedText) {
   );
 }
 
-function thenTheAssessmentIsCompleted({ resolve, reject, sharedText, reasons, hasUsedDrugs }) {
+function thenTheAssessmentIsCompleted({ sharedText, reasons, hasUsedDrugs }) {
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=J1234LO]');
   expect(row.getText()).to.equal(
@@ -117,9 +117,7 @@ function thenTheAssessmentIsCompleted({ resolve, reject, sharedText, reasons, ha
   const assessmentId = row.getAttribute('data-risk-assessment-id');
   expect(assessmentId).to.not.equal(undefined, 'expected to find data-risk-assessment-id on the page');
 
-  checkThatAssessmentDataWasWrittenToDatabase({
-    resolve,
-    reject,
+  return checkThatAssessmentDataWasWrittenToDatabase({
     nomisId: 'J1234LO',
     assessmentId,
     questionData: {

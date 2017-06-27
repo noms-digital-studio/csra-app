@@ -1,21 +1,22 @@
 import db from '../../util/db';
 
 const checkThatAssessmentDataWasWrittenToDatabase = ({
-  resolve,
-  reject,
   nomisId,
   assessmentType = 'risk',
   assessmentId,
   questionData,
   reasons = [],
   sharedText = 'single cell',
-}) => {
+}) =>
   db
     .select()
     .table('assessments')
     .where('assessment_id', Number(assessmentId))
     .then((result) => {
-      expect(result[0]).to.not.equal(undefined, `Did not get a result from database for assessmentId: ${assessmentId}`);
+      expect(result[0]).to.not.equal(
+        undefined,
+        `Did not get a result from database for assessmentId: ${assessmentId}`,
+      );
       expect(result[0].nomis_id).to.equal(nomisId);
       expect(result[0].timestamp).to.not.be.equal(
         undefined,
@@ -35,9 +36,8 @@ const checkThatAssessmentDataWasWrittenToDatabase = ({
       expect(JSON.parse(result[0].reasons)).to.eql(reasons);
       expect(JSON.parse(result[0].questions)).to.eql(questionData);
       expect(result[0].viper).to.equal(0.35);
-      resolve();
-    })
-    .catch(error => reject(error));
-};
+
+      return result[0];
+    });
 
 export default checkThatAssessmentDataWasWrittenToDatabase;

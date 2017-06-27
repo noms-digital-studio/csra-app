@@ -42,6 +42,9 @@ describe('Both assessments (Single cell outcome)', () => {
     expect(FullAssessmentOutcomePage.name).to.equalIgnoreCase('John Lowe');
     expect(FullAssessmentOutcomePage.dob).to.equalIgnoreCase('01-Oct-1970');
     expect(FullAssessmentOutcomePage.nomisId).to.equalIgnoreCase('J1234LO');
+
+    expect(FullAssessmentOutcomePage.recommendOutcome).to.match(new RegExp(`${finalRecommendation} cell`, 'i'));
+
     expect(FullAssessmentOutcomePage.riskRecommendation).to.equalIgnoreCase(
       `${riskRecommendation} cell`,
     );
@@ -66,24 +69,28 @@ describe('Both assessments (Single cell outcome)', () => {
   it('Assesses a vulnerable prisoner', () => new Promise((resolve, reject) => {
     givenThatTheOfficerIsSignedIn();
     whenAVulnerablePrisonerIsAssessed();
-    thenRiskAssessmentIsComplete({ resolve, reject });
+    thenRiskAssessmentIsComplete().catch(reject);
     whenHealthcareRecommendsSharedCell();
     thenTheFullAssessmentIsCompletedWith({
       riskRecommendation: 'single',
       healthRecommendation: 'shared',
       finalRecommendation: 'single',
     });
+
+    resolve();
   }));
 
   it('Assesses a prisoner that healthcare deem as a risk', () => new Promise((resolve, reject) => {
     givenThatTheOfficerIsSignedIn();
     whenALowRiskPrisonerIsAssessed();
-    thenTheAssessmentIsCompleted({ resolve, reject, sharedText: 'shared cell' });
+    thenTheAssessmentIsCompleted({ sharedText: 'shared cell' }).catch(reject);
     whenHealthcareRecommendsSingleCell();
     thenTheFullAssessmentIsCompletedWith({
       riskRecommendation: 'shared',
       healthRecommendation: 'single',
       finalRecommendation: 'single',
     });
+
+    resolve();
   }));
 });
