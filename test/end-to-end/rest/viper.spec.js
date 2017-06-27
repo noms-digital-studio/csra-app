@@ -18,10 +18,7 @@ describe('/api/viper/:nomisId', () => {
           .expect(200)
           .end((err, res) => {
             if (err) done(err);
-            expect(res.body).to.have.property('nomisId')
-              .which.equals(nomisId);
-            expect(res.body).to.have.property('viperRating')
-              .which.equals(0.42);
+            expect(res.body).to.eql({ nomisId, viperRating: 0.42 })
             done();
           }),
       );
@@ -34,8 +31,7 @@ describe('/api/viper/:nomisId', () => {
       .expect(404)
       .end((err, res) => {
         if (err) done(err);
-        expect(res.body).to.have.property('messasge')
-          .which.equals(`Error retrieving viper rating for nomisId: ${nomisId}. The cause was: Not found`);
+        expect(res.body).to.eql({ messasge: `Error retrieving viper rating for nomisId: ${nomisId}. The cause was: Not found` });
         done();
       });
   });
