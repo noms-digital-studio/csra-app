@@ -1,4 +1,3 @@
-import AdminPage from './pages/Admin.page';
 import {
   thenTheAssessmentIsCompleted,
   whenALowRiskPrisonerIsAssessed,
