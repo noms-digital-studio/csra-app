@@ -4,8 +4,8 @@ import whenTheOfficerAddsThePrisonersDetails from './tasks/theOfficerAddsThePris
 
 function thenThePrisonerIsAvailableToAssess() {
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
-  const row = browser.element('[data-profile-row=A12345]');
-  expect(row.getText()).to.equal('John Lowe A12345 01-10-1970 Start Start');
+  const row = browser.element('[data-profile-row=J1234LO]');
+  expect(row.getText()).to.equal('John Lowe J1234LO 01-10-1970 Start Start');
 }
 
 describe('add prisoner', () => {
