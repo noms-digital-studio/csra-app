@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -e
 
+if [ $# -eq 0 ]
+  then
+    echo "usage: promote-from-mock-to-stage.sh <stage db password>"
+    exit
+fi
+
 # This script requires the 'jq' command line tool
 brew install jq
 
@@ -15,7 +21,7 @@ git push --force origin origin/deploy-to-mock:deploy-to-stage
 GIT_REF=`jq -r '.gitRef' build-info.json` WAIT_DURATION=45000 APP_BASE_URL=http://csra-stage.hmpps.dsd.io/health yarn wait-for-deploy
 
 # Run the E2E tests against STAGE
-APP_BASE_URL=https://csra-stage.hmpps.dsd.io yarn test:integration
+DB_URI=mssql://csra:$1@csra-stage.database.windows.net:1433/csra-stage APP_BASE_URL=https://csra-stage.hmpps.dsd.io yarn test:integration
 
 # Switch back to master branch
 git checkout master
