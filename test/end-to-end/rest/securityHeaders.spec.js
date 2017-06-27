@@ -8,7 +8,6 @@ describe('Security headers', () => {
     request(baseUrl)
       .get('/')
       .end((err, res) => {
-        expect(res.headers).to.not.have.property('x-powered-by');
         expect(res.headers).to.have.property('x-dns-prefetch-control');
         expect(res.headers).to.have.property('x-frame-options');
         expect(res.headers).to.have.property('x-download-options');
