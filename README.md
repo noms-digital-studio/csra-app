@@ -91,9 +91,47 @@ If these are installed then all you need to run is the following:
 ./promote-from-mock-to-stage.sh
 ```
 
-## Monitoring endpoint
+## Endpoints
 
-### GET `/health`
+### Viper Rating: GET `/api/viper/{nomisId}`
+
+Returns the Viper rating and status 200 for a known Nomis ID or 404 when not found.
+
+e.g. 
+
+Request: ```curl http://localhost:5000/api/viper/J1234LO```
+ 
+Response: 
+```
+{
+  "nomisId": "J1234LO",
+  "viperRating": 0.35
+}
+``` 
+
+### Save Assessment: POST `/api/assessment`
+
+e.g.
+
+Request: 
+```
+curl http://localhost:5000/api/assessment -H 'Content-Type: application/json' 
+-d '{"nomisId":"J1234LO","type":"risk","outcome":"single cell","viperScore":0.45,
+"questions":{"Q1":{"question_id":"Q1","question":"Are you part of a gang?","answer":"Yes"}},
+"reasons":[{"question_id":"Q1","reason":"reason one"}]}'
+```
+
+Response:
+```
+{
+  "status":"OK",
+  "data": {
+    "id":48
+    }
+}
+```
+
+### Monitoring: GET `/health`
 
 e.g.
 

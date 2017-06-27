@@ -19,7 +19,7 @@ function whenAViolentPrisonerIsAssessed() {
 
   expect(RiskAssessmentSummaryPage.mainHeading).to.equal('Risk assessment summary');
   expect(RiskAssessmentSummaryPage.name).to.equalIgnoreCase('Ian Rate');
-  expect(RiskAssessmentSummaryPage.dob).to.equalIgnoreCase('23-Mar-1988');
+  expect(RiskAssessmentSummaryPage.dob).to.equalIgnoreCase('23-03-1988');
   expect(RiskAssessmentSummaryPage.nomisId).to.equalIgnoreCase('I9876RA');
 
   expect(RiskAssessmentSummaryPage.outcome).to.equalIgnoreCase('single cell');

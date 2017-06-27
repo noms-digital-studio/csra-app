@@ -63,7 +63,7 @@ describe('<ConfirmOffender />', () => {
           getStub.yields(null, {
             body: {
               nomisId: 'foo-nomis-id',
-              viperScore: 0.50,
+              viperRating: 0.50,
             },
           });
           wrapper.find('[data-confirm]').simulate('click');

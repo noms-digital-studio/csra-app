@@ -70,7 +70,7 @@ function aLowRiskPrisonerIsAssessed(usesDrugs) {
     'Risk assessment summary',
   );
   expect(RiskAssessmentSummaryPage.name).to.equalIgnoreCase('John Lowe');
-  expect(RiskAssessmentSummaryPage.dob).to.equalIgnoreCase('01-Oct-1970');
+  expect(RiskAssessmentSummaryPage.dob).to.equalIgnoreCase('01-10-1970');
   expect(RiskAssessmentSummaryPage.nomisId).to.equalIgnoreCase('J1234LO');
 
   expect(RiskAssessmentSummaryPage.outcome).to.equalIgnoreCase(
@@ -104,7 +104,7 @@ function aSharedCellIsRecommended(sharedText) {
   expect(DashboardPage.mainHeading).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=J1234LO]');
   expect(row.getText()).to.equal(
-    `John Lowe J1234LO 01-Oct-1970 Complete Start ${sharedText}`,
+    `John Lowe J1234LO 01-10-1970 Complete Start ${sharedText}`,
   );
 }
 
@@ -112,7 +112,7 @@ function thenTheAssessmentIsCompleted({ sharedText, reasons, hasUsedDrugs }) {
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
   const row = browser.element('[data-profile-row=J1234LO]');
   expect(row.getText()).to.equal(
-    'John Lowe J1234LO 01-Oct-1970 Complete Start',
+    'John Lowe J1234LO 01-10-1970 Complete Start',
   );
   const assessmentId = row.getAttribute('data-risk-assessment-id');
   expect(assessmentId).to.not.equal(undefined, 'expected to find data-risk-assessment-id on the page');

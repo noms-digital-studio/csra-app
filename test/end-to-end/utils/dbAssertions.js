@@ -38,6 +38,9 @@ const checkThatAssessmentDataWasWrittenToDatabase = ({
       expect(result[0].viper).to.equal(0.35);
 
       return result[0];
+    })
+    .catch((error) => {
+      throw error;
     });
 
 export default checkThatAssessmentDataWasWrittenToDatabase;
