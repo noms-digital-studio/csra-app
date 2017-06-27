@@ -2,6 +2,7 @@ import path from 'path';
 import express from 'express';
 import morgan from 'morgan';
 import { json } from 'body-parser';
+import helmet from 'helmet';
 
 import config from './config';
 
@@ -12,6 +13,8 @@ import index from './routes/index';
 
 export default function createApp(db, appInfo, assessmentService, viperService) {
   const app = express();
+
+  app.use(helmet());
 
   app.use(json());
 
