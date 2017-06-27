@@ -18,7 +18,7 @@ describe('/api/viper/:nomisId', () => {
           .expect(200)
           .end((err, res) => {
             if (err) done(err);
-            expect(res.body).to.eql({ nomisId, viperRating: 0.42 })
+            expect(res.body).to.eql({ nomisId, viperRating: 0.42 });
             done();
           }),
       );
