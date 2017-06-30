@@ -1,8 +1,16 @@
 import { seedDbWithViperData } from '../../../db/seedUtils';
 import db from '../../util/db';
 
-describe.only('#seedUtils', () => {
+describe('#seedUtils', () => {
   describe('.seedDbWithViperData', () => {
+    before(() => {
+      const databaseName = db.client.config.connection.database;
+
+      if (databaseName.includes('stage') || databaseName.includes('prod')) {
+        throw new Error('You can not run this test against a staging or prod database');
+      }
+    });
+
     beforeEach(() => db.raw('DELETE FROM viper'));
 
     afterEach(() => db.raw('DELETE FROM viper'));
