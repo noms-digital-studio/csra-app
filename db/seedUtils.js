@@ -1,6 +1,4 @@
 import uuid from 'uuid';
-import flatten from 'ramda/src/flatten';
-import times from 'ramda/src/times';
 
 import createDBConnectionPool from '../server/db';
 
@@ -19,35 +17,20 @@ const generateViper = () => {
   };
 };
 
-const generateViperRows = (iterations, rows = []) => {
-  if (iterations === 0) return rows;
+const generateViperRows = (iterations) => {
+  const viperRows = [];
 
-  const viperData = generateViper();
-  const newRows = [...rows, viperData];
-  const iterationsLeft = iterations - 1;
+  // eslint-disable-next-line
+  for (let i = 0; i < iterations; i++) {
+    viperRows.push(generateViper());
+  }
 
-  return generateViperRows(iterationsLeft, newRows);
-};
-
-// Done to avoid call stack max size
-const divideAndConquerGenerationOfViperRows = (iterations, chunkSize) => {
-  const quotient = Math.floor(iterations / chunkSize);
-  const reminder = iterations % chunkSize;
-
-  const quotientRows = times(() => generateViperRows(chunkSize), quotient);
-  const reminderRows = generateViperRows(reminder);
-  const rows = flatten(quotientRows.concat(reminderRows));
-
-  return rows;
+  return viperRows;
 };
 
 const createViperData = (iterations) => {
   const chunkSize = 1000;
-  const maxIteration = 5000;
-
-  const rows = iterations > maxIteration
-    ? divideAndConquerGenerationOfViperRows(iterations, chunkSize)
-    : generateViperRows(iterations);
+  const rows = generateViperRows(iterations);
 
   return db.batchInsert('viper', rows, chunkSize);
 };
