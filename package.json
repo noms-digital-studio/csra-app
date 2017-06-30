@@ -17,6 +17,7 @@
     "test:watch": "yarn test -- --watch",
     "test:integration": "yarn test:e2e && yarn test:rest",
     "test:rest": "mocha test/end-to-end/rest/*.spec.js",
+    "test:db": "mocha test/end-to-end/db/*.spec.js",
     "test:e2e": "wdio wdio.conf.js",
     "build": "webpack",
     "record-build-info": "node ./bin/record-build-info",
