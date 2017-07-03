@@ -32,7 +32,7 @@ module.exports = {
     ),
   },
 
-  devtool: dev ? 'cheap-module-source-map' : 'source-map',
+  devtool: dev ?  'source-map': 'cheap-module-source-map',
 
   output: {
     path: path.join(__dirname, 'public', 'dist'),

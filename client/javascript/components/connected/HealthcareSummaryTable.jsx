@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import path from 'ramda/src/path';
 import QuestionAnswerRow from '../QuestionAnswerRow';
+import { capitalize } from '../../utils';
 
 const riskText = { no: 'shared cell', yes: 'single cell' };
 
@@ -38,9 +39,9 @@ const HealthcareSummaryTable = ({ answers }) => (
           Completed by:
         </td>
         <td>
-          <span data-assessor>{answers.assessor['full-name']}</span>
+          <span data-assessor>{capitalize(answers.assessor['full-name'])}</span>
           <br />
-          <span data-role>{answers.assessor.role}</span>
+          <span data-role>{capitalize(answers.assessor.role)}</span>
           <br />
           <span data-date>
             {`${answers.assessor.day}-${answers.assessor.month}-${answers.assessor.year}`}

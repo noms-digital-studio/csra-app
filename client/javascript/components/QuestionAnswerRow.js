@@ -17,7 +17,7 @@ const QuestionAnswerRow = ({ question, answer, dataTags }) =>
                 Comments
               </span>
           <span>
-            {answer[`reasons-${answer.answer}`]}
+            {capitalize(answer[`reasons-${answer.answer}`])}
           </span>
         </p>}
       </td>
