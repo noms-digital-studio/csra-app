@@ -9,33 +9,36 @@ function viperRatingFromDatabase(db, nomisId) {
     .where('nomis_id', nomisId)
     .then((result) => {
       if (result[0]) {
+        console.log('viper rating found in database for nomisId: ', nomisId);
         return result[0].rating;
       }
 
-      console.log('viper rating not found for nomisID: ', nomisId);
+      console.log('viper rating NOT found in database for nomisID: ', nomisId);
       return null;
     });
 }
 
 function viperRatingFromApi(nomisId) {
   console.log('Getting viper rating from the REST API for nomisID: ', nomisId);
-  superagent
-    .get(`http://localhost:9090/offender/${nomisId}/viper`)
-    .set('Ocp-Apim-Subscription-Key', 'valid-subscription-key')
-    .end((error, res) => {
-      if (error) {
-        console.log('viper rating not found for nomisID: ', nomisId);
-        console.log('error: ', error);
-        return null;
-      }
+  return new Promise((resolve) => {
+    superagent
+      .get(`http://localhost:9090/offender/${nomisId}/viper`)
+      .set('Ocp-Apim-Subscription-Key', 'valid-subscription-key')
+      .end((error, res) => {
+        if (error) {
+          console.log('viper rating NOT found from API for nomisID: ', nomisId);
+          console.log('error: ', error);
+          resolve(null);
+        }
 
-      console.log('viper rating found for nomisId: ', nomisId);
-      return res.body.viperRating;
-    });
+        console.log('viper rating found from API for nomisId: ', nomisId);
+        resolve(res.body.viperRating);
+      });
+  });
 }
 
 function ratingFor(db, nomisId) {
-  if (process.env.USE_VIPER_REST_API) {
+  if (process.env.USE_VIPER_REST_API === 'true') {
     return viperRatingFromApi(nomisId);
   }
 
