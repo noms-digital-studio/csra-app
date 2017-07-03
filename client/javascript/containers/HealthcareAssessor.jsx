@@ -140,9 +140,9 @@ HealthAssessment.defaultProps = {
   formDefaults: {
     role: '',
     'full-name': '',
-    day: '',
-    month: '',
-    year: '',
+    day: `${new Date().getDate()}`,
+    month: `${new Date().getMonth() + 1}`,
+    year: `${new Date().getFullYear()}`,
   },
 };
 
