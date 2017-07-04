@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import superagent from 'superagent';
+import config from '../../server/config';
 
 function viperRatingFromDatabase(db, nomisId) {
   console.log('Getting viper rating from the database for nomisID: ', nomisId);
@@ -22,8 +23,8 @@ function viperRatingFromApi(nomisId) {
   console.log('Getting viper rating from the REST API for nomisID: ', nomisId);
   return new Promise((resolve) => {
     superagent
-      .get(`http://localhost:9090/offender/${nomisId}/viper`)
-      .set('Ocp-Apim-Subscription-Key', 'valid-subscription-key')
+      .get(`http://${config.viperServiceHost}/offender/${nomisId}/viper`)
+      .set(config.viperServiceAuthenticationKey, config.viperServiceAuthenticationValue)
       .end((error, res) => {
         if (error) {
           console.log('viper rating NOT found from API for nomisID: ', nomisId);

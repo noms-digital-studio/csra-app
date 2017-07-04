@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
+import superagent from 'superagent';
 import request from 'supertest';
 import uuid from 'uuid/v4';
 import db from '../../util/db';
-import superagent from 'superagent';
 
 const baseUrl = process.env.APP_BASE_URL;
 
@@ -58,7 +58,7 @@ function primeMock(nomisId) {
 describe('/api/viper/:nomisId', () => {
   const nomisId = uuid().substring(0, 8);
 
-  before(function (done) {
+  before(function beforeTests(done) {
     this.timeout(5000);
     if (process.env.USE_VIPER_REST_API === 'false') {
       primeDatabase(nomisId)
