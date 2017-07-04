@@ -4,11 +4,12 @@ require('dotenv').config();
 require('babel-register')();
 
 const { seedDbWithViperData } = require('../db/seedUtils');
-const numberOfRandom = Number(process.env.SEED_AMOUNT) || 100;
+
+const seedsToAdd = Number(process.env.SEED_AMOUNT) || 100;
 
 console.log('Seeding the database... Please wait...');
 
-seedDbWithViperData(numberOfRandom).then(() => {
+seedDbWithViperData(seedsToAdd).then(() => {
   console.log('Seeding complete.');
   console.log('Now exiting');
   process.exit(0);

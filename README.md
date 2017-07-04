@@ -97,25 +97,25 @@ If these are installed then all you need to run is the following:
 
 Returns the Viper rating and status 200 for a known Nomis ID or 404 when not found.
 
-e.g. 
+e.g.
 
 Request: ```curl http://localhost:5000/api/viper/J1234LO```
- 
-Response: 
+
+Response:
 ```
 {
   "nomisId": "J1234LO",
   "viperRating": 0.35
 }
-``` 
+```
 
 ### Save Assessment: POST `/api/assessment`
 
 e.g.
 
-Request: 
+Request:
 ```
-curl http://localhost:5000/api/assessment -H 'Content-Type: application/json' 
+curl http://localhost:5000/api/assessment -H 'Content-Type: application/json'
 -d '{"nomisId":"J1234LO","type":"risk","outcome":"single cell","viperScore":0.45,
 "questions":{"Q1":{"question_id":"Q1","question":"Are you part of a gang?","answer":"Yes"}},
 "reasons":[{"question_id":"Q1","reason":"reason one"}]}'
@@ -208,3 +208,13 @@ The `sql-cli` package installed above gives you a commandline client called `mss
 mssql -s localhost -u <database-user> -p <password> -d csra
 select * from assessments
 ```
+
+### Seeding database viper table
+** Caution when runing this script ensure that you are pointing to your database driver to the correct database enviroment **
+
+Simply running the following command will generate 100 random seeds to the viper table.
+``` ./bin/seed-viper ```
+
+To specify a different number of random viper data to generate simply specify the number using the environmental variable `SEED_AMOUNT`:
+
+```SEED_AMOUNT={number of seeds (int)} ./bin/seed-viper```
