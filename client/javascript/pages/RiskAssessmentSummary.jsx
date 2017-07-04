@@ -73,7 +73,7 @@ const RiskAssessmentSummary = ({
           onClick={() =>
             onSubmit({
               healthcareAssessmentComplete,
-              outcome: outcome.recommendation,
+              outcome,
               nomisId: prisoner.nomisId,
               viperScore: viperScore.viperScore,
               answers,
@@ -165,20 +165,31 @@ const mapActionsToProps = dispatch => ({
     questions,
     answers,
   }) => {
-    postAssessmentToBackend('risk', {
-      nomisId,
-      outcome,
-      viperScore,
-      questions,
-      answers,
-    }, (assessmentId) => {
-      dispatch(completeRiskAssessmentFor({ recommendation: outcome, nomisId, assessmentId }));
-      if (healthcareAssessmentComplete) {
-        dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
-      } else {
-        dispatch(replace(routes.DASHBOARD));
-      }
-    });
+    postAssessmentToBackend(
+      'risk',
+      {
+        nomisId,
+        outcome: outcome.recommendation,
+        viperScore,
+        questions,
+        answers,
+      },
+      (assessmentId) => {
+        dispatch(
+          completeRiskAssessmentFor({
+            recommendation: outcome.recommendation,
+            nomisId,
+            assessmentId,
+            reasons: outcome.reasons,
+          }),
+        );
+        if (healthcareAssessmentComplete) {
+          dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
+        } else {
+          dispatch(replace(routes.DASHBOARD));
+        }
+      },
+    );
   },
 });
 

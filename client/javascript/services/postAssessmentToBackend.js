@@ -8,6 +8,7 @@ const postAssessmentToBackend = (assessmentType, {
   viperScore,
   questions,
   answers,
+  reasons,
 }, callback) => {
   const riskAssessmentRequestParams = buildAssessmentRequest(assessmentType, {
     nomisId,
@@ -15,6 +16,7 @@ const postAssessmentToBackend = (assessmentType, {
     viperScore,
     questions,
     answers,
+    reasons,
   });
   const target = `${window.location.origin}/api/assessment`;
 

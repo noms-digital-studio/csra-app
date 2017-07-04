@@ -250,7 +250,49 @@ describe('<RiskAssessmentSummary />', () => {
         expect(
           store.dispatch.calledWithMatch({
             type: 'COMPLETE_RISK_ASSESSMENT',
-            payload: { recommendation: 'shared cell', nomisId: 'foo-nomis-id', assessmentId: 123 },
+            payload: {
+              recommendation: 'shared cell',
+              nomisId: 'foo-nomis-id',
+              assessmentId: 123,
+            },
+          }),
+        ).to.equal(true, 'triggered complete assessment');
+      });
+
+      it('marks the assessment complete with reasons upon submission', () => {
+        const stateWithReason = {
+          ...state,
+          answers: {
+            selectedPrisonerId: 'foo-nomis-id',
+            riskAssessment: {
+              'foo-nomis-id': {
+                ...riskAssessmentAnswers,
+                'gang-affiliation': {
+                  answer: 'yes',
+                },
+              },
+            },
+          },
+        };
+
+        const store = fakeStore(stateWithReason);
+        const wrapper = mount(
+          <Provider store={store}>
+            <RiskAssessmentSummary />
+          </Provider>,
+        );
+
+        wrapper.find('[data-summary-next-steps] button').simulate('click');
+
+        expect(
+          store.dispatch.calledWithMatch({
+            type: 'COMPLETE_RISK_ASSESSMENT',
+            payload: {
+              recommendation: 'shared cell with conditions',
+              reasons: ['foo-reason'],
+              nomisId: 'foo-nomis-id',
+              assessmentId: 123,
+            },
           }),
         ).to.equal(true, 'triggered complete assessment');
       });

@@ -141,6 +141,7 @@ export const extractDecision = ({ questions, answers, exitPoint }) => {
   };
 };
 
+
 export const retrieveViperScoreFor = (nomisId, callback) => {
   const url = `${window.location.origin}/api/viper/${nomisId}`;
 

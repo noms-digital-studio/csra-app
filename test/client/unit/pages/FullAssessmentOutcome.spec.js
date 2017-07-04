@@ -110,6 +110,29 @@ describe('<FullAssessmentOutcome', () => {
     });
   });
 
+  it('displays the reasons if outcome is shared with conditions', () => {
+    const stateWithReasons = {
+      ...state,
+      riskAssessmentStatus: {
+        exitPoint: '',
+        completed: [{ recommendation: 'shared cell with conditions', nomisId: 'foo-nomis-id', reasons: ['foo-reason', 'bar-reason'] }],
+      },
+    };
+    const store = fakeStore(stateWithReasons);
+    const wrapper = mount(
+      <Provider store={store}>
+        <FullAssessmentOutcome />
+      </Provider>,
+    );
+
+    const reasons = wrapper.find('[data-element-id="reasons"]').text();
+    const outcome = wrapper.find('[data-recommended-outcome]').text();
+
+    expect(outcome).to.include('Shared cell with conditions');
+    expect(reasons).to.include('foo-reason');
+    expect(reasons).to.include('bar-reason');
+  });
+
   it('renders the outcome of the assessment', () => {
     const store = fakeStore(state);
     const wrapper = mount(

@@ -62,7 +62,7 @@ const FullAssessmentOutcome = ({
 
         <div>
           {(riskAssessmentOutcome.reasons && finalOutcome !== 'single cell') &&
-            <ul className="list list-bullet">
+            <ul data-element-id="reasons" className="list list-bullet">
               {riskAssessmentOutcome.reasons.map((reason, index) => <li key={index}>{reason}</li>)}
             </ul>}
         </div>
@@ -124,7 +124,9 @@ FullAssessmentOutcome.propTypes = {
 FullAssessmentOutcome.defaultProps = {
   title: 'Assessment Outcome',
   prisoner: {},
-  onSubmit: () => {}
+  onSubmit: () => {},
+  riskAssessmentOutcome: {},
+  healthcareOutcome: {},
 };
 
 const mapStateToProps = (state, ownProps) => ({

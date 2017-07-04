@@ -181,7 +181,8 @@ describe('Actions', () => {
     it('returns a COMPLETE_RISK_ASSESSMENT action', () => {
       const outcome = {
         nomisId: 'foo-id',
-        recommendation: 'foo-recommendation',
+        recommendation: 'foo-outccome',
+        reasons: ['foo-reason'],
         assessmentId: 'foo-nomis-id',
       };
       expect(completeRiskAssessmentFor(outcome)).to.eql({

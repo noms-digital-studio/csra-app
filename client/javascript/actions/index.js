@@ -90,9 +90,9 @@ export const saveHealthcareAssessmentAnswer = (key, value) => ({
   payload: { [key]: value },
 });
 
-export const completeRiskAssessmentFor = ({ recommendation, nomisId, assessmentId }) => ({
+export const completeRiskAssessmentFor = ({ recommendation, nomisId, assessmentId, reasons }) => ({
   type: COMPLETE_RISK_ASSESSMENT,
-  payload: { recommendation, nomisId, assessmentId },
+  payload: { recommendation, nomisId, assessmentId, reasons },
 });
 
 export const saveExitPoint = riskFactor => ({
