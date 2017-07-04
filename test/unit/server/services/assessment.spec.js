@@ -273,5 +273,13 @@ describe('assessment service', () => {
       return expect(assessment.record(validRiskAssessment))
         .to.be.rejectedWith(Error, 'Connection failed or something');
     });
+
+    // TODO some tests were the result is empty
+    // (interested to know how our code behaves in these scenarios)
+    // e.g.
+    // fakeDB.returning = sinon.stub().resolves([]);
+    // fakeDB.returning = sinon.stub().resolves('');
+    // fakeDB.returning = sinon.stub().resolves(null);
+    // fakeDB.returning = sinon.stub().resolves(undefined);
   });
 });

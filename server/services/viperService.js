@@ -21,19 +21,30 @@ function viperRatingFromDatabase(db, nomisId) {
 
 function viperRatingFromApi(nomisId) {
   console.log('Getting viper rating from the REST API for nomisID: ', nomisId);
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     superagent
       .get(`http://${config.viperServiceHost}/offender/${nomisId}/viper`)
       .set(config.viperServiceAuthenticationKey, config.viperServiceAuthenticationValue)
       .end((error, res) => {
-        if (error) {
-          console.log('viper rating NOT found from API for nomisID: ', nomisId);
-          console.log('error: ', error);
-          resolve(null);
-        }
+        try {
+          if (error) {
+            console.log('Viper rating NOT found from API for nomisID: ', nomisId);
+            console.log('error: ', error);
+            resolve(null);
+          }
 
-        console.log('viper rating found from API for nomisId: ', nomisId);
-        resolve(res.body.viperRating);
+          const bodyText = res.text;
+          const body = res.body;
+          if (body.nomsId && body.viperRating) {
+            console.log('Viper rating found from API for nomisId: ', nomisId);
+            resolve(body.viperRating);
+          }
+
+          reject(`Invalid body: ${bodyText}`);
+        } catch (exception) {
+          console.log('Response body was empty');
+          reject(exception);
+        }
       });
   });
 }
