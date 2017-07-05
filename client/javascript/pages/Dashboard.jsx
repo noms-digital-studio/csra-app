@@ -69,7 +69,7 @@ class Dashboard extends Component {
             : <span className="c-status-indicator" />}
 
         </td>
-        <td data-cell-view-outcome>
+        <td data-cell-view-outcome className="u-text-align-center">
           {profile.outcome
             ? <span>
               <a

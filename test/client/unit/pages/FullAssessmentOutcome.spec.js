@@ -83,10 +83,11 @@ const state = {
   offender: {
     selected: prisonerDetails,
   },
+  assessmentOutcomes: {},
 };
 
 describe('<FullAssessmentOutcome', () => {
-  it('render the page without errors', () => {
+  it('renders the page without errors', () => {
     const store = fakeStore(state);
     mount(
       <Provider store={store}>
@@ -115,7 +116,13 @@ describe('<FullAssessmentOutcome', () => {
       ...state,
       riskAssessmentStatus: {
         exitPoint: '',
-        completed: [{ recommendation: 'shared cell with conditions', nomisId: 'foo-nomis-id', reasons: ['foo-reason', 'bar-reason'] }],
+        completed: [
+          {
+            recommendation: 'shared cell with conditions',
+            nomisId: 'foo-nomis-id',
+            reasons: ['foo-reason', 'bar-reason'],
+          },
+        ],
       },
     };
     const store = fakeStore(stateWithReasons);
@@ -190,7 +197,7 @@ describe('<FullAssessmentOutcome', () => {
     });
   });
 
-  it('form submission it navigates to the full assessment page', () => {
+  it('navigates to the full assessment complete page on form submission', () => {
     const store = fakeStore(state);
 
     const wrapper = mount(
@@ -207,5 +214,64 @@ describe('<FullAssessmentOutcome', () => {
         payload: { method: 'replace', args: ['/full-assessment-complete'] },
       }),
     ).to.equal(true, 'Changed path to /full-assessment-complete');
+  });
+
+  it('calls the storeOutcome action on submission', () => {
+    const store = fakeStore(state);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <FullAssessmentOutcome />
+      </Provider>,
+    );
+
+    wrapper.find('form').simulate('submit');
+
+    expect(
+      store.dispatch.calledWithMatch({
+        type: 'SAVE_OUTCOME',
+        payload: { outcome: 'shared cell', nomisId: 'foo-nomis-id' },
+      }),
+    ).to.equal(true, 'Changed path to /full-assessment-complete');
+  });
+
+  context('when the assessment has already been completed', () => {
+    const stateWithOutcomes = {
+      ...state,
+      assessmentOutcomes: { 'foo-nomis-id': 'shared cell' },
+    };
+
+    it('does not allow users to complete the assessment again', () => {
+      const store = fakeStore(stateWithOutcomes);
+
+      const wrapper = mount(
+        <Provider store={store}>
+          <FullAssessmentOutcome />
+        </Provider>,
+      );
+
+      expect(wrapper.find('form').length).to.equal(0);
+    });
+
+    it('allow the user to return to the dashboard', () => {
+      const store = fakeStore(stateWithOutcomes);
+
+      const wrapper = mount(
+        <Provider store={store}>
+          <FullAssessmentOutcome />
+        </Provider>,
+      );
+
+      expect(wrapper.find('[data-continue-button]').length).to.eql(1);
+
+      wrapper.find('[data-continue-button]').simulate('click');
+
+      expect(
+        store.dispatch.calledWithMatch({
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: { method: 'replace', args: ['/dashboard'] },
+        }),
+      ).to.equal(true, 'Did not change path to /dashboard');
+    });
   });
 });
