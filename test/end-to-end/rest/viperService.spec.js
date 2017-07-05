@@ -85,6 +85,41 @@ describe('/api/viper/:nomisId', () => {
       });
   });
 
+  it('returns a viper rating for a known nomis id when response contains extra fields', function test(done) {
+    this.timeout(5000);
+    primeMock({
+      request: {
+        method: 'GET',
+        urlPattern: `/offender/${nomisId}/viper`,
+        headers: {
+          'Ocp-Apim-Subscription-Key': {
+            equalTo: 'valid-subscription-key',
+          },
+        },
+      },
+      response: {
+        status: 200,
+        body: `{"nomsId": "${nomisId}", "viperRating": 0.55, "extraDataKey": "extra data value"}`,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    })
+      .then(() => {
+        request(baseUrl).get(`/api/viper/${nomisId}`)
+          .expect(200)
+          .end((err, res) => {
+            if (err) {
+              done(err);
+              return;
+            }
+            expect(res.body).to.eql({ nomisId, viperRating: 0.55 });
+            done();
+          });
+      })
+      .catch(done);
+  });
+
   it('returns a 404 (not found) when an unauthorised (401) response is received', function test(done) {
     this.timeout(5000);
     primeMock({
