@@ -25,6 +25,10 @@ function viperRatingFromApi(nomisId) {
     superagent
       .get(`http://${config.viperServiceHost}/offender/${nomisId}/viper`)
       .set(config.viperServiceAuthenticationKey, config.viperServiceAuthenticationValue)
+      .timeout({
+        response: process.env.VIPER_SERVICE_CONNECTION_TIMEOUT || 2000,
+        deadline: process.env.VIPER_SERVICE_READ_TIMEOUT || 2000,
+      })
       .end((error, res) => {
         try {
           if (error) {
@@ -50,7 +54,7 @@ function viperRatingFromApi(nomisId) {
 }
 
 function ratingFor(db, nomisId) {
-  if (process.env.USE_VIPER_REST_API === 'true') {
+  if (process.env.USE_VIPER_SERVICE === 'true') {
     return viperRatingFromApi(nomisId);
   }
 

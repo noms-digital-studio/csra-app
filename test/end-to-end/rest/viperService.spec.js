@@ -43,7 +43,7 @@ describe('/api/viper/:nomisId', () => {
 
   before(function beforeTests(done) {
     this.timeout(5000);
-    if (process.env.USE_VIPER_REST_API === 'false') {
+    if (process.env.USE_VIPER_SERVICE === 'false') {
       primeDatabase(nomisId)
         .then(done)
         .catch(done);
@@ -336,46 +336,48 @@ describe('/api/viper/:nomisId', () => {
               done(err);
               return;
             }
-            expect(res.body).to.eql({ messasge: 'Error retrieving viper rating for nomisId: foo. The cause was: Invalid body: undefined' });
+            expect(res.body).to.eql(
+              { messasge: 'Error retrieving viper rating for nomisId: foo. The cause was: Invalid body: undefined' });
             done();
           });
       })
       .catch(done);
   });
 
-  // This test doesn't pass because the defauly superagent timeout never triggers
-  // it('returns a 404 (not found) when no response is receive within timeout limit', function test(done) {
-  //   this.timeout(5000);
-  //   // fixedDelayMilliseconds below should be greater than
-  //   // the prod code's superagent http client timeout
-  //   primeMock({
-  //     request: {
-  //       method: 'GET',
-  //       urlPattern: '/offender/foo/viper',
-  //     },
-  //     response: {
-  //       status: 200,
-  //       body: '{"nomsId": "foo", "viperRating": 0.99}',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       fixedDelayMilliseconds: 2000,
-  //     },
-  //   })
-  //     .then(() => {
-  //       request(baseUrl).get('/api/viper/foo')
-  //         .expect(404)
-  //         .end((err, res) => {
-  //           if (err) {
-  //             done(err);
-  //             return;
-  //           }
-  //           expect(res.body).to.eql({ messasge: 'Error retrieving viper rating for nomisId: foo. The cause was: Invalid body: undefined' });
-  //           done();
-  //         });
-  //     })
-  //     .catch(done);
-  // });
+  it('returns a 404 (not found) when no response is receive within timeout limit',
+    function test(done) {
+      this.timeout(5000);
+      primeMock({
+        request: {
+          method: 'GET',
+          urlPattern: '/offender/foo/viper',
+        },
+        response: {
+          status: 200,
+          body: '{"nomsId": "foo", "viperRating": 0.99}',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          fixedDelayMilliseconds: 2100,
+        },
+      })
+        .then(() => {
+          request(baseUrl).get('/api/viper/foo')
+            .expect(404)
+            .end((err, res) => {
+              if (err) {
+                done(err);
+                return;
+              }
+              expect(res.body).to.eql(
+                {
+                  messasge: 'Error retrieving viper rating for nomisId: foo. The cause was: Not found',
+                });
+              done();
+            });
+        })
+        .catch(done);
+    });
 
   it('returns a 404 (not found) for an unknown nomis id', function test(done) {
     this.timeout(5000);
