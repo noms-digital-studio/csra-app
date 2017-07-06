@@ -29,13 +29,12 @@ export default function createRouter(db, appInfo) {
             }
 
             if ((result.status === 200) && (result.body.healthy === true)) {
-              console.log('Viper REST Service status OK');
               resolve({ name: 'viperRestService', status: 'OK', message: 'OK' });
             }
 
             reject({ name: 'viperRestService', status: 'ERROR', message: `Status: ${result.error}` });
           } catch (exception) {
-            console.log('Response body was empty');
+            console.log('Error calling viper reset service health endpoint: ', exception);
             reject(exception);
           }
         });

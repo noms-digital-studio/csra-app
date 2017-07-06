@@ -19,8 +19,13 @@ describe('/health', () => {
           .which.matches(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
         expect(res.body).to.have.property('questionHash')
           .which.is.an('object');
+        expect(res.body).to.have.property('checks')
+          .which.is.an('object');
+        expect(res.body).to.have.property('checks')
+          .which.is.an('object');
+        expect(res.body).to.have.deep.property('checks.db', 'OK');
+        expect(res.body).to.have.deep.property('checks.viperRestService', 'OK');
         done();
       });
   });
 });
-

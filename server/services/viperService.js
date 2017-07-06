@@ -46,7 +46,7 @@ function viperRatingFromApi(nomisId) {
 
           reject(`Invalid body: ${bodyText}`);
         } catch (exception) {
-          console.log('Response body was empty');
+          console.log('Error calling viper reset service health endpoint: ', exception);
           reject(exception);
         }
       });
