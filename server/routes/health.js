@@ -15,8 +15,8 @@ export default function createRouter(db, appInfo) {
   function viperRestServiceCheck() {
     return new Promise((resolve, reject) => {
       superagent
-        .get(`http://${config.viperServiceHost}/health`)
-        .set(config.viperServiceAuthenticationKey, config.viperServiceAuthenticationValue)
+        .get(`${config.viperRestServiceHost}/health`)
+        .set('API-key', config.viperRestServiceAuthenticationKey)
         .timeout({
           response: process.env.VIPER_SERVICE_CONNECTION_TIMEOUT || 2000,
           deadline: process.env.VIPER_SERVICE_READ_TIMEOUT || 2000,

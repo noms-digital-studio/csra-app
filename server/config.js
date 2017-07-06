@@ -38,19 +38,14 @@ if (dbUri) {
   config.db.name = parsed.pathname.slice(1);
 }
 
-const viperServiceHost = neededInProd('VIPER_SERVICE_HOST');
-if (viperServiceHost) {
-  config.viperServiceHost = viperServiceHost;
+const viperRestServiceHost = neededInProd('VIPER_SERVICE_URL');
+if (viperRestServiceHost) {
+  config.viperRestServiceHost = viperRestServiceHost;
 }
 
-const viperServiceAuthenticationKey = neededInProd('VIPER_SERVICE_AUTHENTICATION_KEY');
-if (viperServiceAuthenticationKey) {
-  config.viperServiceAuthenticationKey = viperServiceAuthenticationKey;
-}
-
-const viperServiceAuthenticationValue = neededInProd('VIPER_SERVICE_AUTHENTICATION_VALUE');
-if (viperServiceAuthenticationValue) {
-  config.viperServiceAuthenticationValue = viperServiceAuthenticationValue;
+const viperRestServiceAuthenticationKey = neededInProd('VIPER_SERVICE_API_KEY');
+if (viperRestServiceAuthenticationKey) {
+  config.viperRestServiceAuthenticationKey = viperRestServiceAuthenticationKey;
 }
 
 export default config;

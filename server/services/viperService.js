@@ -23,8 +23,8 @@ function viperRatingFromApi(nomisId) {
   console.log('Getting viper rating from the REST API for nomisID: ', nomisId);
   return new Promise((resolve, reject) => {
     superagent
-      .get(`http://${config.viperServiceHost}/offender/${nomisId}/viper`)
-      .set(config.viperServiceAuthenticationKey, config.viperServiceAuthenticationValue)
+      .get(`${config.viperRestServiceHost}/offender/${nomisId}/viper`)
+      .set('API-key', config.viperRestServiceAuthenticationKey)
       .timeout({
         response: process.env.VIPER_SERVICE_CONNECTION_TIMEOUT || 2000,
         deadline: process.env.VIPER_SERVICE_READ_TIMEOUT || 2000,

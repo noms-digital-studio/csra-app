@@ -53,7 +53,7 @@ describe('/api/viper/:nomisId', () => {
           method: 'GET',
           urlPattern: `/offender/${nomisId}/viper`,
           headers: {
-            'Ocp-Apim-Subscription-Key': {
+            'API-Key': {
               equalTo: 'valid-subscription-key',
             },
           },
@@ -92,7 +92,7 @@ describe('/api/viper/:nomisId', () => {
         method: 'GET',
         urlPattern: `/offender/${nomisId}/viper`,
         headers: {
-          'Ocp-Apim-Subscription-Key': {
+          'API-Key': {
             equalTo: 'valid-subscription-key',
           },
         },

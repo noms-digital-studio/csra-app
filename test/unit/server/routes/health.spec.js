@@ -20,7 +20,7 @@ describe('GET /health', () => {
     getBuildInfo = sinon.stub();
     const fakeAppInfo = { getBuildInfo };
     app.use('/health', createHealthEndpoint(fakeDB, fakeAppInfo));
-    fakeViperRestService = nock(`http://${config.viperServiceHost}`);
+    fakeViperRestService = nock(`${config.viperRestServiceHost}`);
   });
 
   afterEach(() => {
