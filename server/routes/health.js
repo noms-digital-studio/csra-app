@@ -45,12 +45,13 @@ export default function createRouter(db, appInfo) {
     });
   }
 
-  router.get('/', (req, res) => {
-    const checks = [dbCheck, viperRestServiceCheck];
+  function gatherCheckInfo(total, currentValue) {
+    return { ...total, [currentValue.name]: currentValue.message };
+  }
 
-    function gatherCheckInfo(total, currentValue) {
-      return { ...total, [currentValue.name]: currentValue.message };
-    }
+  router.get('/', (req, res) => {
+
+    const checks = [dbCheck, viperRestServiceCheck];
 
     Promise
       .all(checks.map(fn => fn()))
