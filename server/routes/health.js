@@ -1,31 +1,62 @@
+/* eslint-disable no-console */
 import express from 'express';
+import superagent from 'superagent';
+import config from '../../server/config';
 
 export default function createRouter(db, appInfo) {
   const router = express.Router();
 
-  router.get('/', (req, res) => {
-    function dbCheck() {
-      return db.select(db.raw('1'))
-        .then(() => ({ name: 'db', status: 'OK', message: 'OK' }))
-        .catch(err => ({ name: 'db', status: 'ERROR', message: err.message }));
-    }
+  function dbCheck() {
+    return db.select(db.raw('1'))
+      .then(() => ({ name: 'db', status: 'OK', message: 'OK' }))
+      .catch(err => ({ name: 'db', status: 'ERROR', message: err.message }));
+  }
 
-    const checks = [dbCheck];
+  function viperRestServiceCheck() {
+    return new Promise((resolve, reject) => {
+      superagent
+        .get(`http://${config.viperServiceHost}/health`)
+        .set(config.viperServiceAuthenticationKey, config.viperServiceAuthenticationValue)
+        .timeout({
+          response: process.env.VIPER_SERVICE_CONNECTION_TIMEOUT || 2000,
+          deadline: process.env.VIPER_SERVICE_READ_TIMEOUT || 2000,
+        })
+        .end((error, result) => {
+          try {
+            if (error) {
+              console.log('error: ', error);
+              resolve({ name: 'viperRestService', status: 'ERROR', message: 'ERROR' });
+            }
+
+            if ((result.status === 200) && (result.body.healthy === true)) {
+              console.log('Viper REST Service status OK');
+              resolve({ name: 'viperRestService', status: 'OK', message: 'OK' });
+            }
+
+            reject({ name: 'viperRestService', status: 'ERROR', message: `Status: ${result.error}` });
+          } catch (exception) {
+            console.log('Response body was empty');
+            reject(exception);
+          }
+        });
+    });
+  }
+
+  router.get('/', (req, res) => {
+    const checks = [dbCheck, viperRestServiceCheck];
 
     function gatherCheckInfo(total, currentValue) {
-      return { [currentValue.name]: currentValue.message };
+      return { ...total, [currentValue.name]: currentValue.message };
     }
 
     Promise
       .all(checks.map(fn => fn()))
       .then((checkResults) => {
         const allOk = checkResults.every(item => item.status === 'OK');
-        const checkData = checkResults.reduce(gatherCheckInfo, {});
-
         const result = {
           status: allOk ? 'OK' : 'ERROR',
           ...appInfo.getBuildInfo(),
-          checks: checkData,
+          checks: checkResults.reduce(gatherCheckInfo, {}),
         };
         res.status(allOk ? 200 : 500);
         res.json(result);
