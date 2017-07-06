@@ -51,7 +51,7 @@ describe('/api/viper/:nomisId', () => {
       primeMock({
         request: {
           method: 'GET',
-          urlPattern: `/offender/${nomisId}/viper`,
+          urlPattern: `/analytics/viper/${nomisId}`,
           headers: {
             'API-Key': {
               equalTo: 'valid-subscription-key',
@@ -95,7 +95,7 @@ describe('/api/viper/:nomisId', () => {
     primeMock({
       request: {
         method: 'GET',
-        urlPattern: `/offender/${nomisId}/viper`,
+        urlPattern: `/analytics/viper/${nomisId}`,
         headers: {
           'API-Key': {
             equalTo: 'valid-subscription-key',
@@ -135,7 +135,7 @@ describe('/api/viper/:nomisId', () => {
     primeMock({
       request: {
         method: 'GET',
-        urlPattern: '/offender/foo/viper',
+        urlPattern: '/analytics/viper/foo',
       },
       response: {
         status: 401,
@@ -170,7 +170,7 @@ describe('/api/viper/:nomisId', () => {
     primeMock({
       request: {
         method: 'GET',
-        urlPattern: '/offender/foo/viper',
+        urlPattern: '/analytics/viper/foo',
       },
       response: {
         status: 403,
@@ -205,7 +205,7 @@ describe('/api/viper/:nomisId', () => {
     primeMock({
       request: {
         method: 'GET',
-        urlPattern: '/offender/foo/viper',
+        urlPattern: '/analytics/viper/foo',
       },
       response: {
         status: 409,
@@ -240,7 +240,7 @@ describe('/api/viper/:nomisId', () => {
     primeMock({
       request: {
         method: 'GET',
-        urlPattern: '/offender/foo/viper',
+        urlPattern: '/analytics/viper/foo',
       },
       response: {
         status: 500,
@@ -275,7 +275,7 @@ describe('/api/viper/:nomisId', () => {
     primeMock({
       request: {
         method: 'GET',
-        urlPattern: '/offender/foo/viper',
+        urlPattern: '/analytics/viper/foo',
       },
       response: {
         fault: 'EMPTY_RESPONSE',
@@ -306,7 +306,7 @@ describe('/api/viper/:nomisId', () => {
     primeMock({
       request: {
         method: 'GET',
-        urlPattern: '/offender/foo/viper',
+        urlPattern: '/analytics/viper/foo',
       },
       response: {
         fault: 'RANDOM_DATA_THEN_CLOSE',
@@ -337,7 +337,7 @@ describe('/api/viper/:nomisId', () => {
     primeMock({
       request: {
         method: 'GET',
-        urlPattern: '/offender/foo/viper',
+        urlPattern: '/analytics/viper/foo',
       },
       response: {
         fault: 'MALFORMED_RESPONSE_CHUNK',
@@ -368,7 +368,7 @@ describe('/api/viper/:nomisId', () => {
     primeMock({
       request: {
         method: 'GET',
-        urlPattern: '/offender/foo/viper',
+        urlPattern: '/analytics/viper/foo',
       },
       response: {
         status: 200,
@@ -403,7 +403,7 @@ describe('/api/viper/:nomisId', () => {
     primeMock({
       request: {
         method: 'GET',
-        urlPattern: '/offender/foo/viper',
+        urlPattern: '/analytics/viper/foo',
       },
       response: {
         status: 200,
@@ -439,7 +439,7 @@ describe('/api/viper/:nomisId', () => {
     primeMock({
       request: {
         method: 'GET',
-        urlPattern: '/offender/foo/viper',
+        urlPattern: '/analytics/viper/foo',
       },
       response: {
         status: 200,
