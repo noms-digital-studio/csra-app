@@ -17,6 +17,9 @@ import {
   thenTheAssessmentIsCompleted,
 } from './tasks/lowRiskPrisonerAssessed.task';
 
+import andICanViewTheirAssessmentOutcomeAgain from './tasks/viewFullOutcome.task';
+
+
 describe('Both assessments (Single cell outcome)', () => {
   beforeEach(() => {
     AdminPage.visit();
@@ -76,6 +79,11 @@ describe('Both assessments (Single cell outcome)', () => {
       healthRecommendation: 'shared',
       finalRecommendation: 'single',
     });
+    andICanViewTheirAssessmentOutcomeAgain({
+      riskRecommendation: 'single cell',
+      healthRecommendation: 'shared cell',
+      finalRecommendation: 'single cell',
+    });
 
     resolve();
   }));
@@ -89,6 +97,11 @@ describe('Both assessments (Single cell outcome)', () => {
       riskRecommendation: 'shared',
       healthRecommendation: 'single',
       finalRecommendation: 'single',
+    });
+    andICanViewTheirAssessmentOutcomeAgain({
+      riskRecommendation: 'shared cell',
+      healthRecommendation: 'single cell',
+      finalRecommendation: 'single cell',
     });
 
     resolve();

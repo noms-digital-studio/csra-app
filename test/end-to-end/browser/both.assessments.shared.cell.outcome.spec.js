@@ -11,6 +11,8 @@ import FullAssessmentOutcomePage from './pages/FullAssessmentOutcome.page';
 import FullAssessmentCompletePage from './pages/FullAssessmentComplete.page';
 import DashboardPage from './pages/Dashboard.page';
 import whenTheOfficerAddsThePrisonersDetails from './tasks/theOfficerAddsThePrisonersDetails.task';
+import andICanViewTheirAssessmentOutcomeAgain from './tasks/viewFullOutcome.task';
+
 import db from '../../util/db';
 
 function thenTheFullAssessmentIsCompleted() {
@@ -54,6 +56,11 @@ describe('Both assessments (Shared cell outcome)', () => {
       thenTheAssessmentIsCompleted({ sharedText: 'shared cell' }).catch(reject);
       whenHealthcareRecommendsSharedCell();
       thenTheFullAssessmentIsCompleted();
+      andICanViewTheirAssessmentOutcomeAgain({
+        riskRecommendation: 'shared cell',
+        healthRecommendation: 'shared cell',
+        finalRecommendation: 'shared cell',
+      });
       resolve();
     }));
 });

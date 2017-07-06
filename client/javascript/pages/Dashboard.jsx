@@ -75,7 +75,7 @@ class Dashboard extends Component {
               <a
                 className="link u-link"
                 onClick={() => this.props.onViewOutcomeClick(profile)}
-                data-cell-view-outcome-link
+                data-cell-view-outcome-link={profile.nomisId}
               >
                   View
                 </a>
