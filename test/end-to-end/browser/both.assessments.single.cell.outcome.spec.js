@@ -62,7 +62,7 @@ describe('Both assessments (Single cell outcome)', () => {
     expect(DashboardPage.mainHeading).to.contain('Assessments on:');
     const row = browser.element('[data-profile-row=J1234LO]');
     expect(row.getText()).to.equalIgnoreCase(
-      `John Lowe J1234LO 01-10-1970 Complete Complete ${finalRecommendation} cell`,
+      `John Lowe J1234LO 01-10-1970 Complete Complete ${finalRecommendation} cell View`,
     );
   }
 
