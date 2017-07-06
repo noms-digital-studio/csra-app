@@ -50,7 +50,6 @@ export default function createRouter(db, appInfo) {
   }
 
   router.get('/', (req, res) => {
-
     const checks = [dbCheck, viperRestServiceCheck];
 
     Promise
