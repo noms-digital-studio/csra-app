@@ -32,7 +32,21 @@ const RiskAssessmentSummary = ({
 }) => (
   <DocumentTitle title={title}>
     <div>
-      <h1 className="heading-xlarge">Risk assessment summary</h1>
+      <div className="grid-row">
+          <div className="column-two-thirds">
+            <h1 className="heading-xlarge">Risk assessment summary</h1>
+          </div>
+          <div className="column-one-third">
+            <div className="c-print-link c-print-link--small-mt">
+              <button
+                className="c-icon-button link"
+                onClick={() => window.print()}
+              >
+                Print Page
+              </button>
+            </div>
+          </div>
+        </div>
 
       <PrisonerProfile {...prisoner} />
 

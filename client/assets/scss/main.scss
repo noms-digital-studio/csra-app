@@ -206,6 +206,16 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
     padding: 1em;
 }
 
+.c-print-link--small-mt {
+  margin-top: 0;
+  text-align: left;
+
+  @media screen and (min-width: 641px) {
+    text-align: right;
+    margin-top: 1em;
+  }
+}
+
 .c-icon-button {
     cursor: pointer;
     background-color: transparent;
@@ -354,3 +364,4 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
       margin-top: 60px;
     }
 }
+
