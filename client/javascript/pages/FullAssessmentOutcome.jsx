@@ -21,7 +21,9 @@ const FullAssessmentOutcome = ({
   prisoner,
   riskAssessmentOutcome,
   healthcareOutcome,
+  alreadyCompleted,
   onSubmit,
+  onReturnHome,
 }) => {
   const finalOutcome = cellAssignment({
     healthcare: {
@@ -31,7 +33,8 @@ const FullAssessmentOutcome = ({
       sharedCell: new RegExp('shared cell').test(
         riskAssessmentOutcome.recommendation,
       ),
-      conditions: riskAssessmentOutcome.recommendation === 'shared cell with conditions',
+      conditions: riskAssessmentOutcome.recommendation ===
+        'shared cell with conditions',
     },
   });
 
@@ -61,9 +64,12 @@ const FullAssessmentOutcome = ({
         </h2>
 
         <div>
-          {(riskAssessmentOutcome.reasons && finalOutcome !== 'single cell') &&
+          {riskAssessmentOutcome.reasons &&
+            finalOutcome !== 'single cell' &&
             <ul data-element-id="reasons" className="list list-bullet">
-              {riskAssessmentOutcome.reasons.map((reason, index) => <li key={index}>{reason}</li>)}
+              {riskAssessmentOutcome.reasons.map((reason, index) => (
+                <li key={index}>{reason}</li>
+              ))}
             </ul>}
         </div>
 
@@ -77,27 +83,36 @@ const FullAssessmentOutcome = ({
           <HealthcareSummaryTable title="Healthcare assessment summary" />
         </div>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            onSubmit({ nomisId: prisoner.nomisId, outcome: finalOutcome });
-          }}
-        >
-          <div className="u-clear-fix u-margin-bottom-medium">
-            <SelectableInput
-              required
-              type="checkbox"
-              id="confirmation"
-              value="accepted"
-              text="The outcome has been explained and the prisoner understands."
-              name="confirmation"
-            />
-          </div>
+        {alreadyCompleted
+          ? <button
+            className="button"
+            data-continue-button
+            to={routes.DASHBOARD}
+            onClick={onReturnHome}
+          >
+              Return to Dashboard
+            </button>
+          : <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              onSubmit({ nomisId: prisoner.nomisId, outcome: finalOutcome });
+            }}
+          >
+            <div className="u-clear-fix u-margin-bottom-medium">
+              <SelectableInput
+                required
+                type="checkbox"
+                id="confirmation"
+                value="accepted"
+                text="The outcome has been explained and the prisoner understands."
+                name="confirmation"
+              />
+            </div>
 
-          <button className="button" data-continue-button>
-            Complete Assessment
-          </button>
-        </form>
+            <button className="button" data-continue-button>
+                Complete Assessment
+              </button>
+          </form>}
 
       </div>
     </DocumentTitle>
@@ -119,6 +134,7 @@ FullAssessmentOutcome.propTypes = {
   healthcareOutcome: PropTypes.shape({
     recommendation: PropTypes.string,
   }),
+  alreadyCompleted: PropTypes.bool,
 };
 
 FullAssessmentOutcome.defaultProps = {
@@ -138,9 +154,13 @@ const mapStateToProps = (state, ownProps) => ({
   healthcareOutcome: state.healthcareStatus.completed.find(
     item => item.nomisId === state.offender.selected.nomisId,
   ),
+  alreadyCompleted: Boolean(
+    state.assessmentOutcomes[state.offender.selected.nomisId],
+  ),
 });
 
 const mapActionsToProps = dispatch => ({
+  onReturnHome: () => dispatch(replace(routes.DASHBOARD)),
   onSubmit: (outcome) => {
     dispatch(storeOutcome(outcome));
     dispatch(replace(routes.FULL_ASSESSMENT_COMPLETE));

@@ -17,7 +17,6 @@ const profiles = [
     assessmentCompleted: {
       nomisId: 'foo-id',
       recommendation: 'Foo cell',
-      rating: 'High',
       reasons: ['foo-reason'],
     },
     healthAssessmentCompleted: {
@@ -35,6 +34,44 @@ const profiles = [
     outcome: undefined,
   },
 ];
+
+const state = {
+  riskAssessmentStatus: {
+    completed: [
+      {
+        nomisId: 'foo-id',
+        recommendation: 'Foo cell',
+        reasons: ['foo-reason'],
+      },
+    ],
+  },
+  healthcareStatus: {
+    completed: [
+      {
+        nomisId: 'foo-id',
+      },
+    ],
+  },
+  assessmentOutcomes: {
+    'foo-id': 'Foo outcome',
+  },
+  offender: {
+    profiles: [
+      {
+        nomisId: 'foo-id',
+        surname: 'foo-surname',
+        firstName: 'foo-first-name',
+        dob: 'foo-age',
+      },
+      {
+        nomisId: 'bar-id',
+        surname: 'foo-surname',
+        firstName: 'foo-first-name',
+        dob: 'foo-age',
+      },
+    ],
+  },
+};
 
 const assertGivenValuesInWhiteListAreInPage = (list, whiteList, page) => {
   list.forEach((item) => {
@@ -111,7 +148,19 @@ describe('<Dashboard />', () => {
         );
       });
 
-      it('responds to the selection of an incomplete CSRA assessment', () => {
+      it('does not displays the link to view the full assessment when both assessments not complete', () => {
+        const wrapper = mount(<Dashboard profiles={profiles} />);
+
+        expect(wrapper.find('[data-profile-row="bar-id"] > [data-cell-view-outcome] a').length).to.equal(0);
+      });
+
+      it('displays the link to view the full assessment when both assessments are complete', () => {
+        const wrapper = mount(<Dashboard profiles={profiles} />);
+
+        expect(wrapper.find('[data-profile-row="foo-id"] > [data-cell-view-outcome] a').length).to.equal(1);
+      });
+
+      it('responds to the selection of an incomplete risk assessment', () => {
         const callback = sinon.spy();
         const wrapper = mount(
           <Dashboard profiles={profiles} onOffenderSelect={callback} />,
@@ -131,67 +180,37 @@ describe('<Dashboard />', () => {
   });
 
   context('Connected Dashboard', () => {
-    let wrapper;
-    let store;
+    it('renders the correct number of profiles rows', () => {
+      const store = fakeStore(state);
 
-    beforeEach(() => {
-      store = fakeStore({
-        riskAssessmentStatus: {
-          completed: [
-            {
-              nomisId: 'foo-id',
-              recommendation: 'Foo cell',
-              rating: 'High',
-              reasons: ['foo-reason'],
-            },
-          ],
-        },
-        healthcareStatus: {
-          completed: [
-            {
-              nomisId: 'foo-id',
-            },
-          ],
-        },
-        assessmentOutcomes: {
-          'foo-id': 'Foo outcome',
-        },
-        offender: {
-          profiles: [
-            {
-              nomisId: 'foo-id',
-              surname: 'foo-surname',
-              firstName: 'foo-first-name',
-              dob: 'foo-age',
-            },
-            {
-              nomisId: 'bar-id',
-              surname: 'foo-surname',
-              firstName: 'foo-first-name',
-              dob: 'foo-age',
-            },
-          ],
-        },
-      });
-
-      wrapper = mount(
+      const wrapper = mount(
         <Provider store={store}>
           <ConnectedDashboard />
         </Provider>,
       );
-    });
 
-    it('renders the correct number of profiles rows', () => {
       expect(wrapper.find('[data-profile-row]').length).to.equal(2);
     });
 
     it('renders the correct profile information per row', () => {
       const whitelist = ['nomisId', 'surname', 'firstName', 'dob'];
+      const store = fakeStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <ConnectedDashboard />
+        </Provider>,
+      );
 
       assertGivenValuesInWhiteListAreInPage(profiles, whitelist, wrapper);
     });
 
     it('displays a completed assessments', () => {
+      const store = fakeStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <ConnectedDashboard />
+        </Provider>,
+      );
       expect(wrapper.find('[data-assessment-complete=true]').length).to.equal(
         1,
       );
@@ -201,6 +220,13 @@ describe('<Dashboard />', () => {
     });
 
     it('displays a completed health assessments', () => {
+      const store = fakeStore(state);
+
+      const wrapper = mount(
+        <Provider store={store}>
+          <ConnectedDashboard />
+        </Provider>,
+      );
       expect(
         wrapper.find('[data-health-assessment-complete=true]').length,
       ).to.equal(1);
@@ -210,13 +236,52 @@ describe('<Dashboard />', () => {
     });
 
     it('displays the cell sharing assessment for a completed prisoner assessment', () => {
+      const store = fakeStore(state);
+
+      const wrapper = mount(
+        <Provider store={store}>
+          <ConnectedDashboard />
+        </Provider>,
+      );
       expect(wrapper.find('[data-cell-recommendation]').length).to.equal(1);
       expect(wrapper.find('[data-cell-recommendation]').text()).to.equal(
         'Foo outcome',
       );
     });
 
-    it('responds to the selection of an incomplete CSRA assessment', () => {
+    it('allows you the view the full outcome when both assessments are complete', () => {
+      const store = fakeStore(state);
+
+      const wrapper = mount(
+        <Provider store={store}>
+          <ConnectedDashboard />
+        </Provider>,
+      );
+
+      wrapper.find('[data-cell-view-outcome-link]').simulate('click');
+
+      expect(
+        store.dispatch.calledWithMatch({
+          type: 'SELECT_OFFENDER',
+          payload: profiles[0],
+        }),
+      ).to.equal(true, 'did not call SELECT_OFFENDER action');
+
+      expect(
+        store.dispatch.calledWithMatch({
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: { method: 'push', args: ['/full-assessment-outcome'] },
+        }),
+      ).to.equal(true, 'did not navigate to /full-assessment-outcome');
+    });
+
+    it('responds to the selection of an incomplete risk assessment', () => {
+      const store = fakeStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <ConnectedDashboard />
+        </Provider>,
+      );
       const profileBtn = wrapper.find('[data-assessment-complete=false] > a');
 
       profileBtn.simulate('click');
@@ -236,7 +301,13 @@ describe('<Dashboard />', () => {
       ).to.equal(true, 'dispatch /offender-profile');
     });
 
-    it('responds to the selection of an incomplete health assessment by displaying the first question', () => {
+    it('responds to the selection of an incomplete health assessment by navigation to the first question', () => {
+      const store = fakeStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <ConnectedDashboard />
+        </Provider>,
+      );
       const profileBtn = wrapper.find(
         '[data-health-assessment-complete=false] > a',
       );

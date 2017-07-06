@@ -20,7 +20,9 @@ class Dashboard extends Component {
         data-profile-row={profile.nomisId}
         key={profile.nomisId}
         data-risk-assessment-id={profile.assessmentCompleted.assessmentId}
-        data-health-assessment-id={profile.healthAssessmentCompleted.assessmentId}
+        data-health-assessment-id={
+          profile.healthAssessmentCompleted.assessmentId
+        }
       >
         <td>
           <span className="c-profile-holder" />
@@ -32,43 +34,56 @@ class Dashboard extends Component {
           data-assessment-complete={not(isEmpty(profile.assessmentCompleted))}
         >
           {isEmpty(profile.assessmentCompleted)
-              ? <a
-                onClick={() => this.props.onOffenderSelect(profile)}
-                className="link u-link"
-                data-start-csra-link={profile.nomisId}
-              >
-                  Start
-                </a>
-              : <span>Complete</span>}
+            ? <a
+              onClick={() => this.props.onOffenderSelect(profile)}
+              className="link u-link"
+              data-start-csra-link={profile.nomisId}
+            >
+                Start
+              </a>
+            : <span>Complete</span>}
         </td>
         <td
           data-health-assessment-complete={not(
-              isEmpty(profile.healthAssessmentCompleted),
-            )}
+            isEmpty(profile.healthAssessmentCompleted),
+          )}
         >
           {isEmpty(profile.healthAssessmentCompleted)
-              ? <a
-                onClick={() => this.props.onOffenderHealthcareSelect(profile)}
-                className="link u-link"
-                data-start-healthcare-link={profile.nomisId}
-              >
-                  Start
-                </a>
-              : <span>Complete</span>}
+            ? <a
+              onClick={() => this.props.onOffenderHealthcareSelect(profile)}
+              className="link u-link"
+              data-start-healthcare-link={profile.nomisId}
+            >
+                Start
+              </a>
+            : <span>Complete</span>}
         </td>
         <td
           data-cell-recommendation={profile.outcome}
           className="u-text-align-center"
         >
           {profile.outcome
-              ? <span className="">
-                {capitalize(profile.outcome)}
-              </span>
-              : <span className="c-status-indicator" />}
+            ? <span>
+              {capitalize(profile.outcome)}
+            </span>
+            : <span className="c-status-indicator" />}
 
         </td>
+        <td data-cell-view-outcome className="u-text-align-center">
+          {profile.outcome
+            ? <span>
+              <a
+                className="link u-link"
+                onClick={() => this.props.onViewOutcomeClick(profile)}
+                data-cell-view-outcome-link
+              >
+                  View
+                </a>
+            </span>
+            : <span className="c-status-indicator" />}
+        </td>
       </tr>
-      ));
+    ));
   }
 
   render() {
@@ -125,7 +140,7 @@ class Dashboard extends Component {
                     <th className="u-text-align-center" scope="col">
                         Cell sharing outcome
                       </th>
-                    <th scope="col" />
+                    <th scope="col">Outcome</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -161,6 +176,10 @@ const mapActionsToProps = dispatch => ({
     dispatch(selectOffender(offender));
     dispatch(push(`${routes.HEALTHCARE_ASSESSMENT}/outcome`));
   },
+  onViewOutcomeClick: (offender) => {
+    dispatch(selectOffender(offender));
+    dispatch(push(`${routes.FULL_ASSESSMENT_OUTCOME}`));
+  },
 });
 
 Dashboard.propTypes = {
@@ -177,12 +196,14 @@ Dashboard.propTypes = {
     }),
   ),
   onOffenderSelect: PropTypes.func,
+  onViewOutcomeClick: PropTypes.func,
   date: PropTypes.string,
 };
 
 Dashboard.defaultProps = {
   title: 'Dashboard',
   onOffenderSelect: () => {},
+  onViewOutcomeClick: () => {},
   profiles: [],
   date: parseDate(new Date()),
 };
