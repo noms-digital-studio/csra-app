@@ -31,22 +31,6 @@ describe('GET /health', () => {
     nock.restore();
   });
 
-  it('responds with 500 {status: "ERROR" } when viper rest service is unhealthy', () => {
-    fakeViperRestService
-      .get('/health')
-      .reply(500, { healthy: false });
-
-    return request(app)
-      .get('/health')
-      .expect('Content-Type', /json/)
-      .expect(500)
-      .expect((res) => {
-        expect(res.body).to.have.property('status', 'ERROR');
-        expect(res.body).to.have.deep.property('checks.db', 'OK');
-        expect(res.body).to.have.deep.property('checks.viperRestService', 'ERROR');
-      });
-  });
-
   it('responds with 200 { status: "OK" } when downstream dependencies are healthy', () => {
     fakeViperRestService
       .get('/health')
@@ -59,7 +43,28 @@ describe('GET /health', () => {
       .expect((res) => {
         expect(res.body).to.have.property('status', 'OK');
         expect(res.body).to.have.deep.property('checks.db', 'OK');
-        expect(res.body).to.have.deep.property('checks.viperRestService', 'OK');
+        expect(res.body).to.have.deep.property('checks.viperRestService',
+          process.env.USE_VIPER_SERVICE === 'true' ? 'OK' : 'Not enabled');
+      });
+  });
+
+  it('responds with 500 {status: "ERROR" } when viper rest service is unhealthy', () => {
+    if (process.env.USE_VIPER_SERVICE === 'false') {
+      return;
+    }
+
+    fakeViperRestService
+      .get('/health')
+      .reply(500, { healthy: false });
+
+    request(app)
+      .get('/health')
+      .expect('Content-Type', /json/)
+      .expect(500)
+      .expect((res) => {
+        expect(res.body).to.have.property('status', 'ERROR');
+        expect(res.body).to.have.deep.property('checks.db', 'OK');
+        expect(res.body).to.have.deep.property('checks.viperRestService', 'ERROR');
       });
   });
 

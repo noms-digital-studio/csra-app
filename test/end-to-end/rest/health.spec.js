@@ -3,6 +3,11 @@ import { expect } from 'chai';
 
 describe('/health', () => {
   it('displays the health status of the app', function test(done) {
+    if (process.env.USE_VIPER_SERVICE === 'false') {
+      done();
+      return;
+    }
+
     this.timeout(5000);
     const baseUrl = process.env.APP_BASE_URL;
     request(baseUrl).get('/health')
@@ -24,7 +29,8 @@ describe('/health', () => {
         expect(res.body).to.have.property('checks')
           .which.is.an('object');
         expect(res.body).to.have.deep.property('checks.db', 'OK');
-        expect(res.body).to.have.deep.property('checks.viperRestService', 'OK');
+        expect(res.body).to.have.deep.property('checks.viperRestService',
+          process.env.USE_VIPER_SERVICE === 'true' ? 'OK' : 'Not enabled');
         done();
       });
   });

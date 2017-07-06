@@ -14,6 +14,10 @@ export default function createRouter(db, appInfo) {
 
   function viperRestServiceCheck() {
     return new Promise((resolve, reject) => {
+      if (process.env.USE_VIPER_SERVICE === 'false') {
+        resolve({ name: 'viperRestService', status: 'OK', message: 'Not enabled' });
+      }
+
       superagent
         .get(`${config.viperRestServiceHost}/health`)
         .set('API-key', config.viperRestServiceAuthenticationKey)
