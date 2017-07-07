@@ -26,8 +26,8 @@ function viperRatingFromApi(nomisId) {
       .get(`${config.viperRestServiceHost}/analytics/viper/${nomisId}`)
       .set('API-key', config.viperRestServiceAuthenticationKey)
       .timeout({
-        response: process.env.VIPER_SERVICE_CONNECTION_TIMEOUT || 2000,
-        deadline: process.env.VIPER_SERVICE_READ_TIMEOUT || 2000,
+        response: config.viperRestServiceConnectionTimeout,
+        deadline: config.viperRestServiceReadTimeout,
       })
       .end((error, res) => {
         try {

@@ -41,6 +41,8 @@ if (dbUri) {
 const viperRestServiceHost = neededInProd('VIPER_SERVICE_URL');
 if (viperRestServiceHost) {
   config.viperRestServiceHost = viperRestServiceHost;
+  config.viperRestServiceConnectionTimeout = process.env.VIPER_SERVICE_CONNECTION_TIMEOUT || 2000;
+  config.viperRestServiceReadTimeout = process.env.VIPER_SERVICE_READ_TIMEOUT || 2000;
 }
 
 const viperRestServiceAuthenticationKey = neededInProd('VIPER_SERVICE_API_KEY');
