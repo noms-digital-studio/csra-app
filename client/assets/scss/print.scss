@@ -81,7 +81,15 @@
     #content {
       margin: 0;
       padding: 0;
-      page-break-inside: avoid;
+      page-break-inside: none;
+      page-break-after: none;
+      page-break-before: none;
+    }
+
+    .o-csra-container {
+      margin: 0;
+      padding: 0;
+      page-break-inside: none;
       page-break-after: none;
       page-break-before: none;
     }
