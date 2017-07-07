@@ -3,6 +3,7 @@ import superagent from 'superagent';
 import request from 'supertest';
 import uuid from 'uuid/v4';
 import db from '../../util/db';
+import config from '../../../server/config';
 
 const baseUrl = process.env.APP_BASE_URL;
 
@@ -25,7 +26,7 @@ function primeDatabase(nomisId) {
 function primeMock(mapping) {
   return new Promise((resolve, reject) => {
     superagent
-      .post('http://localhost:9090/__admin/mappings')
+      .post(`${config.viperRestServiceHost}/__admin/mappings`)
       .send(mapping)
       .end((error) => {
         if (error) {
