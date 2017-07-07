@@ -196,7 +196,7 @@ describe('/api/viper/:nomisId', () => {
       .catch(done);
   });
 
-  it('returns a 404 (not found) when an invalid argument (409) response is received', function test(done) {
+  it('returns a 404 (not found) when a bad request (400) response is received', function test(done) {
     if (process.env.USE_VIPER_SERVICE === 'false') {
       done();
       return;
@@ -209,7 +209,7 @@ describe('/api/viper/:nomisId', () => {
         urlPattern: '/analytics/viper/foo',
       },
       response: {
-        status: 409,
+        status: 400,
         body: '{"code": "InvalidArgument","message": "nomsId (INVALID): Invalid characters"}',
         headers: {
           'Content-Type': 'application/json',
