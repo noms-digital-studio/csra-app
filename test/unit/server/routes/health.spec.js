@@ -33,7 +33,7 @@ describe('GET /health', () => {
 
   it('responds with 200 { status: "OK" } when downstream dependencies are healthy', () => {
     fakeViperRestService
-      .get('/health')
+      .get('/analytics/health')
       .reply(200, { healthy: true });
 
     return request(app)

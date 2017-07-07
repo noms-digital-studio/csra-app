@@ -19,7 +19,7 @@ export default function createRouter(db, appInfo) {
       }
 
       superagent
-        .get(`${config.viperRestServiceHost}/health`)
+        .get(`${config.viperRestServiceHost}/analytics/health`)
         .set('API-key', config.viperRestServiceAuthenticationKey)
         .timeout({
           response: process.env.VIPER_SERVICE_CONNECTION_TIMEOUT || 2000,
