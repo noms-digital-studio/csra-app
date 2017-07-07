@@ -77,6 +77,15 @@
         border: 0;
         vertical-align: middle;
     }
+
+    #content {
+      margin: 0;
+      padding: 0;
+      page-break-inside: avoid;
+      page-break-after: none;
+      page-break-before: none;
+    }
+
     /* hide the unnecessary page elements */
     body footer,
     .visuallyhidden,
@@ -100,4 +109,5 @@
     .c-print-link {
       display: none;
     }
+
 }

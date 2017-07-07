@@ -342,6 +342,20 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
   font-weight: normal !important;
 }
 
+
+.u-spacing-right {
+  @media screen and (min-width: 641px) {
+    display: inline-block;
+    margin-left: 1em;
+  }
+}
+
+.u-print-hide {
+  @media print {
+    display: none;
+  }
+}
+
 @media screen and (min-width: 641px) {
     .c-header-global {
         width: 20% !important;

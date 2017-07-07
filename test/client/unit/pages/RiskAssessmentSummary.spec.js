@@ -245,7 +245,7 @@ describe('<RiskAssessmentSummary />', () => {
           </Provider>,
         );
 
-        wrapper.find('[data-summary-next-steps] button').simulate('click');
+        wrapper.find('[data-continue-button]').simulate('click');
 
         expect(
           store.dispatch.calledWithMatch({
@@ -282,7 +282,7 @@ describe('<RiskAssessmentSummary />', () => {
           </Provider>,
         );
 
-        wrapper.find('[data-summary-next-steps] button').simulate('click');
+        wrapper.find('[data-continue-button]').simulate('click');
 
         expect(
           store.dispatch.calledWithMatch({
@@ -310,11 +310,11 @@ describe('<RiskAssessmentSummary />', () => {
         );
 
         expect(wrapper.find('[data-summary-next-steps]').text()).to.contain(
-          'You must now complete the healthcare questions to get a cell sharing outcome.',
+          'You must print a copy of this summary for healthcare.',
         );
 
         expect(
-          wrapper.find('[data-summary-next-steps] button').text(),
+          wrapper.find('[data-continue-button]').text(),
         ).to.equal('Submit and return to prisoner list');
       });
 
@@ -325,7 +325,7 @@ describe('<RiskAssessmentSummary />', () => {
           </Provider>,
         );
 
-        wrapper.find('[data-summary-next-steps] button').simulate('click');
+        wrapper.find('[data-continue-button]').simulate('click');
 
         expect(
           store.dispatch.calledWithMatch({
@@ -353,7 +353,7 @@ describe('<RiskAssessmentSummary />', () => {
         );
 
         expect(
-          wrapper.find('[data-summary-next-steps] button').text(),
+          wrapper.find('[data-continue-button]').text(),
         ).to.equal('Submit and complete assessment');
       });
 
@@ -364,7 +364,7 @@ describe('<RiskAssessmentSummary />', () => {
           </Provider>,
         );
 
-        wrapper.find('[data-summary-next-steps] button').simulate('click');
+        wrapper.find('[data-continue-button]').simulate('click');
 
 
         expect(

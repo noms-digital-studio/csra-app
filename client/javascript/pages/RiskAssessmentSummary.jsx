@@ -80,7 +80,14 @@ const RiskAssessmentSummary = ({
         {healthcareAssessmentComplete
           ? null
           : <p className="u-margin-bottom-medium">
-              You must now complete the healthcare questions to get a cell sharing outcome.
+              <span>You must print a copy of this summary for healthcare.</span>
+              <span className="u-spacing-right"></span>
+              <button
+                className="c-icon-button link u-print-hide"
+                onClick={() => window.print()}
+              >
+                Print Page
+              </button>
             </p>}
 
         <button

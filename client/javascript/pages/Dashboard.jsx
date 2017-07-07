@@ -140,7 +140,7 @@ class Dashboard extends Component {
                     <th className="u-text-align-center" scope="col">
                         Cell sharing outcome
                       </th>
-                    <th scope="col">Outcome</th>
+                    <th scope="col">&nbsp;</th>
                   </tr>
                 </thead>
                 <tbody>
