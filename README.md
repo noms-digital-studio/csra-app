@@ -1,6 +1,8 @@
 # CSRA Application
 Cell Sharing Risk Assessment application.
 
+[![CircleCI](https://circleci.com/gh/noms-digital-studio/csra-app.svg?style=svg)](https://circleci.com/gh/noms-digital-studio/csra-app)
+
 ## Before you start
 The app uses a `.env` file to manage the applications environmental variables.
 An example [file](.env.template) can be duplicated and updated according to you're needs.
@@ -141,12 +143,17 @@ Request: ```curl http://localhost:5000/health ```
 Response:
 ```
 {
-  "buildNumber": "123",
-  "gitRef": "6fb33281f349f57068de83efa1585c3e5bcaa56f",
-  "gitDate": "2017-05-31T15:35:26+00:00",
+  "status": "OK",
+  "buildNumber": "dev",
+  "gitRef": "97ada1b3ee8a33f7a129c14092553ac839d71b84",
+  "gitDate": "2017-07-06T16:10:30.000Z",
   "questionHash": {
-    "risk": "f0bced7986884fd9ea6186880870fd7a64776beb",
+    "risk": "77256ebff2e778dc820b8c8f9de2ca14c0d1ec6e",
     "healthcare": "1ed3fe4ab79f3351947438a15f017f11d47fd89d"
+  },
+  "checks": {
+    "db": "OK",
+    "viperRestService": "OK"
   }
 }
 ```
@@ -218,3 +225,8 @@ Simply running the following command will generate 100 random seeds to the viper
 To specify a different number of random viper data to generate simply specify the number using the environmental variable `SEED_AMOUNT`:
 
 ```SEED_AMOUNT={number of seeds (int)} ./bin/seed-viper```
+
+# Feature switches
+With `USE_VIPER_SERVICE=false` the application will obtain viper ratings from it's local database. With 
+`USE_VIPER_SERVICE=true` the application will obtain viper ratings via a REST call to the analytics 
+gateway.

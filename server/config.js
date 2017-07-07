@@ -38,5 +38,16 @@ if (dbUri) {
   config.db.name = parsed.pathname.slice(1);
 }
 
+const viperRestServiceHost = neededInProd('VIPER_SERVICE_URL');
+if (viperRestServiceHost) {
+  config.viperRestServiceHost = viperRestServiceHost;
+  config.viperRestServiceConnectionTimeout = process.env.VIPER_SERVICE_CONNECTION_TIMEOUT || 2000;
+  config.viperRestServiceReadTimeout = process.env.VIPER_SERVICE_READ_TIMEOUT || 2000;
+}
+
+const viperRestServiceAuthenticationKey = neededInProd('VIPER_SERVICE_API_KEY');
+if (viperRestServiceAuthenticationKey) {
+  config.viperRestServiceAuthenticationKey = viperRestServiceAuthenticationKey;
+}
 
 export default config;
