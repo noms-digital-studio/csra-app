@@ -2,6 +2,7 @@
 import superagent from 'superagent';
 import request from 'supertest';
 import uuid from 'uuid/v4';
+import url from 'url';
 import db from '../../util/db';
 import config from '../../../server/config';
 
@@ -26,7 +27,7 @@ function primeDatabase(nomisId) {
 function primeMock(mapping) {
   return new Promise((resolve, reject) => {
     superagent
-      .post(`${config.viperRestServiceHost}/__admin/mappings`)
+      .post(url.resolve(`${config.viperRestServiceHost}`, '/__admin/mappings'))
       .send(mapping)
       .end((error) => {
         if (error) {
