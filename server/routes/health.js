@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import express from 'express';
 import superagent from 'superagent';
+import url from 'url';
 import config from '../../server/config';
 
 export default function createRouter(db, appInfo) {
@@ -19,7 +20,7 @@ export default function createRouter(db, appInfo) {
       }
 
       superagent
-        .get(`${config.viperRestServiceHost}/analytics/health`)
+        .get(url.resolve(`${config.viperRestServiceHost}`, '/analytics/health'))
         .set('API-key', config.viperRestServiceAuthenticationKey)
         .timeout({
           response: config.viperRestServiceConnectionTimeout,
