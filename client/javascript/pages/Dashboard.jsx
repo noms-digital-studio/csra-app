@@ -80,7 +80,7 @@ class Dashboard extends Component {
                   View
                 </a>
             </span>
-            : <span className="c-status-indicator" />}
+            : <span />}
         </td>
       </tr>
     ));
