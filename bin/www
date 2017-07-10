@@ -1,16 +1,19 @@
 #!/usr/bin/env node
 
-/* eslint-disable no-console */
-
 require('babel-register')();
+
+// Load any extra environment variables from .env
+require('dotenv').config();
+
 const http = require('http');
 
 const appInsights = require('../utils/applicationinsights');
+const log = require('../server/services/logger').default;
+const config = require('../server/config').default;
+const app = require('../server/index').default;
 
-/**
- * Normalize a port into a number, string, or false.
- */
-function normalizePort(val) {
+
+const normalizePort = (val) => {
   const parsedPort = parseInt(val, 10);
 
   if (isNaN(parsedPort)) {
@@ -24,20 +27,18 @@ function normalizePort(val) {
   }
 
   return false;
-}
-
-const config = require('../server/config').default;
-
-console.log('booting csra');
+};
 const start = Date.now();
-
-const app = require('../server/index').default;
-
 const port = normalizePort(config.port);
+
 app.set('port', port);
 
 const server = http.createServer(app);
+
+log.info('Application startup');
+
 server.listen(port);
+
 server.on('error', (error) => {
   if (error.syscall !== 'listen') {
     throw error;
@@ -53,10 +54,12 @@ server.on('error', (error) => {
       throw error;
   }
 });
+
 server.on('listening', () => {
   const duration = Date.now() - start;
   const addr = server.address();
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
-  console.log(`Listening on ${bind}`);
+  log.info(`Listening on ${bind}`);
+
   appInsights.client.trackMetric('server startup time', duration);
 });

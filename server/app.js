@@ -1,12 +1,11 @@
 import path from 'path';
 import express from 'express';
-import morgan from 'morgan';
 import { json } from 'body-parser';
 import helmet from 'helmet';
 import hsts from 'hsts';
+import bunyanMiddleware from 'bunyan-middleware';
 
-import config from './config';
-
+import logger from './services/logger';
 import createHealthRoute from './routes/health';
 import createAssessmentRoute from './routes/assessment';
 import createViperRoute from './routes/viper';
@@ -25,7 +24,7 @@ export default function createApp(db, appInfo, assessmentService, viperService) 
 
   app.use(json());
 
-  app.use(morgan(config.dev ? 'dev' : 'short'));
+  app.use(bunyanMiddleware({ logger }));
 
   app.use(express.static(path.join(__dirname, '..', 'public')));
 

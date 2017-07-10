@@ -2,9 +2,7 @@
  * Central place for accessing application config from the environment
  */
 
-// Load any extra environment variables from .env
-require('dotenv').config();
-
+import url from 'url';
 
 const production = process.env.NODE_ENV === 'production';
 
@@ -21,12 +19,9 @@ function neededInProd(name) {
 const config = {
   dev: !production,
   port: process.env.PORT || '5000',
-  appinsightsKey: process.env.APPINSIGHTS_INSTRUMENTATIONKEY || '',
-
+  appinsightsKey: process.env.APPINSIGHTS_INSTRUMENTATIONKEY || 'your-secret-key',
   db: {},
 };
-
-const url = require('url');
 
 const dbUri = neededInProd('DB_URI');
 if (dbUri) {
@@ -38,16 +33,19 @@ if (dbUri) {
   config.db.name = parsed.pathname.slice(1);
 }
 
-const viperRestServiceHost = neededInProd('VIPER_SERVICE_URL');
-if (viperRestServiceHost) {
-  config.viperRestServiceHost = viperRestServiceHost;
-  config.viperRestServiceConnectionTimeout = process.env.VIPER_SERVICE_CONNECTION_TIMEOUT || 2000;
-  config.viperRestServiceReadTimeout = process.env.VIPER_SERVICE_READ_TIMEOUT || 2000;
+if (process.env.USE_VIPER_SERVICE === 'true') {
+  const viperRestServiceHost = neededInProd('VIPER_SERVICE_URL');
+  if (viperRestServiceHost) {
+    config.viperRestServiceHost = viperRestServiceHost;
+    config.viperRestServiceConnectionTimeout = process.env.VIPER_SERVICE_CONNECTION_TIMEOUT || 2000;
+    config.viperRestServiceReadTimeout = process.env.VIPER_SERVICE_READ_TIMEOUT || 2000;
+  }
+
+  const viperRestServiceAuthenticationKey = neededInProd('VIPER_SERVICE_API_KEY');
+  if (viperRestServiceAuthenticationKey) {
+    config.viperRestServiceAuthenticationKey = viperRestServiceAuthenticationKey;
+  }
 }
 
-const viperRestServiceAuthenticationKey = neededInProd('VIPER_SERVICE_API_KEY');
-if (viperRestServiceAuthenticationKey) {
-  config.viperRestServiceAuthenticationKey = viperRestServiceAuthenticationKey;
-}
 
 export default config;
