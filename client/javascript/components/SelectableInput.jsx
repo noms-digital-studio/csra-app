@@ -64,7 +64,6 @@ SelectableInput.propTypes = {
 };
 
 SelectableInput.defaultProps = {
-  onChange: () => {},
   required: false,
   selected: false,
 };
