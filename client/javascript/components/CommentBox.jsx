@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import pluralize from 'pluralize';
-import classnames from 'classnames';
 
 class CommentBox extends Component {
   constructor(props) {

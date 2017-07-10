@@ -62,6 +62,7 @@ SignIn.propTypes = {
 
 SignIn.defaultProps = {
   title: 'Sign in',
+  onSubmit: () => {},
 };
 
 const mapActionsToProps = dispatch => ({

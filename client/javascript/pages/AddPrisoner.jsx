@@ -8,7 +8,7 @@ import { Link } from 'react-router';
 
 import { allFormFieldsComplete } from '../utils';
 
-import { addPrisoner } from '../actions'
+import { addPrisoner } from '../actions';
 
 import routes from '../constants/routes';
 
@@ -114,6 +114,7 @@ class AddPrisoner extends Component {
 }
 
 AddPrisoner.propTypes = {
+  title: PropTypes.string,
   onSubmit: PropTypes.func,
   prisonerDetails: PropTypes.object,
 };

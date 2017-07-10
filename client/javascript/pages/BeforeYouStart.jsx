@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
 import { Link } from 'react-router';
 import routes from '../constants/routes';
 
-const BeforeYouStart = props => (
-  <DocumentTitle title={props.title}>
+const BeforeYouStart = ({ title }) => (
+  <DocumentTitle title={title}>
     <div>
       <h1 className="heading-large">Cell sharing risk assessment</h1>
       <p className="text">
@@ -20,6 +20,10 @@ const BeforeYouStart = props => (
     </div>
   </DocumentTitle>
 );
+
+BeforeYouStart.propTypes = {
+  title: PropTypes.string,
+};
 
 BeforeYouStart.defaultProps = {
   title: 'Before you start',

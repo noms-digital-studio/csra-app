@@ -73,6 +73,7 @@ QuestionWithAside.propTypes = {
     answer: PropTypes.string,
   }),
   formFields: PropTypes.object,
+  aside: PropTypes.object,
   answerRequired: PropTypes.bool,
   isComplete: PropTypes.bool,
 };

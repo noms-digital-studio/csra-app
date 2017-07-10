@@ -89,6 +89,14 @@ QuestionWithComments.propTypes = {
     comments: PropTypes.string,
   }),
   isComplete: PropTypes.bool,
+  answerRequired: PropTypes.bool,
+  commentLabel: PropTypes.string,
+  formFields: PropTypes.shape({
+    input: PropTypes.shape({
+      yes: PropTypes.string,
+      no: PropTypes.string,
+    }),
+  }),
 };
 
 QuestionWithComments.defaultProps = {
@@ -102,6 +110,8 @@ QuestionWithComments.defaultProps = {
     answer: '',
     comments: '',
   },
+  onSubmit: () => {},
+  aside: {},
 };
 
 export default QuestionWithComments;

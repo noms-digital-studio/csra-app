@@ -33,20 +33,20 @@ const RiskAssessmentSummary = ({
   <DocumentTitle title={title}>
     <div>
       <div className="grid-row">
-          <div className="column-two-thirds">
-            <h1 className="heading-xlarge">Risk assessment summary</h1>
-          </div>
-          <div className="column-one-third">
-            <div className="c-print-link c-print-link--small-mt">
-              <button
-                className="c-icon-button link"
-                onClick={() => window.print()}
-              >
-                Print Page
-              </button>
-            </div>
+        <div className="column-two-thirds">
+          <h1 className="heading-xlarge">Risk assessment summary</h1>
+        </div>
+        <div className="column-one-third">
+          <div className="c-print-link c-print-link--small-mt">
+            <button
+              className="c-icon-button link"
+              onClick={() => window.print()}
+            >
+              Print Page
+            </button>
           </div>
         </div>
+      </div>
 
       <PrisonerProfile {...prisoner} />
 
@@ -130,6 +130,9 @@ RiskAssessmentSummary.propTypes = {
     surname: PropTypes.string,
   }),
   healthcareAssessmentComplete: PropTypes.bool,
+  viperScore: PropTypes.object,
+  answers: PropTypes.object,
+  questions: PropTypes.array,
 };
 
 RiskAssessmentSummary.defaultProps = {
@@ -143,7 +146,7 @@ RiskAssessmentSummary.defaultProps = {
 };
 
 const findViperScore = (nomisId, viperScores) =>
-  viperScores.find(item => item.nomisId === nomisId) || -1;
+  viperScores.find(item => item.nomisId === nomisId) || {};
 
 const mapStateToProps = state => ({
   prisoner: state.offender.selected,

@@ -8,56 +8,53 @@ import routes from '../constants/routes';
 import { retrieveViperScoreFor } from '../services';
 import { confirmPrisoner, addViperScore } from '../actions';
 
-const ConfirmOffender = (props) => {
-  const { prisonerDetails: prisoner, onClick, title } = props;
-  return (
-    <DocumentTitle title={title}>
-      <div>
-        <h1 className="heading-xlarge">Prisoner Added</h1>
+const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
+  <DocumentTitle title={title}>
+    <div>
+      <h1 className="heading-xlarge">Prisoner Added</h1>
 
-        <div className="grid-row">
-          <div className="column-one-half">
-            <p>
-              <span className="heading-small">Name:&nbsp;</span>
-              <span data-prisoner-name>
-                {prisoner['first-name']} {prisoner['last-name']}
-              </span>
-            </p>
+      <div className="grid-row">
+        <div className="column-one-half">
+          <p>
+            <span className="heading-small">Name:&nbsp;</span>
+            <span data-prisoner-name>
+              {prisoner['first-name']} {prisoner['last-name']}
+            </span>
+          </p>
 
-            <p>
-              <span className="heading-small">
-                DOB:&nbsp;&nbsp;&nbsp;&nbsp;
+          <p>
+            <span className="heading-small">
+              DOB:&nbsp;&nbsp;&nbsp;&nbsp;
               </span>
-              <span
-                data-prisoner-dob
-              >{`${prisoner['dob-day']}-${prisoner['dob-month']}-${prisoner['dob-year']}`}</span>
-            </p>
-          </div>
-          <div className="column-one-half">
-            <p>
-              <span className="heading-small">NOMIS No:</span>
-              <span data-prisoner-nomis-id>{prisoner['nomis-id']}</span>
-            </p>
-          </div>
+            <span
+              data-prisoner-dob
+            >{`${prisoner['dob-day']}-${prisoner['dob-month']}-${prisoner['dob-year']}`}</span>
+          </p>
         </div>
-
-        <p>
-          <button
-            data-confirm
-            onClick={() => {
-              onClick(prisoner);
-            }}
-            className="button"
-            data-confirm-button
-          >
-            Confirm
-          </button>
-        </p>
-        <Link to={routes.ADD_OFFENDER}>Edit</Link>
+        <div className="column-one-half">
+          <p>
+            <span className="heading-small">NOMIS No:</span>
+            <span data-prisoner-nomis-id>{prisoner['nomis-id']}</span>
+          </p>
+        </div>
       </div>
-    </DocumentTitle>
-  );
-};
+
+      <p>
+        <button
+          data-confirm
+          onClick={() => {
+            onClick(prisoner);
+          }}
+          className="button"
+          data-confirm-button
+        >
+          Confirm
+          </button>
+      </p>
+      <Link to={routes.ADD_OFFENDER}>Edit</Link>
+    </div>
+  </DocumentTitle>
+);
 
 const mapStateToProps = state => ({
   prisonerDetails: state.offender.prisonerFormData,
@@ -90,7 +87,7 @@ ConfirmOffender.propTypes = {
 ConfirmOffender.defaultProps = {
   title: 'Confirm Prisoner Addition',
   prisonerDetails: {},
-  onClick: () => {},
+  onClick: () => { },
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(ConfirmOffender);

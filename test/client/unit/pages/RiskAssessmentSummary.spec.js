@@ -155,55 +155,57 @@ describe('<RiskAssessmentSummary />', () => {
       });
     });
 
-    context('when the viperscore is high', () => {
-      it('renders the outcome of a unknown risk assessment', () => {
-        const unknownRiskStore = fakeStore({
-          ...state,
-          riskAssessmentStatus: {
-            exitPoint: 'foo-exit-point',
-            completed: [],
-          },
-          offender: {
-            selected: prisonerDetails,
-            viperScores: [],
-          },
-        });
-        const wrapper = mount(
-          <Provider store={unknownRiskStore}>
-            <RiskAssessmentSummary />
-          </Provider>,
-        );
+    context('when the viper score is unknown', () => {
+      context('and a cell sharing predicate is hit', () => {
+        it('renders a single cell outcome', () => {
+          const unknownRiskStore = fakeStore({
+            ...state,
+            riskAssessmentStatus: {
+              exitPoint: 'foo-exit-point',
+              completed: [],
+            },
+            offender: {
+              selected: prisonerDetails,
+              viperScores: [],
+            },
+          });
+          const wrapper = mount(
+            <Provider store={unknownRiskStore}>
+              <RiskAssessmentSummary />
+            </Provider>,
+          );
 
-        const outcomeText = wrapper
-          .find('[data-risk-assessment-outcome]')
-          .text();
-        expect(outcomeText).to.contain('Single cell');
+          const outcomeText = wrapper.find('[data-risk-assessment-outcome]').text();
+          expect(outcomeText).to.contain('Single cell');
+        });
       });
     });
 
     context('when the viper score is unknown', () => {
-      it('renders the outcome of a unknown risk assessment', () => {
-        const unknownRiskStore = fakeStore({
-          ...state,
-          riskAssessmentStatus: {
-            exitPoint: '',
-            completed: [],
-          },
-          offender: {
-            selected: prisonerDetails,
-            viperScores: [],
-          },
-        });
-        const wrapper = mount(
-          <Provider store={unknownRiskStore}>
-            <RiskAssessmentSummary />
-          </Provider>,
-        );
+      context('and no cell sharing predicates are hit', () => {
+        it('renders the outcome shared cell outcome', () => {
+          const unknownRiskStore = fakeStore({
+            ...state,
+            riskAssessmentStatus: {
+              exitPoint: '',
+              completed: [],
+            },
+            offender: {
+              selected: prisonerDetails,
+              viperScores: [],
+            },
+          });
+          const wrapper = mount(
+            <Provider store={unknownRiskStore}>
+              <RiskAssessmentSummary />
+            </Provider>,
+          );
 
-        const outcomeText = wrapper
-          .find('[data-risk-assessment-outcome]')
-          .text();
-        expect(outcomeText).to.contain('Shared cell');
+          const outcomeText = wrapper
+            .find('[data-risk-assessment-outcome]')
+            .text();
+          expect(outcomeText).to.contain('Shared cell');
+        });
       });
     });
 

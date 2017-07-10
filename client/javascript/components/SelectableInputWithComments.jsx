@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import classnames from 'classnames';
 
 import CommentBox from './CommentBox';
 
@@ -76,11 +75,14 @@ class SelectableInputWithComments extends Component {
   }
 }
 
-SelectableInputWithComments.propType = {
+SelectableInputWithComments.propTypes = {
   onChange: PropTypes.func,
   id: PropTypes.string,
   name: PropTypes.string,
   text: PropTypes.string,
+  value: PropTypes.string,
+  commentValue: PropTypes.string,
+  type: PropTypes.string,
   selected: PropTypes.bool,
   required: PropTypes.bool,
 };

@@ -135,6 +135,7 @@ FullAssessmentOutcome.propTypes = {
     recommendation: PropTypes.string,
   }),
   alreadyCompleted: PropTypes.bool,
+  onReturnHome: PropTypes.func,
 };
 
 FullAssessmentOutcome.defaultProps = {
@@ -143,6 +144,7 @@ FullAssessmentOutcome.defaultProps = {
   onSubmit: () => {},
   riskAssessmentOutcome: {},
   healthcareOutcome: {},
+  onReturnHome: () => {},
 };
 
 const mapStateToProps = (state, ownProps) => ({

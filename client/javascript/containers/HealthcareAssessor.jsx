@@ -5,7 +5,6 @@ import Aside from '../components/asides/Index';
 
 const HealthAssessment = ({
   title,
-  description,
   aside,
   onSubmit,
   formDefaults,
@@ -24,7 +23,7 @@ const HealthAssessment = ({
 
         <div className="form-group">
           <label htmlFor="role" className="form-label-bold">
-            Role/Position
+            Role / Position
           </label>
           <input
             data-input="role"

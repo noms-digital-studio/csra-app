@@ -87,6 +87,7 @@ OffenderProfile.propTypes = {
 OffenderProfile.defaultProps = {
   title: 'Confirm Prisoner',
   onSubmit: () => {},
+  details: {},
 };
 
 const mapStateToProps = state => ({

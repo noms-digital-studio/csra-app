@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import classnames from 'classnames';
 
 class SelectableInput extends Component {
   constructor(props) {
@@ -52,16 +51,20 @@ class SelectableInput extends Component {
   }
 }
 
-SelectableInput.propType = {
+SelectableInput.propTypes = {
   onChange: PropTypes.func,
   id: PropTypes.string,
   name: PropTypes.string,
   text: PropTypes.string,
+  value: PropTypes.string,
+  type: PropTypes.string,
+  focused: PropTypes.bool,
   selected: PropTypes.bool,
   required: PropTypes.bool,
 };
 
 SelectableInput.defaultProps = {
+  onChange: () => {},
   required: false,
   selected: false,
 };

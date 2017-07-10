@@ -4,7 +4,6 @@ import uuid from 'uuid/v4';
 const Viper = ({
   content,
   onSubmit,
-  formDefaults: { confirmation },
   viperScore,
   isComplete,
 }) => {
@@ -36,11 +35,7 @@ const Viper = ({
 Viper.propTypes = {
   content: PropTypes.object,
   onSubmit: PropTypes.func,
-  aside: PropTypes.object,
-  formDefaults: PropTypes.shape({
-    confirmation: PropTypes.string,
-  }),
-  rating: PropTypes.string,
+  viperScore: PropTypes.string,
   isComplete: PropTypes.bool,
 };
 
@@ -48,8 +43,7 @@ Viper.defaultProps = {
   formDefaults: {
     confirmation: '',
   },
-  aside: {},
-  rating: 'unknown',
+  viperScore: 'unknown',
 };
 
 export default Viper;

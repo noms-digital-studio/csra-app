@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
 import { browserHistory } from 'react-router';
 
@@ -126,6 +126,10 @@ class Feedback extends Component {
     );
   }
 }
+
+Feedback.propTypes = {
+  title: PropTypes.string,
+};
 
 Feedback.defaultProps = {
   title: 'Feedback',
