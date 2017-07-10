@@ -1,5 +1,7 @@
 import express from 'express';
 
+import log from '../services/logger';
+
 export default function createRouter(assessment) {
   const router = express.Router();
 
@@ -23,8 +25,7 @@ export default function createRouter(assessment) {
           res.status(400);
           response.error.code = 'validation';
         } else {
-          // eslint-disable-next-line no-console
-          console.warn('Unexpected error when saving assessment', err.stack);
+          log.warn({ err });
         }
 
         res.json(response);

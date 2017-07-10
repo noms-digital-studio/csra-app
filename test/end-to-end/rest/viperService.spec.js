@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import superagent from 'superagent';
 import request from 'supertest';
 import uuid from 'uuid/v4';
@@ -16,7 +15,6 @@ function primeDatabase(nomisId) {
     .into('viper')
     .then((error, result) => {
       if (error) {
-        console.log('error: ', error);
         throw new Error(error);
       }
 
@@ -31,7 +29,6 @@ function primeMock(mapping) {
       .send(mapping)
       .end((error) => {
         if (error) {
-          console.log('error: ', error);
           reject(error);
         }
 
