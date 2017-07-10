@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "node ./bin/www",
-    "start:dev": "rimraf public/dist && DEBUG=csra* node ./bin/www | bunyan -o short",
+    "start:dev": "rimraf public/dist && DEBUG=csra* node ./bin/www | bunyan -j",
     "lint": "eslint . --cache --max-warnings 0",
     "test": "mocha test/*.spec.js test/**/*.spec.js test/unit/**/*.spec.js test/unit/**/**/*.spec.js test/client/**/*.spec.js test/client/**/**/*.spec.js",
     "verify": "yarn lint && yarn test",
