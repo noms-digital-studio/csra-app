@@ -4,6 +4,8 @@
 
 import url from 'url';
 
+require('dotenv').config();
+
 const production = process.env.NODE_ENV === 'production';
 
 function neededInProd(name) {
