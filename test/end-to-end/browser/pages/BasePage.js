@@ -3,7 +3,7 @@ class BasePage {
 
   get mainHeading() { return browser.getText('h1'); }
   waitForMainHeadingWithDataId(id) {
-    browser.waitForVisible(`[data-title="${id}"]`, 5000);
+    browser.waitForVisible(`[data-title="${id}"]`, 7000);
     return browser.getText('h1');
   }
   get form() { return browser.element('.form'); }
