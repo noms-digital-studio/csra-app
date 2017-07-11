@@ -42,10 +42,10 @@ deployment:
       - yarn wait-for-deploy:
           environment:
               GIT_REF: $CIRCLE_SHA1
-              APP_BASE_URL: http://csra-mock.hmpps.dsd.io/health
+              APP_BASE_URL: https://csra-mock.hmpps.dsd.io/health
               WAIT_DURATION: 45000
       - yarn 'test:integration':
           environment:
-            APP_BASE_URL: http://csra-mock.hmpps.dsd.io
+            APP_BASE_URL: https://csra-mock.hmpps.dsd.io
             E2E_REPORTS_PATH: $CIRCLE_TEST_REPORTS/end-to-end
 
