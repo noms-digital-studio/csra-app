@@ -48,7 +48,7 @@ function viperRatingFromApi(nomisId) {
 
           reject(`Invalid body: ${bodyText}`);
         } catch (exception) {
-          log.error({ error: exception }, 'operation went boom');
+          log.error({ err: exception }, 'operation went boom');
           reject(exception);
         }
       });
