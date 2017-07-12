@@ -3,7 +3,7 @@ class BasePage {
 
   get mainHeading() { return browser.getText('h1'); }
   waitForMainHeadingWithDataId(id) {
-    browser.waitForVisible(`[data-title="${id}"]`, 7000);
+    browser.waitForVisible(`[data-title="${id}"]`, 3000);
     return browser.getText('h1');
   }
   get form() { return browser.element('.form'); }
@@ -11,7 +11,7 @@ class BasePage {
 
   submitPage() { this.form.submitForm(); }
   clickContinue() {
-    browser.pause(1000);
+    browser.pause(3000);
     browser.click('[data-continue-button]');
   }
 }
