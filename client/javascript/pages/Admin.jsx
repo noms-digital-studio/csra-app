@@ -126,7 +126,7 @@ class Admin extends Component {
           </button>
 
           <Link
-            href="/#/sign-in"
+            href="/sign-in"
             className="button c-btn-right--xcustom"
             data-continue
           >
