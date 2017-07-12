@@ -45,7 +45,7 @@ exports.config = {
       // 5 instance gets started at a time.
       maxInstances: 5,
       //
-      browserName: process.env.E2E_BROWSER_NAME || 'phantomjs', // options: chrome || firefox || phantomjs
+      browserName: process.env.E2E_BROWSER_NAME || 'firefox', // options: chrome || firefox || phantomjs
     },
   ],
   //
