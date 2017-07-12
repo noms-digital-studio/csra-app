@@ -10,7 +10,10 @@ class BasePage {
   get headerUsername() { return browser.getText('[data-header-username]'); }
 
   submitPage() { this.form.submitForm(); }
-  clickContinue() { browser.click('[data-continue-button]'); }
+  clickContinue() {
+    browser.pause(1000);
+    browser.click('[data-continue-button]');
+  }
 }
 
 export default BasePage;
