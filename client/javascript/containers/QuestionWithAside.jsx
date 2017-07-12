@@ -82,8 +82,8 @@ QuestionWithAside.defaultProps = {
   formDefaults: { answer: '' },
   formFields: {
     input: {
-      yes: '',
-      no: '',
+      yes: { text: '' },
+      no: { text: '' },
     },
   },
   isComplete: false,

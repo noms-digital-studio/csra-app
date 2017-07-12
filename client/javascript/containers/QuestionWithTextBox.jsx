@@ -93,8 +93,12 @@ QuestionWithComments.propTypes = {
   commentLabel: PropTypes.string,
   formFields: PropTypes.shape({
     input: PropTypes.shape({
-      yes: PropTypes.string,
-      no: PropTypes.string,
+      yes: PropTypes.shape({
+        text: PropTypes.string,
+      }),
+      no: PropTypes.shape({
+        text: PropTypes.string,
+      }),
     }),
   }),
 };
@@ -102,8 +106,8 @@ QuestionWithComments.propTypes = {
 QuestionWithComments.defaultProps = {
   formFields: {
     input: {
-      yes: '',
-      no: '',
+      yes: { text: '' },
+      no: { text: '' },
     },
   },
   formDefaults: {
