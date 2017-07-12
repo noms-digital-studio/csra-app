@@ -91,7 +91,9 @@ const RiskAssessmentSummary = ({
             </p>}
 
         <button
-          onClick={() =>
+          onClick={(e) => {
+            e.preventDefault();
+
             onSubmit({
               healthcareAssessmentComplete,
               outcome,
@@ -99,7 +101,8 @@ const RiskAssessmentSummary = ({
               viperScore: viperScore.viperScore,
               answers,
               questions,
-            })}
+            });
+          }}
           className="button"
           data-continue-button
         >
