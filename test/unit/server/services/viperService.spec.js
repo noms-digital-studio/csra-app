@@ -1,4 +1,4 @@
-import createViperService from '../../../../server/services/viperService';
+import createViperService from '../../../../server/services/viper';
 
 describe('viper service when feature switch configured to use the database', () => {
   let fakeDB;

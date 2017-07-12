@@ -1,7 +1,6 @@
 import express from 'express';
 import superagent from 'superagent';
 import url from 'url';
-
 import config from '../config';
 import log from '../services/logger';
 
@@ -30,7 +29,7 @@ export default function createRouter(db, appInfo) {
         .end((error, result) => {
           try {
             if (error) {
-              log.error({ err: error }, 'Error calling viper reset service health endpoint');
+              log.error(error, 'Error calling viper REST service health endpoint');
               resolve({ name: 'viperRestService', status: 'ERROR', message: 'ERROR' });
             }
 
@@ -40,7 +39,7 @@ export default function createRouter(db, appInfo) {
 
             reject({ name: 'viperRestService', status: 'ERROR', message: `Status: ${result.error}` });
           } catch (exception) {
-            log.error({ err: exception }, 'Error calling viper reset service health endpoint');
+            log.error(exception, 'Error calling viper REST service health endpoint');
             reject(exception);
           }
         });

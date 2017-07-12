@@ -2,21 +2,21 @@ import superagent from 'superagent';
 import url from 'url';
 
 import config from '../config';
-import log from './logger';
+import { databaseLogger, viperRestServiceLogger as log } from './logger';
 
 function viperRatingFromDatabase(db, nomisId) {
-  log.info(`Getting viper rating from the database for nomisID: ${nomisId}`);
+  log.info(`Getting Viper rating from the database for nomisID: ${nomisId}`);
   return db
     .select()
     .table('viper')
     .where('nomis_id', nomisId)
     .then((result) => {
       if (result[0]) {
-        log.info(`viper rating found in database for nomisId: ${nomisId}`);
+        databaseLogger.info(`Viper rating found in database for nomisId: ${nomisId}`);
         return result[0].rating;
       }
 
-      log.info(`viper rating NOT found in database for nomisID: ${nomisId}`);
+      databaseLogger.info(`Viper rating NOT found in database for nomisID: ${nomisId}`);
       return null;
     });
 }
@@ -35,7 +35,7 @@ function viperRatingFromApi(nomisId) {
         try {
           if (error) {
             log.info(`Viper rating NOT found from API for nomisID: ${nomisId}`);
-            log.warn({ err: error });
+            log.warn(error);
             resolve(null);
           }
 
@@ -48,7 +48,7 @@ function viperRatingFromApi(nomisId) {
 
           reject(`Invalid body: ${bodyText}`);
         } catch (exception) {
-          log.error({ err: exception }, 'operation went boom');
+          log.error(exception);
           reject(exception);
         }
       });
