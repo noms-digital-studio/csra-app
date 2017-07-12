@@ -189,6 +189,10 @@ const mapActionsToProps = dispatch => ({
     questions,
     answers,
   }) => {
+    if (window.appInsights) {
+      window.appInsights.trackEvent('Storing assessment', { nomisId });
+    }
+
     postAssessmentToBackend(
       'risk',
       {
@@ -199,6 +203,10 @@ const mapActionsToProps = dispatch => ({
         answers,
       },
       (assessmentId) => {
+        if (window.appInsights) {
+          window.appInsights.trackEvent('Stored assessment', { assessmentId });
+        }
+
         dispatch(
           completeRiskAssessmentFor({
             recommendation: outcome.recommendation,
