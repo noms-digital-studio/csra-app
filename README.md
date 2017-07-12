@@ -37,8 +37,21 @@ yarn test:watch
 
 ### Test end to end tests
 To run the end to end test you will need to have a running server `yarn start` then simply run:
+
+#### Run both E2E and REST tests
+
 ```
 yarn test:integration
+```
+
+#### Run E2E tests
+```
+yarn test:e2e
+```
+
+#### Run REST tests
+```
+yarn test:rest
 ```
 
 ### Lint
@@ -53,10 +66,7 @@ Runs tests and linter
 yarn verify
 ```
 
-### Run E2E tests
-```
-yarn test:e2e
-```
+
 
 ### Run
 Starts the server on `PORT 5000` in dev mode
@@ -227,6 +237,6 @@ To specify a different number of random viper data to generate simply specify th
 ```SEED_AMOUNT={number of seeds (int)} ./bin/seed-viper```
 
 # Feature switches
-With `USE_VIPER_SERVICE=false` the application will obtain viper ratings from it's local database. With 
-`USE_VIPER_SERVICE=true` the application will obtain viper ratings via a REST call to the analytics 
+With `USE_VIPER_SERVICE=false` the application will obtain viper ratings from it's local database. With
+`USE_VIPER_SERVICE=true` the application will obtain viper ratings via a REST call to the analytics
 gateway.
