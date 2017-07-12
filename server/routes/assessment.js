@@ -1,16 +1,17 @@
 import express from 'express';
-
-import log from '../services/logger';
+import { databaseLogger as log } from '../services/logger';
 
 export default function createRouter(assessment) {
   const router = express.Router();
 
   router.post('/', (req, res) => {
-    assessment.record(req.body).then(
-      result => res.json({
-        status: 'OK',
-        data: { id: result.assessment_id },
-      }),
+    assessment.record(req.body)
+      .then(
+        result => res.json({
+          status: 'OK',
+          data: { id: result.assessment_id },
+        }),
+      ).catch(
       (err) => {
         res.status(500);
         const response = {
@@ -25,7 +26,7 @@ export default function createRouter(assessment) {
           res.status(400);
           response.error.code = 'validation';
         } else {
-          log.warn({ err });
+          log.error(err);
         }
 
         res.json(response);

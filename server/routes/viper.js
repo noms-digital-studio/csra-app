@@ -1,4 +1,5 @@
 import express from 'express';
+import { viperRestServiceLogger as log } from '../services/logger';
 
 function errorResponse(res, nomisId, cause) {
   res.status(404);
@@ -21,6 +22,7 @@ export default function createRouter(viperService) {
         }
       })
       .catch((error) => {
+        log.error(error);
         errorResponse(res, nomisId, error);
       });
   });

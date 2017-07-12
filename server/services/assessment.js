@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { databaseLogger as log } from './logger';
 
 const schema = Joi.object({
   type: Joi.string().valid('risk', 'healthcare'),
@@ -31,11 +32,13 @@ function record(db, appInfo, rawAssessment) {
     const err = new Error(`Validation failed: ${validated.error.message}`);
     err.type = 'validation';
     err.details = validated.error.details;
+    log.error(err);
     return Promise.reject(err);
   }
 
   const assessment = validated.value;
 
+  log.info(`Saving assessment for nomisId: ${assessment.nomisId}`);
   return db
     .insert({
       nomis_id: assessment.nomisId,

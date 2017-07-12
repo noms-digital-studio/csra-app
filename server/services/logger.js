@@ -14,4 +14,12 @@ const logger = bunyan.createLogger({
   },
 });
 
+const viperRestServiceLogger = logger.child({ service: 'viperRestService' });
+const databaseLogger = logger.child({ service: 'database' });
+
 export default logger;
+export {
+  viperRestServiceLogger,
+  databaseLogger,
+};
+
