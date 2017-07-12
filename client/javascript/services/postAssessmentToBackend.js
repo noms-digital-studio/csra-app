@@ -23,7 +23,7 @@ const postAssessmentToBackend = (assessmentType, {
   superagent.post(target, riskAssessmentRequestParams, (error, res) => {
     if (error) {
       if (window.appInsights) {
-        window.appInsights.trackEvent('Failed to store assessment', { error });
+        window.appInsights.trackEvent('Failed to store assessment for:', { nomisId, error });
       }
       callback(null);
     } else {

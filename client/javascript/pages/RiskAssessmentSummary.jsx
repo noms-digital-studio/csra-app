@@ -190,7 +190,7 @@ const mapActionsToProps = dispatch => ({
     answers,
   }) => {
     if (window.appInsights) {
-      window.appInsights.trackEvent('Storing assessment', { nomisId });
+      window.appInsights.trackEvent('Storing assessment for:', { nomisId });
     }
 
     postAssessmentToBackend(
@@ -204,7 +204,7 @@ const mapActionsToProps = dispatch => ({
       },
       (assessmentId) => {
         if (window.appInsights) {
-          window.appInsights.trackEvent('Stored assessment', { assessmentId });
+          window.appInsights.trackEvent('Stored assessment for:', { nomisId, assessmentId });
         }
 
         dispatch(
