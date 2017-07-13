@@ -68,7 +68,8 @@ describe('POST /api/assessment', function block() {
           })
             .then(resolve)
             .catch(reject);
-        });
+        })
+        .catch(reject);
     }));
 
   it('records a health assessment', () =>
@@ -94,7 +95,8 @@ describe('POST /api/assessment', function block() {
           })
             .then(resolve)
             .catch(reject);
-        });
+        })
+        .catch(reject);
     }));
 
   it('rejects an invalid assessment', () =>
