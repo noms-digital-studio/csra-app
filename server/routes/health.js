@@ -17,6 +17,7 @@ export default function createRouter(db, appInfo) {
     return new Promise((resolve, reject) => {
       if (process.env.USE_VIPER_SERVICE === 'false') {
         resolve({ name: 'viperRestService', status: 'OK', message: 'Not enabled' });
+        return;
       }
 
       superagent
