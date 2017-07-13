@@ -228,7 +228,7 @@ describe('<HealthcareSummary />', () => {
         </Provider>,
       );
 
-      wrapper.find('[data-summary-next-steps] button').simulate('click');
+      wrapper.find('form').simulate('submit');
 
       expect(
         store.dispatch.calledWithMatch({
@@ -245,7 +245,7 @@ describe('<HealthcareSummary />', () => {
         </Provider>,
       );
 
-      wrapper.find('[data-summary-next-steps] button').simulate('click');
+      wrapper.find('form').simulate('submit');
 
       expect(
         store.dispatch.calledWithMatch({
@@ -284,7 +284,7 @@ describe('<HealthcareSummary />', () => {
         </Provider>,
       );
 
-      wrapper.find('[data-summary-next-steps] button').simulate('click');
+      wrapper.find('form').simulate('submit');
 
       expect(
         store.dispatch.calledWithMatch({

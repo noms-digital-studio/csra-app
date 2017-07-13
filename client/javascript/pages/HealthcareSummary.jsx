@@ -46,7 +46,25 @@ class HealthCareSummary extends Component {
 
     return (
       <DocumentTitle title={title}>
-        <div>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit({
+              riskAssessmentComplete,
+              prisoner: {
+                recommendation: riskText[answers.outcome.answer],
+                nomisId: prisoner.nomisId,
+              },
+              postData: {
+                nomisId: prisoner.nomisId,
+                outcome: riskText[answers.outcome.answer],
+                viperScore: viperScore.viperScore,
+                questions,
+                answers: normalizeAssessorAnswerIn(answers),
+              },
+            });
+          }}
+        >
           <h1 className="heading-xlarge">Healthcare summary</h1>
 
           <div data-profile>
@@ -194,21 +212,7 @@ class HealthCareSummary extends Component {
                 </p>}
 
             <button
-              onClick={() =>
-                onSubmit({
-                  riskAssessmentComplete,
-                  prisoner: {
-                    recommendation: riskText[answers.outcome.answer],
-                    nomisId: prisoner.nomisId,
-                  },
-                  postData: {
-                    nomisId: prisoner.nomisId,
-                    outcome: riskText[answers.outcome.answer],
-                    viperScore: viperScore.viperScore,
-                    questions,
-                    answers: normalizeAssessorAnswerIn(answers),
-                  },
-                })}
+              type="submit"
               className="button"
               data-continue-button
             >
@@ -218,7 +222,7 @@ class HealthCareSummary extends Component {
             </button>
 
           </div>
-        </div>
+        </form>
       </DocumentTitle>
     );
   }
