@@ -31,7 +31,20 @@ const RiskAssessmentSummary = ({
   questions,
 }) => (
   <DocumentTitle title={title}>
-    <div>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+
+        onSubmit({
+          healthcareAssessmentComplete,
+          outcome,
+          nomisId: prisoner.nomisId,
+          viperScore: viperScore.viperScore,
+          answers,
+          questions,
+        });
+      }}
+    >
       <div className="grid-row">
         <div className="column-two-thirds">
           <h1 className="heading-xlarge">Risk assessment summary</h1>
@@ -43,7 +56,7 @@ const RiskAssessmentSummary = ({
               onClick={() => window.print()}
             >
               Print Page
-            </button>
+          </button>
           </div>
         </div>
       </div>
@@ -64,7 +77,7 @@ const RiskAssessmentSummary = ({
             }}
           >
             Change answers
-          </a>
+        </a>
         </p>}
 
       <div className="form-group" data-summary-next-steps>
@@ -74,35 +87,24 @@ const RiskAssessmentSummary = ({
           </i>
           <strong className="bold-small">
             Once submitted you cannot change these answers
-          </strong>
+        </strong>
         </div>
 
         {healthcareAssessmentComplete
           ? null
           : <p className="u-margin-bottom-medium">
-              <span>You must print a copy of this summary for healthcare.</span>
-              <span className="u-spacing-right"></span>
-              <button
-                className="c-icon-button link u-print-hide"
-                onClick={() => window.print()}
-              >
-                Print Page
-              </button>
-            </p>}
+            <span>You must print a copy of this summary for healthcare.</span>
+            <span className="u-spacing-right" />
+            <button
+              className="c-icon-button link u-print-hide"
+              onClick={() => window.print()}
+            >
+              Print Page
+            </button>
+          </p>}
 
         <button
-          onClick={(e) => {
-            e.preventDefault();
-
-            onSubmit({
-              healthcareAssessmentComplete,
-              outcome,
-              nomisId: prisoner.nomisId,
-              viperScore: viperScore.viperScore,
-              answers,
-              questions,
-            });
-          }}
+          type="submit"
           className="button"
           data-continue-button
         >
@@ -112,7 +114,7 @@ const RiskAssessmentSummary = ({
         </button>
 
       </div>
-    </div>
+    </form>
   </DocumentTitle>
 );
 
@@ -144,7 +146,7 @@ RiskAssessmentSummary.defaultProps = {
     reasons: [],
   },
   prisoner: {},
-  onSubmit: () => {},
+  onSubmit: () => { },
   onClear: {},
 };
 

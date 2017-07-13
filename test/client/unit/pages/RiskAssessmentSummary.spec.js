@@ -247,7 +247,7 @@ describe('<RiskAssessmentSummary />', () => {
           </Provider>,
         );
 
-        wrapper.find('[data-continue-button]').simulate('click');
+        wrapper.find('form').simulate('submit');
 
         expect(
           store.dispatch.calledWithMatch({
@@ -283,8 +283,7 @@ describe('<RiskAssessmentSummary />', () => {
             <RiskAssessmentSummary />
           </Provider>,
         );
-
-        wrapper.find('[data-continue-button]').simulate('click');
+        wrapper.find('form').simulate('submit');
 
         expect(
           store.dispatch.calledWithMatch({
@@ -327,7 +326,7 @@ describe('<RiskAssessmentSummary />', () => {
           </Provider>,
         );
 
-        wrapper.find('[data-continue-button]').simulate('click');
+        wrapper.find('form').simulate('submit');
 
         expect(
           store.dispatch.calledWithMatch({
@@ -366,7 +365,7 @@ describe('<RiskAssessmentSummary />', () => {
           </Provider>,
         );
 
-        wrapper.find('[data-continue-button]').simulate('click');
+        wrapper.find('form').simulate('submit');
 
 
         expect(
