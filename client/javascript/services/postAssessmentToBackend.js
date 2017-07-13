@@ -1,4 +1,5 @@
 import superagent from 'superagent';
+import path from 'ramda/src/path';
 
 import buildAssessmentRequest from './buildAssessmentRequest';
 
@@ -27,7 +28,7 @@ const postAssessmentToBackend = (assessmentType, {
       }
       callback(null);
     } else {
-      callback(res.body.data.id);
+      callback(path(['body', 'data', 'id'], res) || null);
     }
   });
 };

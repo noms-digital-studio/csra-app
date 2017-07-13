@@ -80,7 +80,18 @@ describe('#postAssessmentToBackend', () => {
     expect(postStub.lastCall.args[1]).to.eql(postData);
 
     expect(callback.calledOnce).to.equal(true);
-    expect(callback.calledWithMatch(123)).to.equal(true, 'callback called with the correct');
+    expect(callback.calledWithMatch(123)).to.equal(true, 'callback called with the correct response');
+  });
+
+  it('handles an unexpected response', () => {
+    const callback = sinon.spy();
+    const response = { error: 'foo error' };
+
+    postStub.yields(null, response);
+    postAssessmentToBackend('foo', postParams, callback);
+
+    expect(callback.calledOnce).to.equal(true);
+    expect(callback.calledWithMatch(null)).to.equal(true, 'callback was not called with the null');
   });
 
   it('handles failed responses', () => {
@@ -91,6 +102,6 @@ describe('#postAssessmentToBackend', () => {
     postAssessmentToBackend('foo', postParams, callback);
 
     expect(callback.calledOnce).to.equal(true);
-    expect(callback.calledWithMatch(null)).to.equal(true, 'callback called with the correct');
+    expect(callback.calledWithMatch(null)).to.equal(true, 'callback was not called with the null');
   });
 });
