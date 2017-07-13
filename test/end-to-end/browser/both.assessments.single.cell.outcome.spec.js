@@ -37,7 +37,7 @@ describe('Both assessments (Single cell outcome)', () => {
     healthRecommendation,
     finalRecommendation,
   }) {
-    HealthcareSummary.clickContinue();
+    HealthcareSummary.submitForm();
 
     expect(FullAssessmentOutcomePage.waitForMainHeadingWithDataId('full-outcome')).to.equal(
       'Risk and healthcare assessment outcome',

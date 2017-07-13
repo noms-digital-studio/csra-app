@@ -89,7 +89,7 @@ function aLowRiskPrisonerIsAssessed(usesDrugs) {
   expect(RiskAssessmentSummaryPage.prejudice).to.equalIgnoreCase('no');
   expect(RiskAssessmentSummaryPage.officerComments).to.equalIgnoreCase('no');
 
-  RiskAssessmentSummaryPage.clickContinue();
+  RiskAssessmentSummaryPage.submitForm();
 }
 
 function whenALowRiskPrisonerIsAssessed() {

@@ -16,7 +16,7 @@ import andICanViewTheirAssessmentOutcomeAgain from './tasks/viewFullOutcome.task
 import db from '../../util/db';
 
 function thenTheFullAssessmentIsCompleted() {
-  HealthcareSummary.clickContinue();
+  HealthcareSummary.submitForm();
   expect(
     FullAssessmentOutcomePage.waitForMainHeadingWithDataId('full-outcome'),
   ).to.equal('Risk and healthcare assessment outcome');

@@ -32,6 +32,7 @@ const RiskAssessmentSummary = ({
 }) => (
   <DocumentTitle title={title}>
     <form
+      id="rsa-form"
       onSubmit={(e) => {
         e.preventDefault();
 

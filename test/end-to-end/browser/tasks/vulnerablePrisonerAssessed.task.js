@@ -37,7 +37,7 @@ function whenAVulnerablePrisonerIsAssessed() {
   expect(RiskAssessmentSummaryPage.harm).to.equalIgnoreCase('no');
   expect(RiskAssessmentSummaryPage.vulnerability).to.equalIgnoreCase('yes');
 
-  RiskAssessmentSummaryPage.clickContinue();
+  RiskAssessmentSummaryPage.submitForm();
 }
 
 function thenASingleCellIsRecommended() {

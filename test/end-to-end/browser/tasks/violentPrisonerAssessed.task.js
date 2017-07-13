@@ -24,7 +24,7 @@ function whenAViolentPrisonerIsAssessed() {
 
   expect(RiskAssessmentSummaryPage.outcome).to.equalIgnoreCase('single cell');
 
-  RiskAssessmentSummaryPage.clickContinue();
+  RiskAssessmentSummaryPage.submitForm();
 }
 
 export default whenAViolentPrisonerIsAssessed;

@@ -20,10 +20,6 @@ const postAssessmentToBackend = (assessmentType, {
   });
   const target = `${window.location.origin}/api/assessment`;
 
-  if (window.appInsights) {
-    window.appInsights.trackEvent('Posting to /api/assessment for:', { nomisId });
-  }
-
   superagent.post(target, riskAssessmentRequestParams, (error, res) => {
     if (error) {
       if (window.appInsights) {

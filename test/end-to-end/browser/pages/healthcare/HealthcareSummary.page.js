@@ -35,6 +35,10 @@ class HealthcareSummary extends BasePage {
   clickChange() {
     browser.click('[data-change-consent-link]');
   }
+
+  submitForm() {
+    browser.submitForm('#hc-form');
+  }
 }
 
 export default new HealthcareSummary();

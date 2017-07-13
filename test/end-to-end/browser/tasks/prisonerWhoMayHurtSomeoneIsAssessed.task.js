@@ -33,7 +33,7 @@ function whenAPrisonerWhoMayHurtSomeoneIsAssessed() {
   expect(RiskAssessmentSummaryPage.initialFeelings).to.equalIgnoreCase('sharing comment');
   expect(RiskAssessmentSummaryPage.harm).to.equalIgnoreCase('yes');
 
-  RiskAssessmentSummaryPage.clickContinue();
+  RiskAssessmentSummaryPage.submitForm();
 }
 
 function thenASingleCellIsRecommended() {

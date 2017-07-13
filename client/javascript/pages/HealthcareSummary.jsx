@@ -47,6 +47,7 @@ class HealthCareSummary extends Component {
     return (
       <DocumentTitle title={title}>
         <form
+          id="hc-form"
           onSubmit={(e) => {
             e.preventDefault();
             onSubmit({
