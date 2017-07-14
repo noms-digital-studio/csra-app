@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import superagent from 'superagent';
 import request from 'supertest';
 import uuid from 'uuid/v4';
@@ -21,8 +22,14 @@ function primeMock(mapping) {
     .send(mapping);
 }
 
-describe('/api/viper/:nomisId', () => {
+function generateNomisId() {
   const nomisId = uuid().substring(0, 8);
+  console.log('Generated NomisId for test: ', nomisId);
+  return nomisId;
+}
+
+describe('/api/viper/:nomisId', () => {
+  const nomisId = generateNomisId();
 
   before(function beforeTests() {
     this.timeout(5000);
@@ -49,6 +56,10 @@ describe('/api/viper/:nomisId', () => {
     });
   });
 
+  after(() => superagent
+      .post(url.resolve(`${config.viperRestServiceHost}`, '/__admin/reset'))
+      .send());
+
   it('returns a viper rating for a known nomis id', function test() {
     this.timeout(5000);
     return request(baseUrl).get(`/api/viper/${nomisId}`)
@@ -66,11 +77,12 @@ describe('/api/viper/:nomisId', () => {
     });
 
     it('returns a viper rating for a known nomis id when response contains extra fields', function test() {
+      const newNomisId = generateNomisId();
       this.timeout(5000);
       return primeMock({
         request: {
           method: 'GET',
-          urlPattern: `/analytics/viper/${nomisId}`,
+          urlPattern: `/analytics/viper/${newNomisId}`,
           headers: {
             'API-Key': {
               equalTo: 'valid-subscription-key',
@@ -79,17 +91,17 @@ describe('/api/viper/:nomisId', () => {
         },
         response: {
           status: 200,
-          body: `{"nomsId": "${nomisId}", "viperRating": 0.42, "extraDataKey": "extra data value"}`,
+          body: `{"nomsId": "${newNomisId}", "viperRating": 0.42, "extraDataKey": "extra data value"}`,
           headers: {
             'Content-Type': 'application/json',
           },
         },
       })
         .then(() =>
-          request(baseUrl).get(`/api/viper/${nomisId}`)
+          request(baseUrl).get(`/api/viper/${newNomisId}`)
             .expect(200)
             .then((res) => {
-              expect(res.body).to.eql({ nomisId, viperRating: 0.42 });
+              expect(res.body).to.eql({ nomisId: newNomisId, viperRating: 0.42 });
             }),
         );
     });
@@ -99,7 +111,7 @@ describe('/api/viper/:nomisId', () => {
       return primeMock({
         request: {
           method: 'GET',
-          urlPattern: '/analytics/viper/foo',
+          urlPattern: '/analytics/viper/foo-401',
         },
         response: {
           status: 401,
@@ -110,12 +122,11 @@ describe('/api/viper/:nomisId', () => {
         },
       })
         .then(() =>
-          request(baseUrl).get('/api/viper/foo')
-            .expect(404)
-            .then((res) => {
-              expect(res.body).to.eql({ messasge: 'Error retrieving viper rating for nomisId: foo. The cause was: Not found' });
-            }),
-        );
+          request(baseUrl).get('/api/viper/foo-401')
+            .expect(404),
+        ).then((res) => {
+          expect(res.body).to.eql({ messasge: 'Error retrieving viper rating for nomisId: foo-401. The cause was: Not found' });
+        });
     });
 
     it('returns a 404 (not found) when a forbidden (403) response is received', function test() {
@@ -123,7 +134,7 @@ describe('/api/viper/:nomisId', () => {
       primeMock({
         request: {
           method: 'GET',
-          urlPattern: '/analytics/viper/foo',
+          urlPattern: '/analytics/viper/foo-403',
         },
         response: {
           status: 403,
@@ -134,10 +145,10 @@ describe('/api/viper/:nomisId', () => {
         },
       })
         .then(() =>
-          request(baseUrl).get('/api/viper/foo')
+          request(baseUrl).get('/api/viper/foo-403')
             .expect(404)
             .then((res) => {
-              expect(res.body).to.eql({ messasge: 'Error retrieving viper rating for nomisId: foo. The cause was: Not found' });
+              expect(res.body).to.eql({ messasge: 'Error retrieving viper rating for nomisId: foo-403. The cause was: Not found' });
             }),
         );
     });
@@ -147,7 +158,7 @@ describe('/api/viper/:nomisId', () => {
       return primeMock({
         request: {
           method: 'GET',
-          urlPattern: '/analytics/viper/foo',
+          urlPattern: '/analytics/viper/foo-400',
         },
         response: {
           status: 400,
@@ -158,10 +169,10 @@ describe('/api/viper/:nomisId', () => {
         },
       })
         .then(() =>
-          request(baseUrl).get('/api/viper/foo')
+          request(baseUrl).get('/api/viper/foo-400')
             .expect(404)
             .then((res) => {
-              expect(res.body).to.eql({ messasge: 'Error retrieving viper rating for nomisId: foo. The cause was: Not found' });
+              expect(res.body).to.eql({ messasge: 'Error retrieving viper rating for nomisId: foo-400. The cause was: Not found' });
             }),
         );
     });
@@ -171,7 +182,7 @@ describe('/api/viper/:nomisId', () => {
       return primeMock({
         request: {
           method: 'GET',
-          urlPattern: '/analytics/viper/foo',
+          urlPattern: '/analytics/viper/foo-500',
         },
         response: {
           status: 500,
@@ -182,10 +193,10 @@ describe('/api/viper/:nomisId', () => {
         },
       })
         .then(() =>
-          request(baseUrl).get('/api/viper/foo')
+          request(baseUrl).get('/api/viper/foo-500')
             .expect(404)
             .then((res) => {
-              expect(res.body).to.eql({ messasge: 'Error retrieving viper rating for nomisId: foo. The cause was: Not found' });
+              expect(res.body).to.eql({ messasge: 'Error retrieving viper rating for nomisId: foo-500. The cause was: Not found' });
             }),
         );
     });
@@ -195,17 +206,17 @@ describe('/api/viper/:nomisId', () => {
       return primeMock({
         request: {
           method: 'GET',
-          urlPattern: '/analytics/viper/foo',
+          urlPattern: '/analytics/viper/foo-empty',
         },
         response: {
           fault: 'EMPTY_RESPONSE',
         },
       })
         .then(() =>
-          request(baseUrl).get('/api/viper/foo')
+          request(baseUrl).get('/api/viper/foo-empty')
             .expect(404)
             .then((res) => {
-              expect(res.body).to.eql({ messasge: 'Error retrieving viper rating for nomisId: foo. The cause was: Not found' });
+              expect(res.body).to.eql({ messasge: 'Error retrieving viper rating for nomisId: foo-empty. The cause was: Not found' });
             }),
         );
     });
@@ -215,17 +226,17 @@ describe('/api/viper/:nomisId', () => {
       return primeMock({
         request: {
           method: 'GET',
-          urlPattern: '/analytics/viper/foo',
+          urlPattern: '/analytics/viper/foo-closed',
         },
         response: {
           fault: 'RANDOM_DATA_THEN_CLOSE',
         },
       })
         .then(() =>
-          request(baseUrl).get('/api/viper/foo')
+          request(baseUrl).get('/api/viper/foo-closed')
             .expect(404)
             .then((res) => {
-              expect(res.body).to.eql({ messasge: 'Error retrieving viper rating for nomisId: foo. The cause was: Not found' });
+              expect(res.body).to.eql({ messasge: 'Error retrieving viper rating for nomisId: foo-closed. The cause was: Not found' });
             }),
         );
     });
@@ -235,27 +246,27 @@ describe('/api/viper/:nomisId', () => {
       return primeMock({
         request: {
           method: 'GET',
-          urlPattern: '/analytics/viper/foo',
+          urlPattern: '/analytics/viper/foo-mal',
         },
         response: {
           fault: 'MALFORMED_RESPONSE_CHUNK',
         },
       })
         .then(() =>
-          request(baseUrl).get('/api/viper/foo')
+          request(baseUrl).get('/api/viper/foo-mal')
             .expect(404)
             .then((res) => {
-              expect(res.body.messasge).to.contain('Error retrieving viper rating for nomisId: foo. The cause was: Invalid body:');
+              expect(res.body.messasge).to.contain('Error retrieving viper rating for nomisId: foo-mal. The cause was: Invalid body:');
             }),
         );
     });
 
     it('returns a 404 (not found) when response body is invalid', function test() {
       this.timeout(5000);
-      return primeMock({
+      primeMock({
         request: {
           method: 'GET',
-          urlPattern: '/analytics/viper/foo',
+          urlPattern: '/analytics/viper/foo-invalid',
         },
         response: {
           status: 200,
@@ -266,12 +277,12 @@ describe('/api/viper/:nomisId', () => {
         },
       })
         .then(() =>
-          request(baseUrl).get('/api/viper/foo')
-            .expect(404)
-            .then((res) => {
-              expect(res.body).to.eql({ messasge: 'Error retrieving viper rating for nomisId: foo. The cause was: Invalid body: {"id": "1234", "value": 0.42}' });
-            }),
-        );
+          request(baseUrl).get('/api/viper/foo-invalid')
+            .expect(404),
+        )
+        .then((res) => {
+          expect(res.body).to.eql({ messasge: 'Error retrieving viper rating for nomisId: foo-invalid. The cause was: Invalid body: {"id": "1234", "value": 0.42}' });
+        });
     });
 
     it('returns a 404 (not found) when response is the wrong format', function test() {
@@ -279,7 +290,7 @@ describe('/api/viper/:nomisId', () => {
       return primeMock({
         request: {
           method: 'GET',
-          urlPattern: '/analytics/viper/foo',
+          urlPattern: '/analytics/viper/foo-wrong',
         },
         response: {
           status: 200,
@@ -290,11 +301,11 @@ describe('/api/viper/:nomisId', () => {
         },
       })
         .then(() =>
-          request(baseUrl).get('/api/viper/foo')
+          request(baseUrl).get('/api/viper/foo-wrong')
             .expect(404)
             .then((res) => {
               expect(res.body).to.eql(
-                { messasge: 'Error retrieving viper rating for nomisId: foo. The cause was: Invalid body: undefined' });
+                { messasge: 'Error retrieving viper rating for nomisId: foo-wrong. The cause was: Invalid body: undefined' });
             }),
         );
     });
@@ -304,11 +315,11 @@ describe('/api/viper/:nomisId', () => {
       return primeMock({
         request: {
           method: 'GET',
-          urlPattern: '/analytics/viper/foo',
+          urlPattern: '/analytics/viper/foo-timeout',
         },
         response: {
           status: 200,
-          body: '{"nomsId": "foo", "viperRating": 0.99}',
+          body: '{"nomsId": "foo-timeout", "viperRating": 0.99}',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -316,12 +327,12 @@ describe('/api/viper/:nomisId', () => {
         },
       })
         .then(() =>
-          request(baseUrl).get('/api/viper/foo')
+          request(baseUrl).get('/api/viper/foo-timeout')
             .expect(404)
             .then((res) => {
               expect(res.body).to.eql(
                 {
-                  messasge: 'Error retrieving viper rating for nomisId: foo. The cause was: Not found',
+                  messasge: 'Error retrieving viper rating for nomisId: foo-timeout. The cause was: Not found',
                 });
             }),
         );
