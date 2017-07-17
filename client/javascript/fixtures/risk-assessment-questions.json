@@ -1,8 +1,8 @@
 [
   {
     "section": "introduction",
-    "title": "Explain this",
-    "description": "<p class='text'>Most people share cells in this prison.</p><p class='text'>The questions you're going to ask are about making sure everyone's as safe as possible.</p><p class='text'>Serious incidents between cellmates are extremely rare.</p><p class='text'>You've run a background check looking at their sentence, past behaviour and any history in prison.</p><p class='text'>Honest answers mean everyone will be safer.</p><p class='text'>The information they give will be recorded and may be used by other prison staff.</p>",
+    "title": "Making this process fair and open",
+    "description": "<h2 class='heading-medium'>You are talking to them about their suitability to share a cell.</h2><p>Normally people in this prison share cells.</p><p>You are going to ask some questions. These are about making sure everyone's as safe as possible.</p><p>Honest answers mean everyone will be safer.</p><p>It is extremely rare that there are any serious incidents between cellmates.</p><p>The system will run a background check looking at their sentence, past behaviour and any history in prison.</p><p>The information they give will be recorded and may be used by other prison staff.</p>",
     "template": "confirmation"
   },
   {

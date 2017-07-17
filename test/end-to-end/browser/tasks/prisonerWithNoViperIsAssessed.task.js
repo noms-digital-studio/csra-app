@@ -11,7 +11,7 @@ function whenAPrisonerWithNoViperIsAssessed() {
   expect(RiskAssessmentPrisonerProfilePage.prisonerName).to.equal('James Neo');
 
   RiskAssessmentPrisonerProfilePage.clickContinue();
-  expect(RiskAssessmentExplanationPage.mainHeading).to.equal('Explain this');
+  expect(RiskAssessmentExplanationPage.mainHeading).to.equal('Making this process fair and open');
 
   RiskAssessmentExplanationPage.confirmAndContinue();
   expect(RiskAssessmentExplanationPage.mainHeading).to.equal('No predictor data available:');

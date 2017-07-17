@@ -10,7 +10,7 @@ function whenAViolentPrisonerIsAssessed() {
   expect(RiskAssessmentPrisonerProfilePage.prisonerName).to.equal('Ian Rate');
 
   RiskAssessmentPrisonerProfilePage.clickContinue();
-  expect(RiskAssessmentExplanationPage.mainHeading).to.equal('Explain this');
+  expect(RiskAssessmentExplanationPage.mainHeading).to.equal('Making this process fair and open');
 
   RiskAssessmentExplanationPage.confirmAndContinue();
   expect(RiskAssessmentExplanationPage.mainHeading).to.equalIgnoreCase('Current recommendation: single cell');

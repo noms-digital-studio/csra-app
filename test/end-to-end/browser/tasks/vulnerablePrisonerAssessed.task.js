@@ -12,7 +12,7 @@ function whenAVulnerablePrisonerIsAssessed() {
   expect(RiskAssessmentPrisonerProfilePage.prisonerName).to.equal('John Lowe');
 
   RiskAssessmentPrisonerProfilePage.clickContinue();
-  expect(RiskAssessmentExplanationPage.mainHeading).to.equal('Explain this');
+  expect(RiskAssessmentExplanationPage.mainHeading).to.equal('Making this process fair and open');
 
   RiskAssessmentExplanationPage.confirmAndContinue();
   expect(RiskAssessmentExplanationPage.mainHeading).to.equalIgnoreCase('Current recommendation: shared cell');
@@ -56,7 +56,7 @@ function thenTheAssessmentIsCompleted() {
     nomisId: 'J1234LO',
     assessmentId,
     questionData: {
-      introduction: { question_id: 'introduction', question: 'Explain this', answer: '' },
+      introduction: { question_id: 'introduction', question: 'Making this process fair and open', answer: '' },
       'risk-of-violence': { question_id: 'risk-of-violence', question: 'Viper result', answer: '' },
       'how-do-you-feel': {
         question_id: 'how-do-you-feel',

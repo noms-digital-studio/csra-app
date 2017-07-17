@@ -21,7 +21,7 @@ const ConfirmationWithAside = (
               type="checkbox"
               id="confirmation"
               value="accepted"
-              text="I confirm this has been explained and the prisoner understands"
+              text="I confirm this has been explained and the prisoner understands."
               name="confirmation"
               selected={confirmation === 'accepted'}
             />

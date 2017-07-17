@@ -19,7 +19,7 @@ function aLowRiskPrisonerIsAssessed(usesDrugs) {
   expect(RiskAssessmentPrisonerProfilePage.prisonerName).to.equal('John Lowe');
 
   RiskAssessmentPrisonerProfilePage.clickContinue();
-  expect(RiskAssessmentExplanationPage.mainHeading).to.equal('Explain this');
+  expect(RiskAssessmentExplanationPage.mainHeading).to.equal('Making this process fair and open');
 
   RiskAssessmentExplanationPage.confirmAndContinue();
   expect(RiskAssessmentExplanationPage.mainHeading).to.equalIgnoreCase(
@@ -123,7 +123,7 @@ function thenTheAssessmentIsCompleted({ sharedText, reasons, hasUsedDrugs }) {
     questionData: {
       introduction: {
         question_id: 'introduction',
-        question: 'Explain this',
+        question: 'Making this process fair and open',
         answer: '',
       },
       'risk-of-violence': { question_id: 'risk-of-violence', question: 'Viper result', answer: '' },
