@@ -2,7 +2,7 @@
   {
     "section": "introduction",
     "title": "Making this process fair and open",
-    "description": "<h2 class='heading-medium'>You are talking to them about their suitability to share a cell.</h2><p>Normally people in this prison share cells.</p><p>You are going to ask some questions. These are about making sure everyone's as safe as possible.</p><p>Honest answers mean everyone will be safer.</p><p>It is extremely rare that there are any serious incidents between cellmates.</p><p>The system will run a background check looking at their sentence, past behaviour and any history in prison.</p><p>The information they give will be recorded and may be used by other prison staff.</p>",
+    "description": "<h2 class='heading-medium'>Explain this to the prisoner</h2><p>You are talking to them about their suitability to share a cell.</p><p>Normally people in this prison share cells.</p><p>You are going to ask some questions. These are about making sure everyone's as safe as possible.</p><p>Honest answers mean everyone will be safer.</p><p>It is extremely rare that there are any serious incidents between cellmates.</p><p>The system will run a background check looking at their sentence, past behaviour and any history in prison.</p><p>The information they give will be recorded and may be used by other prison staff.</p>",
     "template": "confirmation"
   },
   {
@@ -17,7 +17,7 @@
       },
       "unknown": {
         "title": "No predictor data available:",
-        "description": "<p>The predictor hasn’t found any information about this person, so at this stage it can’t make an initial recommendation.</p><p>This could be because:</p><ul class='list list-bullet text'><li>they’re new to the prison system</li><li>there’s a technical reason the information isn’t currently available</li></ul><h3 class='heading-medium'>What you need to do</h3><p>Continue the risk assessment, but also refer to any other sources of information available.</p><p class='u-margin-bottom-large'>You must make sure you explain this to the prisoner and they understand.</p>"
+        "description": "<p>The predictor hasn't found any information about this person, so at this stage it can't make an initial recommendation.</p><p>This could be because:</p><ul class='list list-bullet text'><li>they're new to the prison system</li><li>there's a technical reason the information isn't currently available</li></ul><h3 class='heading-medium'>What you need to do</h3><p>Continue the risk assessment, but also refer to any other sources of information available.</p><p class='u-margin-bottom-large'>You must make sure you explain this to the prisoner and they understand.</p>"
       }
     },
     "template": "viper",
@@ -67,7 +67,7 @@
         "no": { "text": "No" }
       }
     },
-    "description": "<p class='lede text'>For example, they’ve previously been a victim of violence in prison or they’re in debt to another prisoner.</p>",
+    "description": "<p class='lede text'>For example, they've previously been a victim of violence in prison or they're in debt to another prisoner.</p>",
     "sharedCellPredicate": {
       "type": "QUESTION",
       "value": "no",
