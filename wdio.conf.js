@@ -11,7 +11,7 @@ exports.config = {
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
   specs: ['./test/end-to-end/browser/**/*.spec.js'],
-  waitforTimeout: 99999,
+  waitforTimeout: 150000,
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
@@ -60,13 +60,13 @@ exports.config = {
   sync: true,
   //
   // Level of logging verbosity: silent | verbose | command | data | result | error
-  logLevel: 'command',
+  logLevel: 'error',
   //
   // Enables colors for log output.
   coloredLogs: true,
   //
   // Saves a screenshot to a given path if a command fails.
-  // screenshotPath: './errorShots/',
+  screenshotPath: './errorShots/',
   //
   // Set a base URL in order to shorten url command calls. If your url parameter starts
   // with "/", then the base url gets prepended.
@@ -133,7 +133,7 @@ exports.config = {
     ui: 'bdd',
     compilers: ['js:babel-register'],
     require: [],
-    timeout: 999999,
+    timeout: 30000,
   },
   //
   // =====
