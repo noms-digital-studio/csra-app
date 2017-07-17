@@ -45,7 +45,7 @@ exports.config = {
       // 5 instance gets started at a time.
       maxInstances: 5,
       //
-      browserName: process.env.E2E_BROWSER_NAME || 'phantomjs', // options: chrome || firefox || phantomjs
+      browserName: 'phantomjs', // options: chrome || firefox || phantomjs
     },
   ],
   //
@@ -66,7 +66,7 @@ exports.config = {
   coloredLogs: true,
   //
   // Saves a screenshot to a given path if a command fails.
-  screenshotPath: './errorShots/',
+  screenshotPath: process.env.E2E_SCREENSHOTS_PATH,
   //
   // Set a base URL in order to shorten url command calls. If your url parameter starts
   // with "/", then the base url gets prepended.

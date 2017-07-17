@@ -48,4 +48,5 @@ deployment:
           environment:
             APP_BASE_URL: http://csra-mock.hmpps.dsd.io
             E2E_REPORTS_PATH: $CIRCLE_TEST_REPORTS/end-to-end
+            E2E_SCREENSHOTS_PATH: $CIRCLE_ARTIFACTS/end-to-end/errorShots
 
