@@ -9,6 +9,10 @@ class CommentBox extends Component {
     };
   }
 
+  componentDidMount() {
+    this.commentBox.focus();
+  }
+
   handleChange(e) {
     this.setState({ charactersLeft: this.props.limit - e.target.value.length });
   }
@@ -21,6 +25,7 @@ class CommentBox extends Component {
     return (
       <div>
         <textarea
+          ref={(el) => { this.commentBox = el; }}
           data-element={id}
           onChange={handleChange}
           onPaste={handleChange}

@@ -47,4 +47,12 @@ describe('<CommentBox />', () => {
 
     expect(characterLimitBox.text()).to.include('27 characters left');
   });
+
+  it('focus on the element on component mount', () => {
+    const wrapper = mount(<CommentBox id="foo" limit={30} />);
+    const commentInput = wrapper.find('[data-element="foo"]');
+    const focusedElement = document.activeElement;
+
+    expect(commentInput.matchesElement(focusedElement)).to.equal(true, 'The comment box was not focused');
+  });
 });
