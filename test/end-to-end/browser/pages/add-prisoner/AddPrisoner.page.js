@@ -13,9 +13,9 @@ class AddPrisonerPage extends BasePage {
     browser.setValue('[data-dob-year]', year);
   }
 
-  enterNomisId(id) { browser.setValue('[data-nomis-id]', id); }
-
-  clickAddPrisonerButton() { browser.click('[data-add-prisoner-button]'); }
+  enterNomisId(id) {
+    browser.setValue('[data-nomis-id]', id);
+  }
 }
 
 export default new AddPrisonerPage();

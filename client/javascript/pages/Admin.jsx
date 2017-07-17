@@ -130,7 +130,7 @@ class Admin extends Component {
           <Link
             href="/sign-in"
             className="button c-btn-right--xcustom"
-            data-continue
+            data-continue-button
           >
             Continue to sign in
           </Link>

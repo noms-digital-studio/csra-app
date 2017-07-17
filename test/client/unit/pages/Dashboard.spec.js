@@ -95,7 +95,7 @@ describe('<Dashboard />', () => {
 
       it('provides a link to add a person to assess', () => {
         const wrapper = mount(<Dashboard />);
-        expect(wrapper.find('[data-add-prisoner-button]').length).to.equal(1);
+        expect(wrapper.find('[data-continue-button]').length).to.equal(1);
       });
     });
 

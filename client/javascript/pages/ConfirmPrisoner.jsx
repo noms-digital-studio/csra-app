@@ -47,7 +47,7 @@ const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
             onClick(prisoner);
           }}
           className="button"
-          data-confirm-button
+          data-continue-button
         >
           Confirm
           </button>

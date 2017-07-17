@@ -2,7 +2,7 @@
 import BasePage from './BasePage';
 
 class DashboardPage extends BasePage {
-  clickAddPrisoner() { browser.click('[data-add-prisoner-button]'); }
+  clickAddPrisoner() { browser.click('[data-continue-button]'); }
 
   clickRiskAssessmentStartLinkForNomisId(nomisId) {
     browser.click(`[data-start-csra-link=${nomisId}]`);

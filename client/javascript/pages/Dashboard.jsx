@@ -99,7 +99,7 @@ class Dashboard extends Component {
               <Link
                 to={routes.ADD_OFFENDER}
                 className="button"
-                data-add-prisoner-button
+                data-continue-button
               >
                   Add someone to assess
                 </Link>
@@ -111,7 +111,7 @@ class Dashboard extends Component {
                     <Link
                       to={routes.ADD_OFFENDER}
                       className="button"
-                      data-add-prisoner-button
+                      data-continue-button
                     >
                         Add someone to assess
                       </Link>

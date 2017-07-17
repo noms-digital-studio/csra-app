@@ -2,7 +2,6 @@
 import BasePage from './BasePage';
 
 
-class FullAssessmentCompletePage extends BasePage {
-}
+class FullAssessmentCompletePage extends BasePage {}
 
 export default new FullAssessmentCompletePage();
