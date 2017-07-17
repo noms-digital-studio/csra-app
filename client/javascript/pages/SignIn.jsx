@@ -46,7 +46,7 @@ class SignIn extends Component {
               type="submit"
               className="button"
               value="Sign in"
-              data-sign-in-button
+              data-continue-button
             />
           </div>
         </form>
