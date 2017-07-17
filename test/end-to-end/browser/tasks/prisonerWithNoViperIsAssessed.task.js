@@ -20,7 +20,7 @@ function whenAPrisonerWithNoViperIsAssessed() {
   expect(RiskAssessmentCommentsPage.mainHeading).to.equal('How do you think they feel about sharing a cell at this moment?');
 
   RiskAssessmentCommentsPage.commentAndContinue('sharing comment');
-  expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Is there any indication they might seriously hurt a cellmate?');
+  expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Is there any genuine indication they might seriously hurt a cellmate?');
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
   expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Do you think they\'re vulnerable?');
