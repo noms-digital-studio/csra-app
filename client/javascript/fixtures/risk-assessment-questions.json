@@ -107,7 +107,7 @@
   },
   {
     "section": "drug-misuse",
-    "title": "Have they used drugs in the last month?",
+    "title": "Have they taken illicit drugs in the last month?",
     "template": "default_with_comment",
     "formFields": {
       "input": {
