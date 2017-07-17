@@ -40,12 +40,12 @@ function thenTheFullAssessmentIsCompleted() {
 }
 
 describe('Both assessments (Shared cell outcome)', () => {
-  before(() => new Promise((resolve, reject) => {
-    db.raw(
-      "IF NOT EXISTS (SELECT * FROM viper WHERE nomis_id = 'J1234LO') INSERT INTO viper VALUES('J1234LO', 0.35) ELSE UPDATE viper SET rating = 0.35 WHERE nomis_id = 'J1234LO'")
-      .then(resolve)
-      .catch(reject);
-  }));
+  before(() => {
+    if (process.env.USE_VIPER_SERVICE === 'true') {
+      return Promise.resolve();
+    }
+    return db.raw("IF NOT EXISTS (SELECT * FROM viper WHERE nomis_id = 'J1234LO') INSERT INTO viper VALUES('J1234LO', 0.35) ELSE UPDATE viper SET rating = 0.35 WHERE nomis_id = 'J1234LO'");
+  });
 
   it('Assesses a low risk prisoner', () =>
     new Promise((resolve, reject) => {
