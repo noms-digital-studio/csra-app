@@ -1,4 +1,4 @@
-import superagent from 'superagent';
+import xhr from 'xhr';
 
 import postAssessmentToBackend
   from '../../../../client/javascript/services/postAssessmentToBackend';
@@ -40,29 +40,32 @@ const postParams = {
 };
 
 const postData = {
-  nomisId: 'foo-nomis-id',
-  outcome: 'foo-outcome',
-  type: 'foo',
-  viperScore: 0.1,
-  questions: {
-    'foo-section': {
-      question: 'foo-title',
-      question_id: 'foo-section',
-      answer: 'no',
+  body: {
+    nomisId: 'foo-nomis-id',
+    outcome: 'foo-outcome',
+    type: 'foo',
+    viperScore: 0.1,
+    questions: {
+      'foo-section': {
+        question: 'foo-title',
+        question_id: 'foo-section',
+        answer: 'no',
+      },
+      'bar-section': {
+        question: 'bar-title',
+        question_id: 'bar-section',
+        answer: 'no',
+      },
     },
-    'bar-section': {
-      question: 'bar-title',
-      question_id: 'bar-section',
-      answer: 'no',
-    },
+    reasons: [],
   },
-  reasons: [],
+  json: true,
 };
 
 describe('#postAssessmentToBackend', () => {
   let postStub;
   before(() => {
-    postStub = sinon.stub(superagent, 'post');
+    postStub = sinon.stub(xhr, 'post');
   });
   after(() => {
     postStub.restore();
@@ -70,9 +73,9 @@ describe('#postAssessmentToBackend', () => {
 
   it('makes a POST request to /api/assessment', () => {
     const callback = sinon.spy();
-    const response = { body: { data: { id: 123 } } };
+    const responseBody = { data: { id: 123 } };
 
-    postStub.yields(null, response);
+    postStub.yields(null, { status: 200 }, responseBody);
 
     postAssessmentToBackend('foo', postParams, callback);
 
@@ -85,9 +88,9 @@ describe('#postAssessmentToBackend', () => {
 
   it('handles an unexpected response', () => {
     const callback = sinon.spy();
-    const response = { error: 'foo error' };
+    const responseBody = { msg: 'foo error' };
 
-    postStub.yields(null, response);
+    postStub.yields(null, { status: 500, body: responseBody }, responseBody);
     postAssessmentToBackend('foo', postParams, callback);
 
     expect(callback.calledOnce).to.equal(true);
@@ -96,9 +99,9 @@ describe('#postAssessmentToBackend', () => {
 
   it('handles failed responses', () => {
     const callback = sinon.spy();
-    const response = { error: 'foo error' };
+    const responseBody = { error: 'foo error' };
 
-    postStub.yields(new Error('foo'), response);
+    postStub.yields(new Error('foo'), { status: 500 }, responseBody);
     postAssessmentToBackend('foo', postParams, callback);
 
     expect(callback.calledOnce).to.equal(true);

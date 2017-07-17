@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
-import superagent from 'superagent';
+import xhr from 'xhr';
 
 import { fakeStore } from '../test-helpers';
 
@@ -28,7 +28,7 @@ describe('<ConfirmOffender />', () => {
     context('when user clicks the continue button', () => {
       context('and a server error is returned', () => {
         it('does not call the addViperScore action', () => {
-          const getStub = sinon.stub(superagent, 'get');
+          const getStub = sinon.stub(xhr, 'get');
           const store = fakeStore({
             offender: {
               prisonerFormData: prisoner,
@@ -36,7 +36,7 @@ describe('<ConfirmOffender />', () => {
           });
           const wrapper = mountComponent(store);
 
-          getStub.yields('some error');
+          getStub.yields('some error', { status: 500 }, null);
           wrapper.find('[data-confirm]').simulate('click');
 
           expect(
@@ -52,7 +52,7 @@ describe('<ConfirmOffender />', () => {
 
       context('and a server returns a success response', () => {
         it('calls the addViperScore action', () => {
-          const getStub = sinon.stub(superagent, 'get');
+          const getStub = sinon.stub(xhr, 'get');
           const store = fakeStore({
             offender: {
               prisonerFormData: prisoner,
@@ -60,12 +60,11 @@ describe('<ConfirmOffender />', () => {
           });
           const wrapper = mountComponent(store);
 
-          getStub.yields(null, {
-            body: {
-              nomisId: 'foo-nomis-id',
-              viperRating: 0.50,
-            },
+          getStub.yields(null, { status: 200 }, {
+            nomisId: 'foo-nomis-id',
+            viperRating: 0.50,
           });
+
           wrapper.find('[data-confirm]').simulate('click');
 
           expect(getStub.lastCall.args[0]).to.match(/\/api\/viper\/foo-nomis-id/, "the url didn't match");
@@ -83,7 +82,7 @@ describe('<ConfirmOffender />', () => {
 
       context('and any server response is returned', () => {
         it('confirms the added prisoner', () => {
-          const getStub = sinon.stub(superagent, 'get');
+          const getStub = sinon.stub(xhr, 'get');
 
           const store = fakeStore({
             offender: {
@@ -112,7 +111,7 @@ describe('<ConfirmOffender />', () => {
         });
 
         it('navigates to the dashboard', () => {
-          const getStub = sinon.stub(superagent, 'get');
+          const getStub = sinon.stub(xhr, 'get');
           const store = fakeStore({
             offender: {
               prisonerFormData: prisoner,

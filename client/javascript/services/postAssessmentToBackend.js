@@ -1,4 +1,4 @@
-import superagent from 'superagent';
+import xhr from 'xhr';
 import path from 'ramda/src/path';
 
 import buildAssessmentRequest from './buildAssessmentRequest';
@@ -19,16 +19,17 @@ const postAssessmentToBackend = (assessmentType, {
     answers,
     reasons,
   });
-  const target = `${window.location.origin}/api/assessment`;
+  // const target = `${window.location.origin}/api/assessment`;
+  const target = '/api/assessment';
 
-  superagent.post(target, riskAssessmentRequestParams, (error, res) => {
+  xhr.post(target, { json: true, body: riskAssessmentRequestParams }, (error, resp, body) => {
     if (error) {
       if (window.appInsights) {
         window.appInsights.trackEvent('Failed to store assessment for:', { nomisId, error });
       }
       callback(null);
     } else {
-      callback(path(['body', 'data', 'id'], res) || null);
+      callback(path(['data', 'id'], body) || null);
     }
   });
 };

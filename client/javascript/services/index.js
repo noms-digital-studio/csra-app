@@ -1,5 +1,9 @@
 import not from 'ramda/src/not';
-import superagent from 'superagent';
+import has from 'ramda/src/has';
+import isNil from 'ramda/src/isNil';
+import compose from 'ramda/src/compose';
+import allPass from 'ramda/src/allPass';
+import xhr from 'xhr';
 
 import defaultViperScores from '../fixtures/viper.json';
 import defaultOffenderProfiles from '../fixtures/nomis.json';
@@ -141,15 +145,27 @@ export const extractDecision = ({ questions, answers, exitPoint }) => {
   };
 };
 
+const validateViperResponse = (body) => {
+  const hasBody = compose(not, isNil);
+  const hasViperRating = has('viperRating');
+  const hasNomisId = has('nomisId');
+  const validResponse = allPass([hasBody, hasViperRating, hasNomisId]);
+
+  if (validResponse(body)) {
+    return body;
+  }
+
+  return null;
+};
 
 export const retrieveViperScoreFor = (nomisId, callback) => {
-  const url = `${window.location.origin}/api/viper/${nomisId}`;
+  const url = `/api/viper/${nomisId}`;
 
-  superagent.get(url, (error, response) => {
+  xhr.get(url, (error, response, body) => {
     if (error) {
-      return callback('failed to retrieve viper result');
+      return callback(null);
     }
 
-    return callback(null, response.body);
+    return callback(validateViperResponse(body));
   });
 };

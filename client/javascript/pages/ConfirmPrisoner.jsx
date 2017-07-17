@@ -3,7 +3,6 @@ import DocumentTitle from 'react-document-title';
 import { replace } from 'react-router-redux';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import not from 'ramda/src/not';
 import routes from '../constants/routes';
 import { retrieveViperScoreFor } from '../services';
 import { confirmPrisoner, addViperScore } from '../actions';
@@ -63,8 +62,8 @@ const mapStateToProps = state => ({
 
 const mapActionsToProps = dispatch => ({
   onClick: (prisoner) => {
-    retrieveViperScoreFor(prisoner['nomis-id'], (error, response) => {
-      if (not(error)) {
+    retrieveViperScoreFor(prisoner['nomis-id'], (response) => {
+      if (response) {
         dispatch(addViperScore({ viperScore: response.viperRating, nomisId: response.nomisId }));
       }
 
