@@ -43,7 +43,7 @@ function aLowRiskPrisonerIsAssessed(usesDrugs) {
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
   expect(RiskAssessmentYesNoPage.mainHeading).to.equal(
-    'Are they part of a gang, or likely to join a gang in prison?',
+    'Are they in a gang?',
   );
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
@@ -144,7 +144,7 @@ function thenTheAssessmentIsCompleted({ sharedText, reasons, hasUsedDrugs }) {
       },
       'gang-affiliation': {
         question_id: 'gang-affiliation',
-        question: 'Are they part of a gang, or likely to join a gang in prison?',
+        question: 'Are they in a gang?',
         answer: 'no',
       },
       'drug-misuse': {

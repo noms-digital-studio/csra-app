@@ -80,7 +80,7 @@
   },
   {
     "section": "gang-affiliation",
-    "title": "Are they part of a gang, or likely to join a gang in prison?",
+    "title": "Are they in a gang?",
     "template": "default_with_comment",
     "formFields": {
       "input": {
