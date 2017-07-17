@@ -26,7 +26,7 @@ function whenAPrisonerWithNoViperIsAssessed() {
   expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Do you think they\'re vulnerable?');
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
-  expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Are they part of a gang, or likely to join a gang in prison?');
+  expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Are they in a gang?');
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
   expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Have they used drugs in the last month?');
