@@ -2904,7 +2904,7 @@ fd-slicer@~1.0.1:
   dependencies:
     pend "~1.2.0"
 
-fibers@^1.0.15:
+fibers@~1.0.15:
   version "1.0.15"
   resolved "https://registry.yarnpkg.com/fibers/-/fibers-1.0.15.tgz#22f039c8f18b856190fbbe4decf056154c1eae9c"
 
@@ -7260,13 +7260,13 @@ wdio-junit-reporter@^0.3.0:
     junit-report-builder "~1.2.0"
     mkdirp "~0.5.1"
 
-wdio-mocha-framework@^0.5.9:
-  version "0.5.9"
-  resolved "https://registry.yarnpkg.com/wdio-mocha-framework/-/wdio-mocha-framework-0.5.9.tgz#7cd42cfa9ca31e396d055234d923be2843f95847"
+wdio-mocha-framework@^0.5.10:
+  version "0.5.10"
+  resolved "https://registry.yarnpkg.com/wdio-mocha-framework/-/wdio-mocha-framework-0.5.10.tgz#d1f6b5b1129a845f273672d9b2ad0c4b4f37cba1"
   dependencies:
     babel-runtime "^6.23.0"
     mocha "^3.2.0"
-    wdio-sync "0.6.13"
+    wdio-sync "0.6.14"
 
 wdio-phantomjs-service@^0.2.2:
   version "0.2.2"
@@ -7282,15 +7282,15 @@ wdio-spec-reporter@^0.1.0:
     babel-runtime "~6.23.0"
     humanize-duration "~3.10.0"
 
-wdio-sync@0.6.13:
-  version "0.6.13"
-  resolved "https://registry.yarnpkg.com/wdio-sync/-/wdio-sync-0.6.13.tgz#33bdc2f8c97ddef3866dc97f31f3a8adb132cb88"
+wdio-sync@0.6.14:
+  version "0.6.14"
+  resolved "https://registry.yarnpkg.com/wdio-sync/-/wdio-sync-0.6.14.tgz#a1dcd5907ba1d04154aae6176c622d910c3ca9b3"
   dependencies:
     babel-runtime "6.23.0"
-    fibers "^1.0.15"
+    fibers "~1.0.15"
     object.assign "^4.0.3"
 
-webdriverio@^4.6.2:
+webdriverio@^4.8.0:
   version "4.8.0"
   resolved "https://registry.yarnpkg.com/webdriverio/-/webdriverio-4.8.0.tgz#d52929b749080f89967f6e1614051cbc8172d132"
   dependencies:
