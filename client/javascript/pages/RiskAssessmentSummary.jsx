@@ -54,6 +54,7 @@ const RiskAssessmentSummary = ({
           <div className="c-print-link c-print-link--small-mt">
             <button
               className="c-icon-button link"
+              type="button"
               onClick={() => window.print()}
             >
               Print Page
@@ -97,6 +98,7 @@ const RiskAssessmentSummary = ({
             <span>You must print a copy of this summary for healthcare.</span>
             <span className="u-spacing-right" />
             <button
+              type="button"
               className="c-icon-button link u-print-hide"
               onClick={() => window.print()}
             >

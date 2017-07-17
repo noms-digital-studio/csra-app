@@ -50,6 +50,7 @@ const FullAssessmentOutcome = ({
           <div className="column-one-third">
             <div className="c-print-link u-text-align-right">
               <button
+                type="button"
                 className="c-icon-button link"
                 onClick={() => window.print()}
               >
@@ -86,6 +87,7 @@ const FullAssessmentOutcome = ({
         {alreadyCompleted
           ? <button
             className="button"
+            type="button"
             data-continue-button
             to={routes.DASHBOARD}
             onClick={onReturnHome}
@@ -109,7 +111,7 @@ const FullAssessmentOutcome = ({
               />
             </div>
 
-            <button className="button" data-continue-button>
+            <button className="button" type="submit" data-continue-button>
                 Complete Assessment
               </button>
           </form>}

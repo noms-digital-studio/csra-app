@@ -62,6 +62,7 @@ const OffenderProfile = ({
 
       <p>
         <button
+          type="button"
           onClick={onSubmit}
           className="button button-start u-margin-bottom-default"
           data-continue-button

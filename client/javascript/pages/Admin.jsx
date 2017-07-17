@@ -112,6 +112,7 @@ class Admin extends Component {
             onClick={() => this.addDefaultPrisoners()}
             className="button"
             data-load-data-button
+            type="button"
           >
             Load Data
           </button>
@@ -121,6 +122,7 @@ class Admin extends Component {
             onClick={() => this.clearBrowser()}
             className="button"
             data-clear-button
+            type="button"
           >
             Clear Browser Session and Local Storage
           </button>

@@ -41,6 +41,7 @@ const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
 
       <p>
         <button
+          type="button"
           data-confirm
           onClick={() => {
             onClick(prisoner);
