@@ -1,7 +1,6 @@
 import not from 'ramda/src/not';
 import has from 'ramda/src/has';
-import isNil from 'ramda/src/isNil';
-import compose from 'ramda/src/compose';
+import is from 'ramda/src/is';
 import allPass from 'ramda/src/allPass';
 import xhr from 'xhr';
 
@@ -146,7 +145,7 @@ export const extractDecision = ({ questions, answers, exitPoint }) => {
 };
 
 const validateViperResponse = (body) => {
-  const hasBody = compose(not, isNil);
+  const hasBody = is(Object);
   const hasViperRating = has('viperRating');
   const hasNomisId = has('nomisId');
   const validResponse = allPass([hasBody, hasViperRating, hasNomisId]);
