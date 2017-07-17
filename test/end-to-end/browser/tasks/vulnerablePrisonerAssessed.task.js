@@ -21,7 +21,7 @@ function whenAVulnerablePrisonerIsAssessed() {
   expect(RiskAssessmentCommentsPage.mainHeading).to.equal('How do you think they feel about sharing a cell at this moment?');
 
   RiskAssessmentCommentsPage.commentAndContinue('sharing comment');
-  expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Is there any indication they might seriously hurt a cellmate?');
+  expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Is there any genuine indication they might seriously hurt a cellmate?');
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
   expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Do you think they\'re vulnerable?');
@@ -65,7 +65,7 @@ function thenTheAssessmentIsCompleted() {
       },
       'prison-self-assessment': {
         question_id: 'prison-self-assessment',
-        question: 'Is there any indication they might seriously hurt a cellmate?',
+        question: 'Is there any genuine indication they might seriously hurt a cellmate?',
         answer: 'no',
       },
       vulnerability: { question_id: 'vulnerability', question: "Do you think they're vulnerable?", answer: 'yes' },

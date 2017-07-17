@@ -33,7 +33,7 @@ function aLowRiskPrisonerIsAssessed(usesDrugs) {
 
   RiskAssessmentCommentsPage.commentAndContinue('sharing comment');
   expect(RiskAssessmentYesNoPage.mainHeading).to.equal(
-    'Is there any indication they might seriously hurt a cellmate?',
+    'Is there any genuine indication they might seriously hurt a cellmate?',
   );
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
@@ -134,7 +134,7 @@ function thenTheAssessmentIsCompleted({ sharedText, reasons, hasUsedDrugs }) {
       },
       'prison-self-assessment': {
         question_id: 'prison-self-assessment',
-        question: 'Is there any indication they might seriously hurt a cellmate?',
+        question: 'Is there any genuine indication they might seriously hurt a cellmate?',
         answer: 'no',
       },
       vulnerability: {
