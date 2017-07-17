@@ -23,7 +23,7 @@ function whenAPrisonerWithNoViperIsAssessed() {
   expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Is there any genuine indication they might seriously hurt a cellmate?');
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
-  expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Do you think they\'re vulnerable?');
+  expect(RiskAssessmentYesNoPage.mainHeading).to.equal("Do you think they're likely to lash out because they're scared or feeling vulnerable?");
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
   expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Are they in a gang?');

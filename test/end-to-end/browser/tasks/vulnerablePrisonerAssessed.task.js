@@ -24,7 +24,7 @@ function whenAVulnerablePrisonerIsAssessed() {
   expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Is there any genuine indication they might seriously hurt a cellmate?');
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
-  expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Do you think they\'re vulnerable?');
+  expect(RiskAssessmentYesNoPage.mainHeading).to.equal("Do you think they're likely to lash out because they're scared or feeling vulnerable?");
   RiskAssessmentYesNoPage.clickYesAndContinue();
 
   expect(RiskAssessmentSummaryPage.mainHeading).to.equal('Risk assessment summary');
@@ -68,7 +68,7 @@ function thenTheAssessmentIsCompleted() {
         question: 'Is there any genuine indication they might seriously hurt a cellmate?',
         answer: 'no',
       },
-      vulnerability: { question_id: 'vulnerability', question: "Do you think they're vulnerable?", answer: 'yes' },
+      vulnerability: { question_id: 'vulnerability', question: "Do you think they're likely to lash out because they're scared or feeling vulnerable?", answer: 'yes' },
     },
     sharedText: 'single cell',
   })

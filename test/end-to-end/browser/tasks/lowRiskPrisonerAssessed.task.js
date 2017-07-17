@@ -38,7 +38,7 @@ function aLowRiskPrisonerIsAssessed(usesDrugs) {
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
   expect(RiskAssessmentYesNoPage.mainHeading).to.equal(
-    "Do you think they're vulnerable?",
+    "Do you think they're likely to lash out because they're scared or feeling vulnerable?",
   );
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
@@ -139,7 +139,7 @@ function thenTheAssessmentIsCompleted({ sharedText, reasons, hasUsedDrugs }) {
       },
       vulnerability: {
         question_id: 'vulnerability',
-        question: "Do you think they're vulnerable?",
+        question: "Do you think they're likely to lash out because they're scared or feeling vulnerable?",
         answer: 'no',
       },
       'gang-affiliation': {
