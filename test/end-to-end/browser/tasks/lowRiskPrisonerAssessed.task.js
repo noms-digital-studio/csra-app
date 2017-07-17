@@ -57,7 +57,7 @@ function aLowRiskPrisonerIsAssessed(usesDrugs) {
     RiskAssessmentYesNoPage.clickNoAndContinue();
   }
   expect(RiskAssessmentYesNoPage.mainHeading).to.equal(
-    'Do they have any hostile views or prejudices about a particular group?',
+    'Do they have any hostile views or prejudices?',
   );
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
@@ -154,7 +154,7 @@ function thenTheAssessmentIsCompleted({ sharedText, reasons, hasUsedDrugs }) {
       },
       prejudice: {
         question_id: 'prejudice',
-        question: 'Do they have any hostile views or prejudices about a particular group?',
+        question: 'Do they have any hostile views or prejudices?',
         answer: 'no',
       },
       'officers-assessment': {

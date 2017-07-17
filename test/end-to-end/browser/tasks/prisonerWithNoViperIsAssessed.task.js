@@ -32,7 +32,7 @@ function whenAPrisonerWithNoViperIsAssessed() {
   expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Have they taken illicit drugs in the last month?');
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
-  expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Do they have any hostile views or prejudices about a particular group?');
+  expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Do they have any hostile views or prejudices?');
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
   expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Are there any other reasons why you would recommend they have a single cell?');

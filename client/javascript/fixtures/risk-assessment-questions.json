@@ -130,8 +130,8 @@
   },
   {
     "section": "prejudice",
-    "title": "Do they have any hostile views or prejudices about a particular group?",
-    "description": "<p class='lede text'>For example, they have prejudices about race, religion, sexual orientation or particular addictions.</p>",
+    "title": "Do they have any hostile views or prejudices?",
+    "description": "<p class='lede text'>For example, they express prejudices about:</p><ul class='list list-bullet text u-margin-bottom-medium'><li>race</li><li>religion</li><li>sexual orientation</li><li>particular addictions</li> </ul>",
     "template": "default_with_comment",
     "formFields": {
       "input": {
