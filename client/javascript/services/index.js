@@ -161,11 +161,5 @@ const validateViperResponse = (body) => {
 export const retrieveViperScoreFor = (nomisId, callback) => {
   const url = `/api/viper/${nomisId}`;
 
-  xhr.get(url, (error, response, body) => {
-    if (error) {
-      return callback(null);
-    }
-
-    return callback(validateViperResponse(body));
-  });
+  xhr.get(url, { json: true }, (_error, _response, body) => callback(validateViperResponse(body)));
 };
