@@ -48,7 +48,7 @@ function aLowRiskPrisonerIsAssessed(usesDrugs) {
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
   expect(RiskAssessmentYesNoPage.mainHeading).to.equal(
-    'Have they used drugs in the last month?',
+    'Have they taken illicit drugs in the last month?',
   );
 
   if (usesDrugs) {
@@ -149,7 +149,7 @@ function thenTheAssessmentIsCompleted({ sharedText, reasons, hasUsedDrugs }) {
       },
       'drug-misuse': {
         question_id: 'drug-misuse',
-        question: 'Have they used drugs in the last month?',
+        question: 'Have they taken illicit drugs in the last month?',
         answer: hasUsedDrugs ? 'yes' : 'no',
       },
       prejudice: {
