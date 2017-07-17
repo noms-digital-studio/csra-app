@@ -54,7 +54,7 @@ function whenAPrisonerWithNoViperIsAssessed() {
   expect(RiskAssessmentSummaryPage.officerComments).to.equalIgnoreCase('No');
 
 
-  RiskAssessmentSummaryPage.submitForm();
+  RiskAssessmentSummaryPage.clickContinue();
 }
 
 export default whenAPrisonerWithNoViperIsAssessed;

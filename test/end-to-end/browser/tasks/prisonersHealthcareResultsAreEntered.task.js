@@ -55,7 +55,7 @@ function aPrisonersHealthcareResultsAreEntered(singleCellRecommended) {
 }
 
 function thenTheHealthcareAssessmentIsComplete({ sharedText }) {
-  HealthcareSummary.submitForm();
+  HealthcareSummary.clickContinue();
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain(
     'Assessments on:',
   );

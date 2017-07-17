@@ -47,10 +47,6 @@ class RiskAssessmentSummary extends BasePage {
   clickContinue() {
     browser.click('[data-continue-button]');
   }
-
-  submitForm() {
-    browser.submitForm('#rsa-form');
-  }
 }
 
 export default new RiskAssessmentSummary();
