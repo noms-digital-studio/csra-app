@@ -133,7 +133,7 @@ exports.config = {
     ui: 'bdd',
     compilers: ['js:babel-register'],
     require: [],
-    timeout: 45000,
+    timeout: 90000,
   },
   //
   // =====
