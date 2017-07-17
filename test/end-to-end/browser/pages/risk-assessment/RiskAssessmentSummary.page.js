@@ -43,10 +43,6 @@ class RiskAssessmentSummary extends BasePage {
   get officerComments() {
     return browser.getText('[data-risk-assessment-officer-comments]');
   }
-
-  clickContinue() {
-    browser.click('[data-continue-button]');
-  }
 }
 
 export default new RiskAssessmentSummary();
