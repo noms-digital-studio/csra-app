@@ -42,13 +42,13 @@ function whenAVulnerablePrisonerIsAssessed() {
 
 function thenASingleCellIsRecommended() {
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
-  const row = browser.element('[data-profile-row=J1234LO]');
+  const row = browser.element('[data-element-id="profile-row-J1234LO"]');
   expect(row.getText()).to.equal('John Lowe J1234LO 01-10-1970 Complete Start Single cell');
 }
 
 function thenTheAssessmentIsCompleted() {
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
-  const row = browser.element('[data-profile-row=J1234LO]');
+  const row = browser.element('[data-element-id="profile-row-J1234LO"]');
   expect(row.getText()).to.equal('John Lowe J1234LO 01-10-1970 Complete Start');
   const assessmentId = row.getAttribute('data-risk-assessment-id');
 

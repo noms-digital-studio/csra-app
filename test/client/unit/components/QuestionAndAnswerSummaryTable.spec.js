@@ -17,12 +17,12 @@ describe('<QuestionAndAnswerSummaryTable/>', () => {
       {
         question: 'foo-question',
         answer: { answer: 'foo-answer' },
-        dataTags: { 'data-foo': true },
+        dataTags: { 'data-foo': 'string' },
       },
       {
         question: 'bar-question',
         answer: { answer: 'bar-answer' },
-        dataTags: { 'data-bar': true, 'data-foo-bar': true },
+        dataTags: { 'data-bar': 'string', 'data-foo-bar': 'string' },
       },
     ];
     const wrapper = mount(

@@ -17,7 +17,7 @@ class Dashboard extends Component {
   renderProfiles() {
     return this.props.profiles.map(profile => (
       <tr
-        data-profile-row={profile.nomisId}
+        data-element-id={`profile-row-${profile.nomisId}`}
         key={profile.nomisId}
         data-risk-assessment-id={profile.assessmentCompleted.assessmentId}
         data-health-assessment-id={
@@ -34,13 +34,14 @@ class Dashboard extends Component {
           data-assessment-complete={not(isEmpty(profile.assessmentCompleted))}
         >
           {isEmpty(profile.assessmentCompleted)
-            ? <a
+            ? <button
+              type="button"
               onClick={() => this.props.onOffenderSelect(profile)}
               className="link u-link"
-              data-start-csra-link={profile.nomisId}
+              data-element-id={`start-csra-link-${profile.nomisId}`}
             >
                 Start
-              </a>
+              </button>
             : <span>Complete</span>}
         </td>
         <td
@@ -49,13 +50,14 @@ class Dashboard extends Component {
           )}
         >
           {isEmpty(profile.healthAssessmentCompleted)
-            ? <a
+            ? <button
+              type="button"
               onClick={() => this.props.onOffenderHealthcareSelect(profile)}
               className="link u-link"
-              data-start-healthcare-link={profile.nomisId}
+              data-element-id={`start-healthcare-link-${profile.nomisId}`}
             >
                 Start
-              </a>
+              </button>
             : <span>Complete</span>}
         </td>
         <td
@@ -69,16 +71,16 @@ class Dashboard extends Component {
             : <span className="c-status-indicator" />}
 
         </td>
-        <td data-cell-view-outcome className="u-text-align-center">
+        <td data-element-id="view-outcome" className="u-text-align-center">
           {profile.outcome
             ? <span>
-              <a
+              <button
                 className="link u-link"
                 onClick={() => this.props.onViewOutcomeClick(profile)}
-                data-cell-view-outcome-link={profile.nomisId}
+                data-element-id={`view-outcome-link-${profile.nomisId}`}
               >
                   View
-                </a>
+                </button>
             </span>
             : <span />}
         </td>
@@ -99,7 +101,7 @@ class Dashboard extends Component {
               <Link
                 to={routes.ADD_OFFENDER}
                 className="button"
-                data-continue-button
+                data-element-id="continue-button"
               >
                   Add someone to assess
                 </Link>
@@ -111,7 +113,7 @@ class Dashboard extends Component {
                     <Link
                       to={routes.ADD_OFFENDER}
                       className="button"
-                      data-continue-button
+                      data-element-id="continue-button"
                     >
                         Add someone to assess
                       </Link>
@@ -128,7 +130,7 @@ class Dashboard extends Component {
                 </h1>
               </div>
 
-              <table data-prisoner-table>
+              <table>
                 <thead>
                   <tr>
                     <th scope="col" />

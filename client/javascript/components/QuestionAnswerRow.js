@@ -12,7 +12,7 @@ const QuestionAnswerRow = ({ question, answer, dataTags }) =>
       <td {...dataTags}>
         <p>{capitalize(answer.answer)}</p>
         {answer[`reasons-${answer.answer}`] &&
-        <p data-comments>
+        <p data-element-id="healthcare-comments">
           <span className="heading-small u-d-block">
                 Comments
               </span>
@@ -29,7 +29,7 @@ QuestionAnswerRow.propTypes = {
   answer: PropTypes.shape({
     answer: PropTypes.string,
   }),
-  dataTags: PropTypes.objectOf(PropTypes.bool),
+  dataTags: PropTypes.objectOf(PropTypes.string),
 };
 
 QuestionAnswerRow.defaultProps = {

@@ -51,7 +51,7 @@ describe('Utils', () => {
   describe('#parseDate', () => {
     it('parse the date to a human readable for format', () => {
       const date = new Date(1496928311510);
-      const expected = 'Thursday 8 June 2017';
+      const expected = '8 June 2017';
       expect(parseDate(date)).to.equal(expected);
     });
   });

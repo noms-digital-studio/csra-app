@@ -25,7 +25,7 @@ describe('<Header />', () => {
         const callback = sinon.spy();
         const wrapper = mount(<Header signedIn username="Foo Bar" onSignOut={callback} />);
 
-        wrapper.find('[data-sign-out]').simulate('click');
+        wrapper.find('[data-element-id="sign-out"]').simulate('click');
 
         expect(callback.calledOnce).to.equal(true);
       });
@@ -59,7 +59,7 @@ describe('<Header />', () => {
       });
 
       it('accepts a logout action', () => {
-        wrapper.find('[data-sign-out]').simulate('click');
+        wrapper.find('[data-element-id="sign-out"]').simulate('click');
 
         expect(store.dispatch.calledWithMatch({ type: 'SIGN_OUT' })).to.equal(true, 'Sign out called');
 

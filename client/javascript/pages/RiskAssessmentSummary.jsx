@@ -109,7 +109,7 @@ const RiskAssessmentSummary = ({
         <button
           type="submit"
           className="button"
-          data-continue-button
+          data-element-id="continue-button"
         >
           {healthcareAssessmentComplete
             ? 'Submit and complete assessment'

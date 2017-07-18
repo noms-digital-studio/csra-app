@@ -41,11 +41,11 @@ class AddPrisoner extends Component {
           <form action="/" method="POST" onSubmit={e => this.handleSubmit(e)}>
             <div className="form-group">
               <label className="form-label-bold" htmlFor="first-name">First name</label>
-              <input className="form-control" name="first-name" type="text" id="first-name" defaultValue={prisonerDetails['first-name']} data-first-name />
+              <input className="form-control" name="first-name" type="text" id="first-name" defaultValue={prisonerDetails['first-name']} data-element-id="first-name" />
             </div>
             <div className="form-group">
               <label className="form-label-bold" htmlFor="last-name">Last name</label>
-              <input className="form-control" name="last-name" type="text" id="last-name" defaultValue={prisonerDetails['last-name']} data-last-name />
+              <input className="form-control" name="last-name" type="text" id="last-name" defaultValue={prisonerDetails['last-name']} data-element-id="last-name" />
             </div>
             <div className="form-group">
               <fieldset>
@@ -66,7 +66,7 @@ class AddPrisoner extends Component {
                       max="31"
                       aria-describedby="dob-hint"
                       defaultValue={prisonerDetails['dob-day']}
-                      data-dob-day
+                      data-element-id="dob-day"
                     />
                   </div>
                   <div className="form-group form-group-month">
@@ -80,7 +80,7 @@ class AddPrisoner extends Component {
                       min="0"
                       max="12"
                       defaultValue={prisonerDetails['dob-month']}
-                      data-dob-month
+                      data-element-id="dob-month"
                     />
                   </div>
                   <div className="form-group form-group-year">
@@ -94,7 +94,7 @@ class AddPrisoner extends Component {
                       min="0"
                       max="2016"
                       defaultValue={prisonerDetails['dob-year']}
-                      data-dob-year
+                      data-element-id="dob-year"
                     />
                   </div>
                 </div>
@@ -103,9 +103,9 @@ class AddPrisoner extends Component {
             <div className="form-group">
               <label className="form-label-bold" htmlFor="nomis-id">Nomis ID</label>
               <span className="form-hint" id="nomis-id-hint">For example, A5558ZO</span>
-              <input className="form-control" name="nomis-id" type="text" id="nomis-id" defaultValue={prisonerDetails['nomis-id']} data-nomis-id />
+              <input className="form-control" name="nomis-id" type="text" id="nomis-id" defaultValue={prisonerDetails['nomis-id']} data-element-id="nomis-id" />
             </div>
-            <input type="submit" className="button" value="Add prisoner" data-continue-button />
+            <input type="submit" className="button" value="Add prisoner" data-element-id="continue-button" />
           </form>
         </div>
       </DocumentTitle>

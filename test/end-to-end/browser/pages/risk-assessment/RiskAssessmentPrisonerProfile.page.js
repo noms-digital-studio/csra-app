@@ -3,7 +3,7 @@ import BasePage from '../BasePage';
 
 class RiskAssessmentPrisonerProfile extends BasePage {
   get prisonerName() {
-    return browser.getText('[data-prisoner-name]');
+    return browser.getText('[data-element-id="prisoner-name"]');
   }
 }
 

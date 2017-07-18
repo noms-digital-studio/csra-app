@@ -37,7 +37,7 @@ describe('<ConfirmOffender />', () => {
           const wrapper = mountComponent(store);
 
           getStub.yields('some error', { status: 500 }, null);
-          wrapper.find('[data-confirm]').simulate('click');
+          wrapper.find('[data-element-id="continue-button"]').simulate('click');
 
           expect(
             store.dispatch.calledWithMatch({
@@ -65,7 +65,7 @@ describe('<ConfirmOffender />', () => {
             viperRating: 0.50,
           });
 
-          wrapper.find('[data-confirm]').simulate('click');
+          wrapper.find('[data-element-id="continue-button"]').simulate('click');
 
           expect(getStub.lastCall.args[0]).to.match(/\/api\/viper\/foo-nomis-id/, "the url didn't match");
 
@@ -98,7 +98,7 @@ describe('<ConfirmOffender />', () => {
           const wrapper = mountComponent(store);
 
           getStub.yields('something');
-          wrapper.find('[data-confirm]').simulate('click');
+          wrapper.find('[data-element-id="continue-button"]').simulate('click');
 
           expect(
             store.dispatch.calledWithMatch({
@@ -120,7 +120,7 @@ describe('<ConfirmOffender />', () => {
           const wrapper = mountComponent(store);
 
           getStub.yields('something');
-          wrapper.find('[data-confirm]').simulate('click');
+          wrapper.find('[data-element-id="continue-button"]').simulate('click');
 
           expect(
             store.dispatch.calledWithMatch({

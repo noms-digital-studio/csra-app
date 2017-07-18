@@ -27,42 +27,42 @@ const mapStateToProps = (state) => {
       {
         question: 'Recommendation:',
         answer: { answer: outcome.recommendation },
-        dataTags: { 'data-risk-assessment-outcome': true },
+        dataTags: { 'data-element-id': 'risk-assessment-outcome' },
       },
       {
         question: 'How they feel about sharing a cell:',
         answer: answers['how-do-you-feel'] ? { answer: answers['how-do-you-feel'].comments || 'No comments' } : undefined,
-        dataTags: { 'data-risk-assessment-feeling': true },
+        dataTags: { 'data-element-id': 'risk-assessment-feeling' },
       },
       {
         question: 'Have they indicated they’d seriously hurt a cellmate:',
         answer: answers['prison-self-assessment'],
-        dataTags: { 'data-risk-assessment-harm': true },
+        dataTags: { 'data-element-id': 'risk-assessment-harm' },
       },
       {
         question: 'Vulnerable:',
         answer: answers.vulnerability,
-        dataTags: { 'data-risk-assessment-vulnerability': true },
+        dataTags: { 'data-element-id': 'risk-assessment-vulnerability' },
       },
       {
         question: 'In a gang, or likely to join one:',
         answer: answers['gang-affiliation'],
-        dataTags: { 'data-risk-assessment-gang': true },
+        dataTags: { 'data-element-id': 'risk-assessment-gang' },
       },
       {
         question: 'Drugs:',
         answer: answers['drug-misuse'],
-        dataTags: { 'data-risk-assessment-narcotics': true },
+        dataTags: { 'data-element-id': 'risk-assessment-narcotics' },
       },
       {
         question: 'Hostile or prejudiced views:',
         answer: answers.prejudice,
-        dataTags: { 'data-risk-assessment-prejudice': true },
+        dataTags: { 'data-element-id': 'risk-assessment-prejudice' },
       },
       {
         question: 'Any other reasons they should have single cell:',
         answer: answers['officers-assessment'],
-        dataTags: { 'data-risk-assessment-officer-comments': true },
+        dataTags: { 'data-element-id': 'risk-assessment-officer-comments' },
       },
     ],
   };

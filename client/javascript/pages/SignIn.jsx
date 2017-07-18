@@ -37,7 +37,7 @@ class SignIn extends Component {
               className="form-control"
               id="username"
               name="username"
-              data-username
+              data-element-id="username"
             />
           </div>
 
@@ -46,7 +46,7 @@ class SignIn extends Component {
               type="submit"
               className="button"
               value="Sign in"
-              data-continue-button
+              data-element-id="continue-button"
             />
           </div>
         </form>

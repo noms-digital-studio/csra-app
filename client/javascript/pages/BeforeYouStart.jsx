@@ -13,7 +13,7 @@ const BeforeYouStart = ({ title }) => (
       <Link
         to={routes.DASHBOARD}
         className="button button-start"
-        data-continue-button
+        data-element-id="continue-button"
       >
         Continue
       </Link>

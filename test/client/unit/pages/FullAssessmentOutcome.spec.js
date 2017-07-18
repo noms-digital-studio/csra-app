@@ -104,7 +104,7 @@ describe('<FullAssessmentOutcome', () => {
       </Provider>,
     );
 
-    const profile = wrapper.find('[data-profile]');
+    const profile = wrapper.find('[data-element-id="prisoner-profile"]');
 
     Object.keys(prisonerDetails).forEach((key) => {
       expect(profile.text()).to.contain(prisonerDetails[key]);
@@ -133,7 +133,7 @@ describe('<FullAssessmentOutcome', () => {
     );
 
     const reasons = wrapper.find('[data-element-id="reasons"]').text();
-    const outcome = wrapper.find('[data-recommended-outcome]').text();
+    const outcome = wrapper.find('[data-element-id="recommended-outcome"]').text();
 
     expect(outcome).to.include('Shared cell with conditions');
     expect(reasons).to.include('foo-reason');
@@ -147,7 +147,7 @@ describe('<FullAssessmentOutcome', () => {
         <FullAssessmentOutcome />
       </Provider>,
     );
-    const outcome = wrapper.find('[data-recommended-outcome]').text();
+    const outcome = wrapper.find('[data-element-id="recommended-outcome"]').text();
 
     expect(outcome).to.include('Shared cell');
   });
@@ -182,7 +182,7 @@ describe('<FullAssessmentOutcome', () => {
       </Provider>,
     );
 
-    const healthcareSummaryText = wrapper.find('[data-health-summary]').text();
+    const healthcareSummaryText = wrapper.find('[data-element-id="health-summary"]').text();
 
     Object.keys(healthcareAnswers).forEach((key) => {
       Object.keys(healthcareAnswers[key]).forEach((innerKey) => {
@@ -262,9 +262,9 @@ describe('<FullAssessmentOutcome', () => {
         </Provider>,
       );
 
-      expect(wrapper.find('[data-continue-button]').length).to.eql(1);
+      expect(wrapper.find('[data-element-id="continue-button"]').length).to.eql(1);
 
-      wrapper.find('[data-continue-button]').simulate('click');
+      wrapper.find('[data-element-id="continue-button"]').simulate('click');
 
       expect(
         store.dispatch.calledWithMatch({

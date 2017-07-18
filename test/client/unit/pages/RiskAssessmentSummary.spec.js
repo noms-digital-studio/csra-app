@@ -89,7 +89,7 @@ describe('<RiskAssessmentSummary />', () => {
           </Provider>,
         );
 
-        const profileText = wrapper.find('[data-profile]').text();
+        const profileText = wrapper.find('[data-element-id="prisoner-profile"]').text();
 
         expect(profileText).to.contain('foo-name');
         expect(profileText).to.contain('foo-surname');
@@ -105,7 +105,7 @@ describe('<RiskAssessmentSummary />', () => {
           </Provider>,
         );
         const outcomeText = wrapper
-          .find('[data-risk-assessment-outcome]')
+          .find('[data-element-id="risk-assessment-outcome"]')
           .text();
 
         expect(outcomeText).to.contain('Shared cell');
@@ -138,7 +138,7 @@ describe('<RiskAssessmentSummary />', () => {
         );
 
         const outcomeText = wrapper
-          .find('[data-risk-assessment-outcome]')
+          .find('[data-element-id="risk-assessment-outcome"]')
           .text();
 
         expect(outcomeText).to.contain('Single cell');
@@ -175,7 +175,7 @@ describe('<RiskAssessmentSummary />', () => {
             </Provider>,
           );
 
-          const outcomeText = wrapper.find('[data-risk-assessment-outcome]').text();
+          const outcomeText = wrapper.find('[data-element-id="risk-assessment-outcome"]').text();
           expect(outcomeText).to.contain('Single cell');
         });
       });
@@ -202,7 +202,7 @@ describe('<RiskAssessmentSummary />', () => {
           );
 
           const outcomeText = wrapper
-            .find('[data-risk-assessment-outcome]')
+            .find('[data-element-id="risk-assessment-outcome"]')
             .text();
           expect(outcomeText).to.contain('Shared cell');
         });
@@ -315,7 +315,7 @@ describe('<RiskAssessmentSummary />', () => {
         );
 
         expect(
-          wrapper.find('[data-continue-button]').text(),
+          wrapper.find('[data-element-id="continue-button"]').text(),
         ).to.equal('Submit and return to prisoner list');
       });
 
@@ -354,7 +354,7 @@ describe('<RiskAssessmentSummary />', () => {
         );
 
         expect(
-          wrapper.find('[data-continue-button]').text(),
+          wrapper.find('[data-element-id="continue-button"]').text(),
         ).to.equal('Submit and complete assessment');
       });
 

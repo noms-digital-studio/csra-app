@@ -3,45 +3,45 @@ import BasePage from '../BasePage';
 
 class RiskAssessmentSummary extends BasePage {
   get name() {
-    return browser.getText('[data-prisoner-name]');
+    return browser.getText('[data-element-id="prisoner-name"]');
   }
   get dob() {
-    return browser.getText('[data-prisoner-dob]');
+    return browser.getText('[data-element-id="prisoner-dob"]');
   }
   get nomisId() {
-    return browser.getText('[data-prisoner-nomis-id]');
+    return browser.getText('[data-element-id="nomis-id"]');
   }
 
   get outcome() {
-    return browser.getText('[data-risk-assessment-outcome]');
+    return browser.getText('[data-element-id="risk-assessment-outcome"]');
   }
 
   get initialFeelings() {
-    return browser.getText('[data-risk-assessment-feeling]');
+    return browser.getText('[data-element-id="risk-assessment-feeling"]');
   }
 
   get harm() {
-    return browser.getText('[data-risk-assessment-harm]');
+    return browser.getText('[data-element-id="risk-assessment-harm"]');
   }
 
   get vulnerability() {
-    return browser.getText('[data-risk-assessment-vulnerability]');
+    return browser.getText('[data-element-id="risk-assessment-vulnerability"]');
   }
 
   get gang() {
-    return browser.getText('[data-risk-assessment-gang]');
+    return browser.getText('[data-element-id="risk-assessment-gang"]');
   }
 
   get narcotics() {
-    return browser.getText('[data-risk-assessment-narcotics]');
+    return browser.getText('[data-element-id="risk-assessment-narcotics"]');
   }
 
   get prejudice() {
-    return browser.getText('[data-risk-assessment-prejudice]');
+    return browser.getText('[data-element-id="risk-assessment-prejudice"]');
   }
 
   get officerComments() {
-    return browser.getText('[data-risk-assessment-officer-comments]');
+    return browser.getText('[data-element-id="risk-assessment-officer-comments"]');
   }
 }
 

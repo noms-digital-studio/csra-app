@@ -1,13 +1,13 @@
 import React from 'react';
 
 const PrisonerProfile = ({ firstName, surname, dob, nomisId }) => (
-  <div data-profile>
+  <div data-element-id="prisoner-profile">
     <h2 className="heading-medium">Prisoner Details</h2>
     <p>
       Prisoner Name:
       {' '}
       <strong className="heading-small">
-        <span data-prisoner-name>
+        <span data-element-id="prisoner-name">
           {firstName} {surname}
         </span>
       </strong>
@@ -16,14 +16,14 @@ const PrisonerProfile = ({ firstName, surname, dob, nomisId }) => (
       Date of Birth:
       {' '}
       <strong className="heading-small">
-        <span data-prisoner-dob>{dob}</span>
+        <span data-element-id="prisoner-dob">{dob}</span>
       </strong>
     </p>
     <p>
       NOMIS ID:
       {' '}
       <strong className="heading-small">
-        <span data-prisoner-nomis-id>{nomisId}</span>
+        <span data-element-id="nomis-id">{nomisId}</span>
       </strong>
     </p>
   </div>

@@ -48,7 +48,7 @@ describe('<HealthcareAssessor />', () => {
     );
 
     Object.keys(formDefaults).forEach((key) => {
-      expect(wrapper.find(`[data-input="${key}"]`).node.value).to.equal(
+      expect(wrapper.find(`[data-element-id="${key}"]`).node.value).to.equal(
         formDefaults[key],
         `${key} value field filled`,
       );

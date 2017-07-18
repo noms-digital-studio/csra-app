@@ -6,11 +6,11 @@ class AdminPage extends BasePage {
   visit() { browser.url('/admin'); }
 
   clickLoadDataButton() {
-    browser.click('[data-load-data-button]');
+    browser.click('[data-element-id="load-data-button"]');
   }
 
   clickClearButton() {
-    browser.click('[data-clear-button]');
+    browser.click('[data-element-id="data-clear-button"]');
   }
 
   loadTestUsers() {

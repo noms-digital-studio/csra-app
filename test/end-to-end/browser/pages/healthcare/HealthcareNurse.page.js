@@ -4,17 +4,17 @@ import BasePage from '../BasePage';
 class HealthcareNursePage extends BasePage {
 
   enterRole(role) {
-    browser.setValue('[data-role]', role);
+    browser.setValue('[data-element-id="role"]', role);
   }
 
   enterName(name) {
-    browser.setValue('[data-name]', name);
+    browser.setValue('[data-element-id="full-name"]', name);
   }
 
   enterDate(day, month, year) {
-    browser.setValue('[data-day]', day);
-    browser.setValue('[data-month]', month);
-    browser.setValue('[data-year]', year);
+    browser.setValue('[data-element-id="day"]', day);
+    browser.setValue('[data-element-id="month"]', month);
+    browser.setValue('[data-element-id="year"]', year);
   }
 
 }

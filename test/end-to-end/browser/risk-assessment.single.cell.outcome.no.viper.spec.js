@@ -5,7 +5,7 @@ import whenAPrisonerWithNoViperIsAssessed from './tasks/prisonerWithNoViperIsAss
 
 function thenTheAssessmentIsCompleted() {
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
-  const row = browser.element('[data-profile-row=J6285NE]');
+  const row = browser.element('[data-element-id="profile-row-J6285NE"]');
   expect(row.getText()).to.equal('James Neo J6285NE 03-12-1958 Complete Start');
 }
 

@@ -38,7 +38,7 @@ const OffenderProfile = ({
               <div>
                 <p className="c-offender-profile-item">
                   <span className="heading-small">Name:&nbsp;</span>
-                  <span data-prisoner-name>{firstName} {surname}</span>
+                  <span data-element-id="prisoner-name">{firstName} {surname}</span>
                 </p>
               </div>
               <div>
@@ -65,7 +65,7 @@ const OffenderProfile = ({
           type="button"
           onClick={onSubmit}
           className="button button-start u-margin-bottom-default"
-          data-continue-button
+          data-element-id="continue-button"
         >
           Continue to assessment
         </button>

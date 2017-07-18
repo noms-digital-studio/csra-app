@@ -90,12 +90,12 @@ describe('<Dashboard />', () => {
       it('does not display a list of people to assess', () => {
         const wrapper = mount(<Dashboard />);
         expect(wrapper.text()).to.include('There is no one to assess.');
-        expect(wrapper.find('[data-profile-row]').length).to.equal(0);
+        expect(wrapper.find('tr[data-element-id]').length).to.equal(0);
       });
 
       it('provides a link to add a person to assess', () => {
         const wrapper = mount(<Dashboard />);
-        expect(wrapper.find('[data-continue-button]').length).to.equal(1);
+        expect(wrapper.find('[data-element-id="continue-button"]').length).to.equal(1);
       });
     });
 
@@ -109,7 +109,7 @@ describe('<Dashboard />', () => {
 
       it('renders the correct number of profiles rows', () => {
         const wrapper = mount(<Dashboard profiles={profiles} />);
-        expect(wrapper.find('[data-profile-row]').length).to.equal(2);
+        expect(wrapper.find('tr[data-element-id]').length).to.equal(2);
       });
 
       it('renders the correct profile information per row', () => {
@@ -151,13 +151,13 @@ describe('<Dashboard />', () => {
       it('does not displays the link to view the full assessment when both assessments not complete', () => {
         const wrapper = mount(<Dashboard profiles={profiles} />);
 
-        expect(wrapper.find('[data-profile-row="bar-id"] > [data-cell-view-outcome] a').length).to.equal(0);
+        expect(wrapper.find('[data-element-id="profile-row-bar-id"] > [data-element-id="view-outcome"] button').length).to.equal(0);
       });
 
       it('displays the link to view the full assessment when both assessments are complete', () => {
         const wrapper = mount(<Dashboard profiles={profiles} />);
 
-        expect(wrapper.find('[data-profile-row="foo-id"] > [data-cell-view-outcome] a').length).to.equal(1);
+        expect(wrapper.find('[data-element-id="profile-row-foo-id"] > [data-element-id="view-outcome"] button').length).to.equal(1);
       });
 
       it('responds to the selection of an incomplete risk assessment', () => {
@@ -166,7 +166,7 @@ describe('<Dashboard />', () => {
           <Dashboard profiles={profiles} onOffenderSelect={callback} />,
         );
 
-        const profileBtn = wrapper.find('[data-assessment-complete=false] > a');
+        const profileBtn = wrapper.find('[data-assessment-complete=false] > button');
 
         profileBtn.simulate('click');
 
@@ -189,7 +189,7 @@ describe('<Dashboard />', () => {
         </Provider>,
       );
 
-      expect(wrapper.find('[data-profile-row]').length).to.equal(2);
+      expect(wrapper.find('tr[data-element-id]').length).to.equal(2);
     });
 
     it('renders the correct profile information per row', () => {
@@ -258,7 +258,7 @@ describe('<Dashboard />', () => {
         </Provider>,
       );
 
-      wrapper.find('[data-cell-view-outcome-link]').simulate('click');
+      wrapper.find('[data-element-id="view-outcome-link-foo-id"]').simulate('click');
 
       expect(
         store.dispatch.calledWithMatch({
@@ -282,7 +282,7 @@ describe('<Dashboard />', () => {
           <ConnectedDashboard />
         </Provider>,
       );
-      const profileBtn = wrapper.find('[data-assessment-complete=false] > a');
+      const profileBtn = wrapper.find('[data-assessment-complete=false] > button');
 
       profileBtn.simulate('click');
 
@@ -309,7 +309,7 @@ describe('<Dashboard />', () => {
         </Provider>,
       );
       const profileBtn = wrapper.find(
-        '[data-health-assessment-complete=false] > a',
+        '[data-health-assessment-complete=false] > button',
       );
 
       profileBtn.simulate('click');

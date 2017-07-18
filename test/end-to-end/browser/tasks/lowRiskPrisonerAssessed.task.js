@@ -102,7 +102,7 @@ function whenALowRiskPrisonerWhoUsesDrugsIsAssessed() {
 
 function aSharedCellIsRecommended(sharedText) {
   expect(DashboardPage.mainHeading).to.contain('Assessments on:');
-  const row = browser.element('[data-profile-row=J1234LO]');
+  const row = browser.element('[data-element-id="profile-row-J1234LO"]');
   expect(row.getText()).to.equal(
     `John Lowe J1234LO 01-10-1970 Complete Start ${sharedText}`,
   );
@@ -110,7 +110,7 @@ function aSharedCellIsRecommended(sharedText) {
 
 function thenTheAssessmentIsCompleted({ sharedText, reasons, hasUsedDrugs }) {
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
-  const row = browser.element('[data-profile-row=J1234LO]');
+  const row = browser.element('[data-element-id="profile-row-J1234LO"]');
   expect(row.getText()).to.equal(
     'John Lowe J1234LO 01-10-1970 Complete Start',
   );

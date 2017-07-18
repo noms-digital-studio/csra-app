@@ -28,11 +28,11 @@ describe('<QuestionAnswerRow/>', () => {
   it('renders a data tag', () => {
     const questionAnswerDataTag = {
       ...questionAnswer,
-      dataTags: { 'data-foo': true },
+      dataTags: { 'data-element-id': 'foo' },
     };
     const wrapper = shallow(<QuestionAnswerRow {...questionAnswerDataTag} />);
     const wrapperHTML = wrapper.html();
 
-    expect(wrapperHTML).to.match(new RegExp('data-foo', 'i'));
+    expect(wrapperHTML).to.match(new RegExp('data-element-id', 'i'));
   });
 });

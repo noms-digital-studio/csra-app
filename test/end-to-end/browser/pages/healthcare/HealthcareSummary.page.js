@@ -3,37 +3,37 @@ import BasePage from '../BasePage';
 
 class HealthcareSummary extends BasePage {
   get name() {
-    return browser.getText('[data-prisoner-name]');
+    return browser.getText('[data-element-id="prisoner-name"]');
   }
   get dob() {
-    return browser.getText('[data-prisoner-dob]');
+    return browser.getText('[data-element-id="prisoner-dob"]');
   }
   get nomisId() {
-    return browser.getText('[data-prisoner-nomis-id]');
+    return browser.getText('[data-element-id="nomis-id"]');
   }
 
   get assessor() {
-    return browser.getText('[data-assessor]');
+    return browser.getText('[data-element-id="healthcare-assessor"]');
   }
   get role() {
-    return browser.getText('[data-role]');
+    return browser.getText('[data-element-id="healthcare-role"]');
   }
   get date() {
-    return browser.getText('[data-date]');
+    return browser.getText('[data-element-id="healthcare-date"]');
   }
 
   get outcome() {
-    return browser.getText('[data-outcome]');
+    return browser.getText('[data-element-id="healthcare-outcome"]');
   }
   get comments() {
-    return browser.getText('[data-comments]');
+    return browser.getText('[data-element-id="healthcare-comments"]');
   }
   get consent() {
-    return browser.getText('[data-consent]');
+    return browser.getText('[data-element-id="healthcare-consent"]');
   }
 
   clickChange() {
-    browser.click('[data-change-consent-link]');
+    browser.click('[data-element-id="healthcare-change-consent-link"]');
   }
 }
 

@@ -15,7 +15,7 @@ describe('<PrisonerProfile />', () => {
 
     const wrapper = shallow(<PrisonerProfile {...prisonerDetails} />);
 
-    const profileText = wrapper.find('[data-profile]').text();
+    const profileText = wrapper.find('[data-element-id="prisoner-profile"]').text();
     expect(profileText).to.contain('foo-name');
     expect(profileText).to.contain('foo-surname');
     expect(profileText).to.contain('foo-date');

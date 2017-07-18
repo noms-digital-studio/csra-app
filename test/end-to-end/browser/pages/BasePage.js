@@ -20,7 +20,7 @@ class BasePage {
   }
 
   clickContinue() {
-    browser.click('[data-continue-button]');
+    browser.click('[data-element-id="continue-button"]');
   }
 }
 

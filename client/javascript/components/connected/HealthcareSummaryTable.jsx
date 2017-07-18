@@ -21,17 +21,17 @@ const HealthcareSummaryTable = ({ answers }) => (
       <QuestionAnswerRow
         question={'Healthcare recommendation:'}
         answer={{ answer: riskText[answers.outcome.answer] }}
-        dataTags={{ 'data-healthcare-outcome': true }}
+        dataTags={{ 'data-element-id': 'healthcare-outcome' }}
       />
       <QuestionAnswerRow
         question={'Comments from the healthcare form:'}
         answer={{ answer: answers.comments.comments || 'No comments' }}
-        dataTags={{ 'data-healthcare-comments': true }}
+        dataTags={{ 'data-element-id': 'healthcare-comments' }}
       />
       <QuestionAnswerRow
         question={'Consent given:'}
         answer={answers.consent}
-        dataTags={{ 'data-healthcare-consent': true }}
+        dataTags={{ 'data-element-id': 'healthcare-consent' }}
       />
 
       <tr data-healthcare-assessor>
@@ -39,11 +39,11 @@ const HealthcareSummaryTable = ({ answers }) => (
           Completed by:
         </td>
         <td>
-          <span data-assessor>{capitalize(answers.assessor['full-name'])}</span>
+          <span data-element-id="healthcare-assessor">{capitalize(answers.assessor['full-name'])}</span>
           <br />
-          <span data-role>{capitalize(answers.assessor.role)}</span>
+          <span data-element-id="healthcare-role">{capitalize(answers.assessor.role)}</span>
           <br />
-          <span data-date>
+          <span data-element-id="healthcare-date">
             {`${answers.assessor.day}-${answers.assessor.month}-${answers.assessor.year}`}
           </span>
         </td>

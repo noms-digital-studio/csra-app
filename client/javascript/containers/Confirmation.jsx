@@ -27,7 +27,7 @@ const Confirmation = ({ title, description, onSubmit, formDefaults: { confirmati
           </p>
 
           <p>
-            <input className="button" type="submit" value={isComplete ? 'Save' : 'Save and continue'} data-continue-button />
+            <input className="button" type="submit" value={isComplete ? 'Save' : 'Save and continue'} data-element-id="continue-button" />
           </p>
         </form>
       </div>

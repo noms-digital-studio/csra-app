@@ -43,7 +43,7 @@ class SelectableInput extends Component {
           defaultValue={value}
           required={required}
           onChange={onChangeFnc}
-          data-confirm-checkbox
+          data-element-id="confirm-checkbox"
         />
         <label data-label={value} htmlFor={id}>{text}</label>
       </span>

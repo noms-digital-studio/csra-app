@@ -60,7 +60,7 @@ const FullAssessmentOutcome = ({
           </div>
         </div>
 
-        <h2 data-recommended-outcome className="heading-large">
+        <h2 data-element-id="recommended-outcome" className="heading-large">
           Recommended outcome: {capitalize(finalOutcome)}
         </h2>
 
@@ -80,7 +80,7 @@ const FullAssessmentOutcome = ({
           <RiskAssessmentSummaryTable title="Risk assessment summary" />
         </div>
 
-        <div data-health-summary className="u-margin-bottom-bravo">
+        <div data-element-id="health-summary" className="u-margin-bottom-bravo">
           <HealthcareSummaryTable title="Healthcare assessment summary" />
         </div>
 
@@ -88,7 +88,7 @@ const FullAssessmentOutcome = ({
           ? <button
             className="button"
             type="button"
-            data-continue-button
+            data-element-id="continue-button"
             to={routes.DASHBOARD}
             onClick={onReturnHome}
           >
@@ -111,7 +111,7 @@ const FullAssessmentOutcome = ({
               />
             </div>
 
-            <button className="button" type="submit" data-continue-button>
+            <button className="button" type="submit" data-element-id="continue-button">
                 Complete Assessment
               </button>
           </form>}

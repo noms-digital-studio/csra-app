@@ -5,7 +5,7 @@ import whenAViolentPrisonerIsAssessed from './tasks/violentPrisonerAssessed.task
 
 function thenTheAssessmentIsCompleted() {
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
-  const row = browser.element('[data-profile-row=I9876RA]');
+  const row = browser.element('[data-element-id="profile-row-I9876RA"]');
   expect(row.getText()).to.equal('Ian Rate I9876RA 23-03-1988 Complete Start');
 }
 

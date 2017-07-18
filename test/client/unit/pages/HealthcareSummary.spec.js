@@ -88,7 +88,7 @@ describe('<HealthcareSummary />', () => {
           <HealthcareSummary />
         </Provider>,
       );
-      const prisonerProfile = wrapper.find('[data-profile]').text();
+      const prisonerProfile = wrapper.find('[data-element-id="prisoner-profile"]').text();
       expect(prisonerProfile).to.contain('foo-name');
       expect(prisonerProfile).to.contain('foo-surname');
       expect(prisonerProfile).to.contain('foo-date');
@@ -104,7 +104,7 @@ describe('<HealthcareSummary />', () => {
           </Provider>,
         );
         const healthcareOutcome = wrapper
-          .find('[data-healthcare-outcome]')
+          .find('[data-element-id="healthcare-outcome"]')
           .text();
         expect(healthcareOutcome).to.contain('Single cell');
       });
@@ -128,14 +128,14 @@ describe('<HealthcareSummary />', () => {
           </Provider>,
         );
         const healthcareOutcome = wrapper
-          .find('[data-healthcare-outcome]')
+          .find('[data-element-id="healthcare-outcome"]')
           .text();
         expect(healthcareOutcome).to.contain('Shared cell');
       });
     });
 
     context('Healthcare comments', () => {
-      it('correctly renders a no comments', () => {
+      it('correctly renders no comments', () => {
         const store = fakeStore(storeData);
         const wrapper = mount(
           <Provider store={store}>
@@ -143,7 +143,7 @@ describe('<HealthcareSummary />', () => {
           </Provider>,
         );
         const healthcareComments = wrapper
-          .find('[data-healthcare-comments]')
+          .find('[data-element-id="healthcare-comments"]')
           .text();
         expect(healthcareComments).to.contain('None');
       });
@@ -167,7 +167,7 @@ describe('<HealthcareSummary />', () => {
           </Provider>,
         );
         const healthcareComments = wrapper
-          .find('[data-healthcare-comments]')
+          .find('[data-element-id="healthcare-comments"]')
           .text();
         expect(healthcareComments).to.contain('Some foo comment');
       });
@@ -181,7 +181,7 @@ describe('<HealthcareSummary />', () => {
         </Provider>,
       );
       const healthcareComments = wrapper
-        .find('[data-healthcare-consent]')
+        .find('[data-element-id="healthcare-consent"]')
         .text();
       expect(healthcareComments).to.contain('No');
     });
@@ -198,7 +198,7 @@ describe('<HealthcareSummary />', () => {
         .text();
       expect(healthcareAssessor).to.contain('Foo fullname');
       expect(healthcareAssessor).to.contain('Foo role');
-      expect(healthcareAssessor).to.contain('20-12-1984');
+      expect(healthcareAssessor).to.contain('20 December 1984');
     });
   });
 

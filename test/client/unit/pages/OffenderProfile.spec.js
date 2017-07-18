@@ -32,7 +32,7 @@ describe('<OffenderProfile />', () => {
           </Provider>,
         );
 
-        wrapper.find('[data-continue-button]').simulate('click');
+        wrapper.find('[data-element-id="continue-button"]').simulate('click');
 
         expect(
           store.dispatch.calledWithMatch({

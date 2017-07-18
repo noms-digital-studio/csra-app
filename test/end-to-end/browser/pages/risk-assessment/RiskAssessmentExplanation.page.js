@@ -3,7 +3,7 @@ import BasePage from '../BasePage';
 
 class RiskAssessmentExplanationPage extends BasePage {
   clickCheckbox() {
-    browser.click('[data-confirm-checkbox]');
+    browser.click('[data-element-id="confirm-checkbox"]');
   }
 
   confirmAndContinue() {

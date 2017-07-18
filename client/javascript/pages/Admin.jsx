@@ -111,7 +111,7 @@ class Admin extends Component {
           <button
             onClick={() => this.addDefaultPrisoners()}
             className="button"
-            data-load-data-button
+            data-element-id="load-data-button"
             type="button"
           >
             Load Data
@@ -121,7 +121,7 @@ class Admin extends Component {
           <button
             onClick={() => this.clearBrowser()}
             className="button"
-            data-clear-button
+            data-element-id="data-clear-button"
             type="button"
           >
             Clear Browser Session and Local Storage
@@ -130,7 +130,7 @@ class Admin extends Component {
           <Link
             href="/sign-in"
             className="button c-btn-right--xcustom"
-            data-continue-button
+            data-element-id="continue-button"
           >
             Continue to sign in
           </Link>

@@ -26,13 +26,12 @@ const HealthAssessment = ({
             Role / Position
           </label>
           <input
-            data-input="role"
             className="form-control form-control-3-4"
             type="text"
             name="role"
             defaultValue={formDefaults.role}
             required
-            data-role
+            data-element-id="role"
           />
         </div>
 
@@ -41,13 +40,12 @@ const HealthAssessment = ({
             Full name
           </label>
           <input
-            data-input="full-name"
             className="form-control form-control-3-4"
             type="text"
             name="full-name"
             defaultValue={formDefaults['full-name']}
             required
-            data-name
+            data-element-id="full-name"
           />
         </div>
 
@@ -57,7 +55,6 @@ const HealthAssessment = ({
           <div className="form-group form-group-day">
             <label className="form-label" htmlFor="day">Day</label>
             <input
-              data-input="day"
               className="form-control"
               id="day"
               name="day"
@@ -68,14 +65,13 @@ const HealthAssessment = ({
               aria-describedby="hint"
               defaultValue={formDefaults.day}
               required
-              data-day
+              data-element-id="day"
             />
           </div>
           <div className="form-group form-group-month">
             <label className="form-label" htmlFor="month">Month</label>
             <input
               className="form-control"
-              data-input="month"
               id="month"
               name="month"
               type="number"
@@ -84,14 +80,13 @@ const HealthAssessment = ({
               max="12"
               defaultValue={formDefaults.month}
               required
-              data-month
+              data-element-id="month"
             />
           </div>
           <div className="form-group form-group-year">
             <label className="form-label" htmlFor="year">Year</label>
             <input
               className="form-control"
-              data-input="year"
               id="year"
               name="year"
               type="number"
@@ -100,7 +95,7 @@ const HealthAssessment = ({
               max="2017"
               defaultValue={formDefaults.year}
               required
-              data-year
+              data-element-id="year"
             />
           </div>
         </div>
@@ -110,7 +105,7 @@ const HealthAssessment = ({
             type="submit"
             className="button"
             value={isComplete ? 'Save' : 'Save and continue'}
-            data-continue-button
+            data-element-id="continue-button"
           />
         </div>
       </form>

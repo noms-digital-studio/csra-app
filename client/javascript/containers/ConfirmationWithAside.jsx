@@ -27,7 +27,7 @@ const ConfirmationWithAside = (
             />
           </p>
           <p>
-            <input type="submit" className="button" value={isComplete ? 'Save' : 'Save and continue'} data-continue-button />
+            <input type="submit" className="button" value={isComplete ? 'Save' : 'Save and continue'} data-element-id="continue-button" />
           </p>
         </form>
       </div>

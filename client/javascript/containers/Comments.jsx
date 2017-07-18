@@ -34,7 +34,7 @@ const Comments = ({
             type="submit"
             className="button"
             value={isComplete ? 'Save' : 'Save and continue'}
-            data-continue-button
+            data-element-id="continue-button"
           />
         </p>
       </form>

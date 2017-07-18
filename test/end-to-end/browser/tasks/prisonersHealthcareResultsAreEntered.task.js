@@ -60,7 +60,7 @@ function thenTheHealthcareAssessmentIsComplete({ sharedText }) {
     'Assessments on:',
   );
 
-  const row = browser.element('[data-profile-row=J1234LO]');
+  const row = browser.element('[data-element-id="profile-row-J1234LO"]');
   expect(row.getText()).to.equal(
     'John Lowe J1234LO 01-10-1970 Start Complete',
   );

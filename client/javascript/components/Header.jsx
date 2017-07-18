@@ -35,7 +35,7 @@ const Header = ({ username, signedIn, onSignOut }) => {
                       {username}
                     </span>
                     <span className="c-profile-holder c-profile-holder--global-header" />
-                    <button type="button" data-sign-out onClick={onSignOut} className="c-profile-logout link">
+                    <button type="button" data-element-id="sign-out" onClick={onSignOut} className="c-profile-logout link">
                       Sign out
                     </button>
                   </div>}

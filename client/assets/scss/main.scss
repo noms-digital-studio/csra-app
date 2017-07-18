@@ -362,6 +362,9 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
 
 .u-link {
   cursor: pointer;
+  border: none;
+  background: none;
+  font-size: inherit;
 }
 
 .u-no-link {

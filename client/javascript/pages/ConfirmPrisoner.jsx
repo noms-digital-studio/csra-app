@@ -16,7 +16,7 @@ const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
         <div className="column-one-half">
           <p>
             <span className="heading-small">Name:&nbsp;</span>
-            <span data-prisoner-name>
+            <span data-element-id="prisoner-name">
               {prisoner['first-name']} {prisoner['last-name']}
             </span>
           </p>
@@ -26,14 +26,14 @@ const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
               DOB:&nbsp;&nbsp;&nbsp;&nbsp;
               </span>
             <span
-              data-prisoner-dob
+              data-element-id="prisoner-dob"
             >{`${prisoner['dob-day']}-${prisoner['dob-month']}-${prisoner['dob-year']}`}</span>
           </p>
         </div>
         <div className="column-one-half">
           <p>
             <span className="heading-small">NOMIS No:</span>
-            <span data-prisoner-nomis-id>{prisoner['nomis-id']}</span>
+            <span data-element-id="nomis-id">{prisoner['nomis-id']}</span>
           </p>
         </div>
       </div>
@@ -41,12 +41,11 @@ const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
       <p>
         <button
           type="button"
-          data-confirm
           onClick={() => {
             onClick(prisoner);
           }}
           className="button"
-          data-continue-button
+          data-element-id="continue-button"
         >
           Confirm
           </button>

@@ -6,7 +6,7 @@ import CommentBox from '../../../../client/javascript/components/CommentBox';
 describe('<CommentBox />', () => {
   it('accepts a character limit', () => {
     const wrapper = mount(<CommentBox limit={30} />);
-    const characterLimitBox = wrapper.find('[data-character-limit]');
+    const characterLimitBox = wrapper.find('[data-element-id="character-limit"]');
 
     expect(characterLimitBox.text()).to.include('30 characters left');
   });
@@ -23,14 +23,14 @@ describe('<CommentBox />', () => {
 
   it('sets the characters left based on initial text', () => {
     const wrapper = mount(<CommentBox limit={30} text="foo" />);
-    const characterLimitBox = wrapper.find('[data-character-limit]');
+    const characterLimitBox = wrapper.find('[data-element-id="character-limit"]');
 
     expect(characterLimitBox.text()).to.include('27 characters left');
   });
 
   it('updates the character left count when text is changed in <textarea />', () => {
     const wrapper = mount(<CommentBox limit={30} />);
-    const characterLimitBox = wrapper.find('[data-character-limit]');
+    const characterLimitBox = wrapper.find('[data-element-id="character-limit"]');
     expect(characterLimitBox.text()).to.include('30 characters left');
 
     wrapper.find('textarea').simulate('change', { target: { value: 'foo' } });
@@ -40,7 +40,7 @@ describe('<CommentBox />', () => {
 
   it('updates the character left count when text is pasted into <textarea />', () => {
     const wrapper = mount(<CommentBox limit={30} />);
-    const characterLimitBox = wrapper.find('[data-character-limit]');
+    const characterLimitBox = wrapper.find('[data-element-id="character-limit"]');
     expect(characterLimitBox.text()).to.include('30 characters left');
 
     wrapper.find('textarea').simulate('paste', { target: { value: 'foo' } });

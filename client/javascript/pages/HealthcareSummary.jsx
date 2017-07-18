@@ -76,14 +76,14 @@ class HealthCareSummary extends Component {
               data-offender-profile-details
               className="c-offender-details"
             >
-              <table>
+              <table data-element-id="prisoner-profile">
                 <tbody>
                   <tr>
                     <th colSpan="2">Prisoner Details</th>
                   </tr>
                   <tr>
                     <td>Full name</td>
-                    <td data-prisoner-name>
+                    <td data-element-id="prisoner-name">
                       <strong className="heading-small">{prisoner.firstName} {prisoner.surname}</strong>
                     </td>
                   </tr>
@@ -105,7 +105,7 @@ class HealthCareSummary extends Component {
           </div>
 
           <div className="panel panel-border-wide">
-            <h3 className="heading-large">Healthcare recommendation: {capitalize(riskText[answers.outcome.answer])}</h3>
+            <h3 className="heading-large" data-element-id="healthcare-outcome">Healthcare recommendation: {capitalize(riskText[answers.outcome.answer])}</h3>
           </div>
 
           <table className="check-your-answers u-margin-bottom-alpha">
@@ -125,14 +125,14 @@ class HealthCareSummary extends Component {
                   Assessment Completed by:
                 </td>
                 <td>
-                  <span data-assessor>
+                  <span data-element-id="healthcare-assessor">
                     {capitalize(answers.assessor['full-name'])}<br />
                   </span>
-                  <span data-role>
+                  <span data-element-id="healthcare-role">
                     {capitalize(answers.assessor.role)}<br />
                   </span>
                   <span
-                    data-date
+                    data-element-id="healthcare-date"
                   >
                     {parseDate(new Date(answers.assessor.year, answers.assessor.month - 1, answers.assessor.day))}
                   </span>
@@ -146,12 +146,12 @@ class HealthCareSummary extends Component {
                   </Link>
                 </td>
               </tr>
-              <tr data-healthcare-outcome>
+              <tr>
                 <td>
                   Does Healthcare recommend a single cell?
                 </td>
                 <td>
-                  <span data-outcome>
+                  <span>
                     {capitalize(answers.outcome.answer)}
                   </span>
                 </td>
@@ -166,19 +166,19 @@ class HealthCareSummary extends Component {
                   </Link>
                 </td>
               </tr>
-              <tr data-healthcare-comments>
+              <tr>
                 <td>
                   Comments from the healthcare form:
                 </td>
                 <td>
-                  <span data-comments>
+                  <span data-element-id="healthcare-comments">
                     {capitalize(answers.comments.comments || 'none')}
                   </span>
                 </td>
                 <td className="change-answer">
                   <Link
                     to={`${routes.HEALTHCARE_ASSESSMENT}/comments`}
-                    data-change-comments-link
+                    data-element-id="healthcare-change-comments-link"
                   >
                     Change
                     {' '}
@@ -186,17 +186,17 @@ class HealthCareSummary extends Component {
                   </Link>
                 </td>
               </tr>
-              <tr data-healthcare-consent>
+              <tr>
                 <td>
                   Have they given consent to share their medical information?
                 </td>
                 <td>
-                  <span data-consent>{capitalize(answers.consent.answer)}</span>
+                  <span data-element-id="healthcare-consent">{capitalize(answers.consent.answer)}</span>
                 </td>
                 <td className="change-answer">
                   <Link
                     to={`${routes.HEALTHCARE_ASSESSMENT}/consent`}
-                    data-change-consent-link
+                    data-element-id="healthcare-change-consent-link"
                   >
                     Change
                     {' '}
@@ -228,7 +228,7 @@ class HealthCareSummary extends Component {
             <button
               type="submit"
               className="button"
-              data-continue-button
+              data-element-id="continue-button"
             >
               {riskAssessmentComplete
                 ? 'Submit and see cell sharing outcome'
