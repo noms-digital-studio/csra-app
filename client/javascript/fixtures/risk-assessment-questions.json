@@ -115,7 +115,7 @@
         "no": { "text": "No" }
       }
     },
-    "description": "<p class='lede text'></p>",
+    "description": "<p class='lede text'>This includes recreational drug use.</p>",
     "sharedCellPredicate": {
       "type": "QUESTION",
       "value": "no",
