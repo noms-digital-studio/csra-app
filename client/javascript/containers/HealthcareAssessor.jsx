@@ -51,7 +51,7 @@ const HealthAssessment = ({
           />
         </div>
 
-        <div className="form-date u-clear-fix u-margin-bottom-large">
+        <div className="form-date u-clear-fix u-margin-bottom-bravo">
           <span className="form-label-bold">Date Completed</span>
           <span className="form-hint" id="hint">For example, 31 3 1980</span>
           <div className="form-group form-group-day">

@@ -65,12 +65,12 @@ const RiskAssessmentSummary = ({
 
       <PrisonerProfile {...prisoner} />
 
-      <div className="u-margin-bottom-large">
+      <div className="u-margin-bottom-bravo">
         <RiskAssessmentSummaryTable title="Assessment Summary" />
       </div>
 
       {cellRecommendation !== 'high' &&
-        <p className="u-margin-bottom-large">
+        <p className="u-margin-bottom-bravo">
           <a
             data-change-answers
             className="link u-link"
@@ -94,7 +94,7 @@ const RiskAssessmentSummary = ({
 
         {healthcareAssessmentComplete
           ? null
-          : <p className="u-margin-bottom-medium">
+          : <p className="u-margin-bottom-charlie">
             <span>You must print a copy of this summary for healthcare.</span>
             <span className="u-spacing-right" />
             <button

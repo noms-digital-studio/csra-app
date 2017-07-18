@@ -85,7 +85,7 @@ class Feedback extends Component {
               />
             </div>
 
-            <div className="form-group u-margin-bottom-large">
+            <div className="form-group u-margin-bottom-bravo">
               <label className="heading-small u-margin-bottom-default u-d-block">
                 Did you have any help filling in this form?
               </label>

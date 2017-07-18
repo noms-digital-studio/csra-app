@@ -17,7 +17,7 @@
       },
       "unknown": {
         "title": "No predictor data available:",
-        "description": "<p>The predictor hasn't found any information about this person, so at this stage it can't make an initial recommendation.</p><p>This could be because:</p><ul class='list list-bullet text'><li>they're new to the prison system</li><li>there's a technical reason the information isn't currently available</li></ul><h3 class='heading-medium'>What you need to do</h3><p>Continue the risk assessment, but also refer to any other sources of information available.</p><p class='u-margin-bottom-large'>You must make sure you explain this to the prisoner and they understand.</p>"
+        "description": "<p>The predictor hasn't found any information about this person, so at this stage it can't make an initial recommendation.</p><p>This could be because:</p><ul class='list list-bullet text'><li>they're new to the prison system</li><li>there's a technical reason the information isn't currently available</li></ul><h3 class='heading-medium'>What you need to do</h3><p>Continue the risk assessment, but also refer to any other sources of information available.</p><p class='u-margin-bottom-bravo'>You must make sure you explain this to the prisoner and they understand.</p>"
       }
     },
     "template": "viper",
@@ -67,7 +67,7 @@
         "no": { "text": "No" }
       }
     },
-    "description": "<p class='lede text'>Examples of evidence to look for:</p> <ul class='list list-bullet text u-margin-bottom-medium'><li>they've previously been a victim of prison violence</li><li>they are in debt to another prisoner</li><li>there's reasons why someone in this prison might want to hurt them</li></ul>",
+    "description": "<p class='lede text'>Examples of evidence to look for:</p> <ul class='list list-bullet text u-margin-bottom-charlie'><li>they've previously been a victim of prison violence</li><li>they are in debt to another prisoner</li><li>there's reasons why someone in this prison might want to hurt them</li></ul>",
     "sharedCellPredicate": {
       "type": "QUESTION",
       "value": "no",
@@ -131,7 +131,7 @@
   {
     "section": "prejudice",
     "title": "Do they have any hostile views or prejudices?",
-    "description": "<p class='lede text'>For example, they express prejudices about:</p><ul class='list list-bullet text u-margin-bottom-medium'><li>race</li><li>religion</li><li>sexual orientation</li><li>particular addictions</li> </ul>",
+    "description": "<p class='lede text'>For example, they express prejudices about:</p><ul class='list list-bullet text u-margin-bottom-charlie'><li>race</li><li>religion</li><li>sexual orientation</li><li>particular addictions</li> </ul>",
     "template": "default_with_comment",
     "formFields": {
       "input": {

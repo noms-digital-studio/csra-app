@@ -7,16 +7,6 @@ export const allFormFieldsComplete = (formData = {}, expectedKeys = []) => {
 };
 
 export const parseDate = (date) => {
-  const dayNames = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ];
-
   const monthNames = [
     'January',
     'February',
@@ -32,7 +22,7 @@ export const parseDate = (date) => {
     'December',
   ];
 
-  return `${dayNames[date.getDay()]} ${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+  return `${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
 };
 
 export const addUniqElementToList = (item, list) => {

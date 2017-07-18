@@ -80,7 +80,7 @@ const FullAssessmentOutcome = ({
           <RiskAssessmentSummaryTable title="Risk assessment summary" />
         </div>
 
-        <div data-health-summary className="u-margin-bottom-large">
+        <div data-health-summary className="u-margin-bottom-bravo">
           <HealthcareSummaryTable title="Healthcare assessment summary" />
         </div>
 
@@ -100,7 +100,7 @@ const FullAssessmentOutcome = ({
               onSubmit({ nomisId: prisoner.nomisId, outcome: finalOutcome });
             }}
           >
-            <div className="u-clear-fix u-margin-bottom-medium">
+            <div className="u-clear-fix u-margin-bottom-charlie">
               <SelectableInput
                 required
                 type="checkbox"
