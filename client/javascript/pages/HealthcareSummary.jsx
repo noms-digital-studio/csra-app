@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { replace } from 'react-router-redux';
 import path from 'ramda/src/path';
 
-import { capitalize } from '../utils';
+import { capitalize, parseDate } from '../utils';
 
 import postAssessmentToBackend from '../services/postAssessmentToBackend';
 
@@ -66,56 +66,93 @@ class HealthCareSummary extends Component {
             });
           }}
         >
-          <h1 className="heading-xlarge">Healthcare summary</h1>
+          <h1 className="heading-xlarge">Healthcare assessment summary</h1>
 
-          <div data-profile>
-            <h2 className="heading-medium">Prisoner Details</h2>
-            <p>
-              Prisoner Name:
-              {' '}
-              <strong className="heading-small">
-                <span data-prisoner-name>
-                  {prisoner.firstName} {prisoner.surname}
-                </span>
-              </strong>
-            </p>
-            <p>
-              Date of Birth:
-              {' '}
-              <strong className="heading-small">
-                <span data-prisoner-dob>{prisoner.dob}</span>
-              </strong>
-            </p>
-            <p>
-              NOMIS ID:
-              {' '}
-              <strong className="heading-small">
-                <span data-prisoner-nomis-id>{prisoner.nomisId}</span>
-              </strong>
-            </p>
+          <div className="o-offender-profile u-clear-fix">
+            <div className="c-offender-image">
+              <img src="/assets/images/profile-placeholder.gif" />
+            </div>
+            <div
+              data-offender-profile-details
+              className="c-offender-details"
+            >
+              <table>
+                <tbody>
+                  <tr>
+                    <th colSpan="2">Prisoner Details</th>
+                  </tr>
+                  <tr>
+                    <td>Full name</td>
+                    <td data-prisoner-name>
+                      <strong className="heading-small">{prisoner.firstName} {prisoner.surname}</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Date of birth:</td>
+                    <td>
+                      <strong className="heading-small">{prisoner.dob}</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>NOMISID:</td>
+                    <td>
+                      <strong className="heading-small">{prisoner.nomisId}</strong>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <table className="check-your-answers c-answers-table u-margin-bottom-large">
+          <div className="panel panel-border-wide">
+            <h3 className="heading-large">Healthcare recommendation: {capitalize(riskText[answers.outcome.answer])}</h3>
+          </div>
 
+          <table className="check-your-answers u-margin-bottom-alpha">
             <thead>
               <tr>
-                <th colSpan="2">
+                <th colSpan="3">
                   <h2 className="heading-medium">
                     Assessment summary
                   </h2>
                 </th>
-                <th />
               </tr>
             </thead>
 
             <tbody>
+              <tr data-healthcare-assessor>
+                <td>
+                  Assessment Completed by:
+                </td>
+                <td>
+                  <span data-assessor>
+                    {capitalize(answers.assessor['full-name'])}<br />
+                  </span>
+                  <span data-role>
+                    {capitalize(answers.assessor.role)}<br />
+                  </span>
+                  <span
+                    data-date
+                  >
+                    {parseDate(new Date(answers.assessor.year, answers.assessor.month - 1, answers.assessor.day))}
+                  </span>
+                </td>
+                <td className="change-answer">
+                  <Link
+                    to={`${routes.HEALTHCARE_ASSESSMENT}/assessor`}
+                    data-change-completed-by-link
+                  >
+                    Change <span className="visuallyhidden">completed by</span>
+                  </Link>
+                </td>
+              </tr>
               <tr data-healthcare-outcome>
                 <td>
-                  Healthcare recommendation:
+                  Does Healthcare recommend a single cell?
                 </td>
                 <td>
                   <span data-outcome>
-                    {capitalize(riskText[answers.outcome.answer])}
+                    {capitalize(answers.outcome.answer)}
                   </span>
                 </td>
                 <td className="change-answer">
@@ -151,7 +188,7 @@ class HealthCareSummary extends Component {
               </tr>
               <tr data-healthcare-consent>
                 <td>
-                  Consent given:
+                  Have they given consent to share their medical information?
                 </td>
                 <td>
                   <span data-consent>{capitalize(answers.consent.answer)}</span>
@@ -166,30 +203,6 @@ class HealthCareSummary extends Component {
                     <span className="visuallyhidden">
                       consent to share information
                     </span>
-                  </Link>
-                </td>
-              </tr>
-              <tr data-healthcare-assessor>
-                <td>
-                  Completed by:
-                </td>
-                <td>
-                  <span data-assessor>
-                    {capitalize(answers.assessor['full-name'])}<br />
-                  </span>
-                  <span data-role>
-                    {capitalize(answers.assessor.role)}<br />
-                  </span>
-                  <span
-                    data-date
-                  >{`${answers.assessor.day}-${answers.assessor.month}-${answers.assessor.year}`}</span>
-                </td>
-                <td className="change-answer">
-                  <Link
-                    to={`${routes.HEALTHCARE_ASSESSMENT}/assessor`}
-                    data-change-completed-by-link
-                  >
-                    Change <span className="visuallyhidden">completed by</span>
                   </Link>
                 </td>
               </tr>
@@ -209,7 +222,7 @@ class HealthCareSummary extends Component {
             {riskAssessmentComplete
               ? null
               : <p className="u-margin-bottom-medium">
-                  You must now complete the risk assessment questions to get a cell sharing outcome.
+                You must now complete the risk assessment questions to get a cell sharing outcome.
                 </p>}
 
             <button
@@ -242,8 +255,8 @@ HealthCareSummary.propTypes = {
 
 HealthCareSummary.defaultProps = {
   title: 'Healthcare Summary',
-  completeHealthAnswersFor: () => {},
-  onSubmit: () => {},
+  completeHealthAnswersFor: () => { },
+  onSubmit: () => { },
 };
 
 const findViperScore = (nomisId, viperScores) =>
