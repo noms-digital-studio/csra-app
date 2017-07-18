@@ -195,9 +195,8 @@ exports.config = {
   // },
   //
   // Function to be executed after a test (in Mocha/Jasmine) or a step (in Cucumber) starts.
-  afterTest: function (test) {
-    console.log("BROWSER LOGS", browser.log('browser'));
-  },
+  // afterTest: function (test) {
+  // },
   //
   // Hook that gets executed after the suite has ended
   // afterSuite: function (suite) {

@@ -12,16 +12,8 @@ import riskAssessmentStatusReducer from '../reducers/assessmentStatus';
 import healthcareStatusReducer from '../reducers/healthcareStatus';
 import assessmentOutcomesReducer from '../reducers/assessmentOutcomes';
 
-// eslint-disable-next-line
-const logger = store => next => action => {
-  // eslint-disable-next-line
-  console.log('dispatching', JSON.stringify(action));
-  return next(action);
-};
-
 const enhancer = composeWithDevTools(
   applyMiddleware(
-    logger,
     routerMiddleware(browserHistory),
   ),
   persistState(),
