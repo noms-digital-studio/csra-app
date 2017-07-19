@@ -1,3 +1,5 @@
+import debugModule from 'debug';
+
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 import { browserHistory } from 'react-router';
@@ -12,8 +14,15 @@ import riskAssessmentStatusReducer from '../reducers/assessmentStatus';
 import healthcareStatusReducer from '../reducers/healthcareStatus';
 import assessmentOutcomesReducer from '../reducers/assessmentOutcomes';
 
+const debug = debugModule('csra');
+const debugMiddleware = () => next => (action) => {
+  debug('redux dispatch %j', action);
+  return next(action);
+};
+
 const enhancer = composeWithDevTools(
   applyMiddleware(
+    debugMiddleware,
     routerMiddleware(browserHistory),
   ),
   persistState(),

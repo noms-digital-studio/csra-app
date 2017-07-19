@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+const format = require('util').format;
+
 exports.config = {
   //
   // ==================
@@ -43,7 +45,7 @@ exports.config = {
       // maxInstances can get overwritten per capability. So if you have an in-house Selenium
       // grid with only 5 firefox instance available you can make sure that not more than
       // 5 instance gets started at a time.
-      maxInstances: 1,
+      maxInstances: 5,
       //
       browserName: 'phantomjs', // options: chrome || firefox || phantomjs
     },
@@ -166,6 +168,12 @@ exports.config = {
     global.assert = chai.assert;
     chai.use(require('chai-string'));
     chai.Should();
+
+    // Load up the application and enable debug logging
+    browser.url('/');
+    browser.execute(function() {
+      localStorage.setItem('debug', 'csra');
+    });
   },
   //
   // Hook that gets executed before the suite starts
@@ -195,8 +203,30 @@ exports.config = {
   // },
   //
   // Function to be executed after a test (in Mocha/Jasmine) or a step (in Cucumber) starts.
-  // afterTest: function (test) {
-  // },
+  afterTest: function (test) {
+    const aiUserId = browser.execute(function() {
+      if (window.appInsights) {
+        return window.appInsights.context.user.id;
+      }
+      return "unknown";
+    }).value;
+
+    const logs = browser.log('browser').value.map(formatLog).join("\n");
+    function formatLog({level, message, timestamp}) {
+      const time = new Date(timestamp).toISOString();
+      return format("  %s [%s] %s", time, level, message);
+    }
+
+    // Clear any loaded offender data
+    browser.execute(function() {
+      sessionStorage.clear();
+    });
+
+    console.log("---------------------------");
+    console.log("Test summary for '%s'", test.fullTitle);
+    console.log("AppInsights User ID: %s", aiUserId);
+    console.log("Browser Logs\n%s", logs);
+  },
   //
   // Hook that gets executed after the suite has ended
   // afterSuite: function (suite) {

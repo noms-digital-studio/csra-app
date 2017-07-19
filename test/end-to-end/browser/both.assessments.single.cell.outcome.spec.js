@@ -1,4 +1,3 @@
-import AdminPage from './pages/Admin.page';
 import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
 import {
   whenHealthcareRecommendsSharedCell,
@@ -8,6 +7,7 @@ import HealthcareSummary from './pages/healthcare/HealthcareSummary.page';
 import FullAssessmentOutcomePage from './pages/FullAssessmentOutcome.page';
 import FullAssessmentCompletePage from './pages/FullAssessmentComplete.page';
 import DashboardPage from './pages/Dashboard.page';
+import whenTheOfficerAddsThePrisonersDetails from './tasks/theOfficerAddsThePrisonersDetails.task';
 import {
   whenAVulnerablePrisonerIsAssessed,
   thenTheAssessmentIsCompleted as thenRiskAssessmentIsComplete,
@@ -22,14 +22,7 @@ import andICanViewTheirAssessmentOutcomeAgain from './tasks/viewFullOutcome.task
 
 describe('Both assessments (Single cell outcome)', () => {
   beforeEach(() => {
-    AdminPage.visit();
-    expect(AdminPage.mainHeading).to.equal('Admin');
-    AdminPage.clickClearButton();
-    AdminPage.loadTestUsers();
-  });
-
-  afterEach(() => {
-    browser.reload();
+    browser.url('/');
   });
 
   function thenTheFullAssessmentIsCompletedWith({
@@ -71,6 +64,7 @@ describe('Both assessments (Single cell outcome)', () => {
 
   it('Assesses a vulnerable prisoner', () => new Promise((resolve, reject) => {
     givenThatTheOfficerIsSignedIn();
+    whenTheOfficerAddsThePrisonersDetails();
     whenAVulnerablePrisonerIsAssessed();
     thenRiskAssessmentIsComplete().catch(reject);
     whenHealthcareRecommendsSharedCell();
@@ -90,6 +84,7 @@ describe('Both assessments (Single cell outcome)', () => {
 
   it('Assesses a prisoner that healthcare deem as a risk', () => new Promise((resolve, reject) => {
     givenThatTheOfficerIsSignedIn();
+    whenTheOfficerAddsThePrisonersDetails();
     whenALowRiskPrisonerIsAssessed();
     thenTheAssessmentIsCompleted({ sharedText: 'shared cell' }).catch(reject);
     whenHealthcareRecommendsSingleCell();

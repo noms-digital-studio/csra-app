@@ -58,7 +58,7 @@
     "bunyan": "^1.8.10",
     "bunyan-middleware": "^0.8.0",
     "classnames": "2.2.5",
-    "debug": "^2.6.3",
+    "debug": "^2.6.8",
     "deep-equal": "^1.0.1",
     "dotenv": "^4.0.0",
     "es5-shim": "4.5.9",

@@ -1,3 +1,5 @@
+import debugModule from 'debug';
+
 import not from 'ramda/src/not';
 import has from 'ramda/src/has';
 import is from 'ramda/src/is';
@@ -6,6 +8,8 @@ import xhr from 'xhr';
 
 import defaultViperScores from '../fixtures/viper.json';
 import defaultOffenderProfiles from '../fixtures/nomis.json';
+
+const debug = debugModule('csra');
 
 export const calculateRiskFor = (nomisId, riskScores = []) => {
   const LOW_RISK_THRESHOLD = 0.59;
@@ -160,5 +164,9 @@ const validateViperResponse = (body) => {
 export const retrieveViperScoreFor = (nomisId, callback) => {
   const url = `/api/viper/${nomisId}`;
 
-  xhr.get(url, { json: true }, (_error, _response, body) => callback(validateViperResponse(body)));
+  debug('requesting viper score for %s', nomisId);
+  xhr.get(url, { json: true }, (_error, _response, body) => {
+    debug('got viper score for %s of %j', nomisId, _error || body);
+    callback(validateViperResponse(body));
+  });
 };
