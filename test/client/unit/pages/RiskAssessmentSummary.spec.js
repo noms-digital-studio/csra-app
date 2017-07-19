@@ -13,7 +13,7 @@ import riskAssessmentQuestions from '../fixtures/riskAssessmentQuestions.json';
 const prisonerDetails = {
   firstName: 'foo-name',
   surname: 'foo-surname',
-  dob: 'foo-date',
+  dob: '1-1-2010',
   nomisId: 'foo-nomis-id',
 };
 
@@ -89,12 +89,12 @@ describe('<RiskAssessmentSummary />', () => {
           </Provider>,
         );
 
-        const profileText = wrapper.find('[data-element-id="prisoner-profile"]').text();
+        const prisonerProfile = wrapper.find('[data-element-id="prisoner-profile"]').text();
 
-        expect(profileText).to.contain('foo-name');
-        expect(profileText).to.contain('foo-surname');
-        expect(profileText).to.contain('foo-date');
-        expect(profileText).to.contain('foo-nomis-id');
+        expect(prisonerProfile).to.contain('Foo-name');
+        expect(prisonerProfile).to.contain('foo-surname');
+        expect(prisonerProfile).to.contain('1 January 2010');
+        expect(prisonerProfile).to.contain('foo-nomis-id');
       });
 
       it('renders the outcome of a low risk the assessment', () => {

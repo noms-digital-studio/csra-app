@@ -12,7 +12,7 @@ import HealthcareSummary
 const prisonerDetails = {
   firstName: 'foo-name',
   surname: 'foo-surname',
-  dob: 'foo-date',
+  dob: '1-1-2010',
   nomisId: 'foo-nomis-id',
 };
 
@@ -89,9 +89,10 @@ describe('<HealthcareSummary />', () => {
         </Provider>,
       );
       const prisonerProfile = wrapper.find('[data-element-id="prisoner-profile"]').text();
-      expect(prisonerProfile).to.contain('foo-name');
+
+      expect(prisonerProfile).to.contain('Foo-name');
       expect(prisonerProfile).to.contain('foo-surname');
-      expect(prisonerProfile).to.contain('foo-date');
+      expect(prisonerProfile).to.contain('1 January 2010');
       expect(prisonerProfile).to.contain('foo-nomis-id');
     });
 

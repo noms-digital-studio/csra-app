@@ -12,7 +12,7 @@ import FullAssessmentOutcome
 const prisonerDetails = {
   firstName: 'foo-name',
   surname: 'foo-surname',
-  dob: 'foo-date',
+  dob: '1-1-2010',
   nomisId: 'foo-nomis-id',
 };
 
@@ -104,11 +104,12 @@ describe('<FullAssessmentOutcome', () => {
       </Provider>,
     );
 
-    const profile = wrapper.find('[data-element-id="prisoner-profile"]');
+    const prisonerProfile = wrapper.find('[data-element-id="prisoner-profile"]').text();
 
-    Object.keys(prisonerDetails).forEach((key) => {
-      expect(profile.text()).to.contain(prisonerDetails[key]);
-    });
+    expect(prisonerProfile).to.contain('Foo-name');
+    expect(prisonerProfile).to.contain('foo-surname');
+    expect(prisonerProfile).to.contain('1 January 2010');
+    expect(prisonerProfile).to.contain('foo-nomis-id');
   });
 
   it('displays the reasons if outcome is shared with conditions', () => {

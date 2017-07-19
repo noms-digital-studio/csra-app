@@ -14,6 +14,8 @@ import {
   completeHealthAssessmentFor,
 } from '../actions';
 
+import PrisonerProfile from '../components/PrisonerProfile';
+
 import routes from '../constants/routes';
 
 const joinAssessorValues = accessor =>
@@ -68,41 +70,7 @@ class HealthCareSummary extends Component {
         >
           <h1 className="heading-xlarge">Healthcare assessment summary</h1>
 
-          <div className="o-offender-profile u-clear-fix">
-            <div className="c-offender-image">
-              <img src="/assets/images/profile-placeholder.gif" />
-            </div>
-            <div
-              data-offender-profile-details
-              className="c-offender-details"
-            >
-              <table data-element-id="prisoner-profile">
-                <tbody>
-                  <tr>
-                    <th colSpan="2">Prisoner Details</th>
-                  </tr>
-                  <tr>
-                    <td>Full name</td>
-                    <td data-element-id="prisoner-name">
-                      <strong className="heading-small">{prisoner.firstName} {prisoner.surname}</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Date of birth:</td>
-                    <td>
-                      <strong className="heading-small">{prisoner.dob}</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>NOMISID:</td>
-                    <td>
-                      <strong className="heading-small">{prisoner.nomisId}</strong>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <PrisonerProfile {...prisoner} />
 
           <div className="panel panel-border-wide">
             <h3 className="heading-large" data-element-id="healthcare-outcome">Healthcare recommendation: {capitalize(riskText[answers.outcome.answer])}</h3>
