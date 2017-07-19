@@ -27,7 +27,11 @@ const postAssessmentToBackend = (assessmentType, {
   const target = '/api/assessment';
 
   debug('posting assessment for %s', nomisId);
-  xhr.post(target, { json: true, body: riskAssessmentRequestParams }, (error, resp, body) => {
+  const options = {
+    json: riskAssessmentRequestParams,
+    timeout: 3500,
+  };
+  xhr.post(target, options, (error, resp, body) => {
     debug('posted assessment for %s got %j', nomisId, error || body);
     if (error) {
       if (window.appInsights) {

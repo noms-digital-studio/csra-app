@@ -165,7 +165,7 @@ export const retrieveViperScoreFor = (nomisId, callback) => {
   const url = `/api/viper/${nomisId}`;
 
   debug('requesting viper score for %s', nomisId);
-  xhr.get(url, { json: true }, (_error, _response, body) => {
+  xhr.get(url, { json: true, timeout: 3500 }, (_error, _response, body) => {
     debug('got viper score for %s of %j', nomisId, _error || body);
     callback(validateViperResponse(body));
   });

@@ -40,26 +40,23 @@ const postParams = {
 };
 
 const postData = {
-  body: {
-    nomisId: 'foo-nomis-id',
-    outcome: 'foo-outcome',
-    type: 'foo',
-    viperScore: 0.1,
-    questions: {
-      'foo-section': {
-        question: 'foo-title',
-        question_id: 'foo-section',
-        answer: 'no',
-      },
-      'bar-section': {
-        question: 'bar-title',
-        question_id: 'bar-section',
-        answer: 'no',
-      },
+  nomisId: 'foo-nomis-id',
+  outcome: 'foo-outcome',
+  type: 'foo',
+  viperScore: 0.1,
+  questions: {
+    'foo-section': {
+      question: 'foo-title',
+      question_id: 'foo-section',
+      answer: 'no',
     },
-    reasons: [],
+    'bar-section': {
+      question: 'bar-title',
+      question_id: 'bar-section',
+      answer: 'no',
+    },
   },
-  json: true,
+  reasons: [],
 };
 
 describe('#postAssessmentToBackend', () => {
@@ -80,7 +77,7 @@ describe('#postAssessmentToBackend', () => {
     postAssessmentToBackend('foo', postParams, callback);
 
     expect(postStub.lastCall.args[0]).to.match(/\/api\/assessment/);
-    expect(postStub.lastCall.args[1]).to.eql(postData);
+    expect(postStub.lastCall.args[1].json).to.eql(postData);
 
     expect(callback.calledOnce).to.equal(true);
     expect(callback.calledWithMatch(123)).to.equal(true, 'callback called with the correct response');
