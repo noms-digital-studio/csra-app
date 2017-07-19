@@ -14,15 +14,6 @@ class BasePage {
     return browser.getText('[data-header-username]');
   }
 
-  waitForMainHeadingWithDataId(id) {
-    browser.waitForVisible(`[data-title="${id}"]`, 5000);
-    return browser.getText('h1');
-  }
-
-  clickContinue() {
-    browser.click('[data-element-id="continue-button"]');
-  }
-
   get prisonerName() {
     return browser.getText('[data-element-id="prisoner-name"]');
   }
@@ -33,6 +24,15 @@ class BasePage {
 
   get prisonerNomisId() {
     return browser.getText('[data-element-id="prisoner-nomis-id"]');
+  }
+
+  waitForMainHeadingWithDataId(id) {
+    browser.waitForVisible(`[data-title="${id}"]`, 5000);
+    return browser.getText('h1');
+  }
+
+  clickContinue() {
+    browser.click('[data-element-id="continue-button"]');
   }
 }
 
