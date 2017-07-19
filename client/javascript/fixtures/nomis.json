@@ -4,13 +4,13 @@
       "nomisId": "J1234LO",
       "surname": "Lowe",
       "firstName": "John",
-      "dob": "01-10-1970"
+      "dob": "1-10-1970"
     },
     {
       "nomisId": "R6524MO",
       "surname": "Moyen",
       "firstName": "Richard",
-      "dob": "05-01-1995"
+      "dob": "5-01-1995"
     },
     {
       "nomisId": "I9876RA",
@@ -22,7 +22,7 @@
       "nomisId": "J6285NE",
       "surname": "Neo",
       "firstName": "James",
-      "dob": "03-12-1958"
+      "dob": "3-12-1958"
     }
   ]
 }
