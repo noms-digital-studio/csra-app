@@ -10,7 +10,7 @@ import ConnectedConfirmOffender from '../../../../client/javascript/pages/Confir
 const prisoner = {
   'first-name': 'foo-first-name',
   'last-name': 'foo-last-name',
-  'dob-day': '01',
+  'dob-day': '1',
   'dob-month': '11',
   'dob-year': '1960',
   'nomis-id': 'foo-nomis-id',
@@ -89,12 +89,6 @@ describe('<ConfirmOffender />', () => {
               prisonerFormData: prisoner,
             },
           });
-          const prisonerProfile = {
-            nomisId: 'foo-nomis-id',
-            surname: 'foo-last-name',
-            firstName: 'foo-first-name',
-            dob: '01-11-1960',
-          };
           const wrapper = mountComponent(store);
 
           getStub.yields('something');
@@ -103,9 +97,14 @@ describe('<ConfirmOffender />', () => {
           expect(
             store.dispatch.calledWithMatch({
               type: 'CONFIRM_PRISONER',
-              payload: prisonerProfile,
+              payload: {
+                nomisId: 'foo-nomis-id',
+                surname: 'foo-last-name',
+                firstName: 'foo-first-name',
+                dob: '1-11-1960',
+              },
             }),
-          ).to.equal(true, 'dispatched CONFIRM_PRISONER');
+          ).to.equal(true, 'did not dispatched CONFIRM_PRISONER');
 
           getStub.restore();
         });
@@ -141,10 +140,12 @@ describe('<ConfirmOffender />', () => {
         },
       });
       const wrapper = mountComponent(store);
+      const pageText = wrapper.text();
 
-      Object.keys(prisoner).forEach((key) => {
-        expect(wrapper.text()).to.contain(prisoner[key]);
-      });
+      expect(pageText).to.contain('1 November 1960');
+      expect(pageText).to.contain('foo-first-name');
+      expect(pageText).to.contain('foo-last-name');
+      expect(pageText).to.contain('foo-nomis-id');
     });
   });
 });

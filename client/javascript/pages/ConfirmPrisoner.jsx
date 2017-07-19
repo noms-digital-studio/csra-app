@@ -65,7 +65,6 @@ const mapActionsToProps = dispatch => ({
       if (response) {
         dispatch(addViperScore({ viperScore: response.viperRating, nomisId: response.nomisId }));
       }
-
       dispatch(confirmPrisoner(prisoner));
       dispatch(replace(routes.DASHBOARD));
     });
