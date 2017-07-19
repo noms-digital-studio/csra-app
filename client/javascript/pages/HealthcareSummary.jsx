@@ -70,7 +70,9 @@ class HealthCareSummary extends Component {
         >
           <h1 className="heading-xlarge">Healthcare assessment summary</h1>
 
-          <PrisonerProfile {...prisoner} />
+          <div className="u-margin-bottom-bravo">
+            <PrisonerProfile {...prisoner} />
+          </div>
 
           <div className="panel panel-border-wide">
             <h3 className="heading-large" data-element-id="healthcare-outcome">Healthcare recommendation: {capitalize(riskText[answers.outcome.answer])}</h3>

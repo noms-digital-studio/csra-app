@@ -60,11 +60,12 @@ const FullAssessmentOutcome = ({
           </div>
         </div>
 
-        <h2 data-element-id="recommended-outcome" className="heading-large">
-          Recommended outcome: {capitalize(finalOutcome)}
-        </h2>
+        <div className="u-margin-bottom-bravo">
+          <PrisonerProfile {...prisoner} />
+        </div>
 
-        <div>
+        <div className="panel panel-border-wide">
+          <h3 className="heading-large" data-element-id="recommended-outcome">Recommended outcome: {capitalize(finalOutcome)}</h3>
           {riskAssessmentOutcome.reasons &&
             finalOutcome !== 'single cell' &&
             <ul data-element-id="reasons" className="list list-bullet">
@@ -73,8 +74,6 @@ const FullAssessmentOutcome = ({
               ))}
             </ul>}
         </div>
-
-        <PrisonerProfile {...prisoner} />
 
         <div data-risk-summary>
           <RiskAssessmentSummaryTable title="Risk assessment summary" />
