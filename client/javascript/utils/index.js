@@ -35,3 +35,12 @@ export const addUniqElementToList = (item, list) => {
 
 export const capitalize = (str = '') =>
   str.replace(/^./, match => match.toUpperCase());
+
+export const extractDateFromString = (dateString) => {
+  const dateArray = dateString.split('-');
+  const year = dateArray[2];
+  const month = dateArray[1] - 1;
+  const date = dateArray[0];
+
+  return parseDate(new Date(year, month, date));
+};

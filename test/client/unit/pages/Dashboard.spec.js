@@ -4,6 +4,9 @@ import { mount } from 'enzyme';
 
 import { fakeStore } from '../test-helpers';
 
+
+import { extractDateFromString } from '../../../../client/javascript/utils';
+
 import ConnectedDashboard, {
   Dashboard,
 } from '../../../../client/javascript/pages/Dashboard';
@@ -13,7 +16,7 @@ const profiles = [
     nomisId: 'foo-id',
     surname: 'foo-surname',
     firstName: 'foo-first-name',
-    dob: 'foo-age',
+    dob: '1-12-2010',
     assessmentCompleted: {
       nomisId: 'foo-id',
       recommendation: 'Foo cell',
@@ -28,7 +31,7 @@ const profiles = [
     nomisId: 'bar-id',
     surname: 'foo-surname',
     firstName: 'foo-first-name',
-    dob: 'foo-age',
+    dob: '12-2-2010',
     assessmentCompleted: {},
     healthAssessmentCompleted: {},
     outcome: undefined,
@@ -61,24 +64,29 @@ const state = {
         nomisId: 'foo-id',
         surname: 'foo-surname',
         firstName: 'foo-first-name',
-        dob: 'foo-age',
+        dob: '1-12-2010',
       },
       {
         nomisId: 'bar-id',
         surname: 'foo-surname',
         firstName: 'foo-first-name',
-        dob: 'foo-age',
+        dob: '12-2-2010',
       },
     ],
   },
 };
 
-const assertGivenValuesInWhiteListAreInPage = (list, whiteList, page) => {
+const assertGivenValuesInWhiteListAreInPage = (list, whiteList, component) => {
   list.forEach((item) => {
     const keys = Object.keys(item);
+    const componentText = component.text();
     keys.forEach((key) => {
       if (whiteList.includes(key)) {
-        expect(page.text()).to.include(item[key]);
+        if (key === 'dob') {
+          expect(componentText).to.include(extractDateFromString(item[key]));
+          return;
+        }
+        expect(componentText).to.include(item[key]);
       }
     });
   });

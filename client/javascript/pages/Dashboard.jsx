@@ -9,7 +9,7 @@ import isEmpty from 'ramda/src/isEmpty';
 import not from 'ramda/src/not';
 
 import { selectOffender } from '../actions';
-import { parseDate, capitalize } from '../utils';
+import { parseDate, capitalize, extractDateFromString } from '../utils';
 
 import routes from '../constants/routes';
 
@@ -29,7 +29,7 @@ class Dashboard extends Component {
         </td>
         <td>{profile.firstName} {profile.surname}</td>
         <td>{profile.nomisId}</td>
-        <td>{profile.dob}</td>
+        <td>{extractDateFromString(profile.dob)}</td>
         <td
           data-assessment-complete={not(isEmpty(profile.assessmentCompleted))}
         >
