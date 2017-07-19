@@ -36,16 +36,16 @@ function aPrisonersHealthcareResultsAreEntered(singleCellRecommended) {
   HealthcareNursePage.enterName('Jane Doe');
   HealthcareNursePage.enterDate('21', '07', '2017');
   HealthcareNursePage.clickContinue();
-  expect(HealthcareSummary.mainHeading).to.equal('Healthcare summary');
-  expect(HealthcareSummary.name).to.equalIgnoreCase('John Lowe');
-  expect(HealthcareSummary.dob).to.equalIgnoreCase('01-10-1970');
-  expect(HealthcareSummary.nomisId).to.equalIgnoreCase('J1234LO');
+  expect(HealthcareSummary.mainHeading).to.equal('Healthcare assessment summary');
+  expect(HealthcareSummary.prisonerName).to.equalIgnoreCase('John Lowe');
+  expect(HealthcareSummary.prisonerDob).to.equalIgnoreCase('1 October 1970');
+  expect(HealthcareSummary.prisonerNomisId).to.equalIgnoreCase('J1234LO');
+  expect(HealthcareSummary.outcome).to.equalIgnoreCase(
+    singleCellRecommended ? 'healthcare recommendation: single cell' : 'healthcare recommendation: shared cell',
+  );
   expect(HealthcareSummary.assessor).to.equalIgnoreCase('Jane Doe');
   expect(HealthcareSummary.role).to.equalIgnoreCase('nurse');
-  expect(HealthcareSummary.date).to.equalIgnoreCase('21-07-2017');
-  expect(HealthcareSummary.outcome).to.equalIgnoreCase(
-    singleCellRecommended ? 'single cell' : 'shared cell',
-  );
+  expect(HealthcareSummary.date).to.equalIgnoreCase('21 July 2017');
   expect(HealthcareSummary.comments).to.equalIgnoreCase('a healthcare comment');
   expect(HealthcareSummary.consent).to.equalIgnoreCase('no');
 
@@ -62,7 +62,7 @@ function thenTheHealthcareAssessmentIsComplete({ sharedText }) {
 
   const row = browser.element('[data-element-id="profile-row-J1234LO"]');
   expect(row.getText()).to.equal(
-    'John Lowe J1234LO 01-10-1970 Start Complete',
+    'John Lowe J1234LO 1 October 1970 Start Complete',
   );
 
   const assessmentId = row.getAttribute('data-health-assessment-id');

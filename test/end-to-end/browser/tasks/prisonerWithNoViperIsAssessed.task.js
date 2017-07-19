@@ -39,9 +39,9 @@ function whenAPrisonerWithNoViperIsAssessed() {
 
   RiskAssessmentYesNoPage.clickNoAndContinue();
   expect(RiskAssessmentSummaryPage.mainHeading).to.equal('Risk assessment summary');
-  expect(RiskAssessmentSummaryPage.name).to.equalIgnoreCase('James Neo');
-  expect(RiskAssessmentSummaryPage.dob).to.equalIgnoreCase('03-12-1958');
-  expect(RiskAssessmentSummaryPage.nomisId).to.equalIgnoreCase('J6285NE');
+  expect(RiskAssessmentSummaryPage.prisonerName).to.equalIgnoreCase('James Neo');
+  expect(RiskAssessmentSummaryPage.prisonerDob).to.equalIgnoreCase('3 December 1958');
+  expect(RiskAssessmentSummaryPage.prisonerNomisId).to.equalIgnoreCase('J6285NE');
 
   expect(RiskAssessmentSummaryPage.outcome).to.equalIgnoreCase('Shared cell');
   expect(RiskAssessmentSummaryPage.initialFeelings).to.equalIgnoreCase('sharing comment');

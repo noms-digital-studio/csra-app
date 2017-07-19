@@ -2,16 +2,6 @@
 import BasePage from '../BasePage';
 
 class RiskAssessmentSummary extends BasePage {
-  get name() {
-    return browser.getText('[data-element-id="prisoner-name"]');
-  }
-  get dob() {
-    return browser.getText('[data-element-id="prisoner-dob"]');
-  }
-  get nomisId() {
-    return browser.getText('[data-element-id="nomis-id"]');
-  }
-
   get outcome() {
     return browser.getText('[data-element-id="risk-assessment-outcome"]');
   }

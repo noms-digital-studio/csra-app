@@ -25,9 +25,9 @@ function whenAPrisonerWhoMayHurtSomeoneIsAssessed() {
   RiskAssessmentYesNoPage.clickYesAndContinue();
 
   expect(RiskAssessmentSummaryPage.mainHeading).to.equal('Risk assessment summary');
-  expect(RiskAssessmentSummaryPage.name).to.equalIgnoreCase('John Lowe');
-  expect(RiskAssessmentSummaryPage.dob).to.equalIgnoreCase('01-10-1970');
-  expect(RiskAssessmentSummaryPage.nomisId).to.equalIgnoreCase('J1234LO');
+  expect(RiskAssessmentSummaryPage.prisonerName).to.equalIgnoreCase('John Lowe');
+  expect(RiskAssessmentSummaryPage.prisonerDob).to.equalIgnoreCase('1 October 1970');
+  expect(RiskAssessmentSummaryPage.prisonerNomisId).to.equalIgnoreCase('J1234LO');
 
   expect(RiskAssessmentSummaryPage.outcome).to.equalIgnoreCase('single cell');
   expect(RiskAssessmentSummaryPage.initialFeelings).to.equalIgnoreCase('sharing comment');
@@ -39,13 +39,13 @@ function whenAPrisonerWhoMayHurtSomeoneIsAssessed() {
 function thenASingleCellIsRecommended() {
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
   const row = browser.element('[data-element-id="profile-row-J1234LO"]');
-  expect(row.getText()).to.equal('John Lowe J1234LO 01-10-1970 Complete Start Single cell');
+  expect(row.getText()).to.equal('John Lowe J1234LO 1 October 1970 Complete Start Single cell');
 }
 
 function thenTheAssessmentIsCompleted() {
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
   const row = browser.element('[data-element-id="profile-row-J1234LO"]');
-  expect(row.getText()).to.equal('John Lowe J1234LO 01-10-1970 Complete Start');
+  expect(row.getText()).to.equal('John Lowe J1234LO 1 October 1970 Complete Start');
 }
 
 export {

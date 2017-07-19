@@ -2,7 +2,7 @@
 import BasePage from './BasePage';
 
 class CommentsPage extends BasePage {
-  enterComment(commentText) { browser.setValue('[data-comments-textbox]', commentText); }
+  enterComment(commentText) { browser.setValue('[data-element-id="healthcare-comments-textbox"]', commentText); }
 
   commentAndContinue(commentText) {
     this.enterComment(commentText);

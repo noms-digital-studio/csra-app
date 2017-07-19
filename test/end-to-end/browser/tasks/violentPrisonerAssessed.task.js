@@ -18,9 +18,9 @@ function whenAViolentPrisonerIsAssessed() {
   RiskAssessmentExplanationPage.clickContinue();
 
   expect(RiskAssessmentSummaryPage.mainHeading).to.equal('Risk assessment summary');
-  expect(RiskAssessmentSummaryPage.name).to.equalIgnoreCase('Ian Rate');
-  expect(RiskAssessmentSummaryPage.dob).to.equalIgnoreCase('23-03-1988');
-  expect(RiskAssessmentSummaryPage.nomisId).to.equalIgnoreCase('I9876RA');
+  expect(RiskAssessmentSummaryPage.prisonerName).to.equalIgnoreCase('Ian Rate');
+  expect(RiskAssessmentSummaryPage.prisonerDob).to.equalIgnoreCase('23 March 1988');
+  expect(RiskAssessmentSummaryPage.prisonerNomisId).to.equalIgnoreCase('I9876RA');
 
   expect(RiskAssessmentSummaryPage.outcome).to.equalIgnoreCase('single cell');
 

@@ -22,6 +22,18 @@ class BasePage {
   clickContinue() {
     browser.click('[data-element-id="continue-button"]');
   }
+
+  get prisonerName() {
+    return browser.getText('[data-element-id="prisoner-name"]');
+  }
+
+  get prisonerDob() {
+    return browser.getText('[data-element-id="prisoner-dob"]');
+  }
+
+  get prisonerNomisId() {
+    return browser.getText('[data-element-id="prisoner-nomis-id"]');
+  }
 }
 
 export default BasePage;

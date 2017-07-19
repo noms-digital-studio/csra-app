@@ -6,12 +6,12 @@ import { connect } from 'react-redux';
 import routes from '../constants/routes';
 import { retrieveViperScoreFor } from '../services';
 import { confirmPrisoner, addViperScore } from '../actions';
+import { extractDateFromString } from '../utils';
 
 const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
   <DocumentTitle title={title}>
     <div>
       <h1 className="heading-xlarge">Prisoner Added</h1>
-
       <div className="grid-row">
         <div className="column-one-half">
           <p>
@@ -27,7 +27,7 @@ const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
               </span>
             <span
               data-element-id="prisoner-dob"
-            >{`${prisoner['dob-day']}-${prisoner['dob-month']}-${prisoner['dob-year']}`}</span>
+            >{extractDateFromString(`${prisoner['dob-day']}-${prisoner['dob-month']}-${prisoner['dob-year']}`)}</span>
           </p>
         </div>
         <div className="column-one-half">

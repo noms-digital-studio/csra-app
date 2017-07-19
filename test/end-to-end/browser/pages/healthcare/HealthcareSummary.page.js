@@ -2,16 +2,6 @@
 import BasePage from '../BasePage';
 
 class HealthcareSummary extends BasePage {
-  get name() {
-    return browser.getText('[data-element-id="prisoner-name"]');
-  }
-  get dob() {
-    return browser.getText('[data-element-id="prisoner-dob"]');
-  }
-  get nomisId() {
-    return browser.getText('[data-element-id="nomis-id"]');
-  }
-
   get assessor() {
     return browser.getText('[data-element-id="healthcare-assessor"]');
   }

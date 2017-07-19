@@ -14,7 +14,7 @@ function whenTheOfficerAddsThePrisonersDetails(nomisId) {
 
   expect(PrisonerAddedPage.mainHeading).to.equal('Prisoner Added');
   expect(PrisonerAddedPage.name).to.equal('John Lowe');
-  expect(PrisonerAddedPage.dob).to.equal('01-10-1970');
+  expect(PrisonerAddedPage.dob).to.equal('1 October 1970');
   expect(PrisonerAddedPage.nomisId).to.equal(nomisId || 'J1234LO');
 
   PrisonerAddedPage.clickContinue();
