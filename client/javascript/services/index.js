@@ -3,16 +3,16 @@ import debugModule from 'debug';
 import not from 'ramda/src/not';
 import has from 'ramda/src/has';
 import is from 'ramda/src/is';
+import path from 'ramda/src/path';
 import allPass from 'ramda/src/allPass';
 import xhr from 'xhr';
-
+import { LOW_RISK_THRESHOLD } from '../constants/common';
 import defaultViperScores from '../fixtures/viper.json';
 import defaultOffenderProfiles from '../fixtures/nomis.json';
 
 const debug = debugModule('csra');
 
 export const calculateRiskFor = (nomisId, riskScores = []) => {
-  const LOW_RISK_THRESHOLD = 0.59;
   const offenderRiskScore = riskScores.find(
     offender => offender.nomisId === nomisId,
   );
@@ -68,31 +68,22 @@ export const clearBrowserStorage = () => {
   localStorage.clear();
 };
 
-export const assessmentCanContinue = (question, answers, viperScore) => {
+export const isSharedCellOutcome = ({ question, answers }) => {
   if (question.sharedCellPredicate === undefined) {
     return true;
   }
 
   if (question.sharedCellPredicate.type === 'QUESTION') {
     return question.sharedCellPredicate.dependents.some((section) => {
-      if (not(answers[section])) return true;
+      const answer = path([section, 'answer'], answers);
 
-      return answers[section] === question.sharedCellPredicate.value;
+      if (not(answer)) return true;
+
+      return answer === question.sharedCellPredicate.value;
     });
   }
 
-  if (question.sharedCellPredicate.type === 'VIPER_SCORE') {
-    return (
-      viperScore === 'unknown' ||
-      viperScore === question.sharedCellPredicate.value
-    );
-  }
-
-  // eslint-disable-next-line no-console
-  console.error(
-    `Received an invalid sharedCellPredicate type: ${question.sharedCellPredicate.type}`,
-  );
-  return false;
+  return true;
 };
 
 export const cellAssignment = ({ healthcare, riskAssessment }) => {
@@ -106,7 +97,7 @@ export const cellAssignment = ({ healthcare, riskAssessment }) => {
   return 'single cell';
 };
 
-const extractReasons = (questions, answers) => {
+const extractReasons = ({ questions, answers, viperScore }) => {
   const questionsWithPredicates = questions.filter(
     question => !!question.sharedCellPredicate,
   );
@@ -121,30 +112,33 @@ const extractReasons = (questions, answers) => {
     return reasonsList;
   }, []);
 
-  return reasons;
+  return (viperScore > LOW_RISK_THRESHOLD) ? ['has a high viper score', ...reasons] : reasons;
 };
 
-export const extractDecision = ({ questions, answers, exitPoint }) => {
-  if (exitPoint) {
+export const extractDecision = ({ questions, answers, viperScore }) => {
+  const reasons = extractReasons({ questions, answers, viperScore });
+  const isSingleCell = questions.some(question => not(isSharedCellOutcome({ question, answers })));
+
+  if (viperScore > LOW_RISK_THRESHOLD || isSingleCell) {
     return {
       recommendation: 'single cell',
       rating: 'high',
+      reasons,
     };
   }
 
-  const conditions = extractReasons(questions, answers);
-
-  if (conditions.length) {
+  if (reasons.length) {
     return {
       recommendation: 'shared cell with conditions',
-      rating: 'low',
-      reasons: conditions,
+      rating: 'standard',
+      reasons,
     };
   }
 
   return {
     recommendation: 'shared cell',
-    rating: 'low',
+    rating: 'standard',
+    reasons,
   };
 };
 

@@ -41,6 +41,34 @@ const riskAssessmentAnswers = {
   },
 };
 
+const state = {
+  answers: {
+    selectedPrisonerId: 'foo-nomis-id',
+    riskAssessment: {
+      'foo-nomis-id': riskAssessmentAnswers,
+    },
+  },
+  questions: {
+    riskAssessment: riskAssessmentQuestions,
+  },
+  riskAssessmentStatus: {
+    completed: [],
+  },
+  healthcareStatus: {
+    completed: [],
+  },
+  offender: {
+    selected: prisonerDetails,
+    viperScores: [
+      {
+        nomisId: 'foo-nomis-id',
+        viperScore: 0.10,
+      },
+    ],
+  },
+};
+
+
 describe('<RiskAssessmentSummary />', () => {
   let postStub;
   before(() => {
@@ -52,34 +80,6 @@ describe('<RiskAssessmentSummary />', () => {
   });
 
   context('Connected RiskAssessmentSummary', () => {
-    const state = {
-      answers: {
-        selectedPrisonerId: 'foo-nomis-id',
-        riskAssessment: {
-          'foo-nomis-id': riskAssessmentAnswers,
-        },
-      },
-      questions: {
-        riskAssessment: riskAssessmentQuestions,
-      },
-      riskAssessmentStatus: {
-        exitPoint: '',
-        completed: [],
-      },
-      healthcareStatus: {
-        completed: [],
-      },
-      offender: {
-        selected: prisonerDetails,
-        viperScores: [
-          {
-            nomisId: 'foo-nomis-id',
-            viperScore: 0.10,
-          },
-        ],
-      },
-    };
-
     context('when the assessment outcome is low', () => {
       it('renders the prisoners profile details', () => {
         const store = fakeStore(state);
@@ -97,7 +97,7 @@ describe('<RiskAssessmentSummary />', () => {
         expect(prisonerProfile).to.contain('foo-nomis-id');
       });
 
-      it('renders the outcome of a low risk the assessment', () => {
+      it('renders a "shared cell" outcome', () => {
         const store = fakeStore(state);
         const wrapper = mount(
           <Provider store={store}>
@@ -108,15 +108,127 @@ describe('<RiskAssessmentSummary />', () => {
           .find('[data-element-id="risk-assessment-outcome"]')
           .text();
 
+        const riskText =
+          wrapper
+            .find('[data-element-id="risk-assessment-risk"]')
+            .text();
+
+        const reasonsText =
+          wrapper
+            .find('[data-element-id="risk-assessment-reasons"]');
+
         expect(outcomeText).to.contain('Shared cell');
+        expect(riskText).to.contain('Standard');
+        expect(reasonsText.text).to.throw();
+      });
+
+      it('renders a "shared cell with conditions" outcome', () => {
+        const answers = {
+          ...riskAssessmentAnswers,
+          'gang-affiliation': {
+            answer: 'yes',
+          },
+          'drug-misuse': {
+            answer: 'yes',
+          },
+        };
+        const unknownRiskStore = fakeStore({
+          ...state,
+          answers: {
+            selectedPrisonerId: 'foo-nomis-id',
+            riskAssessment: {
+              'foo-nomis-id': answers,
+            },
+          },
+          riskAssessmentStatus: {
+            completed: [],
+          },
+          offender: {
+            selected: prisonerDetails,
+            viperScores: [],
+          },
+        });
+        const wrapper = mount(
+          <Provider store={unknownRiskStore}>
+            <RiskAssessmentSummary />
+          </Provider>,
+        );
+
+        const outcomeText =
+          wrapper
+            .find('[data-element-id="risk-assessment-outcome"]')
+            .text();
+
+        const riskText =
+          wrapper
+            .find('[data-element-id="risk-assessment-risk"]')
+            .text();
+
+        const reasonsText =
+          wrapper
+            .find('[data-element-id="risk-assessment-reasons"]')
+            .text();
+
+        expect(outcomeText).to.contain('Shared cell with conditions');
+        expect(riskText).to.contain('Standard');
+        expect(reasonsText).to.contain('Has indicated gang affiliation');
+        expect(reasonsText).to.contain('Has indicated drug use');
+      });
+
+      it('renders a "single cell" outcome', () => {
+        const answers = {
+          ...riskAssessmentAnswers,
+          'prison-self-assessment': {
+            answer: 'yes',
+          },
+        };
+        const unknownRiskStore = fakeStore({
+          ...state,
+          answers: {
+            selectedPrisonerId: 'foo-nomis-id',
+            riskAssessment: {
+              'foo-nomis-id': answers,
+            },
+          },
+          riskAssessmentStatus: {
+            completed: [],
+          },
+          offender: {
+            selected: prisonerDetails,
+            viperScores: [],
+          },
+        });
+        const wrapper = mount(
+          <Provider store={unknownRiskStore}>
+            <RiskAssessmentSummary />
+          </Provider>,
+        );
+
+        const outcomeText =
+          wrapper
+            .find('[data-element-id="risk-assessment-outcome"]')
+            .text();
+
+        const riskText =
+          wrapper
+            .find('[data-element-id="risk-assessment-risk"]')
+            .text();
+
+        const reasonsText =
+          wrapper
+            .find('[data-element-id="risk-assessment-reasons"]')
+            .text();
+
+        expect(outcomeText).to.contain('Single cell');
+        expect(riskText).to.contain('High');
+        expect(reasonsText).to.equal('Officer thinks they might seriously hurt cellmate');
       });
     });
 
-    context('when the assessment outcome is high', () => {
+    context('when the assessment outcome is high due to the viper score', () => {
       const highRiskStore = fakeStore({
         ...state,
         riskAssessmentStatus: {
-          exitPoint: 'prison-self-assessment',
           completed: [],
         },
         offender: {
@@ -137,81 +249,29 @@ describe('<RiskAssessmentSummary />', () => {
           </Provider>,
         );
 
-        const outcomeText = wrapper
-          .find('[data-element-id="risk-assessment-outcome"]')
-          .text();
-
-        expect(outcomeText).to.contain('Single cell');
-      });
-
-      it('hides the change button if the viperscore is high', () => {
-        const wrapper = mount(
-          <Provider store={highRiskStore}>
-            <RiskAssessmentSummary />
-          </Provider>,
-        );
-
-        expect(wrapper.find('data-change-answers').length).to.equal(0);
-      });
-    });
-
-    context('when the viper score is unknown', () => {
-      context('and a cell sharing predicate is hit', () => {
-        it('renders a single cell outcome', () => {
-          const unknownRiskStore = fakeStore({
-            ...state,
-            riskAssessmentStatus: {
-              exitPoint: 'foo-exit-point',
-              completed: [],
-            },
-            offender: {
-              selected: prisonerDetails,
-              viperScores: [],
-            },
-          });
-          const wrapper = mount(
-            <Provider store={unknownRiskStore}>
-              <RiskAssessmentSummary />
-            </Provider>,
-          );
-
-          const outcomeText = wrapper.find('[data-element-id="risk-assessment-outcome"]').text();
-          expect(outcomeText).to.contain('Single cell');
-        });
-      });
-    });
-
-    context('when the viper score is unknown', () => {
-      context('and no cell sharing predicates are hit', () => {
-        it('renders the outcome shared cell outcome', () => {
-          const unknownRiskStore = fakeStore({
-            ...state,
-            riskAssessmentStatus: {
-              exitPoint: '',
-              completed: [],
-            },
-            offender: {
-              selected: prisonerDetails,
-              viperScores: [],
-            },
-          });
-          const wrapper = mount(
-            <Provider store={unknownRiskStore}>
-              <RiskAssessmentSummary />
-            </Provider>,
-          );
-
-          const outcomeText = wrapper
+        const outcomeText =
+          wrapper
             .find('[data-element-id="risk-assessment-outcome"]')
             .text();
-          expect(outcomeText).to.contain('Shared cell');
-        });
+
+        const riskText =
+          wrapper
+            .find('[data-element-id="risk-assessment-risk"]')
+            .text();
+
+        const reasonsText =
+          wrapper
+            .find('[data-element-id="risk-assessment-reasons"]')
+            .text();
+
+        expect(outcomeText).to.contain('Single cell');
+        expect(riskText).to.contain('High');
+        expect(reasonsText).to.equal('has a high viper score');
       });
     });
 
-
     context('when the assessment is complete', () => {
-      it('allows the user to change answers', () => {
+      xit('allows the user to change answers', () => {
         const store = fakeStore(state);
         const wrapper = mount(
           <Provider store={store}>
@@ -220,13 +280,6 @@ describe('<RiskAssessmentSummary />', () => {
         );
 
         wrapper.find('[data-change-answers]').simulate('click');
-
-        expect(
-          store.dispatch.calledWithMatch({
-            type: 'CLEAR_RISK_ASSESSMENT_ANSWERS',
-            payload: 'foo-nomis-id',
-          }),
-        ).to.equal(true, 'triggered clear assessment answers');
 
         expect(
           store.dispatch.calledWithMatch({
@@ -289,8 +342,9 @@ describe('<RiskAssessmentSummary />', () => {
           store.dispatch.calledWithMatch({
             type: 'COMPLETE_RISK_ASSESSMENT',
             payload: {
+              rating: 'standard',
               recommendation: 'shared cell with conditions',
-              reasons: ['foo-reason'],
+              reasons: ['Has indicated gang affiliation'],
               nomisId: 'foo-nomis-id',
               assessmentId: 123,
             },
@@ -366,7 +420,6 @@ describe('<RiskAssessmentSummary />', () => {
         );
 
         wrapper.find('form').simulate('submit');
-
 
         expect(
           store.dispatch.calledWithMatch({

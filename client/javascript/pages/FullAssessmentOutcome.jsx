@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 import { replace } from 'react-router-redux';
+import not from 'ramda/src/not';
+import isEmpty from 'ramda/src/isEmpty';
 
 import { cellAssignment } from '../services';
 import { capitalize } from '../utils';
@@ -30,7 +32,7 @@ const FullAssessmentOutcome = ({
       sharedCell: healthcareOutcome.recommendation === 'shared cell',
     },
     riskAssessment: {
-      sharedCell: new RegExp('shared cell').test(
+      sharedCell: (/shared cell/).test(
         riskAssessmentOutcome.recommendation,
       ),
       conditions: riskAssessmentOutcome.recommendation ===
@@ -66,8 +68,7 @@ const FullAssessmentOutcome = ({
 
         <div className="panel panel-border-wide">
           <h3 className="heading-large" data-element-id="recommended-outcome">Recommended outcome: {capitalize(finalOutcome)}</h3>
-          {riskAssessmentOutcome.reasons &&
-            finalOutcome !== 'single cell' &&
+          {not(isEmpty(riskAssessmentOutcome.reasons)) &&
             <ul data-element-id="reasons" className="list list-bullet">
               {riskAssessmentOutcome.reasons.map((reason, index) => (
                 <li key={index}>{reason}</li>

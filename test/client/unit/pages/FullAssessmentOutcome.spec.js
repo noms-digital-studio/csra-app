@@ -74,8 +74,7 @@ const state = {
     riskAssessment: riskAssessmentQuestions,
   },
   riskAssessmentStatus: {
-    exitPoint: '',
-    completed: [{ recommendation: 'shared cell', nomisId: 'foo-nomis-id' }],
+    completed: [{ recommendation: 'shared cell', nomisId: 'foo-nomis-id', rating: 'standard', reasons: [] }],
   },
   healthcareStatus: {
     completed: [{ recommendation: 'shared cell', nomisId: 'foo-nomis-id' }],
@@ -116,7 +115,6 @@ describe('<FullAssessmentOutcome', () => {
     const stateWithReasons = {
       ...state,
       riskAssessmentStatus: {
-        exitPoint: '',
         completed: [
           {
             recommendation: 'shared cell with conditions',
@@ -164,8 +162,6 @@ describe('<FullAssessmentOutcome', () => {
     const riskAssessmentSummaryText = wrapper
       .find('[data-risk-summary]')
       .text();
-
-    expect(riskAssessmentSummaryText).to.contain('Shared cell');
 
     Object.keys(riskAssessmentAnswers).forEach((key) => {
       Object.keys(riskAssessmentAnswers[key]).forEach((innerKey) => {

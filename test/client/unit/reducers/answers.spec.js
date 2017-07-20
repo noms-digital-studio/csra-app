@@ -87,25 +87,4 @@ describe('answersReducer', () => {
       expect(answersReducer(state, action)).to.eql(expectedState);
     });
   });
-
-  it('clears the answers for an assessment', () => {
-    const action = {
-      type: 'CLEAR_RISK_ASSESSMENT_ANSWERS',
-      payload: 'prisoner-id',
-    };
-    const initialState = {
-      ...defaultState,
-      riskAssessment: {
-        'prisoner-id': {
-          'foo-answer': { answer: 'no' },
-        },
-      },
-    };
-    const expectedState = {
-      ...initialState,
-      riskAssessment: {},
-    };
-
-    expect(answersReducer(initialState, action)).to.eql(expectedState);
-  });
 });

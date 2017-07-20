@@ -1,51 +1,16 @@
-import { assessmentCanContinue } from '../../../../client/javascript/services/index';
+import { isSharedCellOutcome } from '../../../../client/javascript/services/index';
 
 describe('Decision Engine', () => {
-  it('return false if given an invalid sharedCellPredicate type', () => {
+  it('ignores invalid sharedCellPredicate type', () => {
     const question = {
       section: 'risk-of-violence',
       sharedCellPredicate: { type: 'FOO', value: 'low' },
     };
     const answers = {};
-    const viperScore = 'high';
 
-    expect(assessmentCanContinue(question, answers, viperScore)).to.equal(false);
+    expect(isSharedCellOutcome({ question, answers })).to.equal(true);
   });
 
-  context('Viper score', () => {
-    it('does not continue when the viper score is high', () => {
-      const question = {
-        section: 'risk-of-violence',
-        sharedCellPredicate: { type: 'VIPER_SCORE', value: 'low' },
-      };
-      const answers = {};
-      const viperScore = 'high';
-
-      expect(assessmentCanContinue(question, answers, viperScore)).to.equal(false);
-    });
-
-    it('continues when the viper score is low', () => {
-      const question = {
-        section: 'risk-of-violence',
-        sharedCellPredicate: { type: 'VIPER_SCORE', value: 'low' },
-      };
-      const answers = {};
-      const viperScore = 'low';
-
-      expect(assessmentCanContinue(question, answers, viperScore)).to.equal(true);
-    });
-
-    it('continues when the viper score is unknown', () => {
-      const question = {
-        section: 'risk-of-violence',
-        sharedCellPredicate: { type: 'VIPER_SCORE', value: 'low' },
-      };
-      const answers = {};
-      const viperScore = 'unknown';
-
-      expect(assessmentCanContinue(question, answers, viperScore)).to.equal(true);
-    });
-  });
 
   context('Single Question Decision', () => {
     it('continues when the is no sharedCellPredicate', () => {
@@ -54,7 +19,7 @@ describe('Decision Engine', () => {
       };
       const answers = {};
 
-      expect(assessmentCanContinue(question, answers)).to.equal(true);
+      expect(isSharedCellOutcome({ question, answers })).to.equal(true);
     });
 
     it('continues when the answer does not satisfy the sharedCellPredicate', () => {
@@ -66,7 +31,7 @@ describe('Decision Engine', () => {
         vulnerability: 'no',
       };
 
-      expect(assessmentCanContinue(question, answers)).to.equal(true);
+      expect(isSharedCellOutcome({ question, answers })).to.equal(true);
     });
 
     it('does not continues when the answer satisfies the sharedCellPredicate', () => {
@@ -75,10 +40,10 @@ describe('Decision Engine', () => {
         sharedCellPredicate: { type: 'QUESTION', value: 'no', dependents: ['vulnerability'] },
       };
       const answers = {
-        vulnerability: 'yes',
+        vulnerability: { answer: 'yes' },
       };
 
-      expect(assessmentCanContinue(question, answers)).to.equal(false);
+      expect(isSharedCellOutcome({ question, answers })).to.equal(false);
     });
   });
 
@@ -94,15 +59,15 @@ describe('Decision Engine', () => {
       };
 
       const answers = {
-        prejudice: 'yes',
-        gangs: 'no',
-        drugs: 'no',
+        prejudice: { answer: 'yes' },
+        gangs: { answer: 'no' },
+        drugs: { answer: 'no' },
       };
 
-      expect(assessmentCanContinue(question, answers)).to.equal(true);
+      expect(isSharedCellOutcome({ question, answers })).to.equal(true);
     });
 
-    it('continues when the answers to sharedCellPredicate have not been anwsered yet', () => {
+    it('continues when the answers to sharedCellPredicate have not been answered yet', () => {
       const question = {
         section: 'prejudice',
         sharedCellPredicate: {
@@ -113,11 +78,11 @@ describe('Decision Engine', () => {
       };
 
       const answers = {
-        prejudice: 'yes',
+        prejudice: { answer: 'yes' },
       };
 
 
-      expect(assessmentCanContinue(question, answers)).to.equal(true);
+      expect(isSharedCellOutcome({ question, answers })).to.equal(true);
     });
 
     it('does not continues when the answer satisfies the sharedCellPredicate', () => {
@@ -131,12 +96,12 @@ describe('Decision Engine', () => {
       };
 
       const answers = {
-        prejudice: 'yes',
-        gangs: 'yes',
-        drugs: 'yes',
+        prejudice: { answer: 'yes' },
+        gangs: { answer: 'yes' },
+        drugs: { answer: 'yes' },
       };
 
-      expect(assessmentCanContinue(question, answers)).to.equal(false);
+      expect(isSharedCellOutcome({ question, answers })).to.equal(false);
     });
   });
 });

@@ -53,7 +53,7 @@
       "dependents": [
         "prison-self-assessment"
       ],
-      "reasons": []
+      "reasons": ["Officer thinks they might seriously hurt cellmate"]
     },
     "answerRequired": true
   },
@@ -74,7 +74,7 @@
       "dependents": [
         "vulnerability"
       ],
-      "reasons": []
+      "reasons": ["Officer thinks they're scared or vulnerable"]
     },
     "answerRequired": true
   },
@@ -167,9 +167,7 @@
       "dependents": [
         "officers-assessment"
       ],
-      "reasons": [
-        "Based on the concerns I have (officers views)"
-      ]
+      "reasons": ["Officer recommends a single cell"]
     },
     "answerRequired": true
   }

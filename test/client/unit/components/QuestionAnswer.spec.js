@@ -21,8 +21,8 @@ describe('<QuestionAnswerRow/>', () => {
     const wrapperText = wrapper.text();
 
     expect(wrapper.find('tr').length).to.equal(1);
-    expect(wrapperText).to.match(new RegExp('foo-question', 'i'));
-    expect(wrapperText).to.match(new RegExp('foo-answer', 'i'));
+    expect(wrapperText).to.match(/foo-question/i);
+    expect(wrapperText).to.match(/foo-answer/i);
   });
 
   it('renders a data tag', () => {
@@ -33,6 +33,6 @@ describe('<QuestionAnswerRow/>', () => {
     const wrapper = shallow(<QuestionAnswerRow {...questionAnswerDataTag} />);
     const wrapperHTML = wrapper.html();
 
-    expect(wrapperHTML).to.match(new RegExp('data-element-id', 'i'));
+    expect(wrapperHTML).to.match(/data-element-id/i);
   });
 });

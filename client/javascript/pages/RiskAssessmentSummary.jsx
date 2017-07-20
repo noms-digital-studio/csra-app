@@ -5,6 +5,7 @@ import { replace } from 'react-router-redux';
 import path from 'ramda/src/path';
 
 import { completeRiskAssessmentFor, clearAnswers } from '../actions';
+import { capitalize } from '../utils';
 import {
   calculateRiskFor as viperScoreFor,
   extractDecision,
@@ -40,7 +41,7 @@ const RiskAssessmentSummary = ({
             healthcareAssessmentComplete,
             outcome,
             nomisId: prisoner.nomisId,
-            viperScore: viperScore.viperScore,
+            viperScore,
             answers,
             questions,
           });
@@ -63,24 +64,24 @@ const RiskAssessmentSummary = ({
           </div>
         </div>
 
-        <PrisonerProfile {...prisoner} />
+        <div className="u-margin-bottom-bravo">
+          <PrisonerProfile {...prisoner} />
+        </div>
+
+        <div className="panel panel-border-wide">
+          <h2 className="heading-large" data-element-id="risk-assessment-risk">Cell violence risk: {capitalize(outcome.rating)}</h2>
+          <h3 className="heading-medium" data-element-id="risk-assessment-outcome">Allocation recommendation: {capitalize(outcome.recommendation)}</h3>
+          {outcome.reasons &&
+            <ul data-element-id="risk-assessment-reasons" className="list list-bullet">
+              {outcome.reasons.map((reason, index) => (
+                <li key={index}>{reason}</li>
+              ))}
+            </ul>}
+        </div>
 
         <div className="u-margin-bottom-bravo">
           <RiskAssessmentSummaryTable title="Assessment Summary" />
         </div>
-
-        {cellRecommendation !== 'high' &&
-          <p className="u-margin-bottom-bravo">
-            <a
-              data-change-answers
-              className="link u-link"
-              onClick={() => {
-                onClear(prisoner.nomisId);
-              }}
-            >
-              Change answers
-        </a>
-          </p>}
 
         <div className="form-group" data-summary-next-steps>
           {healthcareAssessmentComplete
@@ -141,7 +142,7 @@ RiskAssessmentSummary.propTypes = {
     surname: PropTypes.string,
   }),
   healthcareAssessmentComplete: PropTypes.bool,
-  viperScore: PropTypes.object,
+  viperScore: PropTypes.number,
   answers: PropTypes.object,
   questions: PropTypes.array,
 };
@@ -159,33 +160,37 @@ RiskAssessmentSummary.defaultProps = {
 const findViperScore = (nomisId, viperScores) =>
   viperScores.find(item => item.nomisId === nomisId) || {};
 
-const mapStateToProps = state => ({
-  prisoner: state.offender.selected,
-  cellRecommendation: viperScoreFor(
+const mapStateToProps = (state) => {
+  const viperScore = findViperScore(
     state.offender.selected.nomisId,
     state.offender.viperScores,
-  ),
-  viperScore: findViperScore(
-    state.offender.selected.nomisId,
-    state.offender.viperScores,
-  ),
-  outcome: extractDecision({
-    questions: state.questions.riskAssessment,
+  ).viperScore;
+
+  return ({
+    prisoner: state.offender.selected,
+    cellRecommendation: viperScoreFor(
+      state.offender.selected.nomisId,
+      state.offender.viperScores,
+    ),
+    viperScore,
+    outcome: extractDecision({
+      questions: state.questions.riskAssessment,
+      answers: path(
+        [state.answers.selectedPrisonerId],
+        state.answers.riskAssessment,
+      ),
+      viperScore,
+    }),
     answers: path(
       [state.answers.selectedPrisonerId],
       state.answers.riskAssessment,
     ),
-    exitPoint: state.riskAssessmentStatus.exitPoint,
-  }),
-  answers: path(
-    [state.answers.selectedPrisonerId],
-    state.answers.riskAssessment,
-  ),
-  questions: state.questions.riskAssessment,
-  healthcareAssessmentComplete: !!state.healthcareStatus.completed.find(
-    assessment => assessment.nomisId === state.offender.selected.nomisId,
-  ),
-});
+    questions: state.questions.riskAssessment,
+    healthcareAssessmentComplete: !!state.healthcareStatus.completed.find(
+      assessment => assessment.nomisId === state.offender.selected.nomisId,
+    ),
+  });
+};
 
 const mapActionsToProps = dispatch => ({
   onClear: (nomisId) => {
@@ -200,10 +205,6 @@ const mapActionsToProps = dispatch => ({
     questions,
     answers,
   }) => {
-    if (window.appInsights) {
-      window.appInsights.trackEvent('Storing assessment for:', { nomisId });
-    }
-
     postAssessmentToBackend(
       'risk',
       {
@@ -214,12 +215,9 @@ const mapActionsToProps = dispatch => ({
         answers,
       },
       (assessmentId) => {
-        if (window.appInsights) {
-          window.appInsights.trackEvent('Stored assessment for:', { nomisId, assessmentId });
-        }
-
         dispatch(
           completeRiskAssessmentFor({
+            rating: outcome.rating,
             recommendation: outcome.recommendation,
             nomisId,
             assessmentId,

@@ -78,7 +78,7 @@ class HealthCareSummary extends Component {
             <h3 className="heading-large" data-element-id="healthcare-outcome">Healthcare recommendation: {capitalize(riskText[answers.outcome.answer])}</h3>
           </div>
 
-          <table className="check-your-answers u-margin-bottom-alpha">
+          <table className="check-your-answers u-margin-bottom-charlie">
             <thead>
               <tr>
                 <th colSpan="3">

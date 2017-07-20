@@ -106,22 +106,4 @@ describe('<RiskAssessment />', () => {
       }),
     ).to.equal(true, 'Changed path to /risk-assessment/bar-section');
   });
-
-  it('call the saveExit point action if question fails the decision engine', () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <RiskAssessment params={{ section: 'bar-section' }} />
-      </Provider>,
-    );
-
-    wrapper.find('#radio-yes').simulate('change', { target: { value: 'yes' } });
-    wrapper.find('form').simulate('submit');
-
-    expect(
-      store.dispatch.calledWithMatch({
-        type: 'SAVE_EXIT_POINT',
-        payload: 'bar-section',
-      }),
-    ).to.equal(true, 'Dispatched SAVE_EXIT_POINT');
-  });
 });
