@@ -35,7 +35,7 @@ describe('bin/record-build-info', () => {
     it('has gitRef', () =>
       expect(info).to.have.property('gitRef', 'deadbeeffaceddeaffadeddad'));
     it('has gitDate', () =>
-      expect(info).to.have.property('gitDate', '2017-05-31T15:35:26+00:00'));
+      expect(info).to.have.property('gitDate', '2017-05-31T15:35:26.000Z'));
 
     it('has questionHash collection', () =>
       expect(info).to.have.property('questionHash'));

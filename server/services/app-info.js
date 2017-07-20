@@ -35,7 +35,7 @@ function dynamicAppInfo() {
     return execGit('log -n1 --format=%H');
   }
   function getGitDate() {
-    return new Date(execGit('log -n1 --format=%cd --date=iso-strict-local'));
+    return new Date(execGit('log -n1 --format=%cd --date=iso'));
   }
   function getBuildInfo() {
     return {

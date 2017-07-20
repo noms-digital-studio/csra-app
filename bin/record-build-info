@@ -19,7 +19,7 @@ const getEnvironmentVariable = (name) => {
 const buildInfo = {
   buildNumber: getEnvironmentVariable('BUILD_NUMBER'),
   gitRef: getEnvironmentVariable('GIT_REF'),
-  gitDate: getEnvironmentVariable('GIT_DATE'),
+  gitDate: new Date(getEnvironmentVariable('GIT_DATE')),
   questionHash: {
     risk: calculateHash('risk-assessment'),
     healthcare: calculateHash('healthcare'),
