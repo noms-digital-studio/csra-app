@@ -18,7 +18,7 @@ function primeDatabase(nomisId) {
 
 function primeMock(mapping) {
   return superagent
-    .post(url.resolve(`${config.viperRestServiceHost}`, '/__admin/mappings'))
+    .post(url.resolve(`${config.viper.url}`, '/__admin/mappings'))
     .send(mapping);
 }
 
@@ -33,7 +33,7 @@ describe('/api/viper/:nomisId', () => {
 
   before(function beforeTests() {
     this.timeout(5000);
-    if (process.env.USE_VIPER_SERVICE === 'false') {
+    if (!config.viper.enabled) {
       return primeDatabase(nomisId);
     }
     return primeMock({
@@ -57,7 +57,7 @@ describe('/api/viper/:nomisId', () => {
   });
 
   after(() => superagent
-      .post(url.resolve(`${config.viperRestServiceHost}`, '/__admin/reset'))
+      .post(url.resolve(`${config.viper.url}`, '/__admin/reset'))
       .send());
 
   it('returns a viper rating for a known nomis id', function test() {
@@ -71,7 +71,7 @@ describe('/api/viper/:nomisId', () => {
 
   context('when using actual API', () => {
     before(() => {
-      if (process.env.USE_VIPER_SERVICE === 'false') {
+      if (!config.viper.enabled) {
         this.skip();
       }
     });

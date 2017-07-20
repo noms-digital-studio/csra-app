@@ -15,17 +15,17 @@ export default function createRouter(db, appInfo) {
 
   function viperRestServiceCheck() {
     return new Promise((resolve, reject) => {
-      if (process.env.USE_VIPER_SERVICE === 'false') {
+      if (!config.viper.enabled) {
         resolve({ name: 'viperRestService', status: 'OK', message: 'Not enabled' });
         return;
       }
 
       superagent
-        .get(url.resolve(`${config.viperRestServiceHost}`, '/analytics/health'))
-        .set('API-key', config.viperRestServiceAuthenticationKey)
+        .get(url.resolve(`${config.viper.url}`, '/analytics/health'))
+        .set('API-key', config.viper.apiKey)
         .timeout({
-          response: config.viperRestServiceConnectionTimeout,
-          deadline: config.viperRestServiceReadTimeout,
+          response: 2000,
+          deadline: 2500,
         })
         .end((error, result) => {
           try {

@@ -13,6 +13,7 @@ import DashboardPage from './pages/Dashboard.page';
 import whenTheOfficerAddsThePrisonersDetails from './tasks/theOfficerAddsThePrisonersDetails.task';
 import andICanViewTheirAssessmentOutcomeAgain from './tasks/viewFullOutcome.task';
 
+import config from '../../../server/config';
 import db from '../../util/db';
 
 function thenTheFullAssessmentIsCompleted() {
@@ -41,7 +42,7 @@ function thenTheFullAssessmentIsCompleted() {
 
 describe('Both assessments (Shared cell outcome)', () => {
   before(() => {
-    if (process.env.USE_VIPER_SERVICE === 'true') {
+    if (config.viper.enabled) {
       return Promise.resolve();
     }
     return db.raw("IF NOT EXISTS (SELECT * FROM viper WHERE nomis_id = 'J1234LO') INSERT INTO viper VALUES('J1234LO', 0.35) ELSE UPDATE viper SET rating = 0.35 WHERE nomis_id = 'J1234LO'");

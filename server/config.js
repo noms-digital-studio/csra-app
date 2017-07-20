@@ -23,6 +23,11 @@ const config = {
   port: process.env.PORT || '5000',
   appinsightsKey: process.env.APPINSIGHTS_INSTRUMENTATIONKEY || 'your-secret-key',
   db: {},
+  viper: {
+    enabled: false,
+    url: null,
+    apiKey: null,
+  },
 };
 
 const dbUri = neededInProd('DB_URI');
@@ -36,17 +41,9 @@ if (dbUri) {
 }
 
 if (process.env.USE_VIPER_SERVICE === 'true') {
-  const viperRestServiceHost = neededInProd('VIPER_SERVICE_URL');
-  if (viperRestServiceHost) {
-    config.viperRestServiceHost = viperRestServiceHost;
-    config.viperRestServiceConnectionTimeout = process.env.VIPER_SERVICE_CONNECTION_TIMEOUT || 2000;
-    config.viperRestServiceReadTimeout = process.env.VIPER_SERVICE_READ_TIMEOUT || 2000;
-  }
-
-  const viperRestServiceAuthenticationKey = neededInProd('VIPER_SERVICE_API_KEY');
-  if (viperRestServiceAuthenticationKey) {
-    config.viperRestServiceAuthenticationKey = viperRestServiceAuthenticationKey;
-  }
+  config.viper.enabled = true;
+  config.viper.url = neededInProd('VIPER_SERVICE_URL');
+  config.viper.apiKey = neededInProd('VIPER_SERVICE_API_KEY');
 }
 
 

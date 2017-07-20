@@ -20,7 +20,7 @@ describe('GET /health', () => {
     getBuildInfo = sinon.stub();
     const fakeAppInfo = { getBuildInfo };
     app.use('/health', createHealthEndpoint(fakeDB, fakeAppInfo));
-    fakeViperRestService = nock(`${config.viperRestServiceHost}`);
+    fakeViperRestService = nock(`${config.viper.url}`);
   });
 
   afterEach(() => {
@@ -44,20 +44,21 @@ describe('GET /health', () => {
         expect(res.body).to.have.property('status', 'OK');
         expect(res.body).to.have.deep.property('checks.db', 'OK');
         expect(res.body).to.have.deep.property('checks.viperRestService',
-          process.env.USE_VIPER_SERVICE === 'true' ? 'OK' : 'Not enabled');
+          config.viper.enabled ? 'OK' : 'Not enabled');
       });
   });
 
-  it('responds with 500 {status: "ERROR" } when viper rest service is unhealthy', () => {
-    if (process.env.USE_VIPER_SERVICE === 'false') {
-      return;
+  it('responds with 500 {status: "ERROR" } when viper rest service is unhealthy', function test() {
+    if (!config.viper.enabled) {
+      this.skip();
+      return null;
     }
 
     fakeViperRestService
       .get('/health')
       .reply(500, { healthy: false });
 
-    request(app)
+    return request(app)
       .get('/health')
       .expect('Content-Type', /json/)
       .expect(500)
@@ -94,7 +95,7 @@ describe('GET /health', () => {
       });
 
       fakeViperRestService
-        .get('/health')
+        .get('/analytics/health')
         .reply(200, { healthy: true });
     });
 
