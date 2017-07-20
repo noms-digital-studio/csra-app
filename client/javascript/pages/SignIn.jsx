@@ -11,6 +11,9 @@ import { allFormFieldsComplete } from '../utils';
 import routes from '../constants/routes';
 
 class SignIn extends Component {
+  componentDidMount() {
+    this.usernameInput.focus();
+  }
   handleSubmit(event) {
     event.preventDefault();
     const formData = serialize(event.target, { hash: true });
@@ -33,6 +36,7 @@ class SignIn extends Component {
 
           <div className="form-group">
             <input
+              ref={(el) => { this.usernameInput = el; }}
               type="text"
               className="form-control"
               id="username"

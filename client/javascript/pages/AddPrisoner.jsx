@@ -13,6 +13,9 @@ import { addPrisoner } from '../actions';
 import routes from '../constants/routes';
 
 class AddPrisoner extends Component {
+  componentDidMount() {
+    this.fNameInput.focus();
+  }
   handleSubmit(event) {
     event.preventDefault();
 
@@ -41,7 +44,15 @@ class AddPrisoner extends Component {
           <form action="/" method="POST" onSubmit={e => this.handleSubmit(e)}>
             <div className="form-group">
               <label className="form-label-bold" htmlFor="first-name">First name</label>
-              <input className="form-control" name="first-name" type="text" id="first-name" defaultValue={prisonerDetails['first-name']} data-element-id="first-name" />
+              <input
+                className="form-control"
+                name="first-name"
+                type="text"
+                id="first-name"
+                defaultValue={prisonerDetails['first-name']}
+                data-element-id="first-name"
+                ref={(el) => { this.fNameInput = el; }}
+              />
             </div>
             <div className="form-group">
               <label className="form-label-bold" htmlFor="last-name">Last name</label>
