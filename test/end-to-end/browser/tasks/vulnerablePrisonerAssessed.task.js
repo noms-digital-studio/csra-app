@@ -4,7 +4,7 @@ import RiskAssessmentExplanationPage from '../pages/risk-assessment/RiskAssessme
 import RiskAssessmentCommentsPage from '../pages/risk-assessment/RiskAssessmentComments.page';
 import RiskAssessmentYesNoPage from '../pages/risk-assessment/RiskAssessmentYesNo.page';
 import RiskAssessmentSummaryPage from '../pages/risk-assessment/RiskAssessmentSummary.page';
-import checkThatAssessmentDataWasWrittenToDatabase from '../../utils/dbAssertions';
+import { checkThatAssessmentDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
 
 function whenAVulnerablePrisonerIsAssessed() {
   DashboardPage.clickRiskAssessmentStartLinkForNomisId('J1234LO');
@@ -52,7 +52,7 @@ function thenTheAssessmentIsCompleted() {
   expect(row.getText()).to.equal('John Lowe J1234LO 1 October 1970 Complete Start');
   const assessmentId = row.getAttribute('data-risk-assessment-id');
 
-  return checkThatAssessmentDataWasWrittenToDatabase({
+  checkThatAssessmentDataWasWrittenToDatabaseSync({
     nomisId: 'J1234LO',
     assessmentId,
     questionData: {
@@ -71,8 +71,7 @@ function thenTheAssessmentIsCompleted() {
       vulnerability: { question_id: 'vulnerability', question: "Do you think they're likely to lash out because they're scared or feeling vulnerable?", answer: 'yes' },
     },
     sharedText: 'single cell',
-  })
-  ;
+  });
 }
 
 export {

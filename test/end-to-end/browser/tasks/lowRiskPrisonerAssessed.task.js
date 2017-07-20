@@ -9,7 +9,7 @@ import RiskAssessmentYesNoPage
   from '../pages/risk-assessment/RiskAssessmentYesNo.page';
 import RiskAssessmentSummaryPage
   from '../pages/risk-assessment/RiskAssessmentSummary.page';
-import checkThatAssessmentDataWasWrittenToDatabase from '../../utils/dbAssertions';
+import { checkThatAssessmentDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
 
 function aLowRiskPrisonerIsAssessed(usesDrugs) {
   DashboardPage.clickRiskAssessmentStartLinkForNomisId('J1234LO');
@@ -117,7 +117,7 @@ function thenTheAssessmentIsCompleted({ sharedText, reasons, hasUsedDrugs }) {
   const assessmentId = row.getAttribute('data-risk-assessment-id');
   expect(assessmentId).to.not.equal(undefined, 'expected to find data-risk-assessment-id on the page');
 
-  return checkThatAssessmentDataWasWrittenToDatabase({
+  checkThatAssessmentDataWasWrittenToDatabaseSync({
     nomisId: 'J1234LO',
     assessmentId,
     questionData: {

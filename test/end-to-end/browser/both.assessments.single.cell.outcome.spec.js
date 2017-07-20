@@ -62,11 +62,11 @@ describe('Both assessments (Single cell outcome)', () => {
     );
   }
 
-  it('Assesses a vulnerable prisoner', () => new Promise((resolve, reject) => {
+  it('Assesses a vulnerable prisoner', () => {
     givenThatTheOfficerIsSignedIn();
     whenTheOfficerAddsThePrisonersDetails();
     whenAVulnerablePrisonerIsAssessed();
-    thenRiskAssessmentIsComplete().catch(reject);
+    thenRiskAssessmentIsComplete();
     whenHealthcareRecommendsSharedCell();
     thenTheFullAssessmentIsCompletedWith({
       riskRecommendation: 'single',
@@ -78,15 +78,13 @@ describe('Both assessments (Single cell outcome)', () => {
       healthRecommendation: 'shared cell',
       finalRecommendation: 'single cell',
     });
+  });
 
-    resolve();
-  }));
-
-  it('Assesses a prisoner that healthcare deem as a risk', () => new Promise((resolve, reject) => {
+  it('Assesses a prisoner that healthcare deem as a risk', () => {
     givenThatTheOfficerIsSignedIn();
     whenTheOfficerAddsThePrisonersDetails();
     whenALowRiskPrisonerIsAssessed();
-    thenTheAssessmentIsCompleted({ sharedText: 'shared cell' }).catch(reject);
+    thenTheAssessmentIsCompleted({ sharedText: 'shared cell' });
     whenHealthcareRecommendsSingleCell();
     thenTheFullAssessmentIsCompletedWith({
       riskRecommendation: 'shared',
@@ -98,7 +96,5 @@ describe('Both assessments (Single cell outcome)', () => {
       healthRecommendation: 'single cell',
       finalRecommendation: 'single cell',
     });
-
-    resolve();
-  }));
+  });
 });

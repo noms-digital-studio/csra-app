@@ -1,3 +1,5 @@
+import Future from 'fibers/future';
+
 import db from '../../util/db';
 
 const checkThatAssessmentDataWasWrittenToDatabase = ({
@@ -38,9 +40,9 @@ const checkThatAssessmentDataWasWrittenToDatabase = ({
       expect(result[0].viper).to.equal(0.35);
 
       return result[0];
-    })
-    .catch((error) => {
-      throw error;
     });
+
+export const checkThatAssessmentDataWasWrittenToDatabaseSync = args =>
+  Future.wait(Future.fromPromise(checkThatAssessmentDataWasWrittenToDatabase(args)));
 
 export default checkThatAssessmentDataWasWrittenToDatabase;

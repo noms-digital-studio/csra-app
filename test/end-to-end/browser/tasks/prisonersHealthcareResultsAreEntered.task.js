@@ -6,7 +6,7 @@ import HealthcareNursePage from '../pages/healthcare/HealthcareNurse.page';
 import DashboardPage from '../pages/Dashboard.page';
 import HealthcareSummary from '../pages/healthcare/HealthcareSummary.page';
 
-import checkThatAssessmentDataWasWrittenToDatabase from '../../utils/dbAssertions';
+import { checkThatAssessmentDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
 
 function aPrisonersHealthcareResultsAreEntered(singleCellRecommended) {
   DashboardPage.clickHealthcareStartLinkForNomisId('J1234LO');
@@ -67,7 +67,7 @@ function thenTheHealthcareAssessmentIsComplete({ sharedText }) {
 
   const assessmentId = row.getAttribute('data-health-assessment-id');
 
-  return checkThatAssessmentDataWasWrittenToDatabase({
+  checkThatAssessmentDataWasWrittenToDatabaseSync({
     nomisId: 'J1234LO',
     assessmentId,
     assessmentType: 'healthcare',

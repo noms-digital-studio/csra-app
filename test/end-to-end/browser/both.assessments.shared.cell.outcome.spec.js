@@ -48,20 +48,18 @@ describe('Both assessments (Shared cell outcome)', () => {
     return db.raw("IF NOT EXISTS (SELECT * FROM viper WHERE nomis_id = 'J1234LO') INSERT INTO viper VALUES('J1234LO', 0.35) ELSE UPDATE viper SET rating = 0.35 WHERE nomis_id = 'J1234LO'");
   });
 
-  it('Assesses a low risk prisoner', () =>
-    new Promise((resolve, reject) => {
-      browser.url('/');
-      givenThatTheOfficerIsSignedIn();
-      whenTheOfficerAddsThePrisonersDetails();
-      whenALowRiskPrisonerIsAssessed();
-      thenTheAssessmentIsCompleted({ sharedText: 'shared cell' }).catch(reject);
-      whenHealthcareRecommendsSharedCell();
-      thenTheFullAssessmentIsCompleted();
-      andICanViewTheirAssessmentOutcomeAgain({
-        riskRecommendation: 'shared cell',
-        healthRecommendation: 'shared cell',
-        finalRecommendation: 'shared cell',
-      });
-      resolve();
-    }));
+  it('Assesses a low risk prisoner', () => {
+    browser.url('/');
+    givenThatTheOfficerIsSignedIn();
+    whenTheOfficerAddsThePrisonersDetails();
+    whenALowRiskPrisonerIsAssessed();
+    thenTheAssessmentIsCompleted({ sharedText: 'shared cell' });
+    whenHealthcareRecommendsSharedCell();
+    thenTheFullAssessmentIsCompleted();
+    andICanViewTheirAssessmentOutcomeAgain({
+      riskRecommendation: 'shared cell',
+      healthRecommendation: 'shared cell',
+      finalRecommendation: 'shared cell',
+    });
+  });
 });
