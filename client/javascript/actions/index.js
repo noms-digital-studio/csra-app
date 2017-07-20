@@ -12,8 +12,6 @@ import {
   SAVE_RISK_ASSESSMENT_ANSWER,
   SAVE_HEALTHCARE_ANSWER,
   COMPLETE_RISK_ASSESSMENT,
-  SAVE_EXIT_POINT,
-  CLEAR_EXIT_POINT,
   COMPLETE_HEALTH_ASSESSMENT,
   HEALTHCARE_ANSWERS_COMPLETE,
   CLEAR_RISK_ASSESSMENT_ANSWERS,
@@ -94,13 +92,6 @@ export const completeRiskAssessmentFor = ({ recommendation, nomisId, assessmentI
   type: COMPLETE_RISK_ASSESSMENT,
   payload: { recommendation, nomisId, assessmentId, reasons },
 });
-
-export const saveExitPoint = riskFactor => ({
-  type: SAVE_EXIT_POINT,
-  payload: riskFactor,
-});
-
-export const clearExitPoint = () => ({ type: CLEAR_EXIT_POINT });
 
 export const completeHealthAssessmentFor = ({ nomisId, assessmentId, recommendation }) => ({
   type: COMPLETE_HEALTH_ASSESSMENT,
