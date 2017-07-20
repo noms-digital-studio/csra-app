@@ -35,6 +35,11 @@ jobs:
           command: yarn test -- --reporter mocha-junit-reporter
           environment:
             MOCHA_FILE: ./reports/unit/test-results.xml
+      - run:
+          name: Build client bundle
+          command: yarn build
+          environment:
+            NODE_ENV: production
 
       - deploy:
           name: Build Derived Git Commit
@@ -46,7 +51,7 @@ jobs:
               GIT_DATE=$(git log --format=%cd -n1 --date=iso $CIRCLE_SHA1) \
                 yarn run record-build-info
 
-              git add --force --verbose build-info.json
+              git add --force --verbose build-info.json public/dist
               git config user.name "Circle CI"
               git config user.email "circle@circleci.com"
               git commit \
