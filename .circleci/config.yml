@@ -1,0 +1,86 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:6
+    working_directory: /home/circleci/app
+    branches:
+      ignore:
+        - /deploy-to.*/
+    steps:
+      - checkout
+      - restore_cache:
+          key: node_modules-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
+          key: node_modules-{{ checksum "package.json" }}
+          key: node_modules
+      - restore_cache:
+          key: yarn-cache
+      - run:
+          name: Install Dependencies
+          command: yarn --frozen-lockfile
+      - save_cache:
+          key: node_modules-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
+      - save_cache:
+          key: yarn-cache
+          paths:
+            - ~/.yarn-cache
+      - run:
+          name: Linter
+          command: yarn run lint
+      - run:
+          name: Unit Tests
+          command: yarn test -- --reporter mocha-junit-reporter
+          environment:
+            MOCHA_FILE: ./reports/unit/test-results.xml
+
+      - deploy:
+          name: Build Derived Git Commit
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+
+              BUILD_NUMBER=$CIRCLE_BUILD_NUM \
+              GIT_REF=$CIRCLE_SHA1 \
+              GIT_DATE=$(git log --format=%cd -n1 --date=iso $CIRCLE_SHA1) \
+                yarn run record-build-info
+
+              git add --force --verbose build-info.json
+              git config user.name "Circle CI"
+              git config user.email "circle@circleci.com"
+              git commit \
+                -m "Deployment of build $CIRCLE_BUILD_NUM" \
+                -m "$(git log --format=%B -n 1 $CIRCLE_SHA1)" \
+                -m "From gitref $CIRCLE_SHA1"
+
+            fi
+      - deploy:
+          name: Deploy to Mock environment
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+
+              git push --force origin HEAD:deploy-to-mock
+
+              GIT_REF=$CIRCLE_SHA1 \
+              APP_BASE_URL=https://csra-mock.hmpps.dsd.io/health \
+              WAIT_DURATION=45000 \
+                yarn wait-for-deploy
+
+            fi
+      - deploy:
+          name: Run integration tests against mock environment
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+
+              APP_BASE_URL=https://csra-mock.hmpps.dsd.io \
+              E2E_REPORTS_PATH=./reports/end-to-end \
+              E2E_SCREENSHOTS_PATH=./reports/error-screen-shots \
+                yarn run test:integration
+
+            fi
+
+      - store_test_results:
+          path: ./reports
+      - store_artifacts:
+          path: ./reports
