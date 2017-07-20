@@ -180,6 +180,15 @@ class HealthCareSummary extends Component {
           </table>
 
           <div className="form-group" data-summary-next-steps>
+            {riskAssessmentComplete
+              ? null :
+              <div className="u-margin-bottom-charlie">
+                <h3 className="heading-medium">What happens next?</h3>
+                <p>
+                  You must now complete the risk assessment questions to get a cell sharing outcome.
+                </p>
+              </div>}
+
             <div className="notice c-notice u-clear-fix">
               <i className="icon icon-important">
                 <span className="visually-hidden">Warning</span>
@@ -188,12 +197,6 @@ class HealthCareSummary extends Component {
                 Once submitted you cannot change these answers
               </strong>
             </div>
-
-            {riskAssessmentComplete
-              ? null
-              : <p className="u-margin-bottom-medium">
-                You must now complete the risk assessment questions to get a cell sharing outcome.
-                </p>}
 
             <button
               type="submit"

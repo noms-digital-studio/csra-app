@@ -30,96 +30,99 @@ const RiskAssessmentSummary = ({
   answers,
   questions,
 }) => (
-  <DocumentTitle title={title}>
-    <form
-      id="rsa-form"
-      onSubmit={(e) => {
-        e.preventDefault();
+    <DocumentTitle title={title}>
+      <form
+        id="rsa-form"
+        onSubmit={(e) => {
+          e.preventDefault();
 
-        onSubmit({
-          healthcareAssessmentComplete,
-          outcome,
-          nomisId: prisoner.nomisId,
-          viperScore: viperScore.viperScore,
-          answers,
-          questions,
-        });
-      }}
-    >
-      <div className="grid-row">
-        <div className="column-two-thirds">
-          <h1 className="heading-xlarge">Risk assessment summary</h1>
-        </div>
-        <div className="column-one-third">
-          <div className="c-print-link c-print-link--small-mt">
-            <button
-              className="c-icon-button link"
-              type="button"
-              onClick={() => window.print()}
-            >
-              Print Page
+          onSubmit({
+            healthcareAssessmentComplete,
+            outcome,
+            nomisId: prisoner.nomisId,
+            viperScore: viperScore.viperScore,
+            answers,
+            questions,
+          });
+        }}
+      >
+        <div className="grid-row">
+          <div className="column-two-thirds">
+            <h1 className="heading-xlarge">Risk assessment summary</h1>
+          </div>
+          <div className="column-one-third">
+            <div className="c-print-link c-print-link--small-mt">
+              <button
+                className="c-icon-button link"
+                type="button"
+                onClick={() => window.print()}
+              >
+                Print Page
           </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <PrisonerProfile {...prisoner} />
+        <PrisonerProfile {...prisoner} />
 
-      <div className="u-margin-bottom-bravo">
-        <RiskAssessmentSummaryTable title="Assessment Summary" />
-      </div>
-
-      {cellRecommendation !== 'high' &&
-        <p className="u-margin-bottom-bravo">
-          <a
-            data-change-answers
-            className="link u-link"
-            onClick={() => {
-              onClear(prisoner.nomisId);
-            }}
-          >
-            Change answers
-        </a>
-        </p>}
-
-      <div className="form-group" data-summary-next-steps>
-        <div className="notice c-notice u-clear-fix">
-          <i className="icon icon-important">
-            <span className="visually-hidden">Warning</span>
-          </i>
-          <strong className="bold-small">
-            Once submitted you cannot change these answers
-        </strong>
+        <div className="u-margin-bottom-bravo">
+          <RiskAssessmentSummaryTable title="Assessment Summary" />
         </div>
 
-        {healthcareAssessmentComplete
-          ? null
-          : <p className="u-margin-bottom-charlie">
-            <span>You must print a copy of this summary for healthcare.</span>
-            <span className="u-spacing-right" />
-            <button
-              type="button"
-              className="c-icon-button link u-print-hide"
-              onClick={() => window.print()}
+        {cellRecommendation !== 'high' &&
+          <p className="u-margin-bottom-bravo">
+            <a
+              data-change-answers
+              className="link u-link"
+              onClick={() => {
+                onClear(prisoner.nomisId);
+              }}
             >
-              Print Page
-            </button>
+              Change answers
+        </a>
           </p>}
 
-        <button
-          type="submit"
-          className="button"
-          data-element-id="continue-button"
-        >
+        <div className="form-group" data-summary-next-steps>
           {healthcareAssessmentComplete
-            ? 'Submit and complete assessment'
-            : 'Submit and return to prisoner list'}
-        </button>
+            ? null :
+            <div className="u-margin-bottom-charlie">
+              <h3 className="heading-medium">What happens next?</h3>
+              <p className="u-margin-bottom-charlie">
+                <span>You must print a copy of this summary for healthcare.</span>
+                <span className="u-spacing-right" />
+                <button
+                  type="button"
+                  className="c-icon-button link u-print-hide"
+                  onClick={() => window.print()}
+                >
+                  Print Page
+            </button>
+              </p>
+            </div>}
 
-      </div>
-    </form>
-  </DocumentTitle>
-);
+          <div className="notice c-notice u-clear-fix">
+            <i className="icon icon-important">
+              <span className="visually-hidden">Warning</span>
+            </i>
+            <strong className="bold-small">
+              Once submitted you cannot change these answers
+            </strong>
+          </div>
+
+          <button
+            type="submit"
+            className="button"
+            data-element-id="continue-button"
+          >
+            {healthcareAssessmentComplete
+              ? 'Submit and complete assessment'
+              : 'Submit and return to prisoner list'}
+          </button>
+
+        </div>
+      </form>
+    </DocumentTitle>
+  );
 
 RiskAssessmentSummary.propTypes = {
   title: PropTypes.string,

@@ -14,7 +14,7 @@ const PrisonerProfile = ({ firstName, surname, dob, nomisId }) => (
       <table data-element-id="prisoner-profile">
         <tbody>
           <tr>
-            <th colSpan="2">Prisoner Details</th>
+            <th className="heading-small" colSpan="2">Prisoner Details</th>
           </tr>
           <tr>
             <td>Full name</td>

@@ -2,7 +2,12 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
 @import "govuk-elements";
 @import "./print.scss";
 
-
+/**************************
+* Gobal Overides
+***************************/
+table td {
+  vertical-align: top;
+}
 
 /**************************
 * Govuk stuff
@@ -21,6 +26,10 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
     }
 }
 
+.change-answer {
+  text-align: right;
+}
+
 
 /**************************
 * Objects
@@ -29,6 +38,7 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
 .o-question {
     padding-top: $gutter;
 }
+
 
 /**************************
 * Components
@@ -179,8 +189,6 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
     margin-right: 0;
     margin-left: 10px;
 }
-
-.o-offender-profile {}
 
 .c-offender-image {
   float: left;
@@ -337,8 +345,6 @@ $path: "../../../node_modules/govuk_frontend_toolkit/images/";
 .u-margin-bottom-small {
     margin-bottom: 1em;
 }
-
-
 
 .u-no-margin-top {
     margin-top: 0;
