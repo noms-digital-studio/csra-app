@@ -1,0 +1,14 @@
+exports.up = knex =>
+  knex.schema.createTableIfNotExists('prisoner_assessments', (table) => {
+    table.increments('id').primary();
+    table.timestamps(true, true);
+    table.string('nomis_id', 10);
+    table.string('forename', 100).notNullable();
+    table.string('surname', 100).notNullable();
+    table.string('date_of_birth', 20).notNullable();
+    table.string('outcome', 50);
+    table.text('risk_assessment');
+    table.text('health_assessment');
+  });
+
+exports.down = knex => knex.schema.dropTable('prisoner_assessments');
