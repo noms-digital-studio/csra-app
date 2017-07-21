@@ -12,6 +12,7 @@ const db = createDB();
 const appInfo = createAppInfoService(buildInfo);
 const assessmentService = createAssessmentService(db, appInfo);
 const viperService = createViperService(db);
-const app = createApp(db, appInfo, assessmentService, viperService);
+const prisonerAssessmentsService = null;
+const app = createApp(db, appInfo, assessmentService, viperService, prisonerAssessmentsService);
 
 export default app;

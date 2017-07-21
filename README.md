@@ -121,13 +121,13 @@ Response:
 }
 ```
 
-### Save Assessment: POST `/api/assessment`
+### Save Assessment: POST `/api/assessment` DEPRECATED
 
 e.g.
 
 Request:
 ```
-curl http://localhost:5000/api/assessment -H 'Content-Type: application/json'
+curl -X POST http://localhost:5000/api/assessment -H 'Content-Type: application/json'
 -d '{"nomisId":"J1234LO","type":"risk","outcome":"single cell","viperScore":0.45,
 "questions":{"Q1":{"question_id":"Q1","question":"Are you part of a gang?","answer":"Yes"}},
 "reasons":[{"question_id":"Q1","reason":"reason one"}]}'
@@ -141,6 +141,48 @@ Response:
     "id":48
     }
 }
+```
+
+### Save Prisoner Assessment: POST `/api/assessments`
+
+Returns 201 (CREATED) and the id of the prisoner assessment that was created, 400 if the request body is invalid 
+or 500 if the data cannot be saved.
+
+e.g.
+
+Request:
+```
+curl -X POST http://localhost:5000/api/assessments -H 'Content-Type: application/json'
+-d '{"nomisId":"J1234LO", "forename": "John", "surname":"Lowe", "date-of-birth":"30 December 1978"}'
+```
+
+Response:
+```
+{
+  "id":123
+}
+```
+
+### Get Prisoner Assessment summary list: GET `/api/assessments`
+
+Returns 200 and the prisoner assessment summary list or 500 if the data cannot be retrieved.
+
+e.g.
+
+Request: ```curl -X GET http://localhost:5000/api/assessments ```
+
+Response:
+```
+[{
+      id: 123
+      nomisId: 'J1234LO',
+      forename: 'John',
+      surname: 'Lowe',
+      dateOfBirth: '14-07-1967',
+      outcome: 'Shared Cell',
+      riskAssessment: false,
+      healthAssessment: false,
+}]
 ```
 
 ### Monitoring: GET `/health`
