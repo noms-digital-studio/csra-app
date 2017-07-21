@@ -1,5 +1,5 @@
 import express from 'express';
-import { databaseLogger as log } from '../services/logger';
+import log from '../services/logger';
 
 export default function createRouter(assessment) {
   const router = express.Router();
