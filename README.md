@@ -152,8 +152,8 @@ e.g.
 
 Request:
 ```
-curl -X POST http://localhost:5000/api/assessments -H 'Content-Type: application/json'
--d '{"nomisId":"J1234LO", "forename": "John", "surname":"Lowe", "date-of-birth":"30 December 1978"}'
+curl -X POST http://localhost:5000/api/assessments -H 'Content-Type: application/json' 
+-d '{"nomisId":"J1234LO", "forename": "John", "surname":"Lowe", "dateOfBirth":"30 December 1978"}'
 ```
 
 Response:
