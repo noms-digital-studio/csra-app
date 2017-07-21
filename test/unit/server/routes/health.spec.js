@@ -38,8 +38,8 @@ describe('GET /health', () => {
 
     return request(app)
       .get('/health')
-      .expect('Content-Type', /json/)
       .expect(200)
+      .expect('Content-Type', /json/)
       .expect((res) => {
         expect(res.body).to.have.property('status', 'OK');
         expect(res.body).to.have.deep.property('checks.db', 'OK');
@@ -60,8 +60,8 @@ describe('GET /health', () => {
 
     return request(app)
       .get('/health')
-      .expect('Content-Type', /json/)
       .expect(500)
+      .expect('Content-Type', /json/)
       .expect((res) => {
         expect(res.body).to.have.property('status', 'ERROR');
         expect(res.body).to.have.deep.property('checks.db', 'OK');
@@ -77,8 +77,8 @@ describe('GET /health', () => {
     it('responds with 500 { status: "ERROR" } and check detail',
       () => request(app)
         .get('/health')
-        .expect('Content-Type', /json/)
         .expect(500)
+        .expect('Content-Type', /json/)
         .expect((res) => {
           expect(res.body).to.have.property('status', 'ERROR');
           expect(res.body).to.have.deep.property('checks.db', 'it cannae take it captain');
@@ -102,8 +102,8 @@ describe('GET /health', () => {
     it('adds the build info into the status response',
       () => request(app)
         .get('/health')
-        .expect('Content-Type', /json/)
         .expect(200)
+        .expect('Content-Type', /json/)
         .expect((res) => {
           expect(res.body).to.have.property('buildNumber', '123');
           expect(res.body).to.have.property('gitRef', 'deadbeeffaceddeaffadeddad');
