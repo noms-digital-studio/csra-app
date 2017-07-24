@@ -9,11 +9,9 @@ describe('Risk assessment (shared cell outcome)', () => {
     AdminPage.loadTestUsers();
   });
 
-  it('Assesses a low risk prisoner', () => new Promise((resolve, reject) => {
+  it('Assesses a low risk prisoner', () => {
     givenThatTheOfficerIsSignedIn();
     whenALowRiskPrisonerIsAssessed();
-    thenTheAssessmentIsCompleted({ sharedText: 'shared cell' })
-      .then(resolve)
-      .catch(reject);
-  }));
+    thenTheAssessmentIsCompleted({ sharedText: 'shared cell' });
+  });
 });

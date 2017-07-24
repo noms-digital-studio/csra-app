@@ -12,11 +12,9 @@ describe('Healthcare assessment', () => {
     AdminPage.loadTestUsers();
   });
 
-  it('Record a prisoner`s healthcare details', () => new Promise((resolve, reject) => {
+  it('Record a prisoner`s healthcare details', () => {
     givenThatTheOfficerIsSignedIn();
     whenHealthcareRecommendsSharedCell();
-    thenTheHealthcareAssessmentIsComplete({ sharedText: 'shared cell' })
-    .then(resolve)
-    .catch(reject);
-  }));
+    thenTheHealthcareAssessmentIsComplete({ sharedText: 'shared cell' });
+  });
 });

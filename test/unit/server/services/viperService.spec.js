@@ -1,10 +1,19 @@
 import createViperService from '../../../../server/services/viper';
 
+import config from '../../../../server/config';
+
 describe('viper service when feature switch configured to use the database', () => {
   let fakeDB;
   let viperService;
 
-  process.env.USE_VIPER_SERVICE = 'false';
+  let viperEnabled;
+  before(() => {
+    viperEnabled = config.viper.enabled;
+    config.viper.enabled = false;
+  });
+  after(() => {
+    config.viper.enabled = viperEnabled;
+  });
 
   function setup() {
     fakeDB = { raw: x => x };

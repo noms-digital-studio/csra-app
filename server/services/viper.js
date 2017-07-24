@@ -25,11 +25,11 @@ function viperRatingFromApi(nomisId) {
   log.info(`Getting viper rating from the REST API for nomisID: ${nomisId}`);
   return new Promise((resolve, reject) => {
     superagent
-      .get(url.resolve(`${config.viperRestServiceHost}`, `/analytics/viper/${nomisId}`))
-      .set('API-key', config.viperRestServiceAuthenticationKey)
+      .get(url.resolve(`${config.viper.url}`, `/analytics/viper/${nomisId}`))
+      .set('API-key', config.viper.apiKey)
       .timeout({
-        response: config.viperRestServiceConnectionTimeout,
-        deadline: config.viperRestServiceReadTimeout,
+        response: 2000,
+        deadline: 2500,
       })
       .end((error, res) => {
         try {
@@ -56,7 +56,7 @@ function viperRatingFromApi(nomisId) {
 }
 
 function ratingFor(db, nomisId) {
-  if (process.env.USE_VIPER_SERVICE === 'true') {
+  if (config.viper.enabled) {
     return viperRatingFromApi(nomisId);
   }
 

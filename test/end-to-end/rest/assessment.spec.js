@@ -47,57 +47,49 @@ describe('POST /api/assessment', function block() {
   this.timeout(5000);
 
   it('records a risk assessment', () =>
-    new Promise((resolve, reject) => {
-      request(baseUrl)
-        .post('/api/assessment')
-        .send(riskAssessment)
-        .expect(200)
-        .then((res) => {
-          expect(res.body.status).to.equal('OK');
-          expect(res.body.data).to.have.property('id').which.is.a('number');
-          return res;
-        })
-        .then((res) => {
-          const assessmentId = res.body.data.id;
-          checkThatAssessmentDataWasWrittenToDatabase({
-            nomisId: riskAssessment.nomisId,
-            assessmentId,
-            questionData: riskAssessment.questions,
-            reasons: riskAssessment.reasons,
-            sharedText: riskAssessment.outcome,
-          })
-            .then(resolve)
-            .catch(reject);
-        })
-        .catch(reject);
-    }));
+    request(baseUrl)
+      .post('/api/assessment')
+      .send(riskAssessment)
+      .expect(200)
+      .then((res) => {
+        expect(res.body.status).to.equal('OK');
+        expect(res.body.data).to.have.property('id').which.is.a('number');
+        return res;
+      })
+      .then((res) => {
+        const assessmentId = res.body.data.id;
+        return checkThatAssessmentDataWasWrittenToDatabase({
+          nomisId: riskAssessment.nomisId,
+          assessmentId,
+          questionData: riskAssessment.questions,
+          reasons: riskAssessment.reasons,
+          sharedText: riskAssessment.outcome,
+        });
+      }),
+  );
 
   it('records a health assessment', () =>
-    new Promise((resolve, reject) => {
-      request(baseUrl)
-        .post('/api/assessment')
-        .send(healthcareAssessment)
-        .expect(200)
-        .then((res) => {
-          expect(res.body.status).to.equal('OK');
-          expect(res.body.data).to.have.property('id').which.is.a('number');
-          return res;
-        })
-        .then((res) => {
-          const assessmentId = res.body.data.id;
-          checkThatAssessmentDataWasWrittenToDatabase({
-            nomisId: healthcareAssessment.nomisId,
-            assessmentType: healthcareAssessment.type,
-            assessmentId,
-            questionData: healthcareAssessment.questions,
-            reasons: healthcareAssessment.reasons,
-            sharedText: healthcareAssessment.outcome,
-          })
-            .then(resolve)
-            .catch(reject);
-        })
-        .catch(reject);
-    }));
+    request(baseUrl)
+      .post('/api/assessment')
+      .send(healthcareAssessment)
+      .expect(200)
+      .then((res) => {
+        expect(res.body.status).to.equal('OK');
+        expect(res.body.data).to.have.property('id').which.is.a('number');
+        return res;
+      })
+      .then((res) => {
+        const assessmentId = res.body.data.id;
+        return checkThatAssessmentDataWasWrittenToDatabase({
+          nomisId: healthcareAssessment.nomisId,
+          assessmentType: healthcareAssessment.type,
+          assessmentId,
+          questionData: healthcareAssessment.questions,
+          reasons: healthcareAssessment.reasons,
+          sharedText: healthcareAssessment.outcome,
+        });
+      }),
+  );
 
   it('rejects an invalid assessment', () =>
     request(baseUrl)
