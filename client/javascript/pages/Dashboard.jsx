@@ -130,7 +130,7 @@ class Dashboard extends Component {
                 </h1>
               </div>
 
-              <table>
+              <table className="c-table-vam">
                 <thead>
                   <tr>
                     <th scope="col" />
