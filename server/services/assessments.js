@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { databaseLogger as log } from './logger';
+import { databaseLogger, prisonerAssessmentsServiceLogger as log } from './logger';
 
 
 function save(db, appInfo, rawAssessment) {
@@ -26,7 +26,7 @@ function save(db, appInfo, rawAssessment) {
   }
 
   const assessment = validated.value;
-
+  databaseLogger.info(`Inserting prisoner assessment data into database for NomisId: ${assessment.nomisId}`);
   return db
   .insert({
     nomis_id: assessment.nomisId,
@@ -43,13 +43,13 @@ function save(db, appInfo, rawAssessment) {
 }
 
 function list(db) {
-  log.info('Retrieving prisoner assessmnet summaries from the database');
+  log.info('Retrieving prisoner assessment summaries from the database');
   return db
     .select()
     .table('prisoner_assessments')
     .then((result) => {
-      log.info('Result from Db: ', result);
       if (result && result.length > 0) {
+        databaseLogger.info(`Found ${result.length} rows of prisoner assessment data`);
         return result.map(row => ({
           id: row.id,
           nomisId: row.nomis_id,
@@ -61,6 +61,7 @@ function list(db) {
           healthAssessment: !!row.health_assessment,
         }));
       }
+      databaseLogger.info('No prisoner assessment data found in database.');
       return [];
     });
 }
