@@ -20,7 +20,7 @@ const riskAssessmentAnswers = {
   'how-do-you-feel': {
     comments: 'foo-comment',
   },
-  'prison-self-assessment': {
+  'harm-cell-mate': {
     answer: 'no',
   },
   vulnerability: {

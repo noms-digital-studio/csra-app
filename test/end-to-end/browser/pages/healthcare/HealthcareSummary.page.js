@@ -15,6 +15,11 @@ class HealthcareSummary extends BasePage {
   get outcome() {
     return browser.getText('[data-element-id="healthcare-outcome"]');
   }
+
+  get recommendation() {
+    return browser.getText('[data-element-id="healthcare-recommendation"]');
+  }
+
   get comments() {
     return browser.getText('[data-element-id="healthcare-comments"]');
   }

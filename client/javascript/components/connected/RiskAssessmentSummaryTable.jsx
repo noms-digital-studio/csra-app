@@ -21,7 +21,7 @@ const mapStateToProps = (state) => {
       },
       {
         question: 'Have they indicated they’d seriously hurt a cellmate:',
-        answer: answers['prison-self-assessment'],
+        answer: answers['harm-cell-mate'],
         dataTags: { 'data-element-id': 'risk-assessment-harm' },
       },
       {

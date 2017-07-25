@@ -4,15 +4,15 @@ import BasePage from './BasePage';
 class DashboardPage extends BasePage {
   clickAddPrisoner() { this.clickContinue(); }
 
-  clickRiskAssessmentStartLinkForNomisId(nomisId) {
+  startRiskAssessmentFor(nomisId) {
     browser.click(`[data-element-id="start-csra-link-${nomisId}"]`);
   }
 
-  clickHealthcareStartLinkForNomisId(nomisId) {
+  startHealthcareAssessmentFor(nomisId) {
     browser.click(`[data-element-id="start-healthcare-link-${nomisId}"]`);
   }
 
-  clickViewFullOutcomeForNomisId(nomisId) {
+  viewFullOutcomeFor(nomisId) {
     browser.click(`[data-element-id="view-outcome-link-${nomisId}"]`);
   }
 }

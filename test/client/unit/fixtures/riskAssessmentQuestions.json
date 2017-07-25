@@ -11,12 +11,12 @@
     "section": "how-do-you-feel"
   },
   {
-    "section": "prison-self-assessment",
+    "section": "harm-cell-mate",
     "sharedCellPredicate": {
       "type": "QUESTION",
       "value": "no",
       "dependents": [
-        "prison-self-assessment"
+        "harm-cell-mate"
       ],
       "reasons": ["Officer thinks they might seriously hurt cellmate"]
     }

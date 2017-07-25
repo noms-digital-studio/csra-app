@@ -1,8 +1,7 @@
-/* eslint-disable import/no-duplicates */
 import AdminPage from './pages/Admin.page';
 import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
 import {
-  whenPrisonerIsAssessed as whenAPrisonerWhoMayHurtSomeoneIsAssessed,
+  whenPrisonerIsAssessed,
   thenTheAssessmentIsCompleted,
 } from './helpers/complete-risk-assessment';
 
@@ -16,29 +15,29 @@ const assessmentConfig = {
   initialRecommendation: 'shared cell',
   finalRecommendation: 'single cell',
   answers: {
-    harmCellMate: 'yes',
+    harmCellMate: 'no',
     vulnerability: 'no',
     gangAffiliation: 'no',
     drugMisuse: 'no',
     prejudice: 'no',
-    officersAssessment: 'no',
+    officersAssessment: 'yes',
   },
+
   reasons: [
-    { question_id: 'harm-cell-mate', reason: 'Officer thinks they might seriously hurt cellmate' },
+    { question_id: 'officers-assessment', reason: 'Officer recommends a single cell' },
   ],
 };
 
-
-describe('Risk assessment for a prisoner who may hurt someone (single cell outcome)', () => {
+describe('Risk assessment for a prisoner with no VIPER score (shared cell outcome)', () => {
   before(() => {
     AdminPage.visit();
     expect(AdminPage.mainHeading).to.equal('Admin');
     AdminPage.loadTestUsers();
   });
 
-  it('Assesses a prisoner who may hurt someone', () => {
+  it('Assesses a prisoner with no viper score', () => {
     givenThatTheOfficerIsSignedIn();
-    whenAPrisonerWhoMayHurtSomeoneIsAssessed(assessmentConfig);
+    whenPrisonerIsAssessed(assessmentConfig);
     thenTheAssessmentIsCompleted(assessmentConfig);
   });
 });

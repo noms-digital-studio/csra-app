@@ -19,8 +19,8 @@ const HealthcareSummaryTable = ({ answers }) => (
     </thead>
     <tbody className="c-answers-table-vat">
       <QuestionAnswerRow
-        question={'Healthcare recommendation:'}
-        answer={{ answer: riskText[answers.outcome.answer] }}
+        question={'Does Healthcare recommend a single cell?:'}
+        answer={{ answer: answers.outcome.answer }}
         dataTags={{ 'data-element-id': 'healthcare-outcome' }}
       />
       <QuestionAnswerRow

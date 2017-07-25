@@ -37,7 +37,7 @@
     "template": "comments"
   },
   {
-    "section": "prison-self-assessment",
+    "section": "harm-cell-mate",
     "title": "Is there any genuine indication they might seriously hurt a cellmate?",
     "description": "",
     "template": "default_with_comment",
@@ -51,7 +51,7 @@
       "type": "QUESTION",
       "value": "no",
       "dependents": [
-        "prison-self-assessment"
+        "harm-cell-mate"
       ],
       "reasons": ["Officer thinks they might seriously hurt cellmate"]
     },

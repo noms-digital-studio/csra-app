@@ -21,7 +21,7 @@ const riskAssessmentAnswers = {
   'how-do-you-feel': {
     comments: 'foo-comment',
   },
-  'prison-self-assessment': {
+  'harm-cell-mate': {
     answer: 'no',
   },
   vulnerability: {
@@ -178,7 +178,7 @@ describe('<RiskAssessmentSummary />', () => {
       it('renders a "single cell" outcome', () => {
         const answers = {
           ...riskAssessmentAnswers,
-          'prison-self-assessment': {
+          'harm-cell-mate': {
             answer: 'yes',
           },
         };

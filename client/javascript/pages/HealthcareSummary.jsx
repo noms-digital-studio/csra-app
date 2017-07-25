@@ -121,7 +121,7 @@ class HealthCareSummary extends Component {
                   Does Healthcare recommend a single cell?
                 </td>
                 <td>
-                  <span>
+                  <span data-element-id="healthcare-recommendation">
                     {capitalize(answers.outcome.answer)}
                   </span>
                 </td>
@@ -132,7 +132,7 @@ class HealthCareSummary extends Component {
                   >
                     Change
                     {' '}
-                    <span className="visuallyhidden">healthcare outcome</span>
+                    <span className="visuallyhidden">healthcare recommendation</span>
                   </Link>
                 </td>
               </tr>

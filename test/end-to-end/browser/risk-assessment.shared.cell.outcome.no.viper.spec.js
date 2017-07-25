@@ -1,19 +1,19 @@
 import AdminPage from './pages/Admin.page';
 import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
 import {
-  whenPrisonerIsAssessed as whenAViolentPrisonerIsAssessed,
+  whenPrisonerIsAssessed as whenAPrisonerWithNoViperIsAssessed,
   thenTheAssessmentIsCompleted,
 } from './helpers/complete-risk-assessment';
 
 const assessmentConfig = {
   prisoner: {
-    nomisId: 'I9876RA',
-    name: 'Ian Rate',
-    dob: '23 March 1988',
+    nomisId: 'J6285NE',
+    name: 'James Neo',
+    dob: '3 December 1958',
   },
-  viperScore: 0.92,
-  initialRecommendation: 'single cell',
-  finalRecommendation: 'single cell',
+  viperScore: -1,
+  initialRecommendation: 'No predictor data available',
+  finalRecommendation: 'shared cell',
   answers: {
     harmCellMate: 'no',
     vulnerability: 'no',
@@ -24,17 +24,16 @@ const assessmentConfig = {
   },
 };
 
-
-describe('Risk assessment for a prisoner with a high VIPER score', () => {
+describe('Risk assessment for a prisoner with no VIPER score (shared cell outcome)', () => {
   before(() => {
     AdminPage.visit();
     expect(AdminPage.mainHeading).to.equal('Admin');
     AdminPage.loadTestUsers();
   });
 
-  it('Assesses a prisoner with a high viper score', () => {
+  it('Assesses a prisoner with no viper score', () => {
     givenThatTheOfficerIsSignedIn();
-    whenAViolentPrisonerIsAssessed(assessmentConfig);
+    whenAPrisonerWithNoViperIsAssessed(assessmentConfig);
     thenTheAssessmentIsCompleted(assessmentConfig);
   });
 });
