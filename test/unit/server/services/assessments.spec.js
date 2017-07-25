@@ -1,34 +1,31 @@
 import createPrisonerAssessmentService from '../../../../server/services/assessments';
 
-describe('assessment service', () => {
-  let fakeDB;
-  let fakeAppInfo;
-  let prisonerAssessment;
-  let result;
-
-  function setup() {
-    fakeDB = { raw: x => x };
-    fakeDB.insert = sinon.stub().returns(fakeDB);
-    fakeDB.into = sinon.stub().returns(fakeDB);
-    fakeDB.returning = sinon.stub().resolves([123]);
-
-    fakeAppInfo = {
-      getGitRef: sinon.stub(),
-      getGitDate: sinon.stub(),
-      getQuestionHash: sinon.stub(),
-    };
-
-    prisonerAssessment = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
-  }
-
+describe('prisoner assessment service', () => {
   const validPrisonerAssessment = {
     nomisId: 'J1234LO',
     forename: 'John',
     surname: 'Lowe',
     dateOfBirth: '31 December 1988',
   };
+  const fakeAppInfo = {
+    getGitRef: sinon.stub(),
+    getGitDate: sinon.stub(),
+    getQuestionHash: sinon.stub(),
+  };
+  let fakeDB;
+  let prisonerAssessmentService;
+  let result;
 
   describe('recording prisoner assessment into DB', () => {
+    function setup() {
+      fakeDB = { raw: x => x };
+      fakeDB.insert = sinon.stub().returns(fakeDB);
+      fakeDB.into = sinon.stub().returns(fakeDB);
+      fakeDB.returning = sinon.stub().resolves([123]);
+
+      prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
+    }
+
     before(() => {
       setup();
       fakeAppInfo.getGitRef.returns('gifref');
@@ -36,7 +33,7 @@ describe('assessment service', () => {
       fakeAppInfo.getQuestionHash.withArgs('risk').returns('foo');
       fakeAppInfo.getQuestionHash.withArgs('healthcare').returns('bar');
 
-      return prisonerAssessment.save(validPrisonerAssessment)
+      return prisonerAssessmentService.save(validPrisonerAssessment)
       .then((_result) => { result = _result; });
     });
 
@@ -65,14 +62,11 @@ describe('assessment service', () => {
       it('sets git_version from app-info', () => expect(row.git_version).to.equal('gifref'));
       it('sets git_date from app-info', () => expect(row.git_date).to.eql(new Date('2017-06-02T11:15:00')));
     });
-  });
-
-  describe('validation', () => {
     describe('general validation stuff', () => {
       let error;
       before(() => {
         setup();
-        return prisonerAssessment.save({ some: 'junk' })
+        return prisonerAssessmentService.save({ some: 'junk' })
         .catch((err) => { error = err; });
       });
 
@@ -90,13 +84,13 @@ describe('assessment service', () => {
       function allows(data, label) {
         const payload = Object.assign({}, validPrisonerAssessment, data);
         it(`allows ${label || JSON.stringify(data)}`, () =>
-          expect(prisonerAssessment.save(payload)).to.be.fulfilled);
+          expect(prisonerAssessmentService.save(payload)).to.be.fulfilled);
       }
 
       function doesNotAllow(data, label) {
         const payload = Object.assign({}, validPrisonerAssessment, data);
         it(`denies ${label || JSON.stringify(data)}`, () =>
-          expect(prisonerAssessment.save(payload))
+          expect(prisonerAssessmentService.save(payload))
           .to.be.rejectedWith(Error, /Validation failed/));
       }
 
@@ -116,6 +110,72 @@ describe('assessment service', () => {
       allows({ dateOfBirth: '20 December 1978' });
       doesNotAllow({ dateOfBirth: undefined }, 'missing "surname"');
       doesNotAllow({ dateOfBirth: new Array(21 + 1).join('A') });
+    });
+  });
+
+  describe('Retrieve list of prisoner assessment summaries', () => {
+    before(() => {
+      fakeDB = { raw: x => x };
+      fakeDB.select = sinon.stub().returns(fakeDB);
+      prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
+    });
+
+    it('Returns the summaries', () => {
+      fakeDB.table = sinon.stub().resolves(
+        [{
+          id: 123,
+          nomis_id: 'J1234LO',
+          forename: 'John',
+          surname: 'Lowe',
+          date_of_birth: '14-07-1967',
+          outcome: null,
+          risk_assessment: '{"data": "value"}',
+          health_assessment: null,
+        },
+        {
+          id: 567,
+          nomis_id: 'R1234MO',
+          forename: 'Richard',
+          surname: 'Moyen',
+          date_of_birth: '31-12-1988',
+          outcome: 'Shared Cell',
+          risk_assessment: '{"data": "value"}',
+          health_assessment: '{"data": "value"}',
+        }],
+      );
+      return prisonerAssessmentService.list()
+      .then((listResult) => {
+        expect(fakeDB.table.lastCall.args[0]).to.eql('prisoner_assessments');
+        expect(listResult).to.eql([{
+          id: 123,
+          nomisId: 'J1234LO',
+          forename: 'John',
+          surname: 'Lowe',
+          dateOfBirth: '14-07-1967',
+          outcome: null,
+          riskAssessment: true,
+          healthAssessment: false,
+        },
+        {
+          id: 567,
+          nomisId: 'R1234MO',
+          forename: 'Richard',
+          surname: 'Moyen',
+          dateOfBirth: '31-12-1988',
+          outcome: 'Shared Cell',
+          riskAssessment: true,
+          healthAssessment: true,
+        }]);
+      });
+    });
+
+    it('Returns an empty list when the Db is empty', () => {
+      fakeDB.table = sinon.stub().resolves([]);
+      return prisonerAssessmentService.list()
+      .then((listResult) => {
+        expect(fakeDB.table.lastCall.args[0]).to.eql('prisoner_assessments');
+        expect(listResult).to.eql([]);
+      });
     });
   });
 });

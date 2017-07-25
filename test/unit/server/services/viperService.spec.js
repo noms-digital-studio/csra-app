@@ -27,7 +27,7 @@ describe('viper service when feature switch configured to use the database', () 
     before(() => setup());
 
     it('returns a viper rating for a known nomis id', () => {
-      fakeDB.where = sinon.stub().resolves([{ nomisId: 'A123', rating: 0.90 }]);
+      fakeDB.where = sinon.stub().resolves([{ nomis_id: 'A123', rating: 0.90 }]);
 
       return viperService.rating('A123')
         .then((result) => {
