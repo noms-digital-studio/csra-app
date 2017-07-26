@@ -59,11 +59,12 @@ describe('POST /api/assessment', function block() {
       .then((res) => {
         const assessmentId = res.body.data.id;
         return checkThatAssessmentDataWasWrittenToDatabase({
+          viperScore: 0.35,
           nomisId: riskAssessment.nomisId,
           assessmentId,
           questionData: riskAssessment.questions,
           reasons: riskAssessment.reasons,
-          sharedText: riskAssessment.outcome,
+          assessmentOutcome: riskAssessment.outcome,
         });
       }),
   );
@@ -81,12 +82,13 @@ describe('POST /api/assessment', function block() {
       .then((res) => {
         const assessmentId = res.body.data.id;
         return checkThatAssessmentDataWasWrittenToDatabase({
+          viperScore: 0.35,
           nomisId: healthcareAssessment.nomisId,
           assessmentType: healthcareAssessment.type,
           assessmentId,
           questionData: healthcareAssessment.questions,
           reasons: healthcareAssessment.reasons,
-          sharedText: healthcareAssessment.outcome,
+          assessmentOutcome: healthcareAssessment.outcome,
         });
       }),
   );
