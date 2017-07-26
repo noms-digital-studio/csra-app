@@ -3,71 +3,69 @@ import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { Link } from 'react-router';
-
-import path from 'ramda/src/path';
 import isEmpty from 'ramda/src/isEmpty';
-import not from 'ramda/src/not';
 
-import { selectOffender } from '../actions';
+import { selectOffender, getOffenderAssessments } from '../actions';
 import { parseDate, capitalize, extractDateFromString } from '../utils';
+import getAssessments from '../services/getAssessments';
+
 
 import routes from '../constants/routes';
 
 class Dashboard extends Component {
+  componentDidMount() {
+    this.props.getOffenderAssessments();
+  }
+
   renderProfiles() {
-    return this.props.profiles.map(profile => (
+    return this.props.assessments.map(profile => (
       <tr
         data-element-id={`profile-row-${profile.nomisId}`}
         key={profile.nomisId}
-        data-risk-assessment-id={profile.assessmentCompleted.assessmentId}
-        data-health-assessment-id={
-          profile.healthAssessmentCompleted.assessmentId
-        }
+        data-assessment-id={profile.id}
       >
         <td>
           <span className="c-profile-holder" />
         </td>
-        <td>{profile.firstName} {profile.surname}</td>
+        <td>{profile.forename} {profile.surname}</td>
         <td>{profile.nomisId}</td>
-        <td>{extractDateFromString(profile.dob)}</td>
+        <td>{extractDateFromString(profile.dateOfBirth)}</td>
         <td
-          data-assessment-complete={not(isEmpty(profile.assessmentCompleted))}
+          data-risk-assessment-complete={profile.riskAssessmentCompleted}
         >
-          {isEmpty(profile.assessmentCompleted)
-            ? <button
+          {profile.riskAssessmentCompleted
+            ? <span>Complete</span>
+            : <button
               type="button"
               onClick={() => this.props.onOffenderSelect(profile)}
               className="link u-link"
               data-element-id={`start-csra-link-${profile.nomisId}`}
             >
-                Start
-              </button>
-            : <span>Complete</span>}
+              Start
+            </button>
+          }
         </td>
         <td
-          data-health-assessment-complete={not(
-            isEmpty(profile.healthAssessmentCompleted),
-          )}
+          data-health-assessment-complete={profile.healthAssessmentCompleted}
         >
-          {isEmpty(profile.healthAssessmentCompleted)
-            ? <button
+          {profile.healthAssessmentCompleted
+            ? <span>Complete</span>
+            : <button
               type="button"
               onClick={() => this.props.onOffenderHealthcareSelect(profile)}
               className="link u-link"
               data-element-id={`start-healthcare-link-${profile.nomisId}`}
             >
-                Start
-              </button>
-            : <span>Complete</span>}
+              Start
+            </button>
+          }
         </td>
         <td
           data-cell-recommendation={profile.outcome}
           className="u-text-align-center"
         >
           {profile.outcome
-            ? <span>
-              {capitalize(profile.outcome)}
-            </span>
+            ? <span>{capitalize(profile.outcome)}</span>
             : <span className="c-status-indicator" />}
 
         </td>
@@ -79,8 +77,8 @@ class Dashboard extends Component {
                 onClick={() => this.props.onViewOutcomeClick(profile)}
                 data-element-id={`view-outcome-link-${profile.nomisId}`}
               >
-                  View
-                </button>
+                View
+              </button>
             </span>
             : <span />}
         </td>
@@ -92,8 +90,7 @@ class Dashboard extends Component {
     return (
       <DocumentTitle title={this.props.title}>
         <div>
-
-          {isEmpty(this.props.profiles)
+          {isEmpty(this.props.assessments)
             ? <div className="u-text-align-center">
               <h1 className="heading-large">
                 <span>There is no one to assess.</span>
@@ -103,8 +100,8 @@ class Dashboard extends Component {
                 className="button"
                 data-element-id="continue-button"
               >
-                  Add someone to assess
-                </Link>
+                Add someone to assess
+              </Link>
             </div>
             : <div>
               <div className="c-dashboard-header">
@@ -157,19 +154,17 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => ({
-  profiles: state.offender.profiles.map(profile => ({
-    ...profile,
-    healthAssessmentCompleted: state.healthcareStatus.completed.find(
-      assessment => assessment.nomisId === profile.nomisId,
-    ) || {},
-    assessmentCompleted: state.riskAssessmentStatus.completed.find(
-      assessment => assessment.nomisId === profile.nomisId,
-    ) || {},
-    outcome: path([profile.nomisId], state.assessmentOutcomes),
-  })),
+  assessments: state.offender.assessments,
 });
 
 const mapActionsToProps = dispatch => ({
+  getOffenderAssessments: () => {
+    getAssessments((assessments) => {
+      if (assessments) {
+        dispatch(getOffenderAssessments(assessments));
+      }
+    });
+  },
   onOffenderSelect: (offender) => {
     dispatch(selectOffender(offender));
     dispatch(push(routes.PRISONER_PROFILE));
@@ -186,17 +181,19 @@ const mapActionsToProps = dispatch => ({
 
 Dashboard.propTypes = {
   title: PropTypes.string,
-  profiles: PropTypes.arrayOf(
+  assessments: PropTypes.arrayOf(
     PropTypes.shape({
       nomisId: PropTypes.string,
       surname: PropTypes.string,
-      firstName: PropTypes.string,
-      dob: PropTypes.string,
-      assessmentCompleted: PropTypes.object,
-      healthAssessmentCompleted: PropTypes.object,
+      forename: PropTypes.string,
+      dateOfBirth: PropTypes.string,
+      riskAssessmentCompleted: PropTypes.bool,
+      healthAssessmentCompleted: PropTypes.bool,
       outcome: PropTypes.string,
     }),
   ),
+  getOffenderAssessments: PropTypes.func,
+  onOffenderHealthcareSelect: PropTypes.func,
   onOffenderSelect: PropTypes.func,
   onViewOutcomeClick: PropTypes.func,
   date: PropTypes.string,
@@ -204,9 +201,11 @@ Dashboard.propTypes = {
 
 Dashboard.defaultProps = {
   title: 'Dashboard',
+  getOffenderAssessments: () => {},
+  onOffenderHealthcareSelect: () => {},
   onOffenderSelect: () => {},
   onViewOutcomeClick: () => {},
-  profiles: [],
+  assessments: [],
   date: parseDate(new Date()),
 };
 

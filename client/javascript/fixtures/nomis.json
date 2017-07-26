@@ -3,26 +3,34 @@
     {
       "nomisId": "J1234LO",
       "surname": "Lowe",
-      "firstName": "John",
-      "dob": "1-10-1970"
+      "forename": "John",
+      "dateOfBirth": "1-10-1970",
+      "riskAssessmentCompleted": false,
+      "healthAssessmentCompleted": false
     },
     {
       "nomisId": "R6524MO",
       "surname": "Moyen",
-      "firstName": "Richard",
-      "dob": "5-01-1995"
+      "forename": "Richard",
+      "dateOfBirth": "5-01-1995",
+      "riskAssessmentCompleted": false,
+      "healthAssessmentCompleted": false
     },
     {
       "nomisId": "I9876RA",
       "surname": "Rate",
-      "firstName": "Ian",
-      "dob": "23-03-1988"
+      "forename": "Ian",
+      "dateOfBirth": "23-03-1988",
+      "riskAssessmentCompleted": false,
+      "healthAssessmentCompleted": false
     },
     {
       "nomisId": "J6285NE",
       "surname": "Neo",
-      "firstName": "James",
-      "dob": "3-12-1958"
+      "forename": "James",
+      "dateOfBirth": "3-12-1958",
+      "riskAssessmentCompleted": false,
+      "healthAssessmentCompleted": false
     }
   ]
 }
