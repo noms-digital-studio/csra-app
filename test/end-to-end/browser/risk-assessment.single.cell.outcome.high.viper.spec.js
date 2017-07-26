@@ -11,7 +11,7 @@ const assessmentConfig = {
   prisoner: {
     nomisId: 'I9876RA',
     name: 'Ian Rate',
-    dob: '23 March 1988',
+    dateOfBirth: '23 March 1988',
   },
   viperScore: 0.92,
   initialRecommendation: 'single cell',

@@ -33,7 +33,7 @@ const mapStateToProps = (state, ownProps) => ({
   ...ownProps,
   questions: state.questions.riskAssessment,
   prisoner: {
-    firstName: state.offender.selected.firstName,
+    forename: state.offender.selected.forename,
     surname: state.offender.selected.surname,
   },
   prisonerViperScore: calculateRiskFor(

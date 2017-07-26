@@ -15,8 +15,8 @@ describe('answersReducer', () => {
     const profile = {
       nomisId: 'foo',
       surname: 'foobar',
-      firstName: 'foobaz',
-      dob: 'foo-age',
+      forename: 'foobaz',
+      dateOfBirth: 'foo-age',
     };
     const action = { type: 'SELECT_OFFENDER', payload: profile };
     const expectedState = {

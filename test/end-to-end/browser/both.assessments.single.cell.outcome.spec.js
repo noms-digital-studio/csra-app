@@ -19,7 +19,7 @@ import db from '../../util/db';
 const prisoner = {
   nomisId: 'J1234LO',
   name: 'John Lowe',
-  dob: '1 October 1970',
+  dateOfBirth: '1 October 1970',
 };
 
 const healthcareAssessmentConfig = {

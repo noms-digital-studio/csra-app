@@ -1,7 +1,7 @@
 import {
   GET_RISK_ASSESSMENT_QUESTIONS,
   GET_HEALTH_ASSESSMENT_QUESTIONS,
-  GET_OFFENDER_NOMIS_PROFILES,
+  GET_OFFENDER_ASSESSMENTS,
   GET_VIPER_SCORES,
   ADD_VIPER_SCORE,
   SELECT_OFFENDER,
@@ -21,7 +21,7 @@ import riskAssessmentQuestions
   from '../fixtures/risk-assessment-questions.json';
 import healthAssessmentQuestions from '../fixtures/healthcare-questions.json';
 
-import { offenderNomisProfiles, viperScores } from '../services';
+import { viperScores } from '../services';
 
 export const getRiskAssessmentQuestions = (data = riskAssessmentQuestions) => ({
   type: GET_RISK_ASSESSMENT_QUESTIONS,
@@ -35,11 +35,9 @@ export const getHealthAssessmentQuestions = (
   payload: data,
 });
 
-export const getOffenderNomisProfiles = (
-  profiles = offenderNomisProfiles(),
-) => ({
-  type: GET_OFFENDER_NOMIS_PROFILES,
-  payload: profiles.output,
+export const getOffenderAssessments = assessments => ({
+  type: GET_OFFENDER_ASSESSMENTS,
+  payload: assessments,
 });
 
 export const getViperScores = (scores = viperScores()) => ({
@@ -70,8 +68,8 @@ export const confirmPrisoner = (prisonerData) => {
   const prisoner = {
     nomisId: prisonerData['nomis-id'],
     surname: prisonerData['last-name'],
-    firstName: prisonerData['first-name'],
-    dob: `${prisonerData['dob-day']}-${prisonerData['dob-month']}-${prisonerData['dob-year']}`,
+    forename: prisonerData['first-name'],
+    dateOfBirth: `${prisonerData['dob-day']}-${prisonerData['dob-month']}-${prisonerData['dob-year']}`,
   };
 
   return { type: CONFIRM_PRISONER, payload: prisoner };

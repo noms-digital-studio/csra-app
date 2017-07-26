@@ -47,7 +47,7 @@ describe('<Questionnaire />', () => {
     const prisoner = {
       'nomis-id': 'bar-id',
       surname: 'foo-surname',
-      firstName: 'foo-first-name',
+      forename: 'foo-first-name',
     };
     const wrapper = mount(<Questionnaire prisoner={prisoner} />);
 

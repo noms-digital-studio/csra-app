@@ -9,7 +9,7 @@ const assessmentConfig = {
   prisoner: {
     nomisId: 'J6285NE',
     name: 'James Neo',
-    dob: '3 December 1958',
+    dateOfBirth: '3 December 1958',
   },
   viperScore: -1,
   initialRecommendation: 'No predictor data available',

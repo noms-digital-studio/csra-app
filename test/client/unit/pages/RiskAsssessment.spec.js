@@ -50,9 +50,9 @@ describe('<RiskAssessment />', () => {
       },
       offender: {
         selected: {
-          firstName: 'foo-first-name',
+          forename: 'foo-first-name',
           surname: 'foo-surname',
-          dob: '17-Nov-1999',
+          dateOfBirth: '17-Nov-1999',
           nomisId: 'AA54321XX',
         },
       },

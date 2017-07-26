@@ -15,7 +15,7 @@ const defaultAssessmentConfig = {
   prisoner: {
     nomisId: 'J1234LO',
     name: 'John Lowe',
-    dob: '1 October 1970',
+    dateOfBirth: '1 October 1970',
   },
   answers: {
     singleCellRecommendation: 'no',
@@ -56,7 +56,7 @@ const whenAPrisonersHealthcareResultsAreEntered = (config = defaultAssessmentCon
 
   expect(HealthcareSummary.mainHeading).to.equal('Healthcare assessment summary');
   expect(HealthcareSummary.prisonerName).to.equalIgnoreCase(config.prisoner.name);
-  expect(HealthcareSummary.prisonerDob).to.equalIgnoreCase(config.prisoner.dob);
+  expect(HealthcareSummary.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);
   expect(HealthcareSummary.prisonerNomisId).to.equalIgnoreCase(config.prisoner.nomisId);
 
   expect(HealthcareSummary.outcome).to.match(caseInSensitive(config.recommendation));
@@ -85,7 +85,7 @@ const thenTheHealthcareAssessmentIsComplete = (config = defaultAssessmentConfig)
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
 
   expect(row.getText()).to.equal(
-    `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dob} Start Complete`,
+    `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Start Complete`,
   );
 
   const assessmentId = row.getAttribute('data-health-assessment-id');
@@ -126,7 +126,7 @@ const defaultFullAssessmentConfig = {
   prisoner: {
     nomisId: 'J1234LO',
     name: 'John Lowe',
-    dob: '1 October 1970',
+    dateOfBirth: '1 October 1970',
   },
   finalOutcome: 'shared cell',
 };
@@ -138,7 +138,7 @@ function thenTheFullAssessmentIsCompleted(config = defaultFullAssessmentConfig) 
   FullAssessmentOutcomePage.waitForMainHeadingWithDataId('full-outcome');
 
   expect(FullAssessmentOutcomePage.prisonerName).to.equalIgnoreCase(config.prisoner.name);
-  expect(FullAssessmentOutcomePage.prisonerDob).to.equalIgnoreCase(config.prisoner.dob);
+  expect(FullAssessmentOutcomePage.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);
   expect(FullAssessmentOutcomePage.prisonerNomisId).to.equalIgnoreCase(config.prisoner.nomisId);
 
   expect(FullAssessmentOutcomePage.recommendOutcome).to.match(caseInSensitive(config.finalOutcome));
@@ -153,7 +153,7 @@ function thenTheFullAssessmentIsCompleted(config = defaultFullAssessmentConfig) 
 
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
 
-  expect(row.getText()).to.equalIgnoreCase(`${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dob} Complete Complete ${config.finalOutcome} View`);
+  expect(row.getText()).to.equalIgnoreCase(`${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Complete Complete ${config.finalOutcome} View`);
 }
 
 
@@ -165,7 +165,7 @@ const viewFullOutcomeForPrisoner = (config = defaultFullAssessmentConfig) => {
   ).to.equal('Risk and healthcare assessment outcome');
 
   expect(FullAssessmentOutcomePage.prisonerName).to.equalIgnoreCase(config.prisoner.name);
-  expect(FullAssessmentOutcomePage.prisonerDob).to.equalIgnoreCase(config.prisoner.dob);
+  expect(FullAssessmentOutcomePage.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);
   expect(FullAssessmentOutcomePage.prisonerNomisId).to.equalIgnoreCase(config.prisoner.nomisId);
 
   expect(FullAssessmentOutcomePage.recommendOutcome).to.match(caseInSensitive(config.finalOutcome));
@@ -175,7 +175,7 @@ const viewFullOutcomeForPrisoner = (config = defaultFullAssessmentConfig) => {
 
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
 
-  expect(row.getText()).to.equalIgnoreCase(`${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dob} Complete Complete ${config.finalOutcome} View`);
+  expect(row.getText()).to.equalIgnoreCase(`${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Complete Complete ${config.finalOutcome} View`);
 };
 
 

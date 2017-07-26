@@ -75,9 +75,9 @@ ConfirmOffender.propTypes = {
   title: PropTypes.string,
   prisonerDetails: PropTypes.shape({
     nomisId: PropTypes.string,
-    firstName: PropTypes.string,
+    forename: PropTypes.string,
     lastName: PropTypes.string,
-    dob: PropTypes.string,
+    dateOfBirth: PropTypes.string,
   }),
   onClick: PropTypes.func,
 };

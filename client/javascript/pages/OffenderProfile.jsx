@@ -7,7 +7,7 @@ import { push } from 'react-router-redux';
 import routes from '../constants/routes';
 
 const OffenderProfile = ({
-  details: { firstName, dob, nomisId, surname },
+  details: { forename, dateOfBirth, nomisId, surname },
   title,
   onSubmit,
 }) => (
@@ -38,7 +38,7 @@ const OffenderProfile = ({
               <div>
                 <p className="c-offender-profile-item">
                   <span className="heading-small">Name:&nbsp;</span>
-                  <span data-element-id="prisoner-name">{firstName} {surname}</span>
+                  <span data-element-id="prisoner-name">{forename} {surname}</span>
                 </p>
               </div>
               <div>
@@ -46,7 +46,7 @@ const OffenderProfile = ({
                   <span className="heading-small">
                     DOB:&nbsp;&nbsp;&nbsp;&nbsp;
                   </span>
-                  {dob}
+                  {dateOfBirth}
                 </p>
               </div>
               <div>
@@ -77,8 +77,8 @@ const OffenderProfile = ({
 OffenderProfile.propTypes = {
   title: PropTypes.string,
   details: PropTypes.shape({
-    firstName: PropTypes.string,
-    dob: PropTypes.string,
+    forename: PropTypes.string,
+    dateOfBirth: PropTypes.string,
     nomisId: PropTypes.string,
     surname: PropTypes.string,
   }),

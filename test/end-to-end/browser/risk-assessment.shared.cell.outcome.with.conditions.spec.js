@@ -10,7 +10,7 @@ const assessmentConfig = {
   prisoner: {
     nomisId: 'J1234LO',
     name: 'John Lowe',
-    dob: '1 October 1970',
+    dateOfBirth: '1 October 1970',
   },
   viperScore: 0.35,
   initialRecommendation: 'shared cell',

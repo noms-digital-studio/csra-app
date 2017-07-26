@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
 import { storeData, readSingleFile, clearBrowserStorage } from '../services';
-import { getOffenderNomisProfiles, getViperScores } from '../actions';
+import { getOffenderAssessments, getViperScores } from '../actions';
 
 import routes from '../constants/routes';
 
@@ -48,7 +48,7 @@ class Admin extends Component {
   }
 
   addDefaultPrisoners() {
-    this.props.getOffenderNomisProfiles();
+    this.props.getOffenderAssessments();
     this.props.getViperScores();
 
     this.setState({
@@ -144,6 +144,6 @@ Admin.defaultProps = {
   title: 'Secret Admin page',
 };
 
-export default connect(null, { getOffenderNomisProfiles, getViperScores })(
+export default connect(null, { getOffenderAssessments, getViperScores })(
   Admin,
 );

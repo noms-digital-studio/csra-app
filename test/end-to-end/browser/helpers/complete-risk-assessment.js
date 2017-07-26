@@ -15,7 +15,7 @@ const defaultAssessmentConfig = {
   prisoner: {
     nomisId: 'J1234LO',
     name: 'John Lowe',
-    dob: '1 October 1970',
+    dateOfBirth: '1 October 1970',
   },
   initialRecommendation: 'shared cell',
   answers: {
@@ -79,7 +79,7 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
 
   expect(RiskAssessmentSummaryPage.mainHeading).to.equal('Risk assessment summary');
   expect(RiskAssessmentSummaryPage.prisonerName).to.equalIgnoreCase(config.prisoner.name);
-  expect(RiskAssessmentSummaryPage.prisonerDob).to.equalIgnoreCase(config.prisoner.dob);
+  expect(RiskAssessmentSummaryPage.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);
   expect(RiskAssessmentSummaryPage.prisonerNomisId).to.equalIgnoreCase(config.prisoner.nomisId);
   expect(RiskAssessmentSummaryPage.outcome).to.match(caseInSensitive(config.finalRecommendation));
   expect(RiskAssessmentSummaryPage.initialFeelings).to.equalIgnoreCase('foo comment');
@@ -100,7 +100,7 @@ export const fullAssessmentRecommendation = (config) => {
   expect(DashboardPage.mainHeading).to.contain('Assessments on:');
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
   expect(row.getText()).to.equal(
-    `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dob} Complete Start ${config.finalRecommendation}`,
+    `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Complete Start ${config.finalRecommendation}`,
   );
 };
 
@@ -112,7 +112,7 @@ export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) =
   const assessmentId = row.getAttribute('data-risk-assessment-id');
 
   expect(row.getText()).to.equal(
-    `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dob} Complete Start`,
+    `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Complete Start`,
   );
 
   expect(assessmentId).to.not.equal(undefined, 'expected to find data-risk-assessment-id on the page');

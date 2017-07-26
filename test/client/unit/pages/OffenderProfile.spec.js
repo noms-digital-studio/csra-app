@@ -8,9 +8,9 @@ import ConnectedOffenderProfile
   from '../../../../client/javascript/pages/OffenderProfile';
 
 const selected = {
-  firstName: 'forename',
+  forename: 'forename',
   surname: 'surname',
-  dob: '17-Nov-1999',
+  dateOfBirth: '17-Nov-1999',
   nomisId: 'foo-nomis-id',
 };
 

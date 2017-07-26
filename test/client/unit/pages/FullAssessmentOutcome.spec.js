@@ -10,9 +10,9 @@ import FullAssessmentOutcome
   from '../../../../client/javascript/pages/FullAssessmentOutcome';
 
 const prisonerDetails = {
-  firstName: 'foo-name',
+  forename: 'foo-name',
   surname: 'foo-surname',
-  dob: '1-1-2010',
+  dateOfBirth: '1-1-2010',
   nomisId: 'foo-nomis-id',
 };
 

@@ -124,8 +124,8 @@ const FullAssessmentOutcome = ({
 FullAssessmentOutcome.propTypes = {
   title: PropTypes.string,
   prisoner: PropTypes.shape({
-    firstName: PropTypes.string,
-    dob: PropTypes.string,
+    forename: PropTypes.string,
+    dateOfBirth: PropTypes.string,
     nomisId: PropTypes.string,
     surname: PropTypes.string,
   }),

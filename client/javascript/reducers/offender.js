@@ -1,6 +1,6 @@
 import { addUniqElementToList } from '../utils';
 import {
-  GET_OFFENDER_NOMIS_PROFILES,
+  GET_OFFENDER_ASSESSMENTS,
   GET_VIPER_SCORES,
   SELECT_OFFENDER,
   ADD_PRISONER,
@@ -10,15 +10,15 @@ import {
 
 const defaultState = {
   selected: {},
-  profiles: [],
+  assessments: [],
   viperScores: [],
   prisonerFormData: {},
 };
 
 export default (state = defaultState, { type, payload }) => {
   switch (type) {
-    case GET_OFFENDER_NOMIS_PROFILES:
-      return { ...state, profiles: payload };
+    case GET_OFFENDER_ASSESSMENTS:
+      return { ...state, assessments: payload };
     case GET_VIPER_SCORES:
       return { ...state, viperScores: payload };
     case ADD_VIPER_SCORE:
@@ -28,7 +28,7 @@ export default (state = defaultState, { type, payload }) => {
     case ADD_PRISONER:
       return { ...state, prisonerFormData: payload };
     case CONFIRM_PRISONER:
-      return { ...state, prisonerFormData: {}, profiles: [...state.profiles, payload] };
+      return { ...state, prisonerFormData: {}, assessments: [...state.assessments, payload] };
     default:
       return state;
   }

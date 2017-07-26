@@ -11,9 +11,9 @@ import RiskAssessmentSummary
 import riskAssessmentQuestions from '../fixtures/riskAssessmentQuestions.json';
 
 const prisonerDetails = {
-  firstName: 'foo-name',
+  forename: 'foo-name',
   surname: 'foo-surname',
-  dob: '1-1-2010',
+  dateOfBirth: '1-1-2010',
   nomisId: 'foo-nomis-id',
 };
 

@@ -3,7 +3,7 @@ import offenderReducer from '../../../../client/javascript/reducers/offender';
 describe('#offenderReducer', () => {
   const defaultState = {
     selected: {},
-    profiles: [],
+    assessments: [],
     viperScores: [],
     prisonerFormData: {},
   };
@@ -20,17 +20,17 @@ describe('#offenderReducer', () => {
     expect(offenderReducer(undefined, action)).to.eql(expectedState);
   });
 
-  it('returns the state with offenders profiles included', () => {
-    const profiles = [
+  it('returns the state with offenders assessments included', () => {
+    const assessments = [
       {
         nomisId: 'foo',
         surname: 'foobar',
-        firstName: 'foobaz',
-        dob: 'foo-age',
+        forename: 'foobaz',
+        dateOfBirth: 'foo-age',
       },
     ];
-    const action = { type: 'GET_OFFENDER_NOMIS_PROFILES', payload: profiles };
-    const expectedState = { ...defaultState, profiles };
+    const action = { type: 'GET_OFFENDER_ASSESSMENTS', payload: assessments };
+    const expectedState = { ...defaultState, assessments };
 
     expect(offenderReducer(undefined, action)).to.eql(expectedState);
   });
@@ -39,8 +39,8 @@ describe('#offenderReducer', () => {
     const profile = {
       nomisId: 'foo',
       surname: 'foobar',
-      firstName: 'foobaz',
-      dob: 'foo-age',
+      forename: 'foobaz',
+      dateOfBirth: 'foo-age',
     };
     const action = { type: 'SELECT_OFFENDER', payload: profile };
     const expectedState = { ...defaultState, selected: profile };
@@ -64,7 +64,7 @@ describe('#offenderReducer', () => {
     expect(offenderReducer(undefined, action)).to.eql(expectedState);
   });
 
-  it('returns the state with the prisoner added to the profiles', () => {
+  it('returns the state with the prisoner added to the assessments', () => {
     const prisonerFormData = {
       'first-name': 'foo',
       'last-name': 'bar',
@@ -77,8 +77,8 @@ describe('#offenderReducer', () => {
     const newProfile = {
       nomisId: 'AA12345',
       surname: 'bar',
-      firstName: 'foo',
-      dob: '01-10-1997',
+      forename: 'foo',
+      dateOfBirth: '01-10-1997',
     };
 
     const state = { ...defaultState, prisonerFormData };
@@ -86,7 +86,7 @@ describe('#offenderReducer', () => {
     const expectedState = {
       ...defaultState,
       prisonerFormData: {},
-      profiles: [...state.profiles, newProfile],
+      assessments: [...state.assessments, newProfile],
     };
 
     expect(offenderReducer(state, action)).to.eql(expectedState);

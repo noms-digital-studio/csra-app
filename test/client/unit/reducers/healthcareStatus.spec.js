@@ -11,8 +11,8 @@ describe('#healthcareStatusReducer', () => {
   const profile = {
     nomisId: 'foo',
     surname: 'foobar',
-    firstName: 'foobaz',
-    dob: 'foo-age',
+    forename: 'foobaz',
+    dateOfBirth: 'foo-age',
   };
 
   it('returns a default state', () => {
@@ -56,7 +56,7 @@ describe('#healthcareStatusReducer', () => {
     expect(healthcareStatusReducer(undefined, action)).to.eql(expectedState);
   });
 
-  it('removes profiles from the awaitingSubmition list when the become complete', () => {
+  it('removes assessments from the awaitingSubmition list when the become complete', () => {
     const action = {
       type: 'COMPLETE_HEALTH_ASSESSMENT',
       payload: profile,

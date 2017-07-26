@@ -169,6 +169,8 @@ describe('<Dashboard />', () => {
           payload: assessments,
         }),
       ).to.equal(true, 'did not call GET_OFFENDER_ASSESSMENTS action');
+
+      getStub.restore();
     });
 
     it('renders the correct number of assessments rows', () => {

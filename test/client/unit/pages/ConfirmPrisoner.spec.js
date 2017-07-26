@@ -100,8 +100,8 @@ describe('<ConfirmOffender />', () => {
               payload: {
                 nomisId: 'foo-nomis-id',
                 surname: 'foo-last-name',
-                firstName: 'foo-first-name',
-                dob: '1-11-1960',
+                forename: 'foo-first-name',
+                dateOfBirth: '1-11-1960',
               },
             }),
           ).to.equal(true, 'did not dispatched CONFIRM_PRISONER');
