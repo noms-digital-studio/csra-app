@@ -35,6 +35,7 @@ const getAssessments = (callback) => {
 
   const options = {
     timeout: 3500,
+    json: true,
   };
 
   xhr.get(target, options, (error, resp, body) => {
