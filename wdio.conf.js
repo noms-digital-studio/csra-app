@@ -3,6 +3,8 @@ require('dotenv').config();
 const format = require('util').format;
 const fs = require('fs');
 const snakeCase = require('snake-case');
+const mkdirp = require('mkdirp');
+
 
 exports.config = {
   //
@@ -209,10 +211,13 @@ exports.config = {
     if (test.passed) return;
 
     // Temp fix for screenshots not working on test failures
-    const screenshot = browser.saveScreenshot(); // returns base64 string buffer
-    const fileName = `${process.env.E2E_SCREENSHOTS_PATH}/ERROR_${Date.now()}_${snakeCase(test.currentTest)}.png`;
-    // write the file
-    fs.writeFileSync(fileName, screenshot)
+    try {
+      const screenshot = browser.saveScreenshot(); // returns base64 string buffer
+      const fileName = `${process.env.E2E_SCREENSHOTS_PATH}/ERROR_${Date.now()}_${snakeCase(test.currentTest)}.png`;
+      // write the file
+      mkdirp.sync(process.env.E2E_SCREENSHOTS_PATH);
+      fs.writeFileSync(fileName, screenshot);
+    } catch(e) { console.log('Failed to take a screenshot'); }
 
     const aiUserId = browser.execute(function() {
       if (window.appInsights) {
