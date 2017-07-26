@@ -22,7 +22,6 @@ describe('prisoner assessment service', () => {
       fakeDB.insert = sinon.stub().returns(fakeDB);
       fakeDB.into = sinon.stub().returns(fakeDB);
       fakeDB.returning = sinon.stub().resolves([123]);
-
       prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
     }
 
@@ -204,18 +203,17 @@ describe('prisoner assessment service', () => {
       fakeDB = { raw: x => x };
       fakeDB.from = sinon.stub().returns(fakeDB);
       fakeDB.where = sinon.stub().returns(fakeDB);
-      fakeDB.update = sinon.stub().resolves();
-
+      fakeDB.update = sinon.stub().resolves([1]);
       prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
     }
 
     before(() => {
       setup();
-      return prisonerAssessmentService.saveRiskAssessment(123, validateRiskAssessment)
+      prisonerAssessmentService.saveRiskAssessment(123, validateRiskAssessment)
       .then((_result) => { result = _result; });
     });
 
-    it('update the prisoner assessments record with the risk assessment', () => {
+    it('updates the prisoner assessments record with the risk assessment', () => {
       expect(fakeDB.from.callCount).to.eql(1);
       expect(fakeDB.where.callCount).to.eql(1);
       expect(fakeDB.update.callCount).to.eql(1);
@@ -223,6 +221,37 @@ describe('prisoner assessment service', () => {
       expect(fakeDB.where.lastCall.args[0]).to.eql('id');
       expect(fakeDB.where.lastCall.args[1]).to.eql('=');
       expect(fakeDB.where.lastCall.args[2]).to.eql(123);
+      expect(fakeDB.update.lastCall.args[0]).to
+        .eql({ risk_assessment: JSON.stringify(validateRiskAssessment) });
+      expect(result).to.eql([1]);
     });
+
+    it('returns a `not-found` error  ', () => {
+      fakeDB.update = sinon.stub().resolves([0]);
+
+      // TODO does not fail but should
+      expect(prisonerAssessmentService.saveRiskAssessment(999, validateRiskAssessment))
+        .to.be.rejectedWith(Error, 'THIS DOES NOT BREAK THE TEST!!!');
+    });
+
+    describe('db errors', () => {
+      function setup() {
+        fakeDB = { raw: x => x };
+        fakeDB.from = sinon.stub().returns(fakeDB);
+        fakeDB.where = sinon.stub().returns(fakeDB);
+        prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
+      }
+
+      before(() => setup());
+
+      it('passes on the db error', () => {
+        fakeDB.update = sinon.stub().rejects(new Error('Connection failed or something'));
+
+        return expect(prisonerAssessmentService.saveRiskAssessment(999, {}))
+        .to.be.rejectedWith(Error, 'Connection failed or something');
+      });
+    });
+
   });
+
 });

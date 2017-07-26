@@ -69,7 +69,6 @@ function list(db) {
 function saveRiskAssessment(db, id, rawAssessment) {
   log.info(`Saving risk assessment to the database for id: ${id}`);
   const riskAssessment = rawAssessment;
-  log.info(`Saving risk assessment to the database: ${JSON.stringify(riskAssessment)}`);
 
   return db
     .from('prisoner_assessments')
@@ -78,7 +77,14 @@ function saveRiskAssessment(db, id, rawAssessment) {
       risk_assessment: JSON.stringify(riskAssessment),
     })
     .then((result) => {
+      if (result === 0) {
+        const err = new Error(`Assessment id: ${id} was not found}`);
+        err.type = 'not-found';
+        log.error(err);
+        return Promise.reject(err);
+      }
       log.info(`Updated row: ${id} result: ${result}`);
+      return result;
     });
 }
 
