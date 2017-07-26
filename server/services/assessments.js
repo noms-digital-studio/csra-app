@@ -66,10 +66,27 @@ function list(db) {
     });
 }
 
+function saveRiskAssessment(db, id, rawAssessment) {
+  log.info(`Saving risk assessment to the database for id: ${id}`);
+  const riskAssessment = rawAssessment;
+  log.info(`Saving risk assessment to the database: ${JSON.stringify(riskAssessment)}`);
+
+  return db
+    .from('prisoner_assessments')
+    .where('id', '=', id)
+    .update({
+      risk_assessment: JSON.stringify(riskAssessment),
+    })
+    .then((result) => {
+      log.info(`Updated row: ${id} result: ${result}`);
+    });
+}
+
 export default function createPrisonerAssessmentService(db, appInfo) {
   return {
     save: assessment => save(db, appInfo, assessment),
     list: () => list(db),
+    saveRiskAssessment: (id, riskAssessment) => saveRiskAssessment(db, id, riskAssessment),
   };
 }
 

@@ -45,7 +45,6 @@ export default function createRouter(prisonerAssessmentsService) {
 
   router.post('/:id/risk', (req, res) => {
     const id = req.params.id;
-
     prisonerAssessmentsService.saveRiskAssessment(id, req.body)
     .then(() => {
       res.status(200);

@@ -16,7 +16,7 @@ describe('prisoner assessment service', () => {
   let prisonerAssessmentService;
   let result;
 
-  describe('recording prisoner assessment into DB', () => {
+  describe('records prisoner assessments to the DB', () => {
     function setup() {
       fakeDB = { raw: x => x };
       fakeDB.insert = sinon.stub().returns(fakeDB);
@@ -62,6 +62,7 @@ describe('prisoner assessment service', () => {
       it('sets git_version from app-info', () => expect(row.git_version).to.equal('gifref'));
       it('sets git_date from app-info', () => expect(row.git_date).to.eql(new Date('2017-06-02T11:15:00')));
     });
+
     describe('general validation stuff', () => {
       let error;
       before(() => {
@@ -113,7 +114,7 @@ describe('prisoner assessment service', () => {
     });
   });
 
-  describe('Retrieve list of prisoner assessment summaries', () => {
+  describe('retrieves a list of prisoner assessment summaries', () => {
     before(() => {
       fakeDB = { raw: x => x };
       fakeDB.select = sinon.stub().returns(fakeDB);
@@ -176,6 +177,52 @@ describe('prisoner assessment service', () => {
         expect(fakeDB.table.lastCall.args[0]).to.eql('prisoner_assessments');
         expect(listResult).to.eql([]);
       });
+    });
+  });
+
+  describe('updates the prisoner assessment record', () => {
+    const validateRiskAssessment = {
+      riskAssessment: {
+        viperScore: 0.35,
+        questions: {
+          Q1: {
+            questionId: 'Q1',
+            question: 'Are you legit?',
+            answer: 'Yes',
+          },
+        },
+        reasons: [
+          {
+            questionId: 'Q1',
+            reason: 'They said they were legit',
+          },
+        ],
+      },
+    };
+
+    function setup() {
+      fakeDB = { raw: x => x };
+      fakeDB.from = sinon.stub().returns(fakeDB);
+      fakeDB.where = sinon.stub().returns(fakeDB);
+      fakeDB.update = sinon.stub().resolves();
+
+      prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
+    }
+
+    before(() => {
+      setup();
+      return prisonerAssessmentService.saveRiskAssessment(123, validateRiskAssessment)
+      .then((_result) => { result = _result; });
+    });
+
+    it('update the prisoner assessments record with the risk assessment', () => {
+      expect(fakeDB.from.callCount).to.eql(1);
+      expect(fakeDB.where.callCount).to.eql(1);
+      expect(fakeDB.update.callCount).to.eql(1);
+      expect(fakeDB.from.lastCall.args[0]).to.eql('prisoner_assessments');
+      expect(fakeDB.where.lastCall.args[0]).to.eql('id');
+      expect(fakeDB.where.lastCall.args[1]).to.eql('=');
+      expect(fakeDB.where.lastCall.args[2]).to.eql(123);
     });
   });
 });
