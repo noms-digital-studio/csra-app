@@ -24,8 +24,11 @@ function extractInProduction(loader) {
 }
 
 module.exports = {
+  node: {
+    dns: 'mock',
+    net: 'mock',
+  },
   context: __dirname,
-
   entry: {
     main: [path.join(__dirname, 'client', 'javascript', 'main.jsx')].concat(
       dev ? ['webpack-hot-middleware/client'] : []
