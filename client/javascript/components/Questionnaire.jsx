@@ -4,8 +4,6 @@ import serialize from 'form-serialize';
 import isEmpty from 'ramda/src/isEmpty';
 import not from 'ramda/src/not';
 
-import { assessmentCanContinue } from '../services';
-
 import Comments from '../containers/Comments';
 import ConfirmationTemplate from '../containers/Confirmation';
 import ConfirmationWithAsideTemplate from '../containers/ConfirmationWithAside';
@@ -42,12 +40,6 @@ function templateSelector(data) {
   }
 }
 
-const reduceYesNoAnswers = answers =>
-  Object.keys(answers).reduce(
-    (result, key) => ({ ...result, [key]: answers[key].answer }),
-    {},
-  );
-
 const sectionData = (questions = [], section = '') => {
   if (isEmpty(questions)) {
     return {
@@ -73,7 +65,6 @@ const sectionData = (questions = [], section = '') => {
 class Questionnaire extends Component {
   componentDidMount() {
     this.props.getQuestions();
-    this.props.clearExitPoint();
   }
 
   handleFormSubmit(event) {
@@ -82,8 +73,6 @@ class Questionnaire extends Component {
     const {
       params: { section },
       questions,
-      answers,
-      prisonerViperScore,
       basePath,
       completionPath,
       isComplete,
@@ -91,20 +80,10 @@ class Questionnaire extends Component {
     const { sectionIndex, question } = sectionData(questions, section);
     const answer = serialize(event.target, { hash: true });
     const nextSectionIndex = sectionIndex + 1;
-    const reducedAnswers = reduceYesNoAnswers({
-      ...answers,
-      [section]: answer,
-    });
 
     let nextPath;
 
-    const canContinue = assessmentCanContinue(
-      question,
-      reducedAnswers,
-      prisonerViperScore,
-    );
-
-    if (canContinue && questions[nextSectionIndex] && not(isComplete)) {
+    if (questions[nextSectionIndex] && not(isComplete)) {
       nextPath = `${basePath}/${questions[nextSectionIndex].section}`;
     } else {
       nextPath = completionPath;
@@ -114,7 +93,6 @@ class Questionnaire extends Component {
       section: question.section,
       answer,
       nextPath,
-      canContinue,
     });
   }
 
@@ -164,7 +142,6 @@ Questionnaire.propTypes = {
   params: PropTypes.object,
   prisoner: PropTypes.object,
   getQuestions: PropTypes.func,
-  clearExitPoint: PropTypes.func,
   onSubmit: PropTypes.func,
   isComplete: PropTypes.bool,
 };
@@ -176,7 +153,6 @@ Questionnaire.defaultProps = {
   prisoner: {},
   prisonerViperScore: '',
   getQuestions: () => {},
-  clearExitPoint: () => {},
   onSubmit: () => {},
   isComplete: false,
 };

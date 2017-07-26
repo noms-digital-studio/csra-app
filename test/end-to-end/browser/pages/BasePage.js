@@ -34,6 +34,11 @@ class BasePage {
   clickContinue() {
     browser.click('[data-element-id="continue-button"]');
   }
+
+  confirmAndContinue() {
+    this.clickCheckbox();
+    this.clickContinue();
+  }
 }
 
 export default BasePage;

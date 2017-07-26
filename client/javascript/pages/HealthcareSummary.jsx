@@ -78,7 +78,7 @@ class HealthCareSummary extends Component {
             <h3 className="heading-large" data-element-id="healthcare-outcome">Healthcare recommendation: {capitalize(riskText[answers.outcome.answer])}</h3>
           </div>
 
-          <table className="check-your-answers u-margin-bottom-alpha">
+          <table className="check-your-answers u-margin-bottom-charlie">
             <thead>
               <tr>
                 <th colSpan="3">
@@ -121,7 +121,7 @@ class HealthCareSummary extends Component {
                   Does Healthcare recommend a single cell?
                 </td>
                 <td>
-                  <span>
+                  <span data-element-id="healthcare-recommendation">
                     {capitalize(answers.outcome.answer)}
                   </span>
                 </td>
@@ -132,7 +132,7 @@ class HealthCareSummary extends Component {
                   >
                     Change
                     {' '}
-                    <span className="visuallyhidden">healthcare outcome</span>
+                    <span className="visuallyhidden">healthcare recommendation</span>
                   </Link>
                 </td>
               </tr>

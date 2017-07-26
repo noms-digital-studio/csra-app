@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import path from 'ramda/src/path';
 
-import { extractDecision } from '../../services';
-
 import QuestionAndAnswerSummaryTable from '../QuestionAndAnswerSummaryTable';
 
 const RiskAssessmentSummaryTable = props => <QuestionAndAnswerSummaryTable {...props} />;
@@ -14,21 +12,8 @@ const mapStateToProps = (state) => {
     state.answers.riskAssessment,
   );
 
-  const outcome = state.riskAssessmentStatus.completed.find(
-    item => item.nomisId === state.offender.selected.nomisId,
-  ) || extractDecision({
-    questions: state.questions.riskAssessment,
-    answers,
-    exitPoint: state.riskAssessmentStatus.exitPoint,
-  });
-
   return {
     questionsAnswers: [
-      {
-        question: 'Recommendation:',
-        answer: { answer: outcome.recommendation },
-        dataTags: { 'data-element-id': 'risk-assessment-outcome' },
-      },
       {
         question: 'How they feel about sharing a cell:',
         answer: answers['how-do-you-feel'] ? { answer: answers['how-do-you-feel'].comments || 'No comments' } : undefined,
@@ -36,7 +21,7 @@ const mapStateToProps = (state) => {
       },
       {
         question: 'Have they indicated they’d seriously hurt a cellmate:',
-        answer: answers['prison-self-assessment'],
+        answer: answers['harm-cell-mate'],
         dataTags: { 'data-element-id': 'risk-assessment-harm' },
       },
       {

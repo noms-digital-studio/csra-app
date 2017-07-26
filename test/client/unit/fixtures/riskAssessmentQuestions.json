@@ -1,86 +1,39 @@
 [
   {
     "section": "risk-of-violence",
-    "title": "Viper result",
-    "content": {
-      "low": {
-        "title": "Shared cell"
-      },
-      "high": {
-        "title": "Single cell"
-      },
-      "unknown": {
-        "title": "Single cell"
-      }
-    },
-    "template": "viper",
     "sharedCellPredicate": {
       "type": "VIPER_SCORE",
       "value": "low",
       "reasons": []
-    },
-    "aside": {
-      "template": "violence_risk"
     }
   },
   {
-    "section": "how-do-you-feel",
-    "title": "foo-title-0",
-    "description": "foo-description",
-    "template": "comments"
+    "section": "how-do-you-feel"
   },
   {
-    "section": "prison-self-assessment",
-    "title": "foo-title",
-    "description": "",
-    "template": "default_with_comment",
-    "formFields": {
-      "input": {
-        "yes": { "text": "Yes" },
-        "no": { "text": "No" }
-      }
-    },
+    "section": "harm-cell-mate",
     "sharedCellPredicate": {
       "type": "QUESTION",
       "value": "no",
       "dependents": [
-        "prison-self-assessment"
+        "harm-cell-mate"
       ],
-      "reasons": []
-    },
-    "answerRequired": true
+      "reasons": ["Officer thinks they might seriously hurt cellmate"]
+    }
   },
   {
     "section": "vulnerability",
-    "title": "foo-title-1",
-    "template": "default_with_comment",
-    "formFields": {
-      "input": {
-        "yes": { "text": "Yes" },
-        "no": { "text": "No" }
-      }
-    },
-    "description": "foo-description",
     "sharedCellPredicate": {
       "type": "QUESTION",
       "value": "no",
       "dependents": [
         "vulnerability"
       ],
-      "reasons": []
-    },
-    "answerRequired": true
+      "reasons": ["Officer thinks they're scared or vulnerable"]
+    }
   },
   {
     "section": "gang-affiliation",
-    "title": "foo-title-2",
-    "template": "default_with_comment",
-    "formFields": {
-      "input": {
-        "yes": { "text": "Yes" },
-        "no": { "text": "No" }
-      }
-    },
     "sharedCellPredicate": {
       "type": "QUESTION",
       "value": "no",
@@ -89,20 +42,11 @@
         "gang-affiliation",
         "drug-misuse"
       ],
-      "reasons": ["foo-reason"]
-    },
-    "answerRequired": true
+      "reasons": ["Has indicated gang affiliation"]
+    }
   },
   {
     "section": "drug-misuse",
-    "title": "foo-title-3",
-    "template": "default_with_comment",
-    "formFields": {
-      "input": {
-        "yes": { "text": "Yes" },
-        "no": { "text": "No" }
-      }
-    },
     "sharedCellPredicate": {
       "type": "QUESTION",
       "value": "no",
@@ -111,20 +55,11 @@
         "gang-affiliation",
         "drug-misuse"
       ],
-      "reasons": ["foo-reason"]
-    },
-    "answerRequired": true
+      "reasons": ["Has indicated drug use"]
+    }
   },
   {
     "section": "prejudice",
-    "title": "foo-title-3",
-    "template": "default_with_comment",
-    "formFields": {
-      "input": {
-        "yes": { "text": "Yes" },
-        "no": { "text": "No" }
-      }
-    },
     "sharedCellPredicate": {
       "type": "QUESTION",
       "value": "no",
@@ -133,30 +68,18 @@
         "gang-affiliation",
         "drug-misuse"
       ],
-      "reasons": ["foo-reason"]
-    },
-    "answerRequired": true
+      "reasons": ["Has indicated prejudice and hostile views"]
+    }
   },
   {
     "section": "officers-assessment",
-    "title": "foo-title-5",
-    "formFields": {
-      "input": {
-        "yes": { "text": "Yes" },
-        "no": { "text": "No" }
-      }
-    },
-    "template": "default_with_comment",
     "sharedCellPredicate": {
       "type": "QUESTION",
       "value": "no",
       "dependents": [
         "officers-assessment"
       ],
-      "reasons": [
-        "foo-reason"
-      ]
-    },
-    "answerRequired": true
+      "reasons": ["Officer recommends a single cell"]
+    }
   }
 ]

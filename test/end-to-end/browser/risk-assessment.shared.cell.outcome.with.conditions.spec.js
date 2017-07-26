@@ -1,21 +1,37 @@
+import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
 import whenTheOfficerAddsThePrisonersDetails from './tasks/theOfficerAddsThePrisonersDetails.task';
 import {
-  whenALowRiskPrisonerWhoUsesDrugsIsAssessed,
+  whenPrisonerIsAssessed,
   thenTheAssessmentIsCompleted,
-} from './tasks/lowRiskPrisonerAssessed.task';
-import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
+} from './helpers/complete-risk-assessment';
+
+const assessmentConfig = {
+  prisoner: {
+    nomisId: 'J1234LO',
+    name: 'John Lowe',
+    dob: '1 October 1970',
+  },
+  viperScore: 0.35,
+  initialRecommendation: 'shared cell',
+  finalRecommendation: 'shared cell with conditions',
+  answers: {
+    harmCellMate: 'no',
+    vulnerability: 'no',
+    gangAffiliation: 'no',
+    drugMisuse: 'yes',
+    prejudice: 'no',
+    officersAssessment: 'no',
+  },
+  reasons: [
+    { question_id: 'drug-misuse', reason: 'Has indicated drug use' },
+  ],
+};
 
 describe('Risk assessment (shared cell outcome with conditions)', () => {
   it('Assesses a low risk prisoner who uses drugs', () => {
     givenThatTheOfficerIsSignedIn();
     whenTheOfficerAddsThePrisonersDetails();
-    whenALowRiskPrisonerWhoUsesDrugsIsAssessed();
-    thenTheAssessmentIsCompleted({
-      sharedText: 'shared cell with conditions',
-      reasons: [
-        { question_id: 'drug-misuse', reason: 'Has indicated drug use' },
-      ],
-      hasUsedDrugs: true,
-    });
+    whenPrisonerIsAssessed(assessmentConfig);
+    thenTheAssessmentIsCompleted(assessmentConfig);
   });
 });

@@ -1,9 +1,10 @@
 import AdminPage from './pages/Admin.page';
 import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
 import {
-  whenHealthcareRecommendsSharedCell,
+  whenAPrisonersHealthcareResultsAreEntered,
   thenTheHealthcareAssessmentIsComplete,
-} from './tasks/prisonersHealthcareResultsAreEntered.task';
+} from './helpers/complete-healthcare-assessment';
+
 
 describe('Healthcare assessment', () => {
   before(() => {
@@ -14,7 +15,7 @@ describe('Healthcare assessment', () => {
 
   it('Record a prisoner`s healthcare details', () => {
     givenThatTheOfficerIsSignedIn();
-    whenHealthcareRecommendsSharedCell();
-    thenTheHealthcareAssessmentIsComplete({ sharedText: 'shared cell' });
+    whenAPrisonersHealthcareResultsAreEntered();
+    thenTheHealthcareAssessmentIsComplete();
   });
 });

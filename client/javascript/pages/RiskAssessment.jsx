@@ -4,14 +4,11 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
 import path from 'ramda/src/path';
-import not from 'ramda/src/not';
 
 import { calculateRiskFor } from '../services';
 import {
   getRiskAssessmentQuestions,
   saveRiskAssessmentAnswer,
-  saveExitPoint,
-  clearExitPoint,
 } from '../actions';
 
 import Questionnaire from '../components/Questionnaire';
@@ -50,15 +47,8 @@ const mapActionsToProps = dispatch => ({
   getQuestions: () => {
     dispatch(getRiskAssessmentQuestions());
   },
-  clearExitPoint: () => {
-    dispatch(clearExitPoint());
-  },
-  onSubmit: ({ section, answer, nextPath, canContinue }) => {
+  onSubmit: ({ section, answer, nextPath }) => {
     dispatch(saveRiskAssessmentAnswer(section, answer));
-
-    if (not(canContinue)) {
-      dispatch(saveExitPoint(section));
-    }
 
     dispatch(push(nextPath));
   },

@@ -85,7 +85,6 @@ describe('<Questionnaire />', () => {
             section: 'foo-section',
             answer: { answer: 'yes' },
             nextPath: '/assessment/bar-section',
-            canContinue: true,
           }),
         ).to.equal(true, 'called with the correct props');
       });
@@ -134,130 +133,8 @@ describe('<Questionnaire />', () => {
           section: 'foo-section',
           answer: { answer: 'yes' },
           nextPath: '/foo-complete',
-          canContinue: true,
         }),
       ).to.equal(true, 'called with the correct props');
-    });
-  });
-
-  context('when there is a predicate for a question', () => {
-    const question = [
-      {
-        section: 'foo-section',
-        title: 'foo-title',
-        description: 'foo-description',
-        template: 'default_with_aside',
-        aside: {
-          template: 'static',
-          title: 'aside-title',
-          description: 'aside-description',
-        },
-        sharedCellPredicate: {
-          type: 'QUESTION',
-          value: 'no',
-          dependents: ['foo-section'],
-          reasons: ['foo reason'],
-        },
-      },
-    ];
-
-    context('and the predicate condition to continue are met', () => {
-      it('calls the onSubmit function with a state that matches', () => {
-        const callback = sinon.spy();
-        const params = { section: 'foo-section' };
-        const wrapper = mount(
-          <Questionnaire
-            questions={question}
-            params={params}
-            onSubmit={callback}
-            completionPath={'/foo-complete'}
-          />,
-        );
-
-        wrapper
-          .find('#radio-no')
-          .simulate('change', { target: { value: 'no' } });
-
-        wrapper.find('form').simulate('submit');
-
-        expect(callback.calledOnce).to.equal(true, 'onSubmit called');
-
-        expect(
-          callback.calledWith({
-            section: 'foo-section',
-            answer: { answer: 'no' },
-            nextPath: '/foo-complete',
-            canContinue: true,
-          }),
-        ).to.equal(true, 'called with the correct props');
-      });
-    });
-
-    context('and the predicate condition to continue are not met', () => {
-      it('calls the onSubmit function with a state that matches', () => {
-        const callback = sinon.spy();
-        const params = { section: 'foo-section' };
-
-        const wrapper = mount(
-          <Questionnaire
-            questions={question}
-            params={params}
-            onSubmit={callback}
-            completionPath={'/foo-complete'}
-          />,
-        );
-
-        wrapper
-          .find('#radio-yes')
-          .simulate('change', { target: { value: 'yes' } });
-
-        wrapper.find('form').simulate('submit');
-
-        expect(callback.calledOnce).to.equal(true, 'onSubmit called');
-
-        expect(
-          callback.calledWith({
-            section: 'foo-section',
-            answer: { answer: 'yes' },
-            nextPath: '/foo-complete',
-            canContinue: false,
-          }),
-        ).to.equal(true, 'called with the correct props');
-      });
-    });
-
-    context('when the questionnaire is considered complete', () => {
-      it('displays a save button that returns to the completion path', () => {
-        const callback = sinon.spy();
-        const params = { section: 'foo-section' };
-
-        const wrapper = mount(
-          <Questionnaire
-            questions={question}
-            params={params}
-            onSubmit={callback}
-            completionPath={'/foo-complete'}
-            isComplete
-          />,
-        );
-
-        wrapper
-          .find('#radio-no')
-          .simulate('change', { target: { value: 'no' } });
-
-        wrapper.find('form').simulate('submit');
-
-        expect(callback.calledOnce).to.equal(true, 'onSubmit called');
-
-        expect(
-          callback.calledWith({
-            section: 'foo-section',
-            answer: { answer: 'no' },
-            nextPath: '/foo-complete',
-            canContinue: true,
-          }),
-        ).to.equal(true, 'called with the correct props');
-      });
     });
   });
 });

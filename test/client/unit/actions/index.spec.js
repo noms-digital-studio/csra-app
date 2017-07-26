@@ -14,8 +14,6 @@ import {
   completeRiskAssessmentFor,
   completeHealthAssessmentFor,
   completeHealthAnswersFor,
-  saveExitPoint,
-  clearExitPoint,
   storeOutcome,
 } from '../../../../client/javascript/actions';
 
@@ -184,6 +182,7 @@ describe('Actions', () => {
         recommendation: 'foo-outccome',
         reasons: ['foo-reason'],
         assessmentId: 'foo-nomis-id',
+        rating: 'foo-rating',
       };
       expect(completeRiskAssessmentFor(outcome)).to.eql({
         type: 'COMPLETE_RISK_ASSESSMENT',
@@ -215,22 +214,6 @@ describe('Actions', () => {
         type: 'HEALTHCARE_ANSWERS_COMPLETE',
         payload: offender,
       });
-    });
-  });
-
-  describe('#saveExitPoint', () => {
-    it('returns a SAVE_EXIT_POINT action', () => {
-      const riskFactor = 'foo-risk-factor';
-      expect(saveExitPoint(riskFactor)).to.eql({
-        type: 'SAVE_EXIT_POINT',
-        payload: riskFactor,
-      });
-    });
-  });
-
-  describe('#clearExitPoint', () => {
-    it('returns a CLEAR_EXIT_POINT action', () => {
-      expect(clearExitPoint()).to.eql({ type: 'CLEAR_EXIT_POINT' });
     });
   });
 

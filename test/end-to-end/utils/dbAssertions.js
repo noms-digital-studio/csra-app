@@ -8,7 +8,8 @@ const checkThatAssessmentDataWasWrittenToDatabase = ({
   assessmentId,
   questionData,
   reasons = [],
-  sharedText = 'single cell',
+  assessmentOutcome = 'single cell',
+  viperScore = -1,
 }) =>
   db
     .select()
@@ -34,15 +35,20 @@ const checkThatAssessmentDataWasWrittenToDatabase = ({
       );
       expect(result[0].git_date).to.not.equal(undefined, 'expected a git_date');
       expect(result[0].type).to.equal(assessmentType);
-      expect(result[0].outcome).to.equal(sharedText);
+      expect(result[0].outcome).to.equal(assessmentOutcome);
       expect(JSON.parse(result[0].reasons)).to.eql(reasons);
       expect(JSON.parse(result[0].questions)).to.eql(questionData);
-      expect(result[0].viper).to.equal(0.35);
+      expect(result[0].viper).to.equal(viperScore);
 
       return result[0];
     });
 
-export const checkThatAssessmentDataWasWrittenToDatabaseSync = args =>
-  Future.wait(Future.fromPromise(checkThatAssessmentDataWasWrittenToDatabase(args)));
+export const checkThatAssessmentDataWasWrittenToDatabaseSync = (args) => {
+  const future = Future.fromPromise(checkThatAssessmentDataWasWrittenToDatabase(args));
+
+  Future.wait(future);
+
+  future.get();
+};
 
 export default checkThatAssessmentDataWasWrittenToDatabase;
