@@ -29,7 +29,6 @@ const assessmentConfig = {
 
 
 describe('Risk assessment for a vulnerable prisoner (single cell outcome)', () => {
-
   it('Assesses a vulnerable prisoner', () => {
     givenThatTheOfficerIsSignedIn();
     whenTheOfficerAddsThePrisonersDetails({

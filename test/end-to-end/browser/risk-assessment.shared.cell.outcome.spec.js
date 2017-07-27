@@ -6,12 +6,10 @@ import {
 } from './helpers/complete-risk-assessment';
 
 describe('Risk assessment (shared cell outcome)', () => {
-
   it('Assesses a low risk prisoner', () => {
     givenThatTheOfficerIsSignedIn();
     whenTheOfficerAddsThePrisonersDetails();
     whenALowRiskPrisonerIsAssessed();
     thenTheAssessmentIsCompleted();
-
   });
 });

@@ -7,7 +7,6 @@ import {
 
 
 describe('Healthcare assessment', () => {
-
   it('Record a prisoner`s healthcare details', () => {
     givenThatTheOfficerIsSignedIn();
     whenTheOfficerAddsThePrisonersDetails();

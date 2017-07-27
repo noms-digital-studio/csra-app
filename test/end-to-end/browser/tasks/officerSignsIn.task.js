@@ -10,7 +10,6 @@ function givenThatTheOfficerIsSignedIn() {
   expect(BeforeYouStartPage.mainHeading).to.equal('Cell sharing risk assessment');
   BeforeYouStartPage.clickContinue();
   expect(DashboardPage.mainHeading).to.equal('There is no one to assess.');
-
 }
 
 export default givenThatTheOfficerIsSignedIn;

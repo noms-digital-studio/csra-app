@@ -30,7 +30,7 @@ const assessmentConfig = {
 };
 
 describe('Risk assessment for a prisoner with no VIPER score (shared cell outcome)', () => {
-before(() => upsertViperTableWith({ nomisId: 'J1234LO', viperScore: 0.35 }));
+  before(() => upsertViperTableWith({ nomisId: 'J1234LO', viperScore: 0.35 }));
 
   it('Assesses a prisoner with no viper score', () => {
     givenThatTheOfficerIsSignedIn();

@@ -28,7 +28,11 @@ function whenTheOfficerAddsThePrisonersDetails(config = defaultConfig) {
   expect(AddPrisonerPage.mainHeading).to.equal('Add Prisoner');
 
   AddPrisonerPage.enterName(config.prisoner.forename, config.prisoner.surname);
-  AddPrisonerPage.enterDoB(config.prisoner.dob.day, config.prisoner.dob.month, config.prisoner.dob.year);
+  AddPrisonerPage.enterDoB(
+    config.prisoner.dob.day,
+    config.prisoner.dob.month,
+    config.prisoner.dob.year,
+  );
   AddPrisonerPage.enterNomisId(config.prisoner.nomisId);
   AddPrisonerPage.clickContinue();
 
