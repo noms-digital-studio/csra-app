@@ -1,5 +1,5 @@
 import DashboardPage from './pages/Dashboard.page';
-import { givenThatTheOfficerIsSignedInWithoutLoadingData } from './tasks/officerSignsIn.task';
+import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
 import whenTheOfficerAddsThePrisonersDetails from './tasks/theOfficerAddsThePrisonersDetails.task';
 
 function thenThePrisonerIsAvailableToAssess() {
@@ -14,7 +14,7 @@ describe('add prisoner', () => {
   });
 
   it('adds a new prisoner to the system', () => {
-    givenThatTheOfficerIsSignedInWithoutLoadingData();
+    givenThatTheOfficerIsSignedIn();
     whenTheOfficerAddsThePrisonersDetails();
     thenThePrisonerIsAvailableToAssess();
   });

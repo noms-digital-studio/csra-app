@@ -1,5 +1,5 @@
-import AdminPage from './pages/Admin.page';
-import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
+import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
+import whenTheOfficerAddsThePrisonersDetails from './tasks/theOfficerAddsThePrisonersDetails.task';
 import {
   whenAPrisonersHealthcareResultsAreEntered,
   thenTheHealthcareAssessmentIsComplete,
@@ -7,14 +7,10 @@ import {
 
 
 describe('Healthcare assessment', () => {
-  before(() => {
-    AdminPage.visit();
-    expect(AdminPage.mainHeading).to.equal('Admin');
-    AdminPage.loadTestUsers();
-  });
 
   it('Record a prisoner`s healthcare details', () => {
     givenThatTheOfficerIsSignedIn();
+    whenTheOfficerAddsThePrisonersDetails();
     whenAPrisonersHealthcareResultsAreEntered();
     thenTheHealthcareAssessmentIsComplete();
   });

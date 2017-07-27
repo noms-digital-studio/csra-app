@@ -9,16 +9,8 @@ function givenThatTheOfficerIsSignedIn() {
   expect(BeforeYouStartPage.headerUsername).to.equal('officer1');
   expect(BeforeYouStartPage.mainHeading).to.equal('Cell sharing risk assessment');
   BeforeYouStartPage.clickContinue();
-}
-
-function givenThatTheOfficerIsSignedInWithoutLoadingData() {
-  expect(LoginPage.mainHeading).to.equal('Your full name');
-  LoginPage.enterUsername('officer1');
-  LoginPage.clickContinue();
-  expect(BeforeYouStartPage.headerUsername).to.equal('officer1');
-  expect(BeforeYouStartPage.mainHeading).to.equal('Cell sharing risk assessment');
-  BeforeYouStartPage.clickContinue();
   expect(DashboardPage.mainHeading).to.equal('There is no one to assess.');
+
 }
 
-export { givenThatTheOfficerIsSignedInWithoutLoadingData, givenThatTheOfficerIsSignedIn };
+export default givenThatTheOfficerIsSignedIn;

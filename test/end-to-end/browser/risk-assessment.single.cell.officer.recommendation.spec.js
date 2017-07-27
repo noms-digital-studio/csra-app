@@ -1,9 +1,10 @@
-import AdminPage from './pages/Admin.page';
-import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
+import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
+import whenTheOfficerAddsThePrisonersDetails from './tasks/theOfficerAddsThePrisonersDetails.task';
 import {
   whenPrisonerIsAssessed,
   thenTheAssessmentIsCompleted,
 } from './helpers/complete-risk-assessment';
+import upsertViperTableWith from './../utils/upsertViperTable';
 
 const assessmentConfig = {
   prisoner: {
@@ -29,14 +30,11 @@ const assessmentConfig = {
 };
 
 describe('Risk assessment for a prisoner with no VIPER score (shared cell outcome)', () => {
-  before(() => {
-    AdminPage.visit();
-    expect(AdminPage.mainHeading).to.equal('Admin');
-    AdminPage.loadTestUsers();
-  });
+before(() => upsertViperTableWith({ nomisId: 'J1234LO', viperScore: 0.35 }));
 
   it('Assesses a prisoner with no viper score', () => {
     givenThatTheOfficerIsSignedIn();
+    whenTheOfficerAddsThePrisonersDetails();
     whenPrisonerIsAssessed(assessmentConfig);
     thenTheAssessmentIsCompleted(assessmentConfig);
   });

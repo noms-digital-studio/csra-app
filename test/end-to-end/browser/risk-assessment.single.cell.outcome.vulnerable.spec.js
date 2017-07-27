@@ -1,5 +1,5 @@
-import AdminPage from './pages/Admin.page';
-import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
+import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
+import whenTheOfficerAddsThePrisonersDetails from './tasks/theOfficerAddsThePrisonersDetails.task';
 import {
   whenPrisonerIsAssessed as whenAVulnerablePrisonerIsAssessed,
   thenTheAssessmentIsCompleted,
@@ -29,14 +29,21 @@ const assessmentConfig = {
 
 
 describe('Risk assessment for a vulnerable prisoner (single cell outcome)', () => {
-  before(() => {
-    AdminPage.visit();
-    expect(AdminPage.mainHeading).to.equal('Admin');
-    AdminPage.loadTestUsers();
-  });
 
   it('Assesses a vulnerable prisoner', () => {
     givenThatTheOfficerIsSignedIn();
+    whenTheOfficerAddsThePrisonersDetails({
+      prisoner: {
+        forename: 'James',
+        surname: 'Neo',
+        dob: {
+          day: 3,
+          month: 12,
+          year: 1958,
+        },
+        nomisId: 'J6285NE',
+      },
+    });
     whenAVulnerablePrisonerIsAssessed(assessmentConfig);
     thenTheAssessmentIsCompleted(assessmentConfig);
   });

@@ -1,4 +1,4 @@
-import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
+import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
 import whenTheOfficerAddsThePrisonersDetails from './tasks/theOfficerAddsThePrisonersDetails.task';
 
 import {

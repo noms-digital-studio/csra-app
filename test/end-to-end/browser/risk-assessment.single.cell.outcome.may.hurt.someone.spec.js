@@ -1,10 +1,11 @@
 /* eslint-disable import/no-duplicates */
-import AdminPage from './pages/Admin.page';
-import { givenThatTheOfficerIsSignedIn } from './tasks/officerSignsIn.task';
+import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
+import whenTheOfficerAddsThePrisonersDetails from './tasks/theOfficerAddsThePrisonersDetails.task';
 import {
   whenPrisonerIsAssessed as whenAPrisonerWhoMayHurtSomeoneIsAssessed,
   thenTheAssessmentIsCompleted,
 } from './helpers/complete-risk-assessment';
+import upsertViperTableWith from '../utils/upsertViperTable';
 
 const assessmentConfig = {
   prisoner: {
@@ -30,14 +31,11 @@ const assessmentConfig = {
 
 
 describe('Risk assessment for a prisoner who may hurt someone (single cell outcome)', () => {
-  before(() => {
-    AdminPage.visit();
-    expect(AdminPage.mainHeading).to.equal('Admin');
-    AdminPage.loadTestUsers();
-  });
+  before(() => upsertViperTableWith({ nomisId: 'J1234LO', viperScore: 0.35 }));
 
   it('Assesses a prisoner who may hurt someone', () => {
     givenThatTheOfficerIsSignedIn();
+    whenTheOfficerAddsThePrisonersDetails();
     whenAPrisonerWhoMayHurtSomeoneIsAssessed(assessmentConfig);
     thenTheAssessmentIsCompleted(assessmentConfig);
   });
