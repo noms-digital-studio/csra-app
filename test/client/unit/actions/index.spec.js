@@ -142,25 +142,27 @@ describe('Actions', () => {
   });
 
   describe('#confirmPrisoner', () => {
-    const prisonerData = {
-      'first-name': 'foo',
-      'last-name': 'bar',
-      'dob-day': '01',
-      'dob-month': '10',
-      'dob-year': '1997',
-      'nomis-id': 'AA12345',
-    };
+    it('returns a CONFIRM_PRISONER action', () => {
+      const prisonerData = {
+        'first-name': 'foo',
+        'last-name': 'bar',
+        'dob-day': '01',
+        'dob-month': '10',
+        'dob-year': '1997',
+        'nomis-id': 'AA12345',
+      };
 
-    const prisoner = {
-      nomisId: 'AA12345',
-      surname: 'bar',
-      forename: 'foo',
-      dateOfBirth: '01-10-1997',
-    };
+      const prisoner = {
+        nomisId: 'AA12345',
+        surname: 'bar',
+        forename: 'foo',
+        dateOfBirth: '01-10-1997',
+      };
 
-    expect(confirmPrisoner(prisonerData)).to.eql({
-      type: 'CONFIRM_PRISONER',
-      payload: prisoner,
+      expect(confirmPrisoner(prisonerData)).to.eql({
+        type: 'CONFIRM_PRISONER',
+        payload: prisoner,
+      });
     });
   });
 

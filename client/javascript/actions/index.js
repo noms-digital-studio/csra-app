@@ -66,6 +66,7 @@ export const addPrisoner = prisoner => ({
 
 export const confirmPrisoner = (prisonerData) => {
   const prisoner = {
+    id: prisonerData.id,
     nomisId: prisonerData['nomis-id'],
     surname: prisonerData['last-name'],
     forename: prisonerData['first-name'],

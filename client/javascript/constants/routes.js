@@ -1,4 +1,5 @@
 export default {
+  ERROR_PAGE: '/error',
   SIGN_IN: '/sign-in',
   BEFORE_YOU_START: '/before-you-start',
   RISK_ASSESSMENT: '/risk-assessment',

@@ -23,6 +23,7 @@ import FullAssessmentOutcome from './pages/FullAssessmentOutcome';
 import FullAssessmentComplete from './pages/FullAssessmentComplete';
 
 import Error404 from './pages/Error404';
+import ErrorPage from './pages/ErrorPage';
 
 export default (store) => {
   const history = syncHistoryWithStore(browserHistory, store);
@@ -70,24 +71,23 @@ export default (store) => {
             path="/risk-assessment-summary"
             component={RiskAssessmentSummary}
           />
-
           <Route path="/feedback" component={Feedback} />
-
           <Route
             path="/feedback-confirmation"
             component={FeedbackConfirmation}
           />
-
           <Route
             path="/full-assessment-outcome"
             component={FullAssessmentOutcome}
           />
-
           <Route
             path="/full-assessment-complete"
             component={FullAssessmentComplete}
           />
-
+          <Route
+            path="/error"
+            component={ErrorPage}
+          />
           <Route path="*" name="404" component={Error404} />
         </Route>
       </Router>

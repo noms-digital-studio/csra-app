@@ -1,11 +1,13 @@
 import React, { PropTypes } from 'react';
+import not from 'ramda/src/not';
 import DocumentTitle from 'react-document-title';
 import { replace } from 'react-router-redux';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import routes from '../constants/routes';
 import { retrieveViperScoreFor } from '../services';
-import { confirmPrisoner, addViperScore } from '../actions';
+import postAssessment from '../services/postAssessment';
+import { addViperScore } from '../actions';
 import { extractDateFromString } from '../utils';
 
 const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
@@ -24,7 +26,7 @@ const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
           <p>
             <span className="heading-small">
               DOB:&nbsp;&nbsp;&nbsp;&nbsp;
-              </span>
+            </span>
             <span
               data-element-id="prisoner-dob"
             >{extractDateFromString(`${prisoner['dob-day']}-${prisoner['dob-month']}-${prisoner['dob-year']}`)}</span>
@@ -61,12 +63,24 @@ const mapStateToProps = state => ({
 
 const mapActionsToProps = dispatch => ({
   onClick: (prisoner) => {
-    retrieveViperScoreFor(prisoner['nomis-id'], (response) => {
-      if (response) {
-        dispatch(addViperScore({ viperScore: response.viperRating, nomisId: response.nomisId }));
+    postAssessment(prisoner, (response) => {
+      if (not(response)) {
+        return dispatch(replace(routes.ERROR_PAGE));
       }
-      dispatch(confirmPrisoner(prisoner));
-      dispatch(replace(routes.DASHBOARD));
+
+      return retrieveViperScoreFor(prisoner['nomis-id'], (body) => {
+        if (not(body)) {
+          return dispatch(replace(routes.ERROR_PAGE));
+        }
+        if (body) {
+          dispatch(addViperScore({
+            viperScore: body.viperRating,
+            nomisId: body.nomisId,
+          }));
+        }
+        // dispatch(confirmPrisoner(prisoner));
+        return dispatch(replace(routes.DASHBOARD));
+      });
     });
   },
 });
@@ -85,7 +99,7 @@ ConfirmOffender.propTypes = {
 ConfirmOffender.defaultProps = {
   title: 'Confirm Prisoner Addition',
   prisonerDetails: {},
-  onClick: () => { },
+  onClick: () => {},
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(ConfirmOffender);

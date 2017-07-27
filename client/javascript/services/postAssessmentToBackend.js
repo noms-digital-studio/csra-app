@@ -34,9 +34,6 @@ const postAssessmentToBackend = (assessmentType, {
   xhr.post(target, options, (error, resp, body) => {
     debug('posted assessment for %s got %j', nomisId, error || body);
     if (error) {
-      if (window.appInsights) {
-        window.appInsights.trackEvent('Failed to store assessment for:', { nomisId, error });
-      }
       callback(null);
     } else {
       callback(path(['data', 'id'], body) || null);
