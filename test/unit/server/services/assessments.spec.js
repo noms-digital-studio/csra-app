@@ -120,7 +120,7 @@ describe('prisoner assessment service', () => {
       prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
     });
 
-    it('Returns the summaries', () => {
+    it('returns the prisoner assessment summaries', () => {
       fakeDB.table = sinon.stub().resolves(
         [{
           id: 123,
@@ -169,7 +169,7 @@ describe('prisoner assessment service', () => {
       });
     });
 
-    it('Returns an empty list when the Db is empty', () => {
+    it('returns an empty list when the Db is empty', () => {
       fakeDB.table = sinon.stub().resolves([]);
       return prisonerAssessmentService.list()
       .then((listResult) => {
@@ -179,7 +179,7 @@ describe('prisoner assessment service', () => {
     });
   });
 
-  describe('updates the prisoner assessment record', () => {
+  describe('records risk assessment record', () => {
     const validateRiskAssessment = {
       riskAssessment: {
         viperScore: 0.35,
@@ -199,59 +199,56 @@ describe('prisoner assessment service', () => {
       },
     };
 
-    function setup() {
-      fakeDB = { raw: x => x };
-      fakeDB.from = sinon.stub().returns(fakeDB);
-      fakeDB.where = sinon.stub().returns(fakeDB);
-      fakeDB.update = sinon.stub().resolves([1]);
-      prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
-    }
-
-    before(() => {
-      setup();
-      prisonerAssessmentService.saveRiskAssessment(123, validateRiskAssessment)
-      .then((_result) => { result = _result; });
-    });
-
-    it('updates the prisoner assessments record with the risk assessment', () => {
-      expect(fakeDB.from.callCount).to.eql(1);
-      expect(fakeDB.where.callCount).to.eql(1);
-      expect(fakeDB.update.callCount).to.eql(1);
-      expect(fakeDB.from.lastCall.args[0]).to.eql('prisoner_assessments');
-      expect(fakeDB.where.lastCall.args[0]).to.eql('id');
-      expect(fakeDB.where.lastCall.args[1]).to.eql('=');
-      expect(fakeDB.where.lastCall.args[2]).to.eql(123);
-      expect(fakeDB.update.lastCall.args[0]).to
-        .eql({ risk_assessment: JSON.stringify(validateRiskAssessment) });
-      expect(result).to.eql([1]);
-    });
-
-    it('returns a `not-found` error  ', () => {
-      fakeDB.update = sinon.stub().resolves([0]);
-
-      // TODO does not fail but should
-      expect(prisonerAssessmentService.saveRiskAssessment(999, validateRiskAssessment))
-        .to.be.rejectedWith(Error, 'THIS DOES NOT BREAK THE TEST!!!');
-    });
-
-    describe('db errors', () => {
+    describe('happy path', () => {
       function setup() {
         fakeDB = { raw: x => x };
         fakeDB.from = sinon.stub().returns(fakeDB);
         fakeDB.where = sinon.stub().returns(fakeDB);
+        fakeDB.update = sinon.stub().resolves([1]);
         prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
       }
 
-      before(() => setup());
+      before(() => {
+        setup();
+        prisonerAssessmentService.saveRiskAssessment(123, validateRiskAssessment)
+        .then((_result) => { result = _result; });
+      });
+
+      it('updates the prisoner assessments record with the risk assessment', () => {
+        expect(fakeDB.from.callCount).to.eql(1);
+        expect(fakeDB.where.callCount).to.eql(1);
+        expect(fakeDB.update.callCount).to.eql(1);
+        expect(fakeDB.from.lastCall.args[0]).to.eql('prisoner_assessments');
+        expect(fakeDB.where.lastCall.args[0]).to.eql('id');
+        expect(fakeDB.where.lastCall.args[1]).to.eql('=');
+        expect(fakeDB.where.lastCall.args[2]).to.eql(123);
+        expect(fakeDB.update.lastCall.args[0]).to
+          .eql({ risk_assessment: JSON.stringify(validateRiskAssessment) });
+        expect(result).to.eql([1]);
+      });
+    });
+
+    describe('unhappy path', () => {
+      before(() => {
+        fakeDB = { raw: x => x };
+        fakeDB.from = sinon.stub().returns(fakeDB);
+        fakeDB.where = sinon.stub().returns(fakeDB);
+        prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
+      });
+
+      it('returns a `not-found` error  ', () => {
+        fakeDB.update = sinon.stub().resolves([0]);
+
+        return expect(prisonerAssessmentService.saveRiskAssessment(999, validateRiskAssessment))
+        .to.be.rejectedWith(Error, 'Assessment id: 999 was not found');
+      });
 
       it('passes on the db error', () => {
         fakeDB.update = sinon.stub().rejects(new Error('Connection failed or something'));
 
-        return expect(prisonerAssessmentService.saveRiskAssessment(999, {}))
+        return expect(prisonerAssessmentService.saveRiskAssessment(999, validateRiskAssessment))
         .to.be.rejectedWith(Error, 'Connection failed or something');
       });
     });
-
   });
-
 });

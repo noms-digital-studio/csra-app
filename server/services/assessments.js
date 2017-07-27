@@ -77,11 +77,11 @@ function saveRiskAssessment(db, id, rawAssessment) {
       risk_assessment: JSON.stringify(riskAssessment),
     })
     .then((result) => {
-      if (result === 0) {
+      if (result[0] === 0) {
         const err = new Error(`Assessment id: ${id} was not found}`);
         err.type = 'not-found';
         log.error(err);
-        return Promise.reject(err);
+        throw err;
       }
       log.info(`Updated row: ${id} result: ${result}`);
       return result;
