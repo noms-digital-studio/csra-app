@@ -1,7 +1,6 @@
 import Joi from 'joi';
 import { databaseLogger, prisonerAssessmentsServiceLogger as log } from './logger';
 
-
 function save(db, appInfo, rawAssessment) {
   log.info(`Saving prisoner assessment for nomisId: ${rawAssessment.nomisId}`);
 
@@ -112,11 +111,30 @@ function saveRiskAssessment(db, id, rawAssessment) {
       if (result[0] === 0) {
         const err = new Error(`Assessment id: ${id} was not found}`);
         err.type = 'not-found';
-        log.error(err);
+        databaseLogger.error(err);
         throw err;
       }
-      log.info(`Updated row: ${id} result: ${result}`);
+      databaseLogger.info(`Updated row: ${id} result: ${result}`);
       return result;
+    });
+}
+
+function riskAssessmentFor(db, id) {
+  log.info(`Retrieving risk assessment from the database for id: ${id}`);
+  return db
+    .select()
+    .column('risk_assessment')
+    .table('prisoner_assessments')
+    .where('id', '=', id)
+    .then((_result) => {
+      if (_result && _result[0] && _result[0].risk_assessment) {
+        databaseLogger.info(`Found risk assessment for id: ${id}`);
+        return _result[0].risk_assessment;
+      }
+      const err = new Error(`No risk assessment found for id: ${id}`);
+      err.type = 'not-found';
+      databaseLogger.error(err);
+      throw err;
     });
 }
 
@@ -125,6 +143,7 @@ export default function createPrisonerAssessmentService(db, appInfo) {
     save: assessment => save(db, appInfo, assessment),
     list: () => list(db),
     saveRiskAssessment: (id, riskAssessment) => saveRiskAssessment(db, id, riskAssessment),
+    riskAssessmentFor: id => riskAssessmentFor(db, id),
   };
 }
 

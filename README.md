@@ -198,6 +198,39 @@ Request:
   "reasons":[{"questionId":"Q1", "reason": "They said they were legit"}]}'
 ```
 
+### Get Risk Assessment: GET `/api/assessments/<id>/risk`
+
+Returns 200 (OK) and the risk assessment or 404 if the prisoner assessment or risk assessment cant be found. 
+500 for any other errors.
+
+e.g.
+
+Request:
+```
+curl http://localhost:5000/api/assessments/1/risk
+```
+
+Response:
+```
+{
+    viperScore: 0.35,
+    questions: {
+      Q1: {
+        questionId: 'Q1',
+        question: 'Are you legit?',
+        answer: 'Yes',
+      },
+    },
+    reasons: [
+      {
+        questionId: 'Q1',
+        reason: 'They said they were legit',
+      },
+    ],
+  };
+```
+
+
 ### Monitoring: GET `/health`
 
 e.g.

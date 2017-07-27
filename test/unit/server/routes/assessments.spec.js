@@ -171,7 +171,7 @@ describe('GET /assessements/:id/risk', () => {
       riskAssessment: { someKey: 'some valid data' },
     };
 
-    fakePrisonerAssessmentsService.getRiskAssessmentForId = sinon.stub().resolves(riskAssessment);
+    fakePrisonerAssessmentsService.riskAssessmentFor = sinon.stub().resolves(riskAssessment);
 
     return request(app)
     .get('/:id/risk')
@@ -185,7 +185,7 @@ describe('GET /assessements/:id/risk', () => {
   it('responds with status NOT FOUND (404) and an error message when the assessment id cannot be found', () => {
     const err = new Error('Assessment not found');
     err.type = 'not-found';
-    fakePrisonerAssessmentsService.getRiskAssessmentForId = sinon.stub().rejects(err);
+    fakePrisonerAssessmentsService.riskAssessmentFor = sinon.stub().rejects(err);
 
     return request(app)
     .get('/123/risk')
@@ -197,7 +197,7 @@ describe('GET /assessements/:id/risk', () => {
   });
 
   it('responds with status OK (500) and an error message when the service is unable to fetch the data ', () => {
-    fakePrisonerAssessmentsService.getRiskAssessmentForId = sinon.stub().rejects(new Error('Terrible database error'));
+    fakePrisonerAssessmentsService.riskAssessmentFor = sinon.stub().rejects(new Error('Terrible database error'));
 
     return request(app)
     .get('/123/risk')

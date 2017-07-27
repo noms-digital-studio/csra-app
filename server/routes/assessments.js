@@ -75,7 +75,7 @@ export default function createRouter(prisonerAssessmentsService) {
   router.get('/:id/risk', (req, res) => {
     const id = req.params.id;
 
-    prisonerAssessmentsService.getRiskAssessmentForId(id)
+    prisonerAssessmentsService.riskAssessmentFor(id)
     .then((result) => {
       res.status(200);
       res.json(result);
