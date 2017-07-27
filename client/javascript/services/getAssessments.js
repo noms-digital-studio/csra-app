@@ -13,7 +13,7 @@ const schema = Joi.array().items(
     dateOfBirth: Joi.string(),
     riskAssessmentCompleted: Joi.boolean(),
     healthAssessmentCompleted: Joi.boolean(),
-    outcome: Joi.string().optional(),
+    outcome: Joi.string().allow(null),
   }),
 );
 
@@ -40,7 +40,6 @@ const getAssessments = (callback) => {
 
   xhr.get(target, options, (error, resp, body) => {
     debug('get assessments returned %j', error || body);
-
     if (error) {
       callback(null);
     } else {

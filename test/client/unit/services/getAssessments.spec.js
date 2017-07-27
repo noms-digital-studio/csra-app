@@ -7,7 +7,7 @@ const response = [
     id: 1,
     nomisId: 'foo-id',
     surname: 'foo-surname',
-    forename: 'foo-first-name',
+    forename: 'foo-forename',
     dateOfBirth: '1-12-2010',
     riskAssessmentCompleted: true,
     healthAssessmentCompleted: true,
@@ -17,11 +17,11 @@ const response = [
     id: 2,
     nomisId: 'bar-id',
     surname: 'foo-surname',
-    forename: 'foo-first-name',
+    forename: 'foo-forename',
     dateOfBirth: '12-2-2010',
     riskAssessmentCompleted: false,
     healthAssessmentCompleted: false,
-    outcome: undefined,
+    outcome: null,
   },
 ];
 

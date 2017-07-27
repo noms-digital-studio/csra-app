@@ -10,6 +10,14 @@ import postAssessment from '../services/postAssessment';
 import { addViperScore } from '../actions';
 import { extractDateFromString } from '../utils';
 
+
+const standardizePrisoner = prisonerData => ({
+  nomisId: prisonerData.nomisId,
+  surname: prisonerData.surname,
+  forename: prisonerData.forename,
+  dateOfBirth: `${prisonerData['dob-day']}-${prisonerData['dob-month']}-${prisonerData['dob-year']}`,
+});
+
 const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
   <DocumentTitle title={title}>
     <div>
@@ -19,7 +27,7 @@ const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
           <p>
             <span className="heading-small">Name:&nbsp;</span>
             <span data-element-id="prisoner-name">
-              {prisoner['first-name']} {prisoner['last-name']}
+              {prisoner.forename} {prisoner.surname}
             </span>
           </p>
 
@@ -35,7 +43,7 @@ const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
         <div className="column-one-half">
           <p>
             <span className="heading-small">NOMIS No:</span>
-            <span data-element-id="nomis-id">{prisoner['nomis-id']}</span>
+            <span data-element-id="nomisId">{prisoner.nomisId}</span>
           </p>
         </div>
       </div>
@@ -44,7 +52,7 @@ const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
         <button
           type="button"
           onClick={() => {
-            onClick(prisoner);
+            onClick(standardizePrisoner(prisoner));
           }}
           className="button"
           data-element-id="continue-button"
@@ -68,7 +76,7 @@ const mapActionsToProps = dispatch => ({
         return dispatch(replace(routes.ERROR_PAGE));
       }
 
-      return retrieveViperScoreFor(prisoner['nomis-id'], (body) => {
+      return retrieveViperScoreFor(prisoner.nomisId, (body) => {
         if (not(body)) {
           return dispatch(replace(routes.ERROR_PAGE));
         }

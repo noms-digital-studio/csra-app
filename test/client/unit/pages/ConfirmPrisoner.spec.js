@@ -8,12 +8,12 @@ import { fakeStore } from '../test-helpers';
 import ConnectedConfirmOffender from '../../../../client/javascript/pages/ConfirmPrisoner';
 
 const prisoner = {
-  'first-name': 'foo-first-name',
-  'last-name': 'foo-last-name',
+  forename: 'foo-forename',
+  surname: 'foo-surname',
   'dob-day': '1',
   'dob-month': '11',
   'dob-year': '1960',
-  'nomis-id': 'foo-nomis-id',
+  nomisId: 'foo-nomisId',
 };
 
 const mountComponent = store =>
@@ -24,50 +24,67 @@ const mountComponent = store =>
   );
 
 describe('<ConfirmOffender />', () => {
+  let postStub;
+  let getStub;
+  const viperResult = {
+    nomisId: 'foo-nomis-id',
+    viperRating: 0.50,
+  };
+  const store = fakeStore({
+    offender: {
+      prisonerFormData: prisoner,
+    },
+  });
+
+  beforeEach(() => {
+    postStub = sinon.stub(xhr, 'post');
+    getStub = sinon.stub(xhr, 'get');
+  });
+
+  afterEach(() => {
+    postStub.restore();
+    getStub.restore();
+  });
+
   context('Connected ConfirmOffender', () => {
     context('when user clicks the continue button', () => {
       context('and a server error is returned', () => {
-        it('does not call the addViperScore action', () => {
-          const getStub = sinon.stub(xhr, 'get');
-          const store = fakeStore({
-            offender: {
-              prisonerFormData: prisoner,
-            },
-          });
+        it('does not add a prisoner successfully', () => {
           const wrapper = mountComponent(store);
 
-          getStub.yields('some error', { status: 500 }, null);
+          postStub.yields('some error', { status: 500 }, null);
+
           wrapper.find('[data-element-id="continue-button"]').simulate('click');
 
           expect(
             store.dispatch.calledWithMatch({
               type: 'ADD_VIPER_SCORE',
-              payload: { nomisId: 'foo-nomis-id', viperScore: 0.50 },
+              payload: { nomisId: 'foo-nomisId', viperScore: 0.50 },
             }),
           ).to.equal(false, 'should not have called ADD_VIPER_SCORE action');
 
-          getStub.restore();
+          expect(
+            store.dispatch.calledWithMatch({
+              type: '@@router/CALL_HISTORY_METHOD',
+              payload: { method: 'replace', args: ['/error'] },
+            }),
+          ).to.equal(true, 'Changed path to /error');
+
+          postStub.restore();
         });
       });
 
       context('and a server returns a success response', () => {
         it('calls the addViperScore action', () => {
-          const getStub = sinon.stub(xhr, 'get');
-          const store = fakeStore({
-            offender: {
-              prisonerFormData: prisoner,
-            },
-          });
           const wrapper = mountComponent(store);
 
-          getStub.yields(null, { status: 200 }, {
-            nomisId: 'foo-nomis-id',
-            viperRating: 0.50,
-          });
+          postStub.yields(null, {}, { id: 1 });
+
+          getStub.yields(null, { status: 200 }, viperResult);
 
           wrapper.find('[data-element-id="continue-button"]').simulate('click');
 
-          expect(getStub.lastCall.args[0]).to.match(/\/api\/viper\/foo-nomis-id/, "the url didn't match");
+          expect(getStub.lastCall.args[0]).to.match(/\/api\/viper\/foo-nomisId/, "the url didn't match");
 
           expect(
             store.dispatch.calledWithMatch({
@@ -75,77 +92,18 @@ describe('<ConfirmOffender />', () => {
               payload: { nomisId: 'foo-nomis-id', viperScore: 0.50 },
             }),
           ).to.equal(true, 'did not call the ADD_VIPER_SCORE action');
-
-          getStub.restore();
-        });
-      });
-
-      context('and any server response is returned', () => {
-        it('confirms the added prisoner', () => {
-          const getStub = sinon.stub(xhr, 'get');
-
-          const store = fakeStore({
-            offender: {
-              prisonerFormData: prisoner,
-            },
-          });
-          const wrapper = mountComponent(store);
-
-          getStub.yields('something');
-          wrapper.find('[data-element-id="continue-button"]').simulate('click');
-
-          expect(
-            store.dispatch.calledWithMatch({
-              type: 'CONFIRM_PRISONER',
-              payload: {
-                nomisId: 'foo-nomis-id',
-                surname: 'foo-last-name',
-                forename: 'foo-first-name',
-                dateOfBirth: '1-11-1960',
-              },
-            }),
-          ).to.equal(true, 'did not dispatched CONFIRM_PRISONER');
-
-          getStub.restore();
-        });
-
-        it('navigates to the dashboard', () => {
-          const getStub = sinon.stub(xhr, 'get');
-          const store = fakeStore({
-            offender: {
-              prisonerFormData: prisoner,
-            },
-          });
-          const wrapper = mountComponent(store);
-
-          getStub.yields('something');
-          wrapper.find('[data-element-id="continue-button"]').simulate('click');
-
-          expect(
-            store.dispatch.calledWithMatch({
-              type: '@@router/CALL_HISTORY_METHOD',
-              payload: { method: 'replace', args: ['/dashboard'] },
-            }),
-          ).to.equal(true, 'Changed path to /dashboard');
-
-          getStub.restore();
         });
       });
     });
 
     it('displays prisoner data on the page', () => {
-      const store = fakeStore({
-        offender: {
-          prisonerFormData: prisoner,
-        },
-      });
       const wrapper = mountComponent(store);
       const pageText = wrapper.text();
 
       expect(pageText).to.contain('1 November 1960');
-      expect(pageText).to.contain('foo-first-name');
-      expect(pageText).to.contain('foo-last-name');
-      expect(pageText).to.contain('foo-nomis-id');
+      expect(pageText).to.contain('foo-forename');
+      expect(pageText).to.contain('foo-surname');
+      expect(pageText).to.contain('foo-nomisId');
     });
   });
 });

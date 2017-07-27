@@ -23,6 +23,7 @@ class Dashboard extends Component {
         data-element-id={`profile-row-${profile.nomisId}`}
         key={profile.nomisId}
         data-assessment-id={profile.id}
+        data-assessments-complete={profile.healthAssessmentCompleted && profile.riskAssessmentCompleted}
       >
         <td>
           <span className="c-profile-holder" />
@@ -61,7 +62,6 @@ class Dashboard extends Component {
           }
         </td>
         <td
-          data-cell-recommendation={profile.outcome}
           className="u-text-align-center"
         >
           {profile.outcome
