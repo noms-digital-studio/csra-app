@@ -15,7 +15,7 @@ const assessments = [
     id: 1,
     nomisId: 'foo-id',
     surname: 'foo-surname',
-    forename: 'foo-first-name',
+    forename: 'foo-forename',
     dateOfBirth: '1-12-2010',
     riskAssessmentCompleted: true,
     healthAssessmentCompleted: true,
@@ -25,11 +25,11 @@ const assessments = [
     id: 2,
     nomisId: 'bar-id',
     surname: 'foo-surname',
-    forename: 'foo-first-name',
+    forename: 'foo-forename',
     dateOfBirth: '12-2-2010',
     riskAssessmentCompleted: false,
     healthAssessmentCompleted: false,
-    outcome: undefined,
+    outcome: null,
   },
 ];
 
@@ -61,7 +61,7 @@ describe('<Dashboard />', () => {
       it('does not display a list of people to assess', () => {
         const wrapper = mount(<Dashboard />);
         expect(wrapper.text()).to.include('There is no one to assess.');
-        expect(wrapper.find('tr[data-element-id]').length).to.equal(0);
+        expect(wrapper.find('table').length).to.equal(0);
       });
 
       it('provides a link to add a person to assess', () => {
@@ -90,45 +90,40 @@ describe('<Dashboard />', () => {
         assertGivenValuesInWhiteListAreInPage(assessments, whitelist, wrapper);
       });
 
-      it('displays a completed assessments', () => {
+      it('displays a completed risk assessments', () => {
         const wrapper = mount(<Dashboard assessments={assessments} />);
-        expect(wrapper.find('[data-risk-assessment-complete=true]').length).to.equal(
-          1,
-        );
-        expect(wrapper.find('[data-risk-assessment-complete=true]').text()).to.equal(
-          'Complete',
-        );
+        const row = wrapper.find('[data-risk-assessment-complete=true]');
+        expect(row.length).to.equal(1);
+        expect(row.text()).to.equal('Complete');
       });
 
       it('displays a completed health assessments', () => {
         const wrapper = mount(<Dashboard assessments={assessments} />);
-        expect(
-          wrapper.find('[data-health-assessment-complete=true]').length,
-        ).to.equal(1);
-        expect(
-          wrapper.find('[data-health-assessment-complete=true]').text(),
-        ).to.equal('Complete');
+        const column = wrapper.find('[data-health-assessment-complete=true]');
+        expect(column.length).to.equal(1);
+        expect(column.text()).to.equal('Complete');
       });
 
       it('displays the cell sharing assessment for a completed prisoner assessment', () => {
         const wrapper = mount(<Dashboard assessments={assessments} />);
+        const row = wrapper.find('[data-assessments-complete=true]');
 
-        expect(wrapper.find('[data-cell-recommendation]').length).to.equal(1);
-        expect(wrapper.find('[data-cell-recommendation]').text()).to.equal(
-          'Foo outcome',
-        );
+        expect(row.length).to.equal(1);
+        expect(row.text()).to.include('Foo outcome');
       });
 
       it('does not displays the link to view the full assessment when both assessments not complete', () => {
         const wrapper = mount(<Dashboard assessments={assessments} />);
+        const viewOutcomeBtn = wrapper.find('[data-element-id="profile-row-bar-id"] > [data-element-id="view-outcome"] button');
 
-        expect(wrapper.find('[data-element-id="profile-row-bar-id"] > [data-element-id="view-outcome"] button').length).to.equal(0);
+        expect(viewOutcomeBtn.length).to.equal(0);
       });
 
       it('displays the link to view the full assessment when both assessments are complete', () => {
         const wrapper = mount(<Dashboard assessments={assessments} />);
+        const viewOutcomeBtn = wrapper.find('[data-element-id="profile-row-foo-id"] > [data-element-id="view-outcome"] button');
 
-        expect(wrapper.find('[data-element-id="profile-row-foo-id"] > [data-element-id="view-outcome"] button').length).to.equal(1);
+        expect(viewOutcomeBtn.length).to.equal(1);
       });
 
       it('responds to the selection of an incomplete risk assessment', () => {
@@ -151,12 +146,19 @@ describe('<Dashboard />', () => {
   });
 
   context('Connected Dashboard', () => {
-    it('calls the getOffenderProfiles on component mount', () => {
-      const getStub = sinon.stub(xhr, 'get');
-      const store = fakeStore(state);
+    let getStub;
 
+    beforeEach(() => {
+      getStub = sinon.stub(xhr, 'get');
       getStub.yields(null, { status: 200 }, assessments);
+    });
 
+    afterEach(() => {
+      getStub.restore();
+    });
+
+    it('calls the getOffenderProfiles on component mount', () => {
+      const store = fakeStore(state);
       mount(
         <Provider store={store}>
           <ConnectedDashboard />
@@ -169,8 +171,6 @@ describe('<Dashboard />', () => {
           payload: assessments,
         }),
       ).to.equal(true, 'did not call GET_OFFENDER_ASSESSMENTS action');
-
-      getStub.restore();
     });
 
     it('renders the correct number of assessments rows', () => {
@@ -204,42 +204,34 @@ describe('<Dashboard />', () => {
           <ConnectedDashboard />
         </Provider>,
       );
-      expect(wrapper.find('[data-risk-assessment-complete=true]').length).to.equal(
-        1,
-      );
-      expect(wrapper.find('[data-risk-assessment-complete=true]').text()).to.equal(
-        'Complete',
-      );
+      const column = wrapper.find('[data-risk-assessment-complete=true]');
+      expect(column.length).to.equal(1);
+      expect(column.text()).to.equal('Complete');
     });
 
     it('displays a completed health assessments', () => {
       const store = fakeStore(state);
-
       const wrapper = mount(
         <Provider store={store}>
           <ConnectedDashboard />
         </Provider>,
       );
-      expect(
-        wrapper.find('[data-health-assessment-complete=true]').length,
-      ).to.equal(1);
-      expect(
-        wrapper.find('[data-health-assessment-complete=true]').text(),
-      ).to.equal('Complete');
+      const column = wrapper.find('[data-health-assessment-complete=true]');
+      expect(column.length).to.equal(1);
+      expect(column.text()).to.equal('Complete');
     });
 
     it('displays the cell sharing assessment for a completed prisoner assessment', () => {
       const store = fakeStore(state);
-
       const wrapper = mount(
         <Provider store={store}>
           <ConnectedDashboard />
         </Provider>,
       );
-      expect(wrapper.find('[data-cell-recommendation]').length).to.equal(1);
-      expect(wrapper.find('[data-cell-recommendation]').text()).to.equal(
-        'Foo outcome',
-      );
+      const row = wrapper.find('[data-assessments-complete=true]');
+
+      expect(row.length).to.equal(1);
+      expect(row.text()).to.include('Foo outcome');
     });
 
     it('allows you the view the full outcome when both assessments are complete', () => {

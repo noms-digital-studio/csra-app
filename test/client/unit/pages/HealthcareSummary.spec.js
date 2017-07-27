@@ -13,7 +13,7 @@ const prisonerDetails = {
   forename: 'foo-name',
   surname: 'foo-surname',
   dateOfBirth: '1-1-2010',
-  nomisId: 'foo-nomis-id',
+  nomisId: 'foo-nomisId',
 };
 
 const healthcareAnswers = {
@@ -51,16 +51,16 @@ const storeData = {
     ],
   },
   answers: {
-    selectedPrisonerId: 'foo-nomis-id',
+    selectedPrisonerId: 'foo-nomisId',
     healthcare: {
-      'foo-nomis-id': healthcareAnswers,
+      'foo-nomisId': healthcareAnswers,
     },
   },
   offender: {
     selected: prisonerDetails,
     viperScores: [
       {
-        nomisId: 'foo-nomis-id',
+        nomisId: 'foo-nomisId',
         viperScore: 0.13,
       },
     ],
@@ -93,7 +93,7 @@ describe('<HealthcareSummary />', () => {
       expect(prisonerProfile).to.contain('Foo-name');
       expect(prisonerProfile).to.contain('foo-surname');
       expect(prisonerProfile).to.contain('1 January 2010');
-      expect(prisonerProfile).to.contain('foo-nomis-id');
+      expect(prisonerProfile).to.contain('foo-nomisId');
     });
 
     context('Healthcare outcome', () => {
@@ -119,7 +119,7 @@ describe('<HealthcareSummary />', () => {
           ...storeData,
           answers: {
             ...storeData.answers,
-            healthcare: { 'foo-nomis-id': healthcareAnswersLow },
+            healthcare: { 'foo-nomisId': healthcareAnswersLow },
           },
         };
         const store = fakeStore(storeDataLow);
@@ -158,7 +158,7 @@ describe('<HealthcareSummary />', () => {
           ...storeData,
           answers: {
             ...storeData.answers,
-            healthcare: { 'foo-nomis-id': healthcareAnswersWithComments },
+            healthcare: { 'foo-nomisId': healthcareAnswersWithComments },
           },
         };
         const store = fakeStore(storeDataLow);
@@ -251,7 +251,7 @@ describe('<HealthcareSummary />', () => {
       expect(
         store.dispatch.calledWithMatch({
           type: 'COMPLETE_HEALTH_ASSESSMENT',
-          payload: { nomisId: 'foo-nomis-id', assessmentId: 123, recommendation: 'single cell' },
+          payload: { nomisId: 'foo-nomisId', assessmentId: 123, recommendation: 'single cell' },
         }),
       ).to.equal(true, 'triggered complete assessment');
     });
@@ -261,7 +261,7 @@ describe('<HealthcareSummary />', () => {
     const storeDataCompleted = {
       ...storeData,
       riskAssessmentStatus: {
-        completed: [{ nomisId: 'foo-nomis-id' }],
+        completed: [{ nomisId: 'foo-nomisId' }],
       },
     };
     const store = fakeStore(storeDataCompleted);

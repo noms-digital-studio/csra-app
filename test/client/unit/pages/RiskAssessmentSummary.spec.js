@@ -14,7 +14,7 @@ const prisonerDetails = {
   forename: 'foo-name',
   surname: 'foo-surname',
   dateOfBirth: '1-1-2010',
-  nomisId: 'foo-nomis-id',
+  nomisId: 'foo-nomisId',
 };
 
 const riskAssessmentAnswers = {
@@ -43,9 +43,9 @@ const riskAssessmentAnswers = {
 
 const state = {
   answers: {
-    selectedPrisonerId: 'foo-nomis-id',
+    selectedPrisonerId: 'foo-nomisId',
     riskAssessment: {
-      'foo-nomis-id': riskAssessmentAnswers,
+      'foo-nomisId': riskAssessmentAnswers,
     },
   },
   questions: {
@@ -61,7 +61,7 @@ const state = {
     selected: prisonerDetails,
     viperScores: [
       {
-        nomisId: 'foo-nomis-id',
+        nomisId: 'foo-nomisId',
         viperScore: 0.10,
       },
     ],
@@ -94,7 +94,7 @@ describe('<RiskAssessmentSummary />', () => {
         expect(prisonerProfile).to.contain('Foo-name');
         expect(prisonerProfile).to.contain('foo-surname');
         expect(prisonerProfile).to.contain('1 January 2010');
-        expect(prisonerProfile).to.contain('foo-nomis-id');
+        expect(prisonerProfile).to.contain('foo-nomisId');
       });
 
       it('renders a "shared cell" outcome', () => {
@@ -135,9 +135,9 @@ describe('<RiskAssessmentSummary />', () => {
         const unknownRiskStore = fakeStore({
           ...state,
           answers: {
-            selectedPrisonerId: 'foo-nomis-id',
+            selectedPrisonerId: 'foo-nomisId',
             riskAssessment: {
-              'foo-nomis-id': answers,
+              'foo-nomisId': answers,
             },
           },
           riskAssessmentStatus: {
@@ -185,9 +185,9 @@ describe('<RiskAssessmentSummary />', () => {
         const unknownRiskStore = fakeStore({
           ...state,
           answers: {
-            selectedPrisonerId: 'foo-nomis-id',
+            selectedPrisonerId: 'foo-nomisId',
             riskAssessment: {
-              'foo-nomis-id': answers,
+              'foo-nomisId': answers,
             },
           },
           riskAssessmentStatus: {
@@ -235,7 +235,7 @@ describe('<RiskAssessmentSummary />', () => {
           selected: prisonerDetails,
           viperScores: [
             {
-              nomisId: 'foo-nomis-id',
+              nomisId: 'foo-nomisId',
               viperScore: 0.79,
             },
           ],
@@ -307,7 +307,7 @@ describe('<RiskAssessmentSummary />', () => {
             type: 'COMPLETE_RISK_ASSESSMENT',
             payload: {
               recommendation: 'shared cell',
-              nomisId: 'foo-nomis-id',
+              nomisId: 'foo-nomisId',
               assessmentId: 123,
             },
           }),
@@ -318,9 +318,9 @@ describe('<RiskAssessmentSummary />', () => {
         const stateWithReason = {
           ...state,
           answers: {
-            selectedPrisonerId: 'foo-nomis-id',
+            selectedPrisonerId: 'foo-nomisId',
             riskAssessment: {
-              'foo-nomis-id': {
+              'foo-nomisId': {
                 ...riskAssessmentAnswers,
                 'gang-affiliation': {
                   answer: 'yes',
@@ -345,7 +345,7 @@ describe('<RiskAssessmentSummary />', () => {
               rating: 'standard',
               recommendation: 'shared cell with conditions',
               reasons: ['Has indicated gang affiliation'],
-              nomisId: 'foo-nomis-id',
+              nomisId: 'foo-nomisId',
               assessmentId: 123,
             },
           }),
@@ -395,7 +395,7 @@ describe('<RiskAssessmentSummary />', () => {
       const storeDataCompleted = {
         ...state,
         healthcareStatus: {
-          completed: [{ nomisId: 'foo-nomis-id' }],
+          completed: [{ nomisId: 'foo-nomisId' }],
         },
       };
       const store = fakeStore(storeDataCompleted);

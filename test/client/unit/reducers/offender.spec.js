@@ -50,12 +50,12 @@ describe('#offenderReducer', () => {
 
   it('returns the state with the temporary created prisoner', () => {
     const prisonerData = {
-      'first-name': 'foo',
-      'last-name': 'bar',
+      forename: 'foo',
+      surname: 'bar',
       'dob-day': '01',
       'dob-month': '10',
       'dob-year': '1997',
-      'nomis-id': 'AA12345',
+      nomisId: 'AA12345',
     };
 
     const action = { type: 'ADD_PRISONER', payload: prisonerData };
@@ -66,12 +66,12 @@ describe('#offenderReducer', () => {
 
   it('returns the state with the prisoner added to the assessments', () => {
     const prisonerFormData = {
-      'first-name': 'foo',
-      'last-name': 'bar',
+      forename: 'foo',
+      surname: 'bar',
       'dob-day': '01',
       'dob-month': '10',
       'dob-year': '1997',
-      'nomis-id': 'AA12345',
+      nomisId: 'AA12345',
     };
 
     const newProfile = {
@@ -93,7 +93,7 @@ describe('#offenderReducer', () => {
   });
 
   it('returns the state with a new viperScore', () => {
-    const viperScore = { nomisId: 'foo-nomis-id', viperScore: 0.5 };
+    const viperScore = { nomisId: 'foo-nomisId', viperScore: 0.5 };
     const action = { type: 'ADD_VIPER_SCORE', payload: viperScore };
     const expectedState = {
       ...defaultState,

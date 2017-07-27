@@ -21,7 +21,7 @@ describe('#buildAssessmentRequest', () => {
     };
 
     const request = buildAssessmentRequest('foo-type', {
-      nomisId: 'foo-nomis-id',
+      nomisId: 'foo-nomisId',
       outcome: 'Single cell',
       viperScore: 0.71,
       questions,
@@ -30,7 +30,7 @@ describe('#buildAssessmentRequest', () => {
 
     expect(request).to.eql(
       {
-        nomisId: 'foo-nomis-id',
+        nomisId: 'foo-nomisId',
         outcome: 'Single cell',
         type: 'foo-type',
         viperScore: 0.71,
@@ -71,7 +71,7 @@ describe('#buildAssessmentRequest', () => {
     };
 
     const request = buildAssessmentRequest('footype', {
-      nomisId: 'foo-nomis-id',
+      nomisId: 'foo-nomisId',
       outcome: 'Single cell',
       viperScore: 0.11,
       questions,
@@ -80,7 +80,7 @@ describe('#buildAssessmentRequest', () => {
 
     expect(request).to.eql(
       {
-        nomisId: 'foo-nomis-id',
+        nomisId: 'foo-nomisId',
         outcome: 'Single cell',
         type: 'footype',
         viperScore: 0.11,
@@ -137,7 +137,7 @@ describe('#buildAssessmentRequest', () => {
     };
 
     const request = buildAssessmentRequest('footype', {
-      nomisId: 'foo-nomis-id',
+      nomisId: 'foo-nomisId',
       outcome: 'Shared cell',
       viperScore: 0.11,
       questions,
@@ -146,7 +146,7 @@ describe('#buildAssessmentRequest', () => {
 
     expect(request).to.eql(
       {
-        nomisId: 'foo-nomis-id',
+        nomisId: 'foo-nomisId',
         outcome: 'Shared cell',
         type: 'footype',
         viperScore: 0.11,

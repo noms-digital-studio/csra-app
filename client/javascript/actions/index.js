@@ -64,17 +64,7 @@ export const addPrisoner = prisoner => ({
   payload: prisoner,
 });
 
-export const confirmPrisoner = (prisonerData) => {
-  const prisoner = {
-    id: prisonerData.id,
-    nomisId: prisonerData['nomis-id'],
-    surname: prisonerData['last-name'],
-    forename: prisonerData['first-name'],
-    dateOfBirth: `${prisonerData['dob-day']}-${prisonerData['dob-month']}-${prisonerData['dob-year']}`,
-  };
-
-  return { type: CONFIRM_PRISONER, payload: prisoner };
-};
+export const confirmPrisoner = prisoner => ({ type: CONFIRM_PRISONER, payload: prisoner });
 
 export const saveRiskAssessmentAnswer = (key, value) => ({
   type: SAVE_RISK_ASSESSMENT_ANSWER,

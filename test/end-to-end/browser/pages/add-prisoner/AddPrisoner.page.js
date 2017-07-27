@@ -3,8 +3,8 @@ import BasePage from '../BasePage';
 
 class AddPrisonerPage extends BasePage {
   enterName(forename, surname) {
-    browser.setValue('[data-element-id="first-name"]', forename);
-    browser.setValue('[data-element-id="last-name"]', surname);
+    browser.setValue('[data-element-id="forename"]', forename);
+    browser.setValue('[data-element-id="surname"]', surname);
   }
 
   enterDoB(day, month, year) {
@@ -14,7 +14,7 @@ class AddPrisonerPage extends BasePage {
   }
 
   enterNomisId(id) {
-    browser.setValue('[data-element-id="nomis-id"]', id);
+    browser.setValue('[data-element-id="nomisId"]', id);
   }
 }
 

@@ -4,7 +4,7 @@ import postAssessmentToBackend
   from '../../../../client/javascript/services/postAssessmentToBackend';
 
 const postParams = {
-  nomisId: 'foo-nomis-id',
+  nomisId: 'foo-nomisId',
   outcome: 'foo-outcome',
   viperScore: 0.1,
   questions: [
@@ -40,7 +40,7 @@ const postParams = {
 };
 
 const postData = {
-  nomisId: 'foo-nomis-id',
+  nomisId: 'foo-nomisId',
   outcome: 'foo-outcome',
   type: 'foo',
   viperScore: 0.1,

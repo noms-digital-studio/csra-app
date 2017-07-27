@@ -6,7 +6,7 @@ import postAssessment
 const postData = {
   nomisId: 'foo-id',
   surname: 'foo-surname',
-  forename: 'foo-first-name',
+  forename: 'foo-forename',
   dateOfBirth: '1-12-2010',
 };
 

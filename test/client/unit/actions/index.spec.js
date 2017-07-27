@@ -47,7 +47,7 @@ describe('Actions', () => {
         id: 1,
         nomisId: 'foo-id',
         surname: 'foo-surname',
-        forename: 'foo-first-name',
+        forename: 'foo-forename',
         dateOfBirth: '1-12-2010',
         riskAssessmentCompleted: true,
         healthAssessmentCompleted: true,
@@ -126,12 +126,12 @@ describe('Actions', () => {
   describe('#addPrisoner', () => {
     it('returns a ADD_PRISONER action', () => {
       const prisoner = {
-        'first-name': 'foo',
-        'last-name': 'bar',
+        forename: 'foo',
+        surname: 'bar',
         'dob-day': '01',
         'dob-month': '10',
         'dob-year': '1997',
-        'nomis-id': 'AA12345',
+        nomisId: 'AA12345',
       };
 
       expect(addPrisoner(prisoner)).to.eql({
@@ -143,15 +143,6 @@ describe('Actions', () => {
 
   describe('#confirmPrisoner', () => {
     it('returns a CONFIRM_PRISONER action', () => {
-      const prisonerData = {
-        'first-name': 'foo',
-        'last-name': 'bar',
-        'dob-day': '01',
-        'dob-month': '10',
-        'dob-year': '1997',
-        'nomis-id': 'AA12345',
-      };
-
       const prisoner = {
         nomisId: 'AA12345',
         surname: 'bar',
@@ -159,7 +150,7 @@ describe('Actions', () => {
         dateOfBirth: '01-10-1997',
       };
 
-      expect(confirmPrisoner(prisonerData)).to.eql({
+      expect(confirmPrisoner(prisoner)).to.eql({
         type: 'CONFIRM_PRISONER',
         payload: prisoner,
       });
@@ -204,7 +195,7 @@ describe('Actions', () => {
         nomisId: 'foo-id',
         recommendation: 'foo-outccome',
         reasons: ['foo-reason'],
-        assessmentId: 'foo-nomis-id',
+        assessmentId: 'foo-nomisId',
         rating: 'foo-rating',
       };
       expect(completeRiskAssessmentFor(outcome)).to.eql({
@@ -219,7 +210,7 @@ describe('Actions', () => {
       const outcome = {
         nomisId: 'foo-id',
         recommendation: 'foo-recommendation',
-        assessmentId: 'foo-nomis-id',
+        assessmentId: 'foo-nomisId',
       };
       expect(completeHealthAssessmentFor(outcome)).to.eql({
         type: 'COMPLETE_HEALTH_ASSESSMENT',
@@ -231,7 +222,7 @@ describe('Actions', () => {
   describe('#completeHealthAnswersFor', () => {
     it('returns a HEALTHCARE_ANSWERS_COMPLETE action', () => {
       const offender = {
-        nomisId: 'foo-nomis-id',
+        nomisId: 'foo-nomisId',
       };
       expect(completeHealthAnswersFor(offender)).to.eql({
         type: 'HEALTHCARE_ANSWERS_COMPLETE',
@@ -243,7 +234,7 @@ describe('Actions', () => {
   describe('#storeOutcome', () => {
     it('returns a SAVE_OUTCOME action', () => {
       const outcome = {
-        nomisId: 'foo-nomis-id',
+        nomisId: 'foo-nomisId',
         outcome: 'foo-outcome',
       };
       expect(storeOutcome(outcome)).to.eql({

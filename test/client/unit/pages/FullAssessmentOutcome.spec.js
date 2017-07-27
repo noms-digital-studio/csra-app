@@ -13,7 +13,7 @@ const prisonerDetails = {
   forename: 'foo-name',
   surname: 'foo-surname',
   dateOfBirth: '1-1-2010',
-  nomisId: 'foo-nomis-id',
+  nomisId: 'foo-nomisId',
 };
 
 const riskAssessmentAnswers = {
@@ -62,22 +62,22 @@ const healthcareAnswers = {
 
 const state = {
   answers: {
-    selectedPrisonerId: 'foo-nomis-id',
+    selectedPrisonerId: 'foo-nomisId',
     riskAssessment: {
-      'foo-nomis-id': riskAssessmentAnswers,
+      'foo-nomisId': riskAssessmentAnswers,
     },
     healthcare: {
-      'foo-nomis-id': healthcareAnswers,
+      'foo-nomisId': healthcareAnswers,
     },
   },
   questions: {
     riskAssessment: riskAssessmentQuestions,
   },
   riskAssessmentStatus: {
-    completed: [{ recommendation: 'shared cell', nomisId: 'foo-nomis-id', rating: 'standard', reasons: [] }],
+    completed: [{ recommendation: 'shared cell', nomisId: 'foo-nomisId', rating: 'standard', reasons: [] }],
   },
   healthcareStatus: {
-    completed: [{ recommendation: 'shared cell', nomisId: 'foo-nomis-id' }],
+    completed: [{ recommendation: 'shared cell', nomisId: 'foo-nomisId' }],
   },
   offender: {
     selected: prisonerDetails,
@@ -108,7 +108,7 @@ describe('<FullAssessmentOutcome', () => {
     expect(prisonerProfile).to.contain('Foo-name');
     expect(prisonerProfile).to.contain('foo-surname');
     expect(prisonerProfile).to.contain('1 January 2010');
-    expect(prisonerProfile).to.contain('foo-nomis-id');
+    expect(prisonerProfile).to.contain('foo-nomisId');
   });
 
   it('displays the reasons if outcome is shared with conditions', () => {
@@ -118,7 +118,7 @@ describe('<FullAssessmentOutcome', () => {
         completed: [
           {
             recommendation: 'shared cell with conditions',
-            nomisId: 'foo-nomis-id',
+            nomisId: 'foo-nomisId',
             reasons: ['foo-reason', 'bar-reason'],
           },
         ],
@@ -227,7 +227,7 @@ describe('<FullAssessmentOutcome', () => {
     expect(
       store.dispatch.calledWithMatch({
         type: 'SAVE_OUTCOME',
-        payload: { outcome: 'shared cell', nomisId: 'foo-nomis-id' },
+        payload: { outcome: 'shared cell', nomisId: 'foo-nomisId' },
       }),
     ).to.equal(true, 'Changed path to /full-assessment-complete');
   });
@@ -235,7 +235,7 @@ describe('<FullAssessmentOutcome', () => {
   context('when the assessment has already been completed', () => {
     const stateWithOutcomes = {
       ...state,
-      assessmentOutcomes: { 'foo-nomis-id': 'shared cell' },
+      assessmentOutcomes: { 'foo-nomisId': 'shared cell' },
     };
 
     it('does not allow users to complete the assessment again', () => {

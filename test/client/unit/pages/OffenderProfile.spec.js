@@ -11,7 +11,7 @@ const selected = {
   forename: 'forename',
   surname: 'surname',
   dateOfBirth: '17-Nov-1999',
-  nomisId: 'foo-nomis-id',
+  nomisId: 'foo-nomisId',
 };
 
 describe('<OffenderProfile />', () => {
@@ -59,7 +59,7 @@ describe('<OffenderProfile />', () => {
       expect(pageText).to.contain('forename');
       expect(pageText).to.contain('surname');
       expect(pageText).to.contain('17-Nov-1999');
-      expect(pageText).to.contain('foo-nomis-id');
+      expect(pageText).to.contain('foo-nomisId');
     });
   });
 });

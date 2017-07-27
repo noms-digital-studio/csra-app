@@ -50,7 +50,7 @@ describe('<RiskAssessment />', () => {
       },
       offender: {
         selected: {
-          forename: 'foo-first-name',
+          forename: 'foo-forename',
           surname: 'foo-surname',
           dateOfBirth: '17-Nov-1999',
           nomisId: 'AA54321XX',
@@ -79,7 +79,7 @@ describe('<RiskAssessment />', () => {
     );
 
     expect(wrapper.text()).to.contain('foo-surname');
-    expect(wrapper.text()).to.contain('foo-first-name');
+    expect(wrapper.text()).to.contain('foo-forename');
   });
 
   it('calls the onSubmit action with the answer and section', () => {

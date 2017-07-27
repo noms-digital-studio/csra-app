@@ -11,12 +11,12 @@ describe('assessmentOutcomes', () => {
     const action = {
       type: 'SAVE_OUTCOME',
       payload: {
-        nomisId: 'foo-nomis-id',
+        nomisId: 'foo-nomisId',
         outcome: 'Foo outcome',
       },
     };
     const expectedState = {
-      'foo-nomis-id': 'Foo outcome',
+      'foo-nomisId': 'Foo outcome',
     };
 
     expect(assessmentOutcomesReducer(undefined, action)).to.eql(expectedState);

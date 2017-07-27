@@ -9,7 +9,7 @@ describe('#riskAssessmentStatusReducer', () => {
     expect(riskAssessmentStatusReducer(undefined, 'UNKNOWN_ACTION')).to.eql(defaultState);
   });
 
-  it('adds a nomis-id to the completed list', () => {
+  it('adds a nomisId to the completed list', () => {
     const state = {
       ...defaultState,
     };

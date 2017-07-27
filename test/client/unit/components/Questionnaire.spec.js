@@ -45,14 +45,14 @@ describe('<Questionnaire />', () => {
 
   it('renders offender name', () => {
     const prisoner = {
-      'nomis-id': 'bar-id',
+      nomisId: 'bar-id',
       surname: 'foo-surname',
-      forename: 'foo-first-name',
+      forename: 'foo-forename',
     };
     const wrapper = mount(<Questionnaire prisoner={prisoner} />);
 
     expect(wrapper.text()).to.contain('foo-surname');
-    expect(wrapper.text()).to.contain('foo-first-name');
+    expect(wrapper.text()).to.contain('foo-forename');
   });
 
   context(
