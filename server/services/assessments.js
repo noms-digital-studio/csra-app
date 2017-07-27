@@ -57,8 +57,8 @@ function list(db) {
           surname: row.surname,
           dateOfBirth: row.date_of_birth,
           outcome: row.outcome,
-          riskAssessment: !!row.risk_assessment,
-          healthAssessment: !!row.health_assessment,
+          riskAssessmentCompleted: !!row.risk_assessment,
+          healthAssessmentCompleted: !!row.health_assessment,
         }));
       }
       databaseLogger.info('No prisoner assessment data found in database.');

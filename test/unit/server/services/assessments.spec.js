@@ -153,8 +153,8 @@ describe('prisoner assessment service', () => {
           surname: 'Lowe',
           dateOfBirth: '14-07-1967',
           outcome: null,
-          riskAssessment: true,
-          healthAssessment: false,
+          riskAssessmentCompleted: true,
+          healthAssessmentCompleted: false,
         },
         {
           id: 567,
@@ -163,8 +163,8 @@ describe('prisoner assessment service', () => {
           surname: 'Moyen',
           dateOfBirth: '31-12-1988',
           outcome: 'Shared Cell',
-          riskAssessment: true,
-          healthAssessment: true,
+          riskAssessmentCompleted: true,
+          healthAssessmentCompleted: true,
         }]);
       });
     });
