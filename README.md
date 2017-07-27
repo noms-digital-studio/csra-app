@@ -180,9 +180,22 @@ Response:
       surname: 'Lowe',
       dateOfBirth: '14-07-1967',
       outcome: 'Shared Cell',
-      riskAssessment: false,
-      healthAssessment: false,
+      riskAssessmentCompleted: false,
+      healthAssessmentCompleted: false,
 }]
+```
+
+### Save Risk Assessment: POST `/api/assessments/<id>/risk`
+
+Returns 200 (OK) to indicate the data was saved, 400 if the request body is invalid or 500 if the data cannot be saved.
+
+e.g.
+
+Request:
+```
+  curl -v -X POST http://localhost:5000/api/assessments/123/risk -H 'Content-Type: application/json' 
+  -d '{"viperScore": 0.35, "questions": {"Q1": {"questionId": "Q1", "question": "Are you legit?","answer":"Yes"}},
+  "reasons":[{"questionId":"Q1", "reason": "They said they were legit"}]}'
 ```
 
 ### Monitoring: GET `/health`
