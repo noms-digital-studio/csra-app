@@ -66,8 +66,8 @@ describe('Actions', () => {
       const scores = {
         output: [{
           nomisId: 'FOO',
-          viperScore: 1
-        }]
+          viperScore: 1,
+        }],
       };
       expect(getViperScores(scores)).to.eql({
         type: 'GET_VIPER_SCORES',
@@ -80,7 +80,7 @@ describe('Actions', () => {
     it('returns a ADD_VIPER_SCORE action', () => {
       const score = {
         nomisId: 'FOO',
-        viperScore: 1
+        viperScore: 1,
       };
       expect(addViperScore(score)).to.eql({
         type: 'ADD_VIPER_SCORE',
@@ -110,7 +110,7 @@ describe('Actions', () => {
       const user = 'Foo bar';
       expect(signIn(user)).to.eql({
         type: 'SIGN_IN',
-        payload: user
+        payload: user,
       });
     });
   });
@@ -118,7 +118,7 @@ describe('Actions', () => {
   describe('#signOut', () => {
     it('returns a SIGN_OUT action', () => {
       expect(signOut()).to.eql({
-        type: 'SIGN_OUT'
+        type: 'SIGN_OUT',
       });
     });
   });
@@ -168,13 +168,13 @@ describe('Actions', () => {
     it('returns a SAVE_RISK_ASSESSMENT_ANSWER action', () => {
       const section = 'foo-risk';
       const answer = {
-        confirmation: 'accept'
+        confirmation: 'accept',
       };
 
       expect(saveRiskAssessmentAnswer(section, answer)).to.eql({
         type: 'SAVE_RISK_ASSESSMENT_ANSWER',
         payload: {
-          [section]: answer
+          [section]: answer,
         },
       });
     });
@@ -184,13 +184,13 @@ describe('Actions', () => {
     it('returns a SAVE_HEALTHCARE_ANSWER action', () => {
       const section = 'foo-risk';
       const answer = {
-        confirmation: 'accept'
+        confirmation: 'accept',
       };
 
       expect(saveHealthcareAssessmentAnswer(section, answer)).to.eql({
         type: 'SAVE_HEALTHCARE_ANSWER',
         payload: {
-          [section]: answer
+          [section]: answer,
         },
       });
     });
@@ -242,7 +242,7 @@ describe('Actions', () => {
     it('returns a SAVE_OUTCOME action', () => {
       const outcome = {
         nomisId: 'foo-nomis-id',
-        outcome: 'foo-outcome'
+        outcome: 'foo-outcome',
       };
       expect(storeOutcome(outcome)).to.eql({
         type: 'SAVE_OUTCOME',
