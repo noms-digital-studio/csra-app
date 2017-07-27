@@ -28,7 +28,7 @@ export default (state = defaultState, { type, payload }) => {
     case ADD_PRISONER:
       return { ...state, prisonerFormData: payload };
     case CONFIRM_PRISONER:
-      return { ...state, prisonerFormData: {}, assessments: [...state.assessments, payload] };
+      return { ...state, prisonerFormData: {} };
     default:
       return state;
   }

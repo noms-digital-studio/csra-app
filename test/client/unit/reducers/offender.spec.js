@@ -74,19 +74,11 @@ describe('#offenderReducer', () => {
       nomisId: 'AA12345',
     };
 
-    const newProfile = {
-      nomisId: 'AA12345',
-      surname: 'bar',
-      forename: 'foo',
-      dateOfBirth: '01-10-1997',
-    };
-
     const state = { ...defaultState, prisonerFormData };
-    const action = { type: 'CONFIRM_PRISONER', payload: newProfile };
+    const action = { type: 'CONFIRM_PRISONER' };
     const expectedState = {
       ...defaultState,
       prisonerFormData: {},
-      assessments: [...state.assessments, newProfile],
     };
 
     expect(offenderReducer(state, action)).to.eql(expectedState);

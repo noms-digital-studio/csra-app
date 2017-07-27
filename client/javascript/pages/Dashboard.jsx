@@ -21,7 +21,7 @@ class Dashboard extends Component {
     return this.props.assessments.map(profile => (
       <tr
         data-element-id={`profile-row-${profile.nomisId}`}
-        key={profile.nomisId}
+        key={profile.id}
         data-assessment-id={profile.id}
         data-assessments-complete={profile.healthAssessmentCompleted && profile.riskAssessmentCompleted}
       >

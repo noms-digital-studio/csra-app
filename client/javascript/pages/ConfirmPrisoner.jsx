@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import routes from '../constants/routes';
 import { retrieveViperScoreFor } from '../services';
 import postAssessment from '../services/postAssessment';
-import { addViperScore } from '../actions';
+import { addViperScore, confirmPrisoner } from '../actions';
 import { extractDateFromString } from '../utils';
 
 
@@ -86,7 +86,7 @@ const mapActionsToProps = dispatch => ({
             nomisId: body.nomisId,
           }));
         }
-        // dispatch(confirmPrisoner(prisoner));
+        dispatch(confirmPrisoner());
         return dispatch(replace(routes.DASHBOARD));
       });
     });

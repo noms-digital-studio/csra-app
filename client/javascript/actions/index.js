@@ -64,7 +64,7 @@ export const addPrisoner = prisoner => ({
   payload: prisoner,
 });
 
-export const confirmPrisoner = prisoner => ({ type: CONFIRM_PRISONER, payload: prisoner });
+export const confirmPrisoner = () => ({ type: CONFIRM_PRISONER });
 
 export const saveRiskAssessmentAnswer = (key, value) => ({
   type: SAVE_RISK_ASSESSMENT_ANSWER,

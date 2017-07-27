@@ -143,17 +143,7 @@ describe('Actions', () => {
 
   describe('#confirmPrisoner', () => {
     it('returns a CONFIRM_PRISONER action', () => {
-      const prisoner = {
-        nomisId: 'AA12345',
-        surname: 'bar',
-        forename: 'foo',
-        dateOfBirth: '01-10-1997',
-      };
-
-      expect(confirmPrisoner(prisoner)).to.eql({
-        type: 'CONFIRM_PRISONER',
-        payload: prisoner,
-      });
+      expect(confirmPrisoner()).to.eql({ type: 'CONFIRM_PRISONER' });
     });
   });
 
