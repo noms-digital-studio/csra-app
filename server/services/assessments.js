@@ -68,7 +68,39 @@ function list(db) {
 
 function saveRiskAssessment(db, id, rawAssessment) {
   log.info(`Saving risk assessment to the database for id: ${id}`);
-  const riskAssessment = rawAssessment;
+
+  const schema = Joi.object({
+    viperScore: Joi.number().optional()
+    .min(-1).max(1)
+    .precision(2)
+    .strict(),
+    questions: Joi.object()
+    .min(1)
+    .pattern(/./, Joi.object({
+      questionId: Joi.string(),
+      question: Joi.string(),
+      answer: Joi.string().allow('').optional(),
+    }).unknown()),
+    reasons: Joi.array().items(Joi.object({
+      questionId: Joi.string(),
+      reason: Joi.string(),
+    }).unknown()),
+  });
+
+  const validated = Joi.validate(rawAssessment, schema, {
+    abortEarly: false,
+    presence: 'required',
+  });
+
+  if (validated.error) {
+    const err = new Error(`Validation failed: ${validated.error.message}`);
+    err.type = 'validation';
+    err.details = validated.error.details;
+    log.error(err);
+    return Promise.reject(err);
+  }
+
+  const riskAssessment = validated.value;
 
   return db
     .from('prisoner_assessments')
