@@ -25,6 +25,22 @@ describe('prisoner assessment service', () => {
     ],
   };
 
+  const validHealthAssessment = {
+    questions: {
+      Q1: {
+        questionId: 'Q1',
+        question: 'Are you legit?',
+        answer: 'Yes',
+      },
+    },
+    reasons: [
+      {
+        questionId: 'Q1',
+        reason: 'They said they were legit',
+      },
+    ],
+  };
+
   const fakeAppInfo = {
     getGitRef: sinon.stub(),
     getGitDate: sinon.stub(),
@@ -384,6 +400,186 @@ describe('prisoner assessment service', () => {
       fakeDB.where = sinon.stub().rejects(new Error('Connection failed or something'));
 
       return expect(prisonerAssessmentService.riskAssessmentFor(123))
+      .to.be.rejectedWith(Error, 'Connection failed or something');
+    });
+  });
+
+  describe('records health assessment record', () => {
+    function setup() {
+      fakeDB = { raw: x => x };
+      fakeDB.from = sinon.stub().returns(fakeDB);
+      fakeDB.where = sinon.stub().returns(fakeDB);
+      fakeDB.update = sinon.stub().resolves([1]);
+      prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
+    }
+
+    describe('happy path', () => {
+      before(() => {
+        setup();
+        prisonerAssessmentService.saveHealthAssessment(123, validHealthAssessment)
+        .then((_result) => { result = _result; });
+      });
+
+      it('updates the prisoner assessments record with the health assessment', () => {
+        expect(fakeDB.from.callCount).to.eql(1);
+        expect(fakeDB.where.callCount).to.eql(1);
+        expect(fakeDB.update.callCount).to.eql(1);
+        expect(fakeDB.from.lastCall.args[0]).to.eql('prisoner_assessments');
+        expect(fakeDB.where.lastCall.args[0]).to.eql('id');
+        expect(fakeDB.where.lastCall.args[1]).to.eql('=');
+        expect(fakeDB.where.lastCall.args[2]).to.eql(123);
+        expect(fakeDB.update.lastCall.args[0]).to
+        .eql({ health_assessment: JSON.stringify(validHealthAssessment) });
+        expect(result).to.eql([1]);
+      });
+    });
+
+    describe('unhappy path', () => {
+      before(() => {
+        fakeDB = { raw: x => x };
+        fakeDB.from = sinon.stub().returns(fakeDB);
+        fakeDB.where = sinon.stub().returns(fakeDB);
+        prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
+      });
+
+      it('returns a `not-found` error  ', () => {
+        fakeDB.update = sinon.stub().resolves([0]);
+
+        return expect(prisonerAssessmentService.saveHealthAssessment(999, validHealthAssessment))
+        .to.be.rejectedWith(Error, 'Assessment id: 999 was not found');
+      });
+
+      it('passes on the db error', () => {
+        fakeDB.update = sinon.stub().rejects(new Error('Connection failed or something'));
+
+        return expect(prisonerAssessmentService.saveHealthAssessment(999, validHealthAssessment))
+        .to.be.rejectedWith(Error, 'Connection failed or something');
+      });
+    });
+
+    describe('general validation stuff', () => {
+      let error;
+      before(() => {
+        setup();
+        return prisonerAssessmentService.saveHealthAssessment({ some: 'junk' })
+        .catch((err) => { error = err; });
+      });
+
+      it('returns validation error', () => {
+        expect(error).to.be.an('error');
+        expect(error).to.have.property('type', 'validation');
+      });
+
+      it('does not talk to the database when validation fails', () => {
+        expect(fakeDB.update.callCount).to.eql(0);
+      });
+    });
+
+    describe('rules', () => {
+      before(() => {
+        setup();
+      });
+
+      function allows(data, label) {
+        const payload = Object.assign({}, validHealthAssessment, data);
+        it(`allows ${label || JSON.stringify(data)}`, () =>
+          expect(prisonerAssessmentService.saveHealthAssessment(123, payload)).to.be.fulfilled);
+      }
+      function doesNotAllow(data, label) {
+        const payload = Object.assign({}, validHealthAssessment, data);
+        it(`denies ${label || JSON.stringify(data)}`, () =>
+          expect(prisonerAssessmentService.saveHealthAssessment(123, payload))
+          .to.be.rejectedWith(Error, /Validation failed/));
+      }
+
+      allows({ questions: {
+        Q1: { questionId: 'Q1', question: 'Whither?', answer: '42' },
+      } });
+      allows({ questions: {
+        Q1: { questionId: 'Q1', question: 'Whither?', answer: '42' },
+        Q2: { questionId: 'Q2', question: 'Up?', answer: 'no' },
+        Q7: { questionId: 'Q7', question: 'Down?', answer: 'yes' },
+      } });
+      allows({ questions: {
+        Q1: { questionId: 'Q1', question: '??', answer: '42', and: 'even' },
+      } }, 'extra data in questions');
+      doesNotAllow({ questions: {} }, 'no "questions"');
+      doesNotAllow({ questions: undefined }, 'missing "questions"');
+      doesNotAllow({ questions: { Q1: {
+        question_id: null, question: '??', answer: '42',
+      } } }, 'missing question_id in a question');
+      doesNotAllow({ questions: { Q1: {
+        question_id: 'Q1', question: '', answer: '42',
+      } } }, 'missing question in a question');
+
+      allows({ reasons: [] });
+      allows({ reasons: [
+        { questionId: 'Q1', reason: 'I felt like it' },
+      ] });
+      allows({ reasons: [
+        { questionId: 'Q1', reason: 'Looked shifty' },
+        { questionId: 'Q2', reason: 'I felt like it' },
+        { questionId: 'Q7', reason: 'Sounded rather unsure' },
+      ] });
+      allows({ reasons: [
+        { questionId: 'Q1', reason: 'Looked shifty', other: 'stuff' },
+      ] }, 'extra data in reasons');
+      doesNotAllow({ reasons: undefined }, 'missing "reasons"');
+      doesNotAllow({ reasons: [
+        { questionId: 'Q1', reason: 'I felt like it' },
+        { reason: 'Looked shifty' },
+      ] }, 'missing "questionId" in reasons');
+      doesNotAllow({ reasons: [
+        { reason: 'I felt like it' },
+        { questionId: 'Q7', reason: 'Sounded rather unsure' },
+      ] }, 'missing "reason" in reasons');
+    });
+  });
+
+  describe('retrieves a health assessment', () => {
+    before(() => {
+      fakeDB = { raw: x => x };
+      fakeDB.select = sinon.stub().returns(fakeDB);
+      fakeDB.column = sinon.stub().returns(fakeDB);
+      fakeDB.table = sinon.stub().returns(fakeDB);
+      prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
+    });
+
+    it('returns the health assessment', () => {
+      fakeDB.where = sinon.stub().resolves([{ health_assessment: validHealthAssessment }]);
+
+      return prisonerAssessmentService.healthAssessmentFor(123)
+      .then((healthResult) => {
+        expect(fakeDB.select.callCount).to.eql(1);
+        expect(fakeDB.column.callCount).to.eql(1);
+        expect(fakeDB.column.lastCall.args[0]).to.eql('health_assessment');
+        expect(fakeDB.table.callCount).to.eql(1);
+        expect(fakeDB.table.lastCall.args[0]).to.eql('prisoner_assessments');
+        expect(fakeDB.where.lastCall.args[0]).to.eql('id');
+        expect(fakeDB.where.lastCall.args[1]).to.eql('=');
+        expect(fakeDB.where.lastCall.args[2]).to.eql(123);
+        expect(healthResult).to.eql(validHealthAssessment);
+      });
+    });
+
+    it('returns a `not-found` error when the prisoner assessment cannot be found', () => {
+      fakeDB.where = sinon.stub().resolves();
+
+      return expect(prisonerAssessmentService.healthAssessmentFor(123))
+      .to.be.rejectedWith(Error, 'No health assessment found for id: 123');
+    });
+
+    it('returns a `not-found` error when the health assessment cannot be found', () => {
+      fakeDB.where = sinon.stub().resolves([]);
+
+      return expect(prisonerAssessmentService.healthAssessmentFor(123))
+      .to.be.rejectedWith(Error, 'No health assessment found for id: 123');
+    });
+
+    it('passes on the db error', () => {
+      fakeDB.where = sinon.stub().rejects(new Error('Connection failed or something'));
+
+      return expect(prisonerAssessmentService.healthAssessmentFor(123))
       .to.be.rejectedWith(Error, 'Connection failed or something');
     });
   });

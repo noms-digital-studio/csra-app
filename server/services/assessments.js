@@ -138,12 +138,83 @@ function riskAssessmentFor(db, id) {
     });
 }
 
+function saveHealthAssessment(db, id, rawAssessment) {
+  log.info(`Saving health assessment to the database for id: ${id}`);
+
+  const schema = Joi.object({
+    questions: Joi.object()
+    .min(1)
+    .pattern(/./, Joi.object({
+      questionId: Joi.string(),
+      question: Joi.string(),
+      answer: Joi.string().allow('').optional(),
+    }).unknown()),
+    reasons: Joi.array().items(Joi.object({
+      questionId: Joi.string(),
+      reason: Joi.string(),
+    }).unknown()),
+  });
+
+  const validated = Joi.validate(rawAssessment, schema, {
+    abortEarly: false,
+    presence: 'required',
+  });
+
+  if (validated.error) {
+    const err = new Error(`Validation failed: ${validated.error.message}`);
+    err.type = 'validation';
+    err.details = validated.error.details;
+    log.error(err);
+    return Promise.reject(err);
+  }
+
+  const healthAssessment = validated.value;
+
+  return db
+  .from('prisoner_assessments')
+  .where('id', '=', id)
+  .update({
+    health_assessment: JSON.stringify(healthAssessment),
+  })
+  .then((result) => {
+    if (result[0] === 0) {
+      const err = new Error(`Assessment id: ${id} was not found}`);
+      err.type = 'not-found';
+      databaseLogger.error(err);
+      throw err;
+    }
+    databaseLogger.info(`Updated row: ${id} result: ${result}`);
+    return result;
+  });
+}
+
+function healthAssessmentFor(db, id) {
+  log.info(`Retrieving health assessment from the database for id: ${id}`);
+  return db
+  .select()
+  .column('health_assessment')
+  .table('prisoner_assessments')
+  .where('id', '=', id)
+  .then((_result) => {
+    if (_result && _result[0] && _result[0].health_assessment) {
+      databaseLogger.info(`Found health assessment for id: ${id}`);
+      return _result[0].health_assessment;
+    }
+    const err = new Error(`No health assessment found for id: ${id}`);
+    err.type = 'not-found';
+    databaseLogger.error(err);
+    throw err;
+  });
+}
+
 export default function createPrisonerAssessmentService(db, appInfo) {
   return {
     save: assessment => save(db, appInfo, assessment),
     list: () => list(db),
     saveRiskAssessment: (id, riskAssessment) => saveRiskAssessment(db, id, riskAssessment),
     riskAssessmentFor: id => riskAssessmentFor(db, id),
+    saveHealthAssessment: (id, healthAssessment) => saveHealthAssessment(db, id, healthAssessment),
+    healthAssessmentFor: id => healthAssessmentFor(db, id),
   };
 }
 
