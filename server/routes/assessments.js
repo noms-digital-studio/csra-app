@@ -31,6 +31,12 @@ function handlePostAssessmentErrors(err, res) {
       status: 'NOT FOUND',
       message: err.message,
     });
+  } else if (err.type === 'conflict') {
+    res.status(409);
+    res.json({
+      status: 'CONFLICT',
+      message: err.message,
+    });
   }
   res.status(500);
   res.json({

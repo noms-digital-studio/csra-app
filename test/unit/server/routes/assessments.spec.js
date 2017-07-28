@@ -149,6 +149,24 @@ describe('PUT /assessements/:id/risk', () => {
     });
   });
 
+  it('responds with status CONFLICT (409) and an error message when the service indicates that the data already exists', () => {
+    const err = new Error('Assessment already present');
+    err.type = 'conflict';
+    fakePrisonerAssessmentsService.saveRiskAssessment = sinon.stub().rejects(err);
+
+    return request(app)
+    .put('/123/risk')
+    .send({
+      riskAssessment: { someKey: 'some good data' },
+    })
+    .expect(409)
+    .expect('Content-Type', /json/)
+    .expect((res) => {
+      expect(res.body).to.eql({ status: 'CONFLICT', message: 'Assessment already present' });
+    });
+  });
+
+
   it('responds with status SERVER ERROR (500) and an error message when the service is unable to save the data', () => {
     fakePrisonerAssessmentsService.saveRiskAssessment = sinon.stub().rejects(new Error('Terrible database error'));
 
@@ -253,6 +271,23 @@ describe('PUT /assessements/:id/health', () => {
     .expect('Content-Type', /json/)
     .expect((res) => {
       expect(res.body).to.eql({ status: 'NOT FOUND', message: 'Assessment not found' });
+    });
+  });
+
+  it('responds with status CONFLICT (409) and an error message when the service indicates that the data already exists', () => {
+    const err = new Error('Assessment already present');
+    err.type = 'conflict';
+    fakePrisonerAssessmentsService.saveHealthAssessment = sinon.stub().rejects(err);
+
+    return request(app)
+    .put('/123/health')
+    .send({
+      healthAssessment: { someKey: 'some good data' },
+    })
+    .expect(409)
+    .expect('Content-Type', /json/)
+    .expect((res) => {
+      expect(res.body).to.eql({ status: 'CONFLICT', message: 'Assessment already present' });
     });
   });
 
