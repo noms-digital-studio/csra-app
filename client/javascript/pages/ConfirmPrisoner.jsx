@@ -77,9 +77,6 @@ const mapActionsToProps = dispatch => ({
       }
 
       return retrieveViperScoreFor(prisoner.nomisId, (body) => {
-        if (not(body)) {
-          return dispatch(replace(routes.ERROR_PAGE));
-        }
         if (body) {
           dispatch(addViperScore({
             viperScore: body.viperRating,
