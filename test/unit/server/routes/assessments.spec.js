@@ -208,3 +208,110 @@ describe('GET /assessements/:id/risk', () => {
     });
   });
 });
+
+describe('POST /assessements/:id/health', () => {
+  it('Returns OK (200) when the prisoner assessment is updated with the health assessment data', () => {
+    fakePrisonerAssessmentsService.saveHealthAssessment = sinon.stub().resolves();
+
+    return request(app)
+    .post('/123/health')
+    .send({
+      healthAssessment: { someKey: 'some valid data' },
+    })
+    .expect(200)
+    .expect('Content-Type', /json/);
+  });
+
+  it('responds with status BAD REQUEST (400) and an error message when the service indicates an validation error', () => {
+    const err = new Error('Foo was not valid');
+    err.type = 'validation';
+    fakePrisonerAssessmentsService.saveHealthAssessment = sinon.stub().rejects(err);
+
+    return request(app)
+    .post('/123/health')
+    .send({
+      healthAssessment: { someKey: 'some bad data' },
+    })
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .expect((res) => {
+      expect(res.body).to.eql({ status: 'VALIDATION ERROR', message: 'Foo was not valid' });
+    });
+  });
+
+  it('responds with status NOT FOUND (404) and an error message when the assessment id cannot be found', () => {
+    const err = new Error('Assessment not found');
+    err.type = 'not-found';
+    fakePrisonerAssessmentsService.saveHealthAssessment = sinon.stub().rejects(err);
+
+    return request(app)
+    .post('/123/health')
+    .send({
+      healthAssessment: { someKey: 'some valid data' },
+    })
+    .expect(404)
+    .expect('Content-Type', /json/)
+    .expect((res) => {
+      expect(res.body).to.eql({ status: 'NOT FOUND', message: 'Assessment not found' });
+    });
+  });
+
+  it('responds with status SERVER ERROR (500) and an error message when the service is unable to save the data', () => {
+    fakePrisonerAssessmentsService.saveHealthAssessment = sinon.stub().rejects(new Error('Terrible database error'));
+
+    return request(app)
+    .post('/123/health')
+    .send({
+      riskAssessment: { someKey: 'some valid data' },
+    })
+    .expect(500)
+    .expect('Content-Type', /json/)
+    .expect((res) => {
+      expect(res.body).to.eql({ status: 'ERROR', message: 'Terrible database error' });
+    });
+  });
+});
+
+describe('GET /assessements/:id/health', () => {
+  it('responds with status OK (200) and the health assessment', () => {
+    const healthAssessment = {
+      healthAssessment: { someKey: 'some valid data' },
+    };
+
+    fakePrisonerAssessmentsService.healthAssessmentFor = sinon.stub().resolves(healthAssessment);
+
+    return request(app)
+    .get('/:id/health')
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .expect((res) => {
+      expect(res.body).to.eql(healthAssessment);
+    });
+  });
+
+  it('responds with status NOT FOUND (404) and an error message when the assessment id cannot be found', () => {
+    const err = new Error('Assessment not found');
+    err.type = 'not-found';
+    fakePrisonerAssessmentsService.healthAssessmentFor = sinon.stub().rejects(err);
+
+    return request(app)
+    .get('/123/health')
+    .expect(404)
+    .expect('Content-Type', /json/)
+    .expect((res) => {
+      expect(res.body).to.eql({ status: 'NOT FOUND', message: 'Assessment not found' });
+    });
+  });
+
+  it('responds with status OK (500) and an error message when the service is unable to fetch the data ', () => {
+    fakePrisonerAssessmentsService.healthAssessmentFor = sinon.stub().rejects(new Error('Terrible database error'));
+
+    return request(app)
+    .get('/123/health')
+    .expect(500)
+    .expect('Content-Type', /json/)
+    .expect((res) => {
+      expect(res.body).to.eql({ status: 'ERROR', message: 'Terrible database error' });
+    });
+  });
+});
