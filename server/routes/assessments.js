@@ -81,7 +81,7 @@ export default function createRouter(prisonerAssessmentsService) {
       });
   });
 
-  router.post('/:id/risk', (req, res) => {
+  router.put('/:id/risk', (req, res) => {
     const id = req.params.id;
     prisonerAssessmentsService.saveRiskAssessment(id, req.body)
     .then(() => {
@@ -104,7 +104,7 @@ export default function createRouter(prisonerAssessmentsService) {
     });
   });
 
-  router.post('/:id/health', (req, res) => {
+  router.put('/:id/health', (req, res) => {
     const id = req.params.id;
     prisonerAssessmentsService.saveHealthAssessment(id, req.body)
     .then(() => {

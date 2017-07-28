@@ -102,12 +102,12 @@ describe('GET /assessements', () => {
   });
 });
 
-describe('POST /assessements/:id/risk', () => {
+describe('PUT /assessements/:id/risk', () => {
   it('Returns OK (200) when the prisoner assessment is updated with the risk assessment data', () => {
     fakePrisonerAssessmentsService.saveRiskAssessment = sinon.stub().resolves();
 
     return request(app)
-    .post('/123/risk')
+    .put('/123/risk')
     .send({
       riskAssessment: { someKey: 'some valid data' },
     })
@@ -121,7 +121,7 @@ describe('POST /assessements/:id/risk', () => {
     fakePrisonerAssessmentsService.saveRiskAssessment = sinon.stub().rejects(err);
 
     return request(app)
-    .post('/123/risk')
+    .put('/123/risk')
     .send({
       riskAssessment: { someKey: 'some bad data' },
     })
@@ -138,7 +138,7 @@ describe('POST /assessements/:id/risk', () => {
     fakePrisonerAssessmentsService.saveRiskAssessment = sinon.stub().rejects(err);
 
     return request(app)
-    .post('/123/risk')
+    .put('/123/risk')
     .send({
       riskAssessment: { someKey: 'some valid data' },
     })
@@ -153,7 +153,7 @@ describe('POST /assessements/:id/risk', () => {
     fakePrisonerAssessmentsService.saveRiskAssessment = sinon.stub().rejects(new Error('Terrible database error'));
 
     return request(app)
-    .post('/123/risk')
+    .put('/123/risk')
     .send({
       riskAssessment: { someKey: 'some valid data' },
     })
@@ -209,12 +209,12 @@ describe('GET /assessements/:id/risk', () => {
   });
 });
 
-describe('POST /assessements/:id/health', () => {
+describe('PUT /assessements/:id/health', () => {
   it('Returns OK (200) when the prisoner assessment is updated with the health assessment data', () => {
     fakePrisonerAssessmentsService.saveHealthAssessment = sinon.stub().resolves();
 
     return request(app)
-    .post('/123/health')
+    .put('/123/health')
     .send({
       healthAssessment: { someKey: 'some valid data' },
     })
@@ -228,7 +228,7 @@ describe('POST /assessements/:id/health', () => {
     fakePrisonerAssessmentsService.saveHealthAssessment = sinon.stub().rejects(err);
 
     return request(app)
-    .post('/123/health')
+    .put('/123/health')
     .send({
       healthAssessment: { someKey: 'some bad data' },
     })
@@ -245,7 +245,7 @@ describe('POST /assessements/:id/health', () => {
     fakePrisonerAssessmentsService.saveHealthAssessment = sinon.stub().rejects(err);
 
     return request(app)
-    .post('/123/health')
+    .put('/123/health')
     .send({
       healthAssessment: { someKey: 'some valid data' },
     })
@@ -260,7 +260,7 @@ describe('POST /assessements/:id/health', () => {
     fakePrisonerAssessmentsService.saveHealthAssessment = sinon.stub().rejects(new Error('Terrible database error'));
 
     return request(app)
-    .post('/123/health')
+    .put('/123/health')
     .send({
       riskAssessment: { someKey: 'some valid data' },
     })
