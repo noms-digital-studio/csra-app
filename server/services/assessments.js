@@ -69,6 +69,7 @@ function saveRiskAssessment(db, id, rawAssessment) {
   log.info(`Saving risk assessment to the database for id: ${id}`);
 
   const schema = Joi.object({
+    outcome: Joi.string().valid('single cell', 'shared cell', 'shared cell with conditions'),
     viperScore: Joi.number().optional()
     .min(-1).max(1)
     .precision(2)
@@ -142,6 +143,7 @@ function saveHealthAssessment(db, id, rawAssessment) {
   log.info(`Saving health assessment to the database for id: ${id}`);
 
   const schema = Joi.object({
+    outcome: Joi.string().valid('single cell', 'shared cell', 'shared cell with conditions'),
     questions: Joi.object()
     .min(1)
     .pattern(/./, Joi.object({
