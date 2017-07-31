@@ -1,48 +1,41 @@
 import express from 'express';
 import log from '../services/logger';
 
-function handleGetAssessmentErrors(err, res) {
+function handleErrors(err, res) {
   log.error(err);
-  if (err.type === 'not-found') {
-    res.status(404);
-    res.json({
-      status: 'NOT FOUND',
-      message: err.message,
-    });
+  switch (err.type) {
+    case ('validation'): {
+      res.status(400);
+      res.json({
+        status: 'VALIDATION ERROR',
+        message: err.message,
+      });
+      break;
+    }
+    case ('not-found'): {
+      res.status(404);
+      res.json({
+        status: 'NOT FOUND',
+        message: err.message,
+      });
+      break;
+    }
+    case ('conflict'): {
+      res.status(409);
+      res.json({
+        status: 'CONFLICT',
+        message: err.message,
+      });
+      break;
+    }
+    default: {
+      res.status(500);
+      res.json({
+        status: 'ERROR',
+        message: err.message,
+      });
+    }
   }
-  res.status(500);
-  res.json({
-    status: 'ERROR',
-    message: err.message,
-  });
-}
-
-function handlePutAssessmentErrors(err, res) {
-  log.error(err);
-  if (err.type === 'validation') {
-    res.status(400);
-    res.json({
-      status: 'VALIDATION ERROR',
-      message: err.message,
-    });
-  } else if (err.type === 'not-found') {
-    res.status(404);
-    res.json({
-      status: 'NOT FOUND',
-      message: err.message,
-    });
-  } else if (err.type === 'conflict') {
-    res.status(409);
-    res.json({
-      status: 'CONFLICT',
-      message: err.message,
-    });
-  }
-  res.status(500);
-  res.json({
-    status: 'ERROR',
-    message: err.message,
-  });
 }
 
 export default function createRouter(prisonerAssessmentsService) {
@@ -94,7 +87,7 @@ export default function createRouter(prisonerAssessmentsService) {
       res.status(200);
       res.json();
     }).catch((err) => {
-      handlePutAssessmentErrors(err, res);
+      handleErrors(err, res);
     });
   });
 
@@ -106,7 +99,7 @@ export default function createRouter(prisonerAssessmentsService) {
       res.status(200);
       res.json(result);
     }).catch((err) => {
-      handleGetAssessmentErrors(err, res);
+      handleErrors(err, res);
     });
   });
 
@@ -117,7 +110,7 @@ export default function createRouter(prisonerAssessmentsService) {
       res.status(200);
       res.json();
     }).catch((err) => {
-      handlePutAssessmentErrors(err, res);
+      handleErrors(err, res);
     });
   });
 
@@ -129,7 +122,7 @@ export default function createRouter(prisonerAssessmentsService) {
       res.status(200);
       res.json(result);
     }).catch((err) => {
-      handleGetAssessmentErrors(err, res);
+      handleErrors(err, res);
     });
   });
 
