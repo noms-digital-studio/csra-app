@@ -65,6 +65,24 @@ function list(db) {
     });
 }
 
+function updateAssessmentWithRiskAssessment(db, id, riskAssessment) {
+  return db
+    .from('prisoner_assessments')
+    .where('id', '=', id)
+    .update({
+      risk_assessment: JSON.stringify(riskAssessment),
+    }).then((result) => {
+      if (result[0] === 0) {
+        const err = new Error(`Assessment id: ${id} was not found`);
+        err.type = 'not-found';
+        databaseLogger.error(err);
+        throw err;
+      }
+      databaseLogger.info(`Updated row: ${id} result: ${result}`);
+      return result;
+    });
+}
+
 function saveRiskAssessment(db, id, rawAssessment) {
   log.info(`Saving risk assessment to the database for id: ${id}`);
 
@@ -103,21 +121,19 @@ function saveRiskAssessment(db, id, rawAssessment) {
   const riskAssessment = validated.value;
 
   return db
-    .from('prisoner_assessments')
-    .where('id', '=', id)
-    .update({
-      risk_assessment: JSON.stringify(riskAssessment),
-    })
-    .then((result) => {
-      if (result[0] === 0) {
-        const err = new Error(`Assessment id: ${id} was not found}`);
-        err.type = 'not-found';
-        databaseLogger.error(err);
-        throw err;
-      }
-      databaseLogger.info(`Updated row: ${id} result: ${result}`);
-      return result;
-    });
+  .select()
+  .column('risk_assessment')
+  .table('prisoner_assessments')
+  .where('id', '=', id)
+  .then((_result) => {
+    if (_result && _result[0] && _result[0].risk_assessment) {
+      const err = new Error(`A risk assessment already exists for assessment with id: ${id}`);
+      err.type = 'conflict';
+      databaseLogger.error(err);
+      throw err;
+    }
+    return updateAssessmentWithRiskAssessment(db, id, riskAssessment);
+  });
 }
 
 function riskAssessmentFor(db, id) {
@@ -136,6 +152,24 @@ function riskAssessmentFor(db, id) {
       err.type = 'not-found';
       databaseLogger.error(err);
       throw err;
+    });
+}
+
+function updateAssessmentWithHealthAssessment(db, id, healthAssessment) {
+  return db
+    .from('prisoner_assessments')
+    .where('id', '=', id)
+    .update({
+      health_assessment: JSON.stringify(healthAssessment),
+    }).then((result) => {
+      if (result[0] === 0) {
+        const err = new Error(`Assessment id: ${id} was not found`);
+        err.type = 'not-found';
+        databaseLogger.error(err);
+        throw err;
+      }
+      databaseLogger.info(`Updated row: ${id} result: ${result}`);
+      return result;
     });
 }
 
@@ -173,20 +207,18 @@ function saveHealthAssessment(db, id, rawAssessment) {
   const healthAssessment = validated.value;
 
   return db
-  .from('prisoner_assessments')
+  .select()
+  .column('health_assessment')
+  .table('prisoner_assessments')
   .where('id', '=', id)
-  .update({
-    health_assessment: JSON.stringify(healthAssessment),
-  })
-  .then((result) => {
-    if (result[0] === 0) {
-      const err = new Error(`Assessment id: ${id} was not found}`);
-      err.type = 'not-found';
+  .then((_result) => {
+    if (_result && _result[0] && _result[0].health_assessment) {
+      const err = new Error(`A health assessment already exists for assessment with id: ${id}`);
+      err.type = 'conflict';
       databaseLogger.error(err);
       throw err;
     }
-    databaseLogger.info(`Updated row: ${id} result: ${result}`);
-    return result;
+    return updateAssessmentWithHealthAssessment(db, id, healthAssessment);
   });
 }
 

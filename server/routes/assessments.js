@@ -17,7 +17,7 @@ function handleGetAssessmentErrors(err, res) {
   });
 }
 
-function handlePostAssessmentErrors(err, res) {
+function handlePutAssessmentErrors(err, res) {
   log.error(err);
   if (err.type === 'validation') {
     res.status(400);
@@ -94,7 +94,7 @@ export default function createRouter(prisonerAssessmentsService) {
       res.status(200);
       res.json();
     }).catch((err) => {
-      handlePostAssessmentErrors(err, res);
+      handlePutAssessmentErrors(err, res);
     });
   });
 
@@ -117,7 +117,7 @@ export default function createRouter(prisonerAssessmentsService) {
       res.status(200);
       res.json();
     }).catch((err) => {
-      handlePostAssessmentErrors(err, res);
+      handlePutAssessmentErrors(err, res);
     });
   });
 

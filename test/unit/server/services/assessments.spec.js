@@ -218,8 +218,15 @@ describe('prisoner assessment service', () => {
   describe('records risk assessment record', () => {
     function setup() {
       fakeDB = { raw: x => x };
+      fakeDB.select = sinon.stub().returns(fakeDB);
+      fakeDB.column = sinon.stub().returns(fakeDB);
+      fakeDB.table = sinon.stub().returns(fakeDB);
+      fakeDB.where = sinon.stub().onFirstCall()
+        .resolves([])
+        .onSecondCall()
+        .returns(fakeDB);
+
       fakeDB.from = sinon.stub().returns(fakeDB);
-      fakeDB.where = sinon.stub().returns(fakeDB);
       fakeDB.update = sinon.stub().resolves([1]);
       prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
     }
@@ -233,7 +240,7 @@ describe('prisoner assessment service', () => {
 
       it('updates the prisoner assessments record with the risk assessment', () => {
         expect(fakeDB.from.callCount).to.eql(1);
-        expect(fakeDB.where.callCount).to.eql(1);
+        expect(fakeDB.where.callCount).to.eql(2);
         expect(fakeDB.update.callCount).to.eql(1);
         expect(fakeDB.from.lastCall.args[0]).to.eql('prisoner_assessments');
         expect(fakeDB.where.lastCall.args[0]).to.eql('id');
@@ -246,10 +253,17 @@ describe('prisoner assessment service', () => {
     });
 
     describe('unhappy path', () => {
-      before(() => {
+      beforeEach(() => {
         fakeDB = { raw: x => x };
+        fakeDB.select = sinon.stub().returns(fakeDB);
+        fakeDB.column = sinon.stub().returns(fakeDB);
+        fakeDB.table = sinon.stub().returns(fakeDB);
+        fakeDB.where = sinon.stub().onFirstCall()
+        .resolves([])
+        .onSecondCall()
+        .returns(fakeDB);
+
         fakeDB.from = sinon.stub().returns(fakeDB);
-        fakeDB.where = sinon.stub().returns(fakeDB);
         prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
       });
 
@@ -265,6 +279,24 @@ describe('prisoner assessment service', () => {
 
         return expect(prisonerAssessmentService.saveRiskAssessment(999, validRiskAssessment))
         .to.be.rejectedWith(Error, 'Connection failed or something');
+      });
+    });
+
+    describe('risk assessment already saved', () => {
+      before(() => {
+        fakeDB = { raw: x => x };
+        fakeDB.select = sinon.stub().returns(fakeDB);
+        fakeDB.column = sinon.stub().returns(fakeDB);
+        fakeDB.table = sinon.stub().returns(fakeDB);
+        fakeDB.where = sinon.stub().resolves([{ risk_assessment: 'some risk data' }]);
+        prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
+      });
+
+      it('returns a `conflict` error  ', () => {
+        fakeDB.update = sinon.stub().resolves([0]);
+
+        return expect(prisonerAssessmentService.saveRiskAssessment(999, validRiskAssessment))
+        .to.be.rejectedWith(Error, 'A risk assessment already exists for assessment with id: 999');
       });
     });
 
@@ -287,7 +319,7 @@ describe('prisoner assessment service', () => {
     });
 
     describe('rules', () => {
-      before(() => {
+      beforeEach(() => {
         setup();
       });
 
@@ -296,6 +328,7 @@ describe('prisoner assessment service', () => {
         it(`allows ${label || JSON.stringify(data)}`, () =>
           expect(prisonerAssessmentService.saveRiskAssessment(123, payload)).to.be.fulfilled);
       }
+
       function doesNotAllow(data, label) {
         const payload = Object.assign({}, validRiskAssessment, data);
         it(`denies ${label || JSON.stringify(data)}`, () =>
@@ -409,8 +442,15 @@ describe('prisoner assessment service', () => {
   describe('records health assessment record', () => {
     function setup() {
       fakeDB = { raw: x => x };
+      fakeDB.select = sinon.stub().returns(fakeDB);
+      fakeDB.column = sinon.stub().returns(fakeDB);
+      fakeDB.table = sinon.stub().returns(fakeDB);
+      fakeDB.where = sinon.stub().onFirstCall()
+      .resolves([])
+      .onSecondCall()
+      .returns(fakeDB);
+
       fakeDB.from = sinon.stub().returns(fakeDB);
-      fakeDB.where = sinon.stub().returns(fakeDB);
       fakeDB.update = sinon.stub().resolves([1]);
       prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
     }
@@ -424,7 +464,7 @@ describe('prisoner assessment service', () => {
 
       it('updates the prisoner assessments record with the health assessment', () => {
         expect(fakeDB.from.callCount).to.eql(1);
-        expect(fakeDB.where.callCount).to.eql(1);
+        expect(fakeDB.where.callCount).to.eql(2);
         expect(fakeDB.update.callCount).to.eql(1);
         expect(fakeDB.from.lastCall.args[0]).to.eql('prisoner_assessments');
         expect(fakeDB.where.lastCall.args[0]).to.eql('id');
@@ -437,10 +477,17 @@ describe('prisoner assessment service', () => {
     });
 
     describe('unhappy path', () => {
-      before(() => {
+      beforeEach(() => {
         fakeDB = { raw: x => x };
+        fakeDB.select = sinon.stub().returns(fakeDB);
+        fakeDB.column = sinon.stub().returns(fakeDB);
+        fakeDB.table = sinon.stub().returns(fakeDB);
+        fakeDB.where = sinon.stub().onFirstCall()
+        .resolves([])
+        .onSecondCall()
+        .returns(fakeDB);
+
         fakeDB.from = sinon.stub().returns(fakeDB);
-        fakeDB.where = sinon.stub().returns(fakeDB);
         prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
       });
 
@@ -458,6 +505,25 @@ describe('prisoner assessment service', () => {
         .to.be.rejectedWith(Error, 'Connection failed or something');
       });
     });
+
+    describe('health assessment already saved', () => {
+      before(() => {
+        fakeDB = { raw: x => x };
+        fakeDB.select = sinon.stub().returns(fakeDB);
+        fakeDB.column = sinon.stub().returns(fakeDB);
+        fakeDB.table = sinon.stub().returns(fakeDB);
+        fakeDB.where = sinon.stub().resolves([{ health_assessment: 'some health data' }]);
+        prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
+      });
+
+      it('returns a `conflict` error  ', () => {
+        fakeDB.update = sinon.stub().resolves([0]);
+
+        return expect(prisonerAssessmentService.saveHealthAssessment(999, validHealthAssessment))
+        .to.be.rejectedWith(Error, 'A health assessment already exists for assessment with id: 999');
+      });
+    });
+
 
     describe('general validation stuff', () => {
       let error;
@@ -478,7 +544,7 @@ describe('prisoner assessment service', () => {
     });
 
     describe('rules', () => {
-      before(() => {
+      beforeEach(() => {
         setup();
       });
 
