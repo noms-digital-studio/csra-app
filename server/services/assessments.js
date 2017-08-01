@@ -270,6 +270,45 @@ function assessmentFor(db, id) {
   });
 }
 
+function saveOutcome(db, id, rawRequest) {
+  log.info(`Saving outcome to the database for id: ${id}`);
+
+  const schema = Joi.object({
+    outcome: Joi.string().valid('single cell', 'shared cell', 'shared cell with conditions'),
+  });
+
+  const validated = Joi.validate(rawRequest, schema, {
+    abortEarly: false,
+    presence: 'required',
+  });
+
+  if (validated.error) {
+    const err = new Error(`Validation failed: ${validated.error.message}`);
+    err.type = 'validation';
+    err.details = validated.error.details;
+    log.error(err);
+    return Promise.reject(err);
+  }
+
+  const request = validated.value;
+
+  return db
+  .from('prisoner_assessments')
+  .where('id', '=', id)
+  .update({
+    outcome: request.outcome,
+  }).then((result) => {
+    if (result[0] === 0) {
+      const err = new Error(`Assessment id: ${id} was not found`);
+      err.type = 'not-found';
+      databaseLogger.error(err);
+      throw err;
+    }
+    databaseLogger.info(`Updated row: ${id} result: ${result}`);
+    return result;
+  });
+}
+
 export default function createPrisonerAssessmentService(db, appInfo) {
   return {
     save: assessment => save(db, appInfo, assessment),
@@ -279,6 +318,7 @@ export default function createPrisonerAssessmentService(db, appInfo) {
     saveHealthAssessment: (id, healthAssessment) => saveHealthAssessment(db, id, healthAssessment),
     healthAssessmentFor: id => healthAssessmentFor(db, id),
     assessmentFor: id => assessmentFor(db, id),
+    saveOutcome: (id, outcome) => saveOutcome(db, id, outcome),
   };
 }
 

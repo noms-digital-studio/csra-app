@@ -403,3 +403,66 @@ describe('GET /assessements/:id/health', () => {
     });
   });
 });
+
+describe('PUT /assessements/:id/outcome', () => {
+  it('Returns OK (200) when the prisoner assessment is updated with the outcome', () => {
+    fakePrisonerAssessmentsService.saveOutcome = sinon.stub().resolves();
+
+    return request(app)
+    .put('/123/outcome')
+    .send({
+      outcome: 'single cell',
+    })
+    .expect(200)
+    .expect('Content-Type', /json/);
+  });
+
+  it('responds with status BAD REQUEST (400) and an error message when the service indicates an validation error', () => {
+    const err = new Error('Foo was not valid');
+    err.type = 'validation';
+    fakePrisonerAssessmentsService.saveOutcome = sinon.stub().rejects(err);
+
+    return request(app)
+    .put('/123/outcome')
+    .send({
+      outcome: 'bad data',
+    })
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .expect((res) => {
+      expect(res.body).to.eql({ status: 'VALIDATION ERROR', message: 'Foo was not valid' });
+    });
+  });
+
+  it('responds with status NOT FOUND (404) and an error message when the assessment id cannot be found', () => {
+    const err = new Error('Assessment not found');
+    err.type = 'not-found';
+    fakePrisonerAssessmentsService.saveOutcome = sinon.stub().rejects(err);
+
+    return request(app)
+    .put('/123/outcome')
+    .send({
+      outcome: 'some valid data',
+    })
+    .expect(404)
+    .expect('Content-Type', /json/)
+    .expect((res) => {
+      expect(res.body).to.eql({ status: 'NOT FOUND', message: 'Assessment not found' });
+    });
+  });
+
+  it('responds with status SERVER ERROR (500) and an error message when the service is unable to save the data', () => {
+    fakePrisonerAssessmentsService.saveOutcome = sinon.stub().rejects(new Error('Terrible database error'));
+
+    return request(app)
+    .put('/123/outcome')
+    .send({
+      outcome: 'some valid data',
+    })
+    .expect(500)
+    .expect('Content-Type', /json/)
+    .expect((res) => {
+      expect(res.body).to.eql({ status: 'ERROR', message: 'Terrible database error' });
+    });
+  });
+});

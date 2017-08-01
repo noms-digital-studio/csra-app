@@ -187,13 +187,14 @@ Response:
 
 ### Save Risk Assessment: PUT `/api/assessments/<id>/risk`
 
-Returns 200 (OK) to indicate the data was saved, 400 if the request body is invalid or 500 if the data cannot be saved.
+Returns 200 (OK) to indicate the data was saved, 400 if the request body is invalid, 409 to indicate that the
+risk assessment has already been completed for this record or 500 if the data cannot be saved.
 
 e.g.
 
 Request:
 ```
-  curl -v -X PUT http://localhost:5000/api/assessments/123/risk -H 'Content-Type: application/json'
+  curl -X PUT http://localhost:5000/api/assessments/123/risk -H 'Content-Type: application/json'
   -d '{"viperScore": 0.35, "questions": {"Q1": {"questionId": "Q1", "question": "Example question text?","answer":"Yes"}},
   "reasons":[{"questionId":"Q1", "reason": "Example reason text"}]}'
 ```
@@ -232,13 +233,14 @@ Response:
 
 ### Save Health Assessment: PUT `/api/assessments/<id>/health`
 
-Returns 200 (OK) to indicate the data was saved, 400 if the request body is invalid or 500 if the data cannot be saved.
+Returns 200 (OK) to indicate the data was saved, 400 if the request body is invalid, 409 to indicate that the
+health assessment has already been completed for this record or 500 if the data cannot be saved.
 
 e.g.
 
 Request:
 ```
-  curl -v -X PUT http://localhost:5000/api/assessments/123/health -H 'Content-Type: application/json'
+  curl -X PUT http://localhost:5000/api/assessments/123/health -H 'Content-Type: application/json'
   -d '{"questions": {"Q1": {"questionId": "Q1", "question": "Example question text?","answer":"Yes"}},
   "reasons":[{"questionId":"Q1", "reason": "Example reason text"}]}'
 ```
@@ -301,6 +303,18 @@ Response:
     healthAssessment: { ... },
 }
 ```
+
+### Save assessment outcome: PUT /api/assessments/<id>/outcome
+
+Returns 200 to indicate the data was saved, 400 if the request body is invalid or 500 if the data cannot be saved.
+
+Valid outcomes: 'single cell', 'shared cell', 'shared cell with conditions'
+e.g.
+Request:
+```
+curl -X PUT http://localhost:5000/api/assessments/1/outcome -H 'Content-Type: application/json' -d '{"outcome": "single cell"}'
+```
+
 
 ### Monitoring: GET `/health`
 
