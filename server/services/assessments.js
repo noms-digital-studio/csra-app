@@ -241,6 +241,35 @@ function healthAssessmentFor(db, id) {
   });
 }
 
+function assessmentFor(db, id) {
+  log.info(`Retrieving assessment from the database for id: ${id}`);
+  return db
+  .select()
+  .table('prisoner_assessments')
+  .where('id', '=', id)
+  .then((_result) => {
+    if (_result && _result[0]) {
+      databaseLogger.info(`Found assessment for id: ${id}`);
+      return {
+        id: _result[0].id,
+        createdAt: _result[0].created_at,
+        updatedAt: _result[0].updated_at,
+        nomisId: _result[0].nomis_id,
+        forename: _result[0].forename,
+        surname: _result[0].surname,
+        dateOfBirth: _result[0].date_of_birth,
+        outcome: _result[0].outcome,
+        riskAssessment: _result[0].risk_assessment,
+        healthAssessment: _result[0].health_assessment,
+      };
+    }
+    const err = new Error(`No assessment found for id: ${id}`);
+    err.type = 'not-found';
+    databaseLogger.error(err);
+    throw err;
+  });
+}
+
 export default function createPrisonerAssessmentService(db, appInfo) {
   return {
     save: assessment => save(db, appInfo, assessment),
@@ -249,6 +278,7 @@ export default function createPrisonerAssessmentService(db, appInfo) {
     riskAssessmentFor: id => riskAssessmentFor(db, id),
     saveHealthAssessment: (id, healthAssessment) => saveHealthAssessment(db, id, healthAssessment),
     healthAssessmentFor: id => healthAssessmentFor(db, id),
+    assessmentFor: id => assessmentFor(db, id),
   };
 }
 

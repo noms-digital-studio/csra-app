@@ -651,4 +651,72 @@ describe('prisoner assessment service', () => {
       .to.be.rejectedWith(Error, 'Connection failed or something');
     });
   });
+
+  describe('retrieves an assessment', () => {
+    before(() => {
+      fakeDB = { raw: x => x };
+      fakeDB.select = sinon.stub().returns(fakeDB);
+      fakeDB.column = sinon.stub().returns(fakeDB);
+      fakeDB.table = sinon.stub().returns(fakeDB);
+      prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
+    });
+
+    it('returns the assessment', () => {
+      fakeDB.where = sinon.stub().resolves([{
+        id: 123,
+        created_at: '2017-07-28T11:54:23.576Z',
+        updated_at: '2017-07-30T09:00:00.106Z',
+        nomis_id: 'J1234LO',
+        forename: 'John',
+        surname: 'Lowe',
+        date_of_birth: '14-07-1967',
+        outcome: 'Shared Cell',
+        risk_assessment: { someKey: 'some valid data' },
+        health_assessment: { someKey: 'some valid data' },
+      }]);
+
+      return prisonerAssessmentService.assessmentFor(123)
+      .then((riskResult) => {
+        expect(fakeDB.select.callCount).to.eql(1);
+        expect(fakeDB.table.callCount).to.eql(1);
+        expect(fakeDB.table.lastCall.args[0]).to.eql('prisoner_assessments');
+        expect(fakeDB.where.lastCall.args[0]).to.eql('id');
+        expect(fakeDB.where.lastCall.args[1]).to.eql('=');
+        expect(fakeDB.where.lastCall.args[2]).to.eql(123);
+        expect(riskResult).to.eql({
+          id: 123,
+          createdAt: '2017-07-28T11:54:23.576Z',
+          updatedAt: '2017-07-30T09:00:00.106Z',
+          nomisId: 'J1234LO',
+          forename: 'John',
+          surname: 'Lowe',
+          dateOfBirth: '14-07-1967',
+          outcome: 'Shared Cell',
+          riskAssessment: { someKey: 'some valid data' },
+          healthAssessment: { someKey: 'some valid data' },
+        });
+      });
+    });
+
+    it('returns a `not-found` error when the prisoner assessment cannot be found', () => {
+      fakeDB.where = sinon.stub().resolves();
+
+      return expect(prisonerAssessmentService.assessmentFor(123))
+      .to.be.rejectedWith(Error, 'No assessment found for id: 123');
+    });
+
+    it('returns a `not-found` error when the assessment cannot be found', () => {
+      fakeDB.where = sinon.stub().resolves([]);
+
+      return expect(prisonerAssessmentService.assessmentFor(123))
+      .to.be.rejectedWith(Error, 'No assessment found for id: 123');
+    });
+
+    it('passes on the db error', () => {
+      fakeDB.where = sinon.stub().rejects(new Error('Connection failed or something'));
+
+      return expect(prisonerAssessmentService.assessmentFor(123))
+      .to.be.rejectedWith(Error, 'Connection failed or something');
+    });
+  });
 });

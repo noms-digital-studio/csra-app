@@ -185,7 +185,7 @@ Response:
 }]
 ```
 
-### Save Risk Assessment: POST `/api/assessments/<id>/risk`
+### Save Risk Assessment: PUT `/api/assessments/<id>/risk`
 
 Returns 200 (OK) to indicate the data was saved, 400 if the request body is invalid or 500 if the data cannot be saved.
 
@@ -193,14 +193,14 @@ e.g.
 
 Request:
 ```
-  curl -v -X POST http://localhost:5000/api/assessments/123/risk -H 'Content-Type: application/json'
+  curl -v -X PUT http://localhost:5000/api/assessments/123/risk -H 'Content-Type: application/json'
   -d '{"viperScore": 0.35, "questions": {"Q1": {"questionId": "Q1", "question": "Example question text?","answer":"Yes"}},
   "reasons":[{"questionId":"Q1", "reason": "Example reason text"}]}'
 ```
 
 ### Get Risk Assessment: GET `/api/assessments/<id>/risk`
 
-Returns 200 (OK) and the risk assessment or 404 if the prisoner assessment or risk assessment cant be found.
+Returns 200 (OK) and the risk assessment or 404 if the prisoner assessment or risk assessment can't be found.
 500 for any other errors.
 
 e.g.
@@ -230,7 +230,7 @@ Response:
   };
 ```
 
-### Save Health Assessment: POST `/api/assessments/<id>/health`
+### Save Health Assessment: PUT `/api/assessments/<id>/health`
 
 Returns 200 (OK) to indicate the data was saved, 400 if the request body is invalid or 500 if the data cannot be saved.
 
@@ -238,14 +238,14 @@ e.g.
 
 Request:
 ```
-  curl -v -X POST http://localhost:5000/api/assessments/123/health -H 'Content-Type: application/json'
+  curl -v -X PUT http://localhost:5000/api/assessments/123/health -H 'Content-Type: application/json'
   -d '{"questions": {"Q1": {"questionId": "Q1", "question": "Example question text?","answer":"Yes"}},
   "reasons":[{"questionId":"Q1", "reason": "Example reason text"}]}'
 ```
 
 ### Get Health Assessment: GET `/api/assessments/<id>/health`
 
-Returns 200 (OK) and the health assessment or 404 if the prisoner assessment or health assessment cant be found.
+Returns 200 (OK) and the health assessment or 404 if the prisoner assessment or health assessment can't be found.
 500 for any other errors.
 
 e.g.
@@ -274,6 +274,33 @@ Response:
   };
 ```
 
+### Get Risk Assessment: GET `/api/assessments/<id>`
+
+Returns 200 (OK) and the assessment or 404 if the prisoner assessment can't be found.
+500 for any other errors.
+
+e.g.
+
+Request:
+```
+curl http://localhost:5000/api/assessments/1
+```
+
+Response:
+```
+{
+    id: 123,
+    createdAt: '2017-07-28T11:54:23.576Z',
+    updatedAt: '2017-07-30T09:00:00.106Z',
+    nomisId: 'J1234LO',
+    forename: 'John',
+    surname: 'Lowe',
+    dateOfBirth: '14-07-1967',
+    outcome: 'Shared Cell',
+    riskAssessment: { ... },
+    healthAssessment: { ... },
+}
+```
 
 ### Monitoring: GET `/health`
 

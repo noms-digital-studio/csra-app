@@ -349,4 +349,57 @@ describe('GET /assessements/:id/health', () => {
       expect(res.body).to.eql({ status: 'ERROR', message: 'Terrible database error' });
     });
   });
+
+  describe('GET /assessements/:id', () => {
+    it('responds with status OK (200) and the assessment', () => {
+      const assessment = {
+        id: 123,
+        createdAt: '2017-07-28T11:54:23.576Z',
+        updatedAt: '2017-07-28T11:54:23.576Z',
+        nomisId: 'J1234LO',
+        forename: 'John',
+        surname: 'Lowe',
+        dateOfBirth: '14-07-1967',
+        outcome: 'Shared Cell',
+        riskAssessment: { someKey: 'some valid data' },
+        healthAssessment: { someKey: 'some valid data' },
+      };
+
+      fakePrisonerAssessmentsService.assessmentFor = sinon.stub().resolves(assessment);
+
+      return request(app)
+      .get('/:id')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .expect((res) => {
+        expect(res.body).to.eql(assessment);
+      });
+    });
+
+    it('responds with status NOT FOUND (404) and an error message when the assessment id cannot be found', () => {
+      const err = new Error('Assessment not found');
+      err.type = 'not-found';
+      fakePrisonerAssessmentsService.assessmentFor = sinon.stub().rejects(err);
+
+      return request(app)
+      .get('/123')
+      .expect(404)
+      .expect('Content-Type', /json/)
+      .expect((res) => {
+        expect(res.body).to.eql({ status: 'NOT FOUND', message: 'Assessment not found' });
+      });
+    });
+
+    it('responds with status OK (500) and an error message when the service is unable to fetch the data ', () => {
+      fakePrisonerAssessmentsService.assessmentFor = sinon.stub().rejects(new Error('Terrible database error'));
+
+      return request(app)
+      .get('/123')
+      .expect(500)
+      .expect('Content-Type', /json/)
+      .expect((res) => {
+        expect(res.body).to.eql({ status: 'ERROR', message: 'Terrible database error' });
+      });
+    });
+  });
 });

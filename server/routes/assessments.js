@@ -126,5 +126,17 @@ export default function createRouter(prisonerAssessmentsService) {
     });
   });
 
+  router.get('/:id', (req, res) => {
+    const id = req.params.id;
+
+    prisonerAssessmentsService.assessmentFor(id)
+    .then((result) => {
+      res.status(200);
+      res.json(result);
+    }).catch((err) => {
+      handleErrors(err, res);
+    });
+  });
+
   return router;
 }
