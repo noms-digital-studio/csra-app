@@ -3,8 +3,9 @@ import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 import { replace } from 'react-router-redux';
 import path from 'ramda/src/path';
+import not from 'ramda/src/not';
 
-import { completeRiskAssessmentFor, clearAnswers } from '../actions';
+import { completeRiskAssessmentFor } from '../actions';
 import { capitalize } from '../utils';
 import {
   calculateRiskFor as viperScoreFor,
@@ -23,10 +24,8 @@ const RiskAssessmentSummary = ({
   title,
   prisoner,
   onSubmit,
-  onClear,
   outcome,
   healthcareAssessmentComplete,
-  cellRecommendation,
   viperScore,
   answers,
   questions,
@@ -40,7 +39,7 @@ const RiskAssessmentSummary = ({
           onSubmit({
             healthcareAssessmentComplete,
             outcome,
-            nomisId: prisoner.nomisId,
+            assessmentId: prisoner.id,
             viperScore,
             answers,
             questions,
@@ -127,14 +126,12 @@ const RiskAssessmentSummary = ({
 
 RiskAssessmentSummary.propTypes = {
   title: PropTypes.string,
-  cellRecommendation: PropTypes.string,
   outcome: PropTypes.shape({
     recommendation: PropTypes.string,
     rating: PropTypes.string,
     reasons: PropTypes.arrayOf(PropTypes.string),
   }),
   onSubmit: PropTypes.func,
-  onClear: PropTypes.func,
   prisoner: PropTypes.shape({
     forename: PropTypes.string,
     dateOfBirth: PropTypes.string,
@@ -154,7 +151,6 @@ RiskAssessmentSummary.defaultProps = {
   },
   prisoner: {},
   onSubmit: () => { },
-  onClear: {},
 };
 
 const findViperScore = (nomisId, viperScores) =>
@@ -186,49 +182,49 @@ const mapStateToProps = (state) => {
       state.answers.riskAssessment,
     ),
     questions: state.questions.riskAssessment,
-    healthcareAssessmentComplete: !!state.healthcareStatus.completed.find(
-      assessment => assessment.nomisId === state.offender.selected.nomisId,
-    ),
+    healthcareAssessmentComplete: state.offender.selected.healthAssessmentCompleted,
   });
 };
 
 const mapActionsToProps = dispatch => ({
-  onClear: (nomisId) => {
-    dispatch(clearAnswers(nomisId));
-    dispatch(replace(`${routes.RISK_ASSESSMENT}/introduction`));
-  },
   onSubmit: ({
     healthcareAssessmentComplete,
     outcome,
-    nomisId,
     viperScore,
     questions,
     answers,
+    assessmentId,
   }) => {
     postAssessmentToBackend(
-      'risk',
       {
-        nomisId,
+        assessmentId,
+        assessmentType: 'risk',
         outcome: outcome.recommendation,
         viperScore,
         questions,
         answers,
       },
-      (assessmentId) => {
+      (response) => {
+        if (not(response)) {
+          return dispatch(replace(routes.ERROR_PAGE));
+        }
+
         dispatch(
           completeRiskAssessmentFor({
             rating: outcome.rating,
             recommendation: outcome.recommendation,
-            nomisId,
             assessmentId,
             reasons: outcome.reasons,
           }),
         );
+
         if (healthcareAssessmentComplete) {
           dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
         } else {
           dispatch(replace(routes.DASHBOARD));
         }
+
+        return true;
       },
     );
   },

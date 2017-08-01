@@ -10,10 +10,12 @@ import FullAssessmentOutcome
   from '../../../../client/javascript/pages/FullAssessmentOutcome';
 
 const prisonerDetails = {
+  id: 1,
   forename: 'foo-name',
   surname: 'foo-surname',
   dateOfBirth: '1-1-2010',
   nomisId: 'foo-nomisId',
+  outcome: null,
 };
 
 const riskAssessmentAnswers = {
@@ -74,15 +76,14 @@ const state = {
     riskAssessment: riskAssessmentQuestions,
   },
   riskAssessmentStatus: {
-    completed: [{ recommendation: 'shared cell', nomisId: 'foo-nomisId', rating: 'standard', reasons: [] }],
+    completed: [{ recommendation: 'shared cell', assessmentId: 1, rating: 'standard', reasons: [] }],
   },
   healthcareStatus: {
-    completed: [{ recommendation: 'shared cell', nomisId: 'foo-nomisId' }],
+    completed: [{ recommendation: 'shared cell', assessmentId: 1 }],
   },
   offender: {
     selected: prisonerDetails,
   },
-  assessmentOutcomes: {},
 };
 
 describe('<FullAssessmentOutcome', () => {
@@ -118,7 +119,7 @@ describe('<FullAssessmentOutcome', () => {
         completed: [
           {
             recommendation: 'shared cell with conditions',
-            nomisId: 'foo-nomisId',
+            assessmentId: 1,
             reasons: ['foo-reason', 'bar-reason'],
           },
         ],
@@ -213,29 +214,12 @@ describe('<FullAssessmentOutcome', () => {
     ).to.equal(true, 'Changed path to /full-assessment-complete');
   });
 
-  it('calls the storeOutcome action on submission', () => {
-    const store = fakeStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <FullAssessmentOutcome />
-      </Provider>,
-    );
-
-    wrapper.find('form').simulate('submit');
-
-    expect(
-      store.dispatch.calledWithMatch({
-        type: 'SAVE_OUTCOME',
-        payload: { outcome: 'shared cell', nomisId: 'foo-nomisId' },
-      }),
-    ).to.equal(true, 'Changed path to /full-assessment-complete');
-  });
-
   context('when the assessment has already been completed', () => {
     const stateWithOutcomes = {
       ...state,
-      assessmentOutcomes: { 'foo-nomisId': 'shared cell' },
+      offender: {
+        selected: { ...prisonerDetails, outcome: 'Foo outcome' },
+      },
     };
 
     it('does not allow users to complete the assessment again', () => {

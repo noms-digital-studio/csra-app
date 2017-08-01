@@ -10,10 +10,12 @@ import HealthcareSummary
   from '../../../../client/javascript/pages/HealthcareSummary';
 
 const prisonerDetails = {
+  id: 1,
   forename: 'foo-name',
   surname: 'foo-surname',
   dateOfBirth: '1-1-2010',
   nomisId: 'foo-nomisId',
+  riskAssessmentCompleted: false,
 };
 
 const healthcareAnswers = {
@@ -65,19 +67,16 @@ const storeData = {
       },
     ],
   },
-  riskAssessmentStatus: {
-    completed: [],
-  },
 };
 
 describe('<HealthcareSummary />', () => {
-  let postStub;
+  let putStub;
   before(() => {
-    postStub = sinon.stub(xhr, 'post');
-    postStub.yields(null, { status: 200 }, { data: { id: 123 } });
+    putStub = sinon.stub(xhr, 'put');
+    putStub.yields(null, { status: 200 }, { foo: 'bar' });
   });
   after(() => {
-    postStub.restore();
+    putStub.restore();
   });
 
   context('Connected HealthcareSummary', () => {
@@ -251,7 +250,7 @@ describe('<HealthcareSummary />', () => {
       expect(
         store.dispatch.calledWithMatch({
           type: 'COMPLETE_HEALTH_ASSESSMENT',
-          payload: { nomisId: 'foo-nomisId', assessmentId: 123, recommendation: 'single cell' },
+          payload: { assessmentId: 1, recommendation: 'single cell' },
         }),
       ).to.equal(true, 'triggered complete assessment');
     });
@@ -260,8 +259,14 @@ describe('<HealthcareSummary />', () => {
   context('when the risk assessment is complete', () => {
     const storeDataCompleted = {
       ...storeData,
-      riskAssessmentStatus: {
-        completed: [{ nomisId: 'foo-nomisId' }],
+      offender: {
+        selected: { ...prisonerDetails, riskAssessmentCompleted: true },
+        viperScores: [
+          {
+            nomisId: 'foo-nomisId',
+            viperScore: 0.13,
+          },
+        ],
       },
     };
     const store = fakeStore(storeDataCompleted);

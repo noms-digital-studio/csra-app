@@ -4,6 +4,7 @@ import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 import { replace } from 'react-router-redux';
 import path from 'ramda/src/path';
+import not from 'ramda/src/not';
 
 import { capitalize, parseDate } from '../utils';
 
@@ -56,10 +57,10 @@ class HealthCareSummary extends Component {
               riskAssessmentComplete,
               prisoner: {
                 recommendation: riskText[answers.outcome.answer],
-                nomisId: prisoner.nomisId,
+                id: prisoner.id,
               },
               postData: {
-                nomisId: prisoner.nomisId,
+                assessmentId: prisoner.id,
                 outcome: riskText[answers.outcome.answer],
                 viperScore: viperScore.viperScore,
                 questions,
@@ -239,9 +240,7 @@ const mapStateToProps = (state, ownProps) => ({
   ...ownProps,
   prisoner: state.offender.selected,
   answers: path([state.answers.selectedPrisonerId], state.answers.healthcare),
-  riskAssessmentComplete: !!state.riskAssessmentStatus.completed.find(
-    assessment => assessment.nomisId === state.offender.selected.nomisId,
-  ),
+  riskAssessmentComplete: state.offender.selected.riskAssessmentCompleted,
   viperScore: findViperScore(
     state.offender.selected.nomisId,
     state.offender.viperScores,
@@ -251,11 +250,14 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapActionsToProps = dispatch => ({
   onSubmit: ({ prisoner, riskAssessmentComplete, postData }) => {
-    postAssessmentToBackend('healthcare', postData, (assessmentId) => {
+    postAssessmentToBackend({ assessmentId: prisoner.id, assessmentType: 'health', ...postData }, (response) => {
+      if (not(response)) {
+        return dispatch(replace(routes.ERROR_PAGE));
+      }
+
       dispatch(
         completeHealthAssessmentFor({
-          nomisId: prisoner.nomisId,
-          assessmentId,
+          assessmentId: prisoner.id,
           recommendation: postData.outcome,
         }),
       );
@@ -264,6 +266,8 @@ const mapActionsToProps = dispatch => ({
       } else {
         dispatch(replace(routes.DASHBOARD));
       }
+
+      return true;
     });
   },
   completeHealthAnswersFor: profile =>

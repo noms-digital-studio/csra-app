@@ -14,7 +14,6 @@ import {
   COMPLETE_RISK_ASSESSMENT,
   COMPLETE_HEALTH_ASSESSMENT,
   HEALTHCARE_ANSWERS_COMPLETE,
-  SAVE_OUTCOME,
 } from '../constants/actions';
 
 import riskAssessmentQuestions
@@ -78,26 +77,21 @@ export const saveHealthcareAssessmentAnswer = (key, value) => ({
 
 export const completeRiskAssessmentFor = ({
   recommendation,
-  nomisId,
   assessmentId,
   reasons,
   rating,
 }) => ({
   type: COMPLETE_RISK_ASSESSMENT,
-  payload: { recommendation, nomisId, assessmentId, reasons, rating },
+  payload: { recommendation, assessmentId, reasons, rating },
 });
 
-export const completeHealthAssessmentFor = ({ nomisId, assessmentId, recommendation }) => ({
+export const completeHealthAssessmentFor = ({ assessmentId, recommendation }) => ({
   type: COMPLETE_HEALTH_ASSESSMENT,
-  payload: { nomisId, assessmentId, recommendation },
+  payload: { assessmentId, recommendation },
 });
 
-export const completeHealthAnswersFor = ({ nomisId }) => ({
+export const completeHealthAnswersFor = ({ assessmentId }) => ({
   type: HEALTHCARE_ANSWERS_COMPLETE,
-  payload: { nomisId },
+  payload: { assessmentId },
 });
 
-export const storeOutcome = ({ nomisId, outcome }) => ({
-  type: SAVE_OUTCOME,
-  payload: { nomisId, outcome },
-});

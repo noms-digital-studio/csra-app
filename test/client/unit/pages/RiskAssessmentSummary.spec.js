@@ -11,10 +11,12 @@ import RiskAssessmentSummary
 import riskAssessmentQuestions from '../fixtures/riskAssessmentQuestions.json';
 
 const prisonerDetails = {
+  id: 1,
   forename: 'foo-name',
   surname: 'foo-surname',
   dateOfBirth: '1-1-2010',
   nomisId: 'foo-nomisId',
+  healthAssessmentCompleted: false,
 };
 
 const riskAssessmentAnswers = {
@@ -70,13 +72,13 @@ const state = {
 
 
 describe('<RiskAssessmentSummary />', () => {
-  let postStub;
+  let putStub;
   before(() => {
-    postStub = sinon.stub(xhr, 'post');
-    postStub.yields(null, { status: 200 }, { data: { id: 123 } });
+    putStub = sinon.stub(xhr, 'put');
+    putStub.yields(null, { status: 200 }, { foo: 'bar' });
   });
   after(() => {
-    postStub.restore();
+    putStub.restore();
   });
 
   context('Connected RiskAssessmentSummary', () => {
@@ -306,9 +308,9 @@ describe('<RiskAssessmentSummary />', () => {
           store.dispatch.calledWithMatch({
             type: 'COMPLETE_RISK_ASSESSMENT',
             payload: {
+              assessmentId: 1,
               recommendation: 'shared cell',
-              nomisId: 'foo-nomisId',
-              assessmentId: 123,
+              reasons: [],
             },
           }),
         ).to.equal(true, 'triggered complete assessment');
@@ -336,6 +338,7 @@ describe('<RiskAssessmentSummary />', () => {
             <RiskAssessmentSummary />
           </Provider>,
         );
+
         wrapper.find('form').simulate('submit');
 
         expect(
@@ -345,8 +348,7 @@ describe('<RiskAssessmentSummary />', () => {
               rating: 'standard',
               recommendation: 'shared cell with conditions',
               reasons: ['Has indicated gang affiliation'],
-              nomisId: 'foo-nomisId',
-              assessmentId: 123,
+              assessmentId: 1,
             },
           }),
         ).to.equal(true, 'triggered complete assessment');
@@ -354,7 +356,7 @@ describe('<RiskAssessmentSummary />', () => {
     });
 
 
-    context('when the health care assessment is incomplete', () => {
+    context('when the healthcare assessment is incomplete', () => {
       const store = fakeStore(state);
 
       it('displays a message informing the user that they need to complete the healthcare assessment', () => {
@@ -394,8 +396,14 @@ describe('<RiskAssessmentSummary />', () => {
     context('when the healthcare assessment is complete', () => {
       const storeDataCompleted = {
         ...state,
-        healthcareStatus: {
-          completed: [{ nomisId: 'foo-nomisId' }],
+        offender: {
+          selected: { ...prisonerDetails, healthAssessmentCompleted: true },
+          viperScores: [
+            {
+              nomisId: 'foo-nomisId',
+              viperScore: 0.10,
+            },
+          ],
         },
       };
       const store = fakeStore(storeDataCompleted);

@@ -7,7 +7,6 @@ import isEmpty from 'ramda/src/isEmpty';
 
 import { cellAssignment } from '../services';
 import { capitalize } from '../utils';
-import { storeOutcome } from '../actions';
 
 import PrisonerProfile from '../components/PrisonerProfile';
 import RiskAssessmentSummaryTable
@@ -97,7 +96,7 @@ const FullAssessmentOutcome = ({
           : <form
             onSubmit={(e) => {
               e.preventDefault();
-              onSubmit({ nomisId: prisoner.nomisId, outcome: finalOutcome });
+              onSubmit({ assessmentId: prisoner.id, outcome: finalOutcome });
             }}
           >
             <div className="u-clear-fix u-margin-bottom-charlie">
@@ -124,6 +123,7 @@ const FullAssessmentOutcome = ({
 FullAssessmentOutcome.propTypes = {
   title: PropTypes.string,
   prisoner: PropTypes.shape({
+    id: PropTypes.number,
     forename: PropTypes.string,
     dateOfBirth: PropTypes.string,
     nomisId: PropTypes.string,
@@ -147,26 +147,24 @@ FullAssessmentOutcome.defaultProps = {
   riskAssessmentOutcome: {},
   healthcareOutcome: {},
   onReturnHome: () => {},
+  alreadyCompleted: false,
 };
 
 const mapStateToProps = (state, ownProps) => ({
   ...ownProps,
   prisoner: state.offender.selected,
   riskAssessmentOutcome: state.riskAssessmentStatus.completed.find(
-    item => item.nomisId === state.offender.selected.nomisId,
+    item => item.assessmentId === state.offender.selected.id,
   ),
   healthcareOutcome: state.healthcareStatus.completed.find(
-    item => item.nomisId === state.offender.selected.nomisId,
+    item => item.assessmentId === state.offender.selected.id,
   ),
-  alreadyCompleted: Boolean(
-    state.assessmentOutcomes[state.offender.selected.nomisId],
-  ),
+  alreadyCompleted: !!state.offender.selected.outcome,
 });
 
 const mapActionsToProps = dispatch => ({
   onReturnHome: () => dispatch(replace(routes.DASHBOARD)),
   onSubmit: (outcome) => {
-    dispatch(storeOutcome(outcome));
     dispatch(replace(routes.FULL_ASSESSMENT_COMPLETE));
   },
 });

@@ -14,7 +14,7 @@ const extractReasons = (questions, answers) => {
       not(isEmpty(question.sharedCellPredicate.reasons))
     ) {
       const reason = {
-        question_id: question.section,
+        questionId: question.section,
         reason: question.sharedCellPredicate.reasons.join('\n'),
       };
 
@@ -57,7 +57,7 @@ const buildQuestionAnswers = (questions, answers) =>
     return {
       ...acc,
       [sectionKey]: {
-        question_id: question.section,
+        questionId: question.section,
         question: question.title,
         answer,
         ...comments,
@@ -65,22 +65,10 @@ const buildQuestionAnswers = (questions, answers) =>
     };
   }, {});
 
-const buildViperScore = (viperScore) => {
-  if (viperScore) {
-    return viperScore;
-  }
-
-  return -1;
-};
-
-const buildAssessmentRequest = (
-  assessmentType,
-  { nomisId, outcome, viperScore, questions, answers },
+const buildAssessmentRequest = ({ outcome, viperScore, questions, answers },
 ) => ({
-  nomisId,
   outcome,
-  type: assessmentType,
-  viperScore: buildViperScore(viperScore),
+  viperScore,
   questions: buildQuestionAnswers(questions, answers),
   reasons: extractReasons(questions, answers),
 });

@@ -14,7 +14,6 @@ import {
   completeRiskAssessmentFor,
   completeHealthAssessmentFor,
   completeHealthAnswersFor,
-  storeOutcome,
 } from '../../../../client/javascript/actions';
 
 import riskAssessmentQuestions
@@ -92,6 +91,7 @@ describe('Actions', () => {
   describe('#selectOffender', () => {
     it('returns a SELECT_OFFENDER action', () => {
       const offender = {
+        assessmentId: 1,
         nomisId: 'foo',
         surname: 'foobar',
         forename: 'foobaz',
@@ -182,10 +182,9 @@ describe('Actions', () => {
   describe('#completeRiskAssessmentFor', () => {
     it('returns a COMPLETE_RISK_ASSESSMENT action', () => {
       const outcome = {
-        nomisId: 'foo-id',
+        assessmentId: 1,
         recommendation: 'foo-outccome',
         reasons: ['foo-reason'],
-        assessmentId: 'foo-nomisId',
         rating: 'foo-rating',
       };
       expect(completeRiskAssessmentFor(outcome)).to.eql({
@@ -198,9 +197,8 @@ describe('Actions', () => {
   describe('#completeHealthAssessmentFor', () => {
     it('returns a COMPLETE_HEALTH_ASSESSMENT action', () => {
       const outcome = {
-        nomisId: 'foo-id',
+        assessmentId: 1,
         recommendation: 'foo-recommendation',
-        assessmentId: 'foo-nomisId',
       };
       expect(completeHealthAssessmentFor(outcome)).to.eql({
         type: 'COMPLETE_HEALTH_ASSESSMENT',
@@ -212,24 +210,11 @@ describe('Actions', () => {
   describe('#completeHealthAnswersFor', () => {
     it('returns a HEALTHCARE_ANSWERS_COMPLETE action', () => {
       const offender = {
-        nomisId: 'foo-nomisId',
+        assessmentId: 1,
       };
       expect(completeHealthAnswersFor(offender)).to.eql({
         type: 'HEALTHCARE_ANSWERS_COMPLETE',
         payload: offender,
-      });
-    });
-  });
-
-  describe('#storeOutcome', () => {
-    it('returns a SAVE_OUTCOME action', () => {
-      const outcome = {
-        nomisId: 'foo-nomisId',
-        outcome: 'foo-outcome',
-      };
-      expect(storeOutcome(outcome)).to.eql({
-        type: 'SAVE_OUTCOME',
-        payload: outcome,
       });
     });
   });
