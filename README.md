@@ -105,7 +105,7 @@ If these are installed then all you need to run is the following:
 
 ## Endpoints
 
-### Viper Rating: GET `/api/viper/{nomisId}`
+### Viper Rating: GET `/api/viper/<nomisId>`
 
 Returns the Viper rating and status 200 for a known Nomis ID or 404 when not found.
 
@@ -304,7 +304,7 @@ Response:
 }
 ```
 
-### Save assessment outcome: PUT /api/assessments/<id>/outcome
+### Save assessment outcome: `PUT /api/assessments/<id>/outcome`
 
 Returns 200 to indicate the data was saved, 400 if the request body is invalid or 500 if the data cannot be saved.
 
