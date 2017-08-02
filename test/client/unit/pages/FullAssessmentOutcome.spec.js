@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
+import xhr from 'xhr';
 
 import { fakeStore } from '../test-helpers';
 
@@ -64,12 +65,12 @@ const healthcareAnswers = {
 
 const state = {
   answers: {
-    selectedPrisonerId: 'foo-nomisId',
+    selectedPrisonerId: 'foo-nomis-id',
     riskAssessment: {
-      'foo-nomisId': riskAssessmentAnswers,
+      'foo-nomis-id': riskAssessmentAnswers,
     },
     healthcare: {
-      'foo-nomisId': healthcareAnswers,
+      'foo-nomis-id': healthcareAnswers,
     },
   },
   questions: {
@@ -108,8 +109,13 @@ describe('<FullAssessmentOutcome', () => {
 
     expect(prisonerProfile).to.contain('Foo-name');
     expect(prisonerProfile).to.contain('foo-surname');
+<<<<<<< HEAD
     expect(prisonerProfile).to.contain('01 January 2010');
     expect(prisonerProfile).to.contain('foo-nomisId');
+=======
+    expect(prisonerProfile).to.contain('1 January 2010');
+    expect(prisonerProfile).to.contain('foo-nomis-id');
+>>>>>>> CSRA-547: Integrate with PUT asssessments/<id>/outcome endpoint
   });
 
   it('displays the reasons if outcome is shared with conditions', () => {
@@ -197,12 +203,14 @@ describe('<FullAssessmentOutcome', () => {
 
   it('navigates to the full assessment complete page on form submission', () => {
     const store = fakeStore(state);
-
+    const putStub = sinon.stub(xhr, 'put');
     const wrapper = mount(
       <Provider store={store}>
         <FullAssessmentOutcome />
       </Provider>,
     );
+
+    putStub.yields(null, { statusCode: 200 });
 
     wrapper.find('form').simulate('submit');
 
@@ -212,6 +220,31 @@ describe('<FullAssessmentOutcome', () => {
         payload: { method: 'replace', args: ['/full-assessment-complete'] },
       }),
     ).to.equal(true, 'Changed path to /full-assessment-complete');
+
+    putStub.restore();
+  });
+
+  it('navigates to the error page on form submission when there is an error', () => {
+    const store = fakeStore(state);
+    const putStub = sinon.stub(xhr, 'put');
+    const wrapper = mount(
+      <Provider store={store}>
+        <FullAssessmentOutcome />
+      </Provider>,
+    );
+
+    putStub.yields(null, { statusCode: 500 });
+
+    wrapper.find('form').simulate('submit');
+
+    expect(
+      store.dispatch.calledWithMatch({
+        type: '@@router/CALL_HISTORY_METHOD',
+        payload: { method: 'replace', args: ['/error'] },
+      }),
+    ).to.equal(true, 'Changed path to /error');
+
+    putStub.restore();
   });
 
   context('when the assessment has already been completed', () => {

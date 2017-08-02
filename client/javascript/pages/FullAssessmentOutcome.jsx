@@ -6,6 +6,8 @@ import not from 'ramda/src/not';
 import isEmpty from 'ramda/src/isEmpty';
 
 import { cellAssignment } from '../services';
+import saveAssessmentsOutcome from '../services/saveAssessmentsOutcome';
+
 import { capitalize } from '../utils';
 
 import PrisonerProfile from '../components/PrisonerProfile';
@@ -164,8 +166,14 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapActionsToProps = dispatch => ({
   onReturnHome: () => dispatch(replace(routes.DASHBOARD)),
-  onSubmit: (outcome) => {
-    dispatch(replace(routes.FULL_ASSESSMENT_COMPLETE));
+  onSubmit: ({ outcome, assessmentId }) => {
+    saveAssessmentsOutcome({ outcome, assessmentId }, (response) => {
+      if (not(response)) {
+        return dispatch(replace(routes.ERROR_PAGE));
+      }
+
+      return dispatch(replace(routes.FULL_ASSESSMENT_COMPLETE));
+    });
   },
 });
 

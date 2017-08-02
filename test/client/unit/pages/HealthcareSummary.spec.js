@@ -70,15 +70,6 @@ const storeData = {
 };
 
 describe('<HealthcareSummary />', () => {
-  let putStub;
-  before(() => {
-    putStub = sinon.stub(xhr, 'put');
-    putStub.yields(null, { status: 200 }, { foo: 'bar' });
-  });
-  after(() => {
-    putStub.restore();
-  });
-
   context('Connected HealthcareSummary', () => {
     it('accepts and correctly renders a prisoner`s details', () => {
       const store = fakeStore(storeData);
@@ -222,11 +213,14 @@ describe('<HealthcareSummary />', () => {
     });
 
     it('on submission it navigates to the prisoner list', () => {
+      const putStub = sinon.stub(xhr, 'put');
       const wrapper = mount(
         <Provider store={store}>
           <HealthcareSummary />
         </Provider>,
       );
+
+      putStub.yields(null, { statusCode: 200 });
 
       wrapper.find('form').simulate('submit');
 
@@ -236,14 +230,41 @@ describe('<HealthcareSummary />', () => {
           payload: { method: 'replace', args: ['/dashboard'] },
         }),
       ).to.equal(true, 'Changed path to /dashboard');
+
+      putStub.restore();
     });
 
-    it('marks the assessment as complete on submission', () => {
+    it('on submission it navigates to the error page when there is a network error', () => {
+      const putStub = sinon.stub(xhr, 'put');
       const wrapper = mount(
         <Provider store={store}>
           <HealthcareSummary />
         </Provider>,
       );
+
+      putStub.yields(null, { statusCode: 500 });
+
+      wrapper.find('form').simulate('submit');
+
+      expect(
+        store.dispatch.calledWithMatch({
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: { method: 'replace', args: ['/error'] },
+        }),
+      ).to.equal(true, 'Changed path to /error');
+
+      putStub.restore();
+    });
+
+    it('marks the assessment as complete on submission', () => {
+      const putStub = sinon.stub(xhr, 'put');
+      const wrapper = mount(
+        <Provider store={store}>
+          <HealthcareSummary />
+        </Provider>,
+      );
+
+      putStub.yields(null, { statusCode: 200 });
 
       wrapper.find('form').simulate('submit');
 
@@ -253,6 +274,8 @@ describe('<HealthcareSummary />', () => {
           payload: { assessmentId: 1, recommendation: 'single cell' },
         }),
       ).to.equal(true, 'triggered complete assessment');
+
+      putStub.restore();
     });
   });
 
@@ -284,12 +307,14 @@ describe('<HealthcareSummary />', () => {
     });
 
     it('on submission it navigates to the full assessment page', () => {
+      const putStub = sinon.stub(xhr, 'put');
       const wrapper = mount(
         <Provider store={store}>
           <HealthcareSummary />
         </Provider>,
       );
 
+      putStub.yields(null, { statusCode: 200 });
       wrapper.find('form').simulate('submit');
 
       expect(
@@ -298,6 +323,8 @@ describe('<HealthcareSummary />', () => {
           payload: { method: 'replace', args: ['/full-assessment-outcome'] },
         }),
       ).to.equal(true, 'Changed path to /full-assessment-outcome');
+
+      putStub.restore();
     });
   });
 });

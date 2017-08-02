@@ -71,16 +71,7 @@ const state = {
 };
 
 
-describe('<RiskAssessmentSummary />', () => {
-  let putStub;
-  before(() => {
-    putStub = sinon.stub(xhr, 'put');
-    putStub.yields(null, { status: 200 }, { foo: 'bar' });
-  });
-  after(() => {
-    putStub.restore();
-  });
-
+describe.only('<RiskAssessmentSummary />', () => {
   context('Connected RiskAssessmentSummary', () => {
     context('when the assessment outcome is low', () => {
       it('renders the prisoners profile details', () => {
@@ -301,7 +292,9 @@ describe('<RiskAssessmentSummary />', () => {
             <RiskAssessmentSummary />
           </Provider>,
         );
+        const putStub = sinon.stub(xhr, 'put');
 
+        putStub.yields(null, { statusCode: 200 }, { foo: 'bar' });
         wrapper.find('form').simulate('submit');
 
         expect(
@@ -314,6 +307,8 @@ describe('<RiskAssessmentSummary />', () => {
             },
           }),
         ).to.equal(true, 'triggered complete assessment');
+
+        putStub.restore();
       });
 
       it('marks the assessment complete with reasons upon submission', () => {
@@ -331,13 +326,15 @@ describe('<RiskAssessmentSummary />', () => {
             },
           },
         };
-
         const store = fakeStore(stateWithReason);
         const wrapper = mount(
           <Provider store={store}>
             <RiskAssessmentSummary />
           </Provider>,
         );
+        const putStub = sinon.stub(xhr, 'put');
+
+        putStub.yields(null, { statusCode: 200 }, { foo: 'bar' });
 
         wrapper.find('form').simulate('submit');
 
@@ -352,6 +349,8 @@ describe('<RiskAssessmentSummary />', () => {
             },
           }),
         ).to.equal(true, 'triggered complete assessment');
+
+        putStub.restore();
       });
     });
 
@@ -382,6 +381,10 @@ describe('<RiskAssessmentSummary />', () => {
           </Provider>,
         );
 
+        const putStub = sinon.stub(xhr, 'put');
+
+        putStub.yields(null, { statusCode: 200 }, { foo: 'bar' });
+
         wrapper.find('form').simulate('submit');
 
         expect(
@@ -390,6 +393,30 @@ describe('<RiskAssessmentSummary />', () => {
             payload: { method: 'replace', args: ['/dashboard'] },
           }),
         ).to.equal(true, 'Changed path to /dashboard');
+
+        putStub.restore();
+      });
+
+      it('navigates to the error page on form submission when there is an error', () => {
+        const wrapper = mount(
+          <Provider store={store}>
+            <RiskAssessmentSummary />
+          </Provider>,
+        );
+        const putStub = sinon.stub(xhr, 'put');
+
+        putStub.yields(null, { statusCode: 500 });
+
+        wrapper.find('form').simulate('submit');
+
+        expect(
+          store.dispatch.calledWithMatch({
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: { method: 'replace', args: ['/error'] },
+          }),
+        ).to.equal(true, 'Changed path to /error');
+
+        putStub.restore();
       });
     });
 
@@ -426,6 +453,9 @@ describe('<RiskAssessmentSummary />', () => {
             <RiskAssessmentSummary />
           </Provider>,
         );
+        const putStub = sinon.stub(xhr, 'put');
+
+        putStub.yields(null, { statusCode: 200 });
 
         wrapper.find('form').simulate('submit');
 
@@ -435,6 +465,8 @@ describe('<RiskAssessmentSummary />', () => {
             payload: { method: 'replace', args: ['/full-assessment-outcome'] },
           }),
         ).to.equal(true, 'Changed path to /full-assessment-outcome');
+
+        putStub.restore();
       });
     });
   });
