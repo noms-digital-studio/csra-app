@@ -1,4 +1,5 @@
 import Joi from 'joi';
+
 import { databaseLogger, prisonerAssessmentsServiceLogger as log } from './logger';
 
 function save(db, appInfo, rawAssessment) {
@@ -70,6 +71,7 @@ function updateAssessmentWithRiskAssessment(db, id, riskAssessment) {
     .from('prisoner_assessments')
     .where('id', '=', id)
     .update({
+      updated_at: new Date().toISOString(),
       risk_assessment: JSON.stringify(riskAssessment),
     }).then((result) => {
       if (result[0] === 0) {
@@ -160,6 +162,7 @@ function updateAssessmentWithHealthAssessment(db, id, healthAssessment) {
     .from('prisoner_assessments')
     .where('id', '=', id)
     .update({
+      updated_at: new Date().toISOString(),
       health_assessment: JSON.stringify(healthAssessment),
     }).then((result) => {
       if (result[0] === 0) {
@@ -296,6 +299,7 @@ function saveOutcome(db, id, rawRequest) {
   .from('prisoner_assessments')
   .where('id', '=', id)
   .update({
+    updated_at: new Date().toISOString(),
     outcome: request.outcome,
   }).then((result) => {
     if (result[0] === 0) {

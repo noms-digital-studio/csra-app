@@ -246,8 +246,9 @@ describe('prisoner assessment service', () => {
         expect(fakeDB.where.lastCall.args[0]).to.eql('id');
         expect(fakeDB.where.lastCall.args[1]).to.eql('=');
         expect(fakeDB.where.lastCall.args[2]).to.eql(123);
-        expect(fakeDB.update.lastCall.args[0]).to
-          .eql({ risk_assessment: JSON.stringify(validRiskAssessment) });
+        expect(fakeDB.update.lastCall.args[0].risk_assessment).to
+          .eql(JSON.stringify(validRiskAssessment));
+        expect(fakeDB.update.lastCall.args[0].updated_at).is.not.equal(undefined);
         expect(result).to.eql([1]);
       });
     });
@@ -477,8 +478,9 @@ describe('prisoner assessment service', () => {
         expect(fakeDB.where.lastCall.args[0]).to.eql('id');
         expect(fakeDB.where.lastCall.args[1]).to.eql('=');
         expect(fakeDB.where.lastCall.args[2]).to.eql(123);
-        expect(fakeDB.update.lastCall.args[0]).to
-        .eql({ health_assessment: JSON.stringify(validHealthAssessment) });
+        expect(fakeDB.update.lastCall.args[0].health_assessment).to
+        .eql(JSON.stringify(validHealthAssessment));
+        expect(fakeDB.update.lastCall.args[0].updated_at).is.not.equal(undefined);
         expect(result).to.eql([1]);
       });
     });
@@ -758,8 +760,9 @@ describe('prisoner assessment service', () => {
         expect(fakeDB.where.lastCall.args[0]).to.eql('id');
         expect(fakeDB.where.lastCall.args[1]).to.eql('=');
         expect(fakeDB.where.lastCall.args[2]).to.eql(123);
-        expect(fakeDB.update.lastCall.args[0]).to
-        .eql({ outcome: 'single cell' });
+        expect(fakeDB.update.lastCall.args[0].outcome).to
+        .eql('single cell');
+        expect(fakeDB.update.lastCall.args[0].updated_at).is.not.equal(undefined);
         expect(result).to.eql([1]);
       });
     });
