@@ -9,7 +9,7 @@ function save(db, appInfo, rawAssessment) {
     nomisId: Joi.string().max(10).optional(),
     forename: Joi.string().max(100),
     surname: Joi.string().max(100),
-    dateOfBirth: Joi.string().max(20),
+    dateOfBirth: Joi.date().timestamp('unix'),
   });
 
   const validated = Joi.validate(rawAssessment, schema, {

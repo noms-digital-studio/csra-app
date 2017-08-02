@@ -5,7 +5,7 @@ exports.up = knex =>
     table.string('nomis_id', 10);
     table.string('forename', 100).notNullable();
     table.string('surname', 100).notNullable();
-    table.string('date_of_birth', 20).notNullable();
+    table.dateTime('date_of_birth').notNullable();
     table.string('outcome', 50);
     table.text('risk_assessment');
     table.text('health_assessment');

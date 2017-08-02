@@ -5,7 +5,7 @@ describe('prisoner assessment service', () => {
     nomisId: 'J1234LO',
     forename: 'John',
     surname: 'Lowe',
-    dateOfBirth: '31 December 1988',
+    dateOfBirth: 599529600,
   };
 
   const validRiskAssessment = {
@@ -92,7 +92,7 @@ describe('prisoner assessment service', () => {
       it('sets nomisId from request', () => expect(row.nomis_id).to.equal('J1234LO'));
       it('sets forename from request', () => expect(row.forename).to.equal('John'));
       it('sets suname from request', () => expect(row.surname).to.equal('Lowe'));
-      it('sets dob from request', () => expect(row.date_of_birth).to.equal('31 December 1988'));
+      it('sets dob from request', () => expect(row.date_of_birth.toString()).to.equal('Sat Dec 31 1988 00:00:00 GMT+0000 (GMT)'));
       it('sets questions_hash from app-info', () => expect(row.questions_hash).to.equal('{ "risk": "foo", "healthcare": "bar" }'));
       it('sets git_version from app-info', () => expect(row.git_version).to.equal('gifref'));
       it('sets git_date from app-info', () => expect(row.git_date).to.eql(new Date('2017-06-02T11:15:00')));
@@ -143,7 +143,7 @@ describe('prisoner assessment service', () => {
       doesNotAllow({ surname: undefined }, 'missing "surname"');
       doesNotAllow({ surname: new Array(101 + 1).join('A') });
 
-      allows({ dateOfBirth: '20 December 1978' });
+      allows({ dateOfBirth: 599529600 });
       doesNotAllow({ dateOfBirth: undefined }, 'missing "surname"');
       doesNotAllow({ dateOfBirth: new Array(21 + 1).join('A') });
     });
@@ -163,7 +163,7 @@ describe('prisoner assessment service', () => {
           nomis_id: 'J1234LO',
           forename: 'John',
           surname: 'Lowe',
-          date_of_birth: '14-07-1967',
+          date_of_birth: -77932800,
           outcome: null,
           risk_assessment: '{"data": "value"}',
           health_assessment: null,
@@ -173,7 +173,7 @@ describe('prisoner assessment service', () => {
           nomis_id: 'R1234MO',
           forename: 'Richard',
           surname: 'Moyen',
-          date_of_birth: '31-12-1988',
+          date_of_birth: 599529600,
           outcome: 'Shared Cell',
           risk_assessment: '{"data": "value"}',
           health_assessment: '{"data": "value"}',
@@ -187,7 +187,7 @@ describe('prisoner assessment service', () => {
           nomisId: 'J1234LO',
           forename: 'John',
           surname: 'Lowe',
-          dateOfBirth: '14-07-1967',
+          dateOfBirth: -77932800,
           outcome: null,
           riskAssessmentCompleted: true,
           healthAssessmentCompleted: false,
@@ -197,7 +197,7 @@ describe('prisoner assessment service', () => {
           nomisId: 'R1234MO',
           forename: 'Richard',
           surname: 'Moyen',
-          dateOfBirth: '31-12-1988',
+          dateOfBirth: 599529600,
           outcome: 'Shared Cell',
           riskAssessmentCompleted: true,
           healthAssessmentCompleted: true,
@@ -685,7 +685,7 @@ describe('prisoner assessment service', () => {
         nomis_id: 'J1234LO',
         forename: 'John',
         surname: 'Lowe',
-        date_of_birth: '14-07-1967',
+        date_of_birth: -77932800,
         outcome: 'Shared Cell',
         risk_assessment: { someKey: 'some valid data' },
         health_assessment: { someKey: 'some valid data' },
@@ -706,7 +706,7 @@ describe('prisoner assessment service', () => {
           nomisId: 'J1234LO',
           forename: 'John',
           surname: 'Lowe',
-          dateOfBirth: '14-07-1967',
+          dateOfBirth: -77932800,
           outcome: 'Shared Cell',
           riskAssessment: { someKey: 'some valid data' },
           healthAssessment: { someKey: 'some valid data' },
