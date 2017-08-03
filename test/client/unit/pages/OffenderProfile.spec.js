@@ -10,7 +10,7 @@ import ConnectedOffenderProfile
 const selected = {
   forename: 'forename',
   surname: 'surname',
-  dateOfBirth: '17-Nov-1999',
+  dateOfBirth: '1999-11-17T00:00:00',
   nomisId: 'foo-nomisId',
 };
 
@@ -58,7 +58,7 @@ describe('<OffenderProfile />', () => {
         .text();
       expect(pageText).to.contain('forename');
       expect(pageText).to.contain('surname');
-      expect(pageText).to.contain('17-Nov-1999');
+      expect(pageText).to.contain('17 November 1999');
       expect(pageText).to.contain('foo-nomisId');
     });
   });

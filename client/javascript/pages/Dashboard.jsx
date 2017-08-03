@@ -6,9 +6,8 @@ import { Link } from 'react-router';
 import isEmpty from 'ramda/src/isEmpty';
 
 import { selectOffender, getOffenderAssessments } from '../actions';
-import { parseDate, capitalize, extractDateFromString } from '../utils';
+import { parseDate, capitalize, extractDateFromUTCString } from '../utils';
 import getAssessments from '../services/getAssessments';
-
 
 import routes from '../constants/routes';
 
@@ -30,7 +29,7 @@ class Dashboard extends Component {
         </td>
         <td>{profile.forename} {profile.surname}</td>
         <td>{profile.nomisId}</td>
-        <td>{extractDateFromString(profile.dateOfBirth)}</td>
+        <td>{extractDateFromUTCString(profile.dateOfBirth)}</td>
         <td
           data-risk-assessment-complete={profile.riskAssessmentCompleted}
         >

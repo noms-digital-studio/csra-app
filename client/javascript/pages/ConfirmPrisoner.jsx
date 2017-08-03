@@ -11,12 +11,14 @@ import { addViperScore, confirmPrisoner } from '../actions';
 import { extractDateFromString } from '../utils';
 
 
-const standardizePrisoner = prisonerData => ({
-  nomisId: prisonerData.nomisId,
-  surname: prisonerData.surname,
-  forename: prisonerData.forename,
-  dateOfBirth: `${prisonerData['dob-day']}-${prisonerData['dob-month']}-${prisonerData['dob-year']}`,
-});
+const standardizePrisoner = (prisonerData) => {
+  return {
+    nomisId: prisonerData.nomisId,
+    surname: prisonerData.surname,
+    forename: prisonerData.forename,
+    dateOfBirth: Date.UTC(prisonerData['dob-year'], prisonerData['dob-month'] - 1, prisonerData['dob-day']) / 1000,
+  };
+};
 
 const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
   <DocumentTitle title={title}>
@@ -35,14 +37,14 @@ const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
             <span className="heading-small">
               DOB:&nbsp;&nbsp;&nbsp;&nbsp;
             </span>
-            <span
-              data-element-id="prisoner-dob"
-            >{extractDateFromString(`${prisoner['dob-day']}-${prisoner['dob-month']}-${prisoner['dob-year']}`)}</span>
+            <span data-element-id="prisoner-dob">
+              {extractDateFromString(`${prisoner['dob-day']}-${prisoner['dob-month']}-${prisoner['dob-year']}`)}
+            </span>
           </p>
         </div>
         <div className="column-one-half">
           <p>
-            <span className="heading-small">NOMIS No:</span>
+            <span className="heading-small">NOMIS No: &nbsp;</span>
             <span data-element-id="nomisId">{prisoner.nomisId}</span>
           </p>
         </div>

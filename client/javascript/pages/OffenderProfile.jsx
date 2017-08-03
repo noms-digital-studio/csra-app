@@ -3,6 +3,7 @@ import DocumentTitle from 'react-document-title';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
+import { extractDateFromUTCString } from '../utils';
 
 import routes from '../constants/routes';
 
@@ -46,7 +47,7 @@ const OffenderProfile = ({
                   <span className="heading-small">
                     DOB:&nbsp;&nbsp;&nbsp;&nbsp;
                   </span>
-                  {dateOfBirth}
+                  {extractDateFromUTCString(dateOfBirth)}
                 </p>
               </div>
               <div>

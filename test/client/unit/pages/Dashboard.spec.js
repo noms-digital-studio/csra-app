@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import xhr from 'xhr';
 
 import { fakeStore } from '../test-helpers';
-import { extractDateFromString } from '../../../../client/javascript/utils';
+import { parseDate } from '../../../../client/javascript/utils';
 
 import ConnectedDashboard, {
   Dashboard,
@@ -16,7 +16,7 @@ const assessments = [
     nomisId: 'foo-id',
     surname: 'foo-surname',
     forename: 'foo-forename',
-    dateOfBirth: '1-12-2010',
+    dateOfBirth: '1970-10-15T00:00:00.000Z',
     riskAssessmentCompleted: true,
     healthAssessmentCompleted: true,
     outcome: 'Foo outcome',
@@ -26,7 +26,7 @@ const assessments = [
     nomisId: 'bar-id',
     surname: 'foo-surname',
     forename: 'foo-forename',
-    dateOfBirth: '12-2-2010',
+    dateOfBirth: '2001-03-04T00:00:00.000Z',
     riskAssessmentCompleted: false,
     healthAssessmentCompleted: false,
     outcome: null,
@@ -46,7 +46,7 @@ const assertGivenValuesInWhiteListAreInPage = (list, whiteList, component) => {
     keys.forEach((key) => {
       if (whiteList.includes(key)) {
         if (key === 'dateOfBirth') {
-          expect(componentText).to.include(extractDateFromString(item[key]));
+          expect(componentText).to.include(parseDate(new Date(item[key])));
           return;
         }
         expect(componentText).to.include(item[key]);
