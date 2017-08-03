@@ -45,7 +45,7 @@ const riskAssessmentAnswers = {
 
 const state = {
   answers: {
-    selectedPrisonerId: 'foo-nomisId',
+    selectedAssessmentId: 'foo-nomisId',
     riskAssessment: {
       'foo-nomisId': riskAssessmentAnswers,
     },
@@ -71,7 +71,7 @@ const state = {
 };
 
 
-describe.only('<RiskAssessmentSummary />', () => {
+describe('<RiskAssessmentSummary />', () => {
   context('Connected RiskAssessmentSummary', () => {
     context('when the assessment outcome is low', () => {
       it('renders the prisoners profile details', () => {
@@ -128,7 +128,7 @@ describe.only('<RiskAssessmentSummary />', () => {
         const unknownRiskStore = fakeStore({
           ...state,
           answers: {
-            selectedPrisonerId: 'foo-nomisId',
+            selectedAssessmentId: 'foo-nomisId',
             riskAssessment: {
               'foo-nomisId': answers,
             },
@@ -178,7 +178,7 @@ describe.only('<RiskAssessmentSummary />', () => {
         const unknownRiskStore = fakeStore({
           ...state,
           answers: {
-            selectedPrisonerId: 'foo-nomisId',
+            selectedAssessmentId: 'foo-nomisId',
             riskAssessment: {
               'foo-nomisId': answers,
             },
@@ -315,7 +315,7 @@ describe.only('<RiskAssessmentSummary />', () => {
         const stateWithReason = {
           ...state,
           answers: {
-            selectedPrisonerId: 'foo-nomisId',
+            selectedAssessmentId: 'foo-nomisId',
             riskAssessment: {
               'foo-nomisId': {
                 ...riskAssessmentAnswers,

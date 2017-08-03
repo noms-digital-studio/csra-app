@@ -65,7 +65,7 @@ const healthcareAnswers = {
 
 const state = {
   answers: {
-    selectedPrisonerId: 'foo-nomis-id',
+    selectedAssessmentId: 'foo-nomis-id',
     riskAssessment: {
       'foo-nomis-id': riskAssessmentAnswers,
     },

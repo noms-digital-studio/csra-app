@@ -40,7 +40,7 @@ const mapStateToProps = (state, ownProps) => ({
     state.offender.selected.nomisId,
     state.offender.viperScores,
   ),
-  answers: path([state.answers.selectedPrisonerId], state.answers.riskAssessment),
+  answers: path([state.answers.selectedAssessmentId], state.answers.riskAssessment),
 });
 
 const mapActionsToProps = dispatch => ({

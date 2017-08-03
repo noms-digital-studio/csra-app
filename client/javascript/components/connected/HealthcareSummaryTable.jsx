@@ -53,7 +53,7 @@ const HealthcareSummaryTable = ({ answers }) => (
 );
 
 const mapStateToProps = state => ({
-  answers: path([state.answers.selectedPrisonerId], state.answers.healthcare),
+  answers: path([state.answers.selectedAssessmentId], state.answers.healthcare),
 });
 
 export default connect(mapStateToProps)(HealthcareSummaryTable);

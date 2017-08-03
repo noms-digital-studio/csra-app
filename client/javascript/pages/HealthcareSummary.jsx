@@ -239,7 +239,7 @@ const findViperScore = (nomisId, viperScores) =>
 const mapStateToProps = (state, ownProps) => ({
   ...ownProps,
   prisoner: state.offender.selected,
-  answers: path([state.answers.selectedPrisonerId], state.answers.healthcare),
+  answers: path([state.answers.selectedAssessmentId], state.answers.healthcare),
   riskAssessmentComplete: state.offender.selected.riskAssessmentCompleted,
   viperScore: findViperScore(
     state.offender.selected.nomisId,

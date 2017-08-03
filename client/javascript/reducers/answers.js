@@ -5,7 +5,7 @@ import {
 } from '../constants/actions';
 
 const defaultState = {
-  selectedPrisonerId: '',
+  selectedAssessmentId: '',
   riskAssessment: {},
   healthcare: {},
 };
@@ -16,8 +16,8 @@ const saveAnswer = (state, payload, type) => ({
   ...state,
   [type]: {
     ...state[type],
-    [state.selectedPrisonerId]: upsertAnswer(
-      state[type][state.selectedPrisonerId],
+    [state.selectedAssessmentId]: upsertAnswer(
+      state[type][state.selectedAssessmentId],
       payload,
     ),
   },
@@ -26,7 +26,7 @@ const saveAnswer = (state, payload, type) => ({
 export default (state = defaultState, { type, payload }) => {
   switch (type) {
     case SELECT_OFFENDER:
-      return { ...state, selectedPrisonerId: payload.nomisId };
+      return { ...state, selectedAssessmentId: payload.id };
 
     case SAVE_RISK_ASSESSMENT_ANSWER:
       return saveAnswer(state, payload, 'riskAssessment');

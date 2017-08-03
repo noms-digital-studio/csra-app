@@ -53,7 +53,7 @@ const storeData = {
     ],
   },
   answers: {
-    selectedPrisonerId: 'foo-nomisId',
+    selectedAssessmentId: 'foo-nomisId',
     healthcare: {
       'foo-nomisId': healthcareAnswers,
     },

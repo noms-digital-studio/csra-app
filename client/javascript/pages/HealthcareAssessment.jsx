@@ -37,7 +37,7 @@ const mapStateToProps = (state, ownProps) => ({
     surname: state.offender.selected.surname,
   },
   prisonerViperScore: '',
-  answers: path([state.answers.selectedPrisonerId], state.answers.healthcare),
+  answers: path([state.answers.selectedAssessmentId], state.answers.healthcare),
   isComplete: Boolean(
     state.healthcareStatus.awaitingSubmission.find(
       prisoner => prisoner.nomisId === state.offender.selected.nomisId,

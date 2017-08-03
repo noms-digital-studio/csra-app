@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { Link } from 'react-router';
 import isEmpty from 'ramda/src/isEmpty';
+import path from 'ramda/src/path';
 
 import { selectOffender, getOffenderAssessments } from '../actions';
 import { parseDate, capitalize, extractDateFromUTCString } from '../utils';
@@ -154,6 +155,7 @@ class Dashboard extends Component {
 
 const mapStateToProps = state => ({
   assessments: state.offender.assessments,
+  answers: state.answers,
 });
 
 const mapActionsToProps = dispatch => ({

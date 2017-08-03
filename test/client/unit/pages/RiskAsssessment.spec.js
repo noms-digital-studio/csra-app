@@ -42,7 +42,7 @@ describe('<RiskAssessment />', () => {
   beforeEach(() => {
     store = fakeStore({
       answers: {
-        selectedPrisonerId: 'foo-prisoner-id',
+        selectedAssessmentId: 'foo-prisoner-id',
         answers: {},
       },
       questions: {

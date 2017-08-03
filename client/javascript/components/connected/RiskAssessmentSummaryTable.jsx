@@ -8,7 +8,7 @@ const RiskAssessmentSummaryTable = props => <QuestionAndAnswerSummaryTable {...p
 
 const mapStateToProps = (state) => {
   const answers = path(
-    [state.answers.selectedPrisonerId],
+    [state.answers.selectedAssessmentId],
     state.answers.riskAssessment,
   );
 

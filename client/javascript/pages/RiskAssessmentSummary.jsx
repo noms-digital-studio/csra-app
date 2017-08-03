@@ -172,13 +172,13 @@ const mapStateToProps = (state) => {
     outcome: extractDecision({
       questions: state.questions.riskAssessment,
       answers: path(
-        [state.answers.selectedPrisonerId],
+        [state.answers.selectedAssessmentId],
         state.answers.riskAssessment,
       ),
       viperScore,
     }),
     answers: path(
-      [state.answers.selectedPrisonerId],
+      [state.answers.selectedAssessmentId],
       state.answers.riskAssessment,
     ),
     questions: state.questions.riskAssessment,

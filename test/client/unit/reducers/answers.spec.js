@@ -2,7 +2,7 @@ import answersReducer from '../../../../client/javascript/reducers/answers';
 
 describe('answersReducer', () => {
   const defaultState = {
-    selectedPrisonerId: '',
+    selectedAssessmentId: '',
     riskAssessment: {},
     healthcare: {},
   };
@@ -11,8 +11,9 @@ describe('answersReducer', () => {
     expect(answersReducer(undefined, 'UNKNOWN_ACTION')).to.eql(defaultState);
   });
 
-  it('stores the selected prisoner', () => {
+  it('stores the selected assessment', () => {
     const profile = {
+      id: 1,
       nomisId: 'foo',
       surname: 'foobar',
       forename: 'foobaz',
@@ -21,15 +22,15 @@ describe('answersReducer', () => {
     const action = { type: 'SELECT_OFFENDER', payload: profile };
     const expectedState = {
       ...defaultState,
-      selectedPrisonerId: profile.nomisId,
+      selectedAssessmentId: profile.id,
     };
 
     expect(answersReducer(undefined, action)).to.eql(expectedState);
   });
 
-  it('saves an answer for the selectedPrisonerId', () => {
-    const selectedPrisonerId = 'foo-id';
-    const state = { ...defaultState, selectedPrisonerId };
+  it('saves an answer for the selectedAssessmentId', () => {
+    const selectedAssessmentId = 'foo-id';
+    const state = { ...defaultState, selectedAssessmentId };
     const assessmentTypes = {
       riskAssessment: 'SAVE_RISK_ASSESSMENT_ANSWER',
       healthcare: 'SAVE_HEALTHCARE_ANSWER',
@@ -44,7 +45,7 @@ describe('answersReducer', () => {
       const expectedState = {
         ...state,
         [assessmentType]: {
-          [selectedPrisonerId]: {
+          [selectedAssessmentId]: {
             fooRisk: { answer: 'yes' },
           },
         },
@@ -54,8 +55,8 @@ describe('answersReducer', () => {
     });
   });
 
-  it('updates an answer for the selectedPrisonerId', () => {
-    const selectedPrisonerId = 'foo-id';
+  it('updates an answer for the selectedAssessmentId', () => {
+    const selectedAssessmentId = 'foo-id';
 
     const assessmentTypes = {
       riskAssessment: 'SAVE_RISK_ASSESSMENT_ANSWER',
@@ -64,9 +65,9 @@ describe('answersReducer', () => {
 
     Object.keys(assessmentTypes).forEach((assessmentType) => {
       const state = {
-        selectedPrisonerId,
+        selectedAssessmentId,
         [assessmentType]: {
-          [selectedPrisonerId]: {
+          [selectedAssessmentId]: {
             fooRisk: { answer: 'yes' },
           },
         },
@@ -78,7 +79,7 @@ describe('answersReducer', () => {
       const expectedState = {
         ...state,
         [assessmentType]: {
-          [selectedPrisonerId]: {
+          [selectedAssessmentId]: {
             fooRisk: { answer: 'no' },
           },
         },
