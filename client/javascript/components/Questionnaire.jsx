@@ -76,6 +76,7 @@ class Questionnaire extends Component {
       basePath,
       completionPath,
       isComplete,
+      prisoner,
     } = this.props;
     const { sectionIndex, question } = sectionData(questions, section);
     const answer = serialize(event.target, { hash: true });
@@ -90,6 +91,8 @@ class Questionnaire extends Component {
     }
 
     this.props.onSubmit({
+      prisoner,
+      question,
       section: question.section,
       answer,
       nextPath,

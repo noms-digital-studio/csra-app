@@ -3,7 +3,7 @@ import uuid from 'uuid/v4';
 
 import SelectableInput from '../components/SelectableInput';
 
-const Confirmation = ({ title, description, onSubmit, formDefaults: { confirmation }, isComplete }) => (
+const Confirmation = ({ title, description, onSubmit, formDefaults: { answer }, isComplete }) => (
   <div>
     <div className="grid-row">
       <div className="column-two-thirds">
@@ -22,7 +22,7 @@ const Confirmation = ({ title, description, onSubmit, formDefaults: { confirmati
               value="accepted"
               text="I confirm this has been explained and the prisoner understands."
               name="confirmation"
-              selected={confirmation === 'accepted'}
+              selected={answer === 'accepted'}
             />
           </p>
 
@@ -40,14 +40,14 @@ Confirmation.propTypes = {
   description: PropTypes.string,
   onSubmit: PropTypes.func,
   formDefaults: PropTypes.shape({
-    confirmation: PropTypes.string,
+    answer: PropTypes.string,
   }),
   isComplete: PropTypes.bool,
 };
 
 Confirmation.defaultProps = {
   formDefaults: {
-    confirmation: '',
+    answer: '',
   },
 };
 

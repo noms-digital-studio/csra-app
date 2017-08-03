@@ -13,13 +13,21 @@ import defaultOffenderProfiles from '../fixtures/nomis.json';
 const debug = debugModule('csra');
 
 export const calculateRiskFor = (nomisId, riskScores = []) => {
-  const offenderRiskScore = riskScores.find(
-    offender => offender.nomisId === nomisId,
-  );
+  const offenderRiskScore = riskScores.find(offender => offender.nomisId === nomisId);
 
   if (not(offenderRiskScore)) return 'unknown';
 
   const { viperScore } = offenderRiskScore;
+
+  if (viperScore <= LOW_RISK_THRESHOLD) {
+    return 'low';
+  }
+
+  return 'high';
+};
+
+export const riskFromViperScore = (viperScore) => {
+  if (not(viperScore)) return 'unknown';
 
   if (viperScore <= LOW_RISK_THRESHOLD) {
     return 'low';
@@ -98,21 +106,24 @@ export const cellAssignment = ({ healthcare, riskAssessment }) => {
 };
 
 const extractReasons = ({ questions, answers, viperScore }) => {
-  const questionsWithPredicates = questions.filter(
-    question => !!question.sharedCellPredicate,
-  );
+  const questionsWithPredicates = questions.filter(question => !!question.sharedCellPredicate);
 
   const reasons = questionsWithPredicates.reduce((reasonsList, question) => {
     if (not(answers[question.section])) return reasonsList;
 
     if (answers[question.section].answer === 'yes') {
-      return [...reasonsList, ...question.sharedCellPredicate.reasons];
+      const questionReasons = question.sharedCellPredicate.reasons.map(reason => ({
+        questionId: question.section,
+        reason,
+      }));
+
+      return [...reasonsList, ...questionReasons];
     }
 
     return reasonsList;
   }, []);
 
-  return (viperScore > LOW_RISK_THRESHOLD) ? ['has a high viper score', ...reasons] : reasons;
+  return viperScore > LOW_RISK_THRESHOLD ? ['has a high viper score', ...reasons] : reasons;
 };
 
 export const extractDecision = ({ questions, answers, viperScore }) => {
@@ -163,4 +174,39 @@ export const retrieveViperScoreFor = (nomisId, callback) => {
     debug('got viper score for %s of %j', nomisId, _error || body);
     callback(validateViperResponse(body));
   });
+};
+
+export const buildQuestionAnswer = (question, answer) => {
+  const section = path(['section'], question);
+  const title = path(['title'], question);
+  const answerValues = Object.keys(answer).reduce((answerText, key) => {
+    if (key === 'confirmation') {
+      return answer[key];
+    }
+
+    if (key === 'answer') {
+      return answer[key];
+    }
+
+    if (key === 'comments') {
+      return answer[key];
+    }
+
+    return answerText;
+  }, '');
+  const comments = Object.keys(answer).reduce((answerText, key) => {
+    if (key.startsWith('reasons')) {
+      return { [key]: answer[key] };
+    }
+    return {};
+  }, {});
+
+  return {
+    [section]: {
+      questionId: section,
+      question: title,
+      answer: answerValues,
+      ...comments,
+    },
+  };
 };

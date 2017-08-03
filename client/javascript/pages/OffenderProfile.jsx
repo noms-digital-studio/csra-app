@@ -4,11 +4,16 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { extractDateFromUTCString } from '../utils';
+import path from 'ramda/src/path';
+
+import { startRiskAssessmentFor } from '../actions';
+import { retrieveViperScoreFor } from '../services';
+
 
 import routes from '../constants/routes';
 
 const OffenderProfile = ({
-  details: { forename, dateOfBirth, nomisId, surname },
+  details,
   title,
   onSubmit,
 }) => (
@@ -39,7 +44,7 @@ const OffenderProfile = ({
               <div>
                 <p className="c-offender-profile-item">
                   <span className="heading-small">Name:&nbsp;</span>
-                  <span data-element-id="prisoner-name">{forename} {surname}</span>
+                  <span data-element-id="prisoner-name">{details.forename} {details.surname}</span>
                 </p>
               </div>
               <div>
@@ -47,13 +52,13 @@ const OffenderProfile = ({
                   <span className="heading-small">
                     DOB:&nbsp;&nbsp;&nbsp;&nbsp;
                   </span>
-                  {extractDateFromUTCString(dateOfBirth)}
+                  {extractDateFromUTCString(details.dateOfBirth)}
                 </p>
               </div>
               <div>
                 <p className="c-offender-profile-item">
                   <span className="heading-small">NOMIS ID:&nbsp;</span>
-                  {nomisId}
+                  {details.nomisId}
                 </p>
               </div>
             </div>
@@ -64,7 +69,7 @@ const OffenderProfile = ({
       <p>
         <button
           type="button"
-          onClick={onSubmit}
+          onClick={() => onSubmit(details)}
           className="button button-start u-margin-bottom-default"
           data-element-id="continue-button"
         >
@@ -97,8 +102,15 @@ const mapStateToProps = state => ({
 });
 
 const mapActionsToProps = dispatch => ({
-  onSubmit: () => {
-    dispatch(push(`${routes.RISK_ASSESSMENT}/introduction`));
+  onSubmit: (prisoner) => {
+    retrieveViperScoreFor(prisoner.nomisId, (body) => {
+      dispatch(startRiskAssessmentFor({
+        viperScore: path(['viperRating'], body) || null,
+        id: prisoner.id,
+      }));
+
+      dispatch(push(`${routes.RISK_ASSESSMENT}/introduction`));
+    });
   },
 });
 

@@ -7,10 +7,7 @@ import QuestionAndAnswerSummaryTable from '../QuestionAndAnswerSummaryTable';
 const RiskAssessmentSummaryTable = props => <QuestionAndAnswerSummaryTable {...props} />;
 
 const mapStateToProps = (state) => {
-  const answers = path(
-    [state.answers.selectedAssessmentId],
-    state.answers.riskAssessment,
-  );
+  const answers = path([state.offender.selected.id, 'questions'], state.assessments.risk);
 
   return {
     questionsAnswers: [

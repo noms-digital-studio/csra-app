@@ -8,7 +8,7 @@ const Comments = ({
   description,
   onSubmit,
   aside,
-  formDefaults: { comments },
+  formDefaults: { answer },
   isComplete,
 }) => (
   <div className="grid-row">
@@ -25,7 +25,7 @@ const Comments = ({
         <CommentBox
           id="commentBox"
           limit={300}
-          text={comments}
+          text={answer}
           name="comments"
           cssClassName="form-control form-control-3-4 u-margin-bottom-default"
         />

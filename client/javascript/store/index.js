@@ -12,6 +12,8 @@ import loginReducer from '../reducers/login';
 import answersReducer from '../reducers/answers';
 import riskAssessmentStatusReducer from '../reducers/assessmentStatus';
 import healthcareStatusReducer from '../reducers/healthcareStatus';
+import assessmentReducer from '../reducers/assessment';
+
 
 const debug = debugModule('csra');
 const debugMiddleware = () => next => (action) => {
@@ -35,6 +37,7 @@ const reducers = combineReducers({
   answers: answersReducer,
   riskAssessmentStatus: riskAssessmentStatusReducer,
   healthcareStatus: healthcareStatusReducer,
+  assessments: assessmentReducer,
 });
 
 export default createStore(reducers, enhancer);
