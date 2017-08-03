@@ -15,7 +15,7 @@ const defaultAssessmentConfig = {
   prisoner: {
     nomisId: 'J1234LO',
     name: 'John Lowe',
-    dateOfBirth: '1 October 1970',
+    dateOfBirth: '01 October 1970',
   },
   initialRecommendation: 'shared cell',
   answers: {
@@ -108,8 +108,9 @@ export const fullAssessmentRecommendation = (config) => {
 export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) => {
   DashboardPage.waitForMainHeadingWithDataId('dashboard');
 
+  browser.waitForVisible(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`, 5000);
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
-  const assessmentId = row.getAttribute('data-risk-assessment-id');
+  const assessmentId = row.getAttribute('data-assessment-id');
 
   expect(row.getText()).to.equal(
     `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Complete Start`,

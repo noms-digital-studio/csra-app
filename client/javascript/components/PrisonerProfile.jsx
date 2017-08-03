@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { capitalize, extractDateFromString } from '../utils';
+import { capitalize, extractDateFromUTCString } from '../utils';
 
 
 const PrisonerProfile = ({ forename, surname, dateOfBirth, nomisId }) => (
@@ -25,11 +25,11 @@ const PrisonerProfile = ({ forename, surname, dateOfBirth, nomisId }) => (
           <tr>
             <td>Date of birth:</td>
             <td data-element-id="prisoner-dob">
-              <strong className="heading-small">{extractDateFromString(dateOfBirth)}</strong>
+              <strong className="heading-small">{extractDateFromUTCString(dateOfBirth)}</strong>
             </td>
           </tr>
           <tr>
-            <td>NOMISID:</td>
+            <td>NOMIS ID:</td>
             <td data-element-id="prisoner-nomis-id">
               <strong className="heading-small">{nomisId}</strong>
             </td>

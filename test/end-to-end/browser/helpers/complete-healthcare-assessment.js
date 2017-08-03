@@ -15,7 +15,7 @@ const defaultAssessmentConfig = {
   prisoner: {
     nomisId: 'J1234LO',
     name: 'John Lowe',
-    dateOfBirth: '1 October 1970',
+    dateOfBirth: '01 October 1970',
   },
   answers: {
     singleCellRecommendation: 'no',
@@ -70,10 +70,8 @@ const whenAPrisonersHealthcareResultsAreEntered = (config = defaultAssessmentCon
   expect(HealthcareSummary.comments).to.equalIgnoreCase('a healthcare comment');
   expect(HealthcareSummary.consent).to.equalIgnoreCase('no');
 
-  /** Test change answers */
   HealthcareSummary.clickChange();
   HealthcareConsentPage.clickYesAndContinue();
-
   expect(HealthcareSummary.consent).to.equalIgnoreCase('yes');
 };
 

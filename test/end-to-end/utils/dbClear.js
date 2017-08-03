@@ -6,10 +6,7 @@ const clearPrisonerAssessments = () =>
   db
   .delete()
   .table('prisoner_assessments')
-  .then((result) => {
-    console.log('result: ', result);
-    return result;
-  });
+  .then(result => result);
 
 export const clearPrisonerAssessmentsSync = () => {
   const future = Future.fromPromise(clearPrisonerAssessments());
