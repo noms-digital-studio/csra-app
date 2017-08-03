@@ -1,8 +1,11 @@
 import LoginPage from '../pages/Login.page';
 import BeforeYouStartPage from '../pages/BeforeYouStart.page';
 import DashboardPage from '../pages/Dashboard.page';
+import { clearPrisonerAssessmentsSync } from '../../utils/dbClear';
 
 function givenThatTheOfficerIsSignedIn() {
+  clearPrisonerAssessmentsSync();
+
   expect(LoginPage.mainHeading).to.equal('Your full name');
   LoginPage.enterUsername('officer1');
   LoginPage.clickContinue();
