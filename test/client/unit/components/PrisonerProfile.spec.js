@@ -9,7 +9,7 @@ describe('<PrisonerProfile />', () => {
     const prisonerDetails = {
       forename: 'foo-name',
       surname: 'foo-surname',
-      dateOfBirth: '1-1-2010',
+      dateOfBirth: '2010-01-01T00:00:00.000Z',
       nomisId: 'foo-nomisId',
     };
 
@@ -18,7 +18,7 @@ describe('<PrisonerProfile />', () => {
     const profileText = wrapper.find('[data-element-id="prisoner-profile"]').text();
     expect(profileText).to.contain('Foo-name');
     expect(profileText).to.contain('foo-surname');
-    expect(profileText).to.contain('1 January 2010');
+    expect(profileText).to.contain('01 January 2010');
     expect(profileText).to.contain('foo-nomisId');
   });
 });

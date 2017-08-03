@@ -14,7 +14,7 @@ const prisonerDetails = {
   id: 1,
   forename: 'foo-name',
   surname: 'foo-surname',
-  dateOfBirth: '1-1-2010',
+  dateOfBirth: '2010-01-01T00:00:00.000Z',
   nomisId: 'foo-nomisId',
   healthAssessmentCompleted: false,
 };
@@ -95,7 +95,7 @@ describe('<RiskAssessmentSummary />', () => {
 
         expect(prisonerProfile).to.contain('Foo-name');
         expect(prisonerProfile).to.contain('foo-surname');
-        expect(prisonerProfile).to.contain('1 January 2010');
+        expect(prisonerProfile).to.contain('01 January 2010');
         expect(prisonerProfile).to.contain('foo-nomisId');
       });
 
