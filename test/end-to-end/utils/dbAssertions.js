@@ -2,28 +2,18 @@ import Future from 'fibers/future';
 
 import db from '../../util/db';
 
-const checkThatAssessmentDataWasWrittenToDatabase = ({
-  nomisId,
-  assessmentId,
+const checkThatRiskAssessmentDataWasWrittenToDatabase = ({
+  id,
+  riskAssessment,
 }) => db.select()
     .table('prisoner_assessments')
-    .where('id', Number(assessmentId))
+    .where('id', Number(id))
     .then((result) => {
       expect(result[0]).to.not.equal(
         undefined,
-        `Did not get a result from database for id: ${assessmentId}`,
+        `Did not get a result from database for id: ${id}`,
       );
-      expect(result[0].nomis_id).to.equal(nomisId);
-      expect(result[0].questions_hash).to.not.equal(
-        undefined,
-        'expected a questions_hash',
-      );
-      expect(result[0].git_version).to.not.equal(
-        undefined,
-        'expected a git_version',
-      );
-      expect(result[0].git_date).to.not.equal(undefined, 'expected a git_date');
-
+      expect(JSON.parse(result[0].risk_assessment)).to.eql(riskAssessment);
       return result[0];
     });
 
@@ -54,8 +44,8 @@ const checkThatPrisonerAssessmentDataWasWrittenToDatabase = ({
       return result[0];
     });
 
-export const checkThatAssessmentDataWasWrittenToDatabaseSync = (args) => {
-  const future = Future.fromPromise(checkThatAssessmentDataWasWrittenToDatabase(args));
+export const checkThatRiskAssessmentDataWasWrittenToDatabaseSync = (args) => {
+  const future = Future.fromPromise(checkThatRiskAssessmentDataWasWrittenToDatabase(args));
 
   Future.wait(future);
 
@@ -69,5 +59,3 @@ export const checkThatPrisonerAssessmentDataWasWrittenToDatabaseSync = (args) =>
 
   future.get();
 };
-
-export default checkThatAssessmentDataWasWrittenToDatabase;

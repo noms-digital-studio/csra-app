@@ -14,6 +14,7 @@ const defaultConfig = {
     },
     nomisId: 'J1234LO',
     dateOfBirth: '1 October 1970',
+    dataBaseDoB: 'Oct 01 1970',
   },
 };
 
@@ -46,7 +47,7 @@ function whenTheOfficerAddsThePrisonersDetails(config = defaultConfig) {
     nomisId: config.prisoner.nomisId,
     forename: config.prisoner.forename,
     surname: config.prisoner.surname,
-    dateOfBirth: 'Oct 01 1970',
+    dateOfBirth: config.prisoner.dataBaseDoB,
   });
 }
 

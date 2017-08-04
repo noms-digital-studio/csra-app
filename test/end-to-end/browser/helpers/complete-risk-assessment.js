@@ -9,7 +9,7 @@ import RiskAssessmentYesNoPage
   from '../pages/risk-assessment/RiskAssessmentYesNo.page';
 import RiskAssessmentSummaryPage
   from '../pages/risk-assessment/RiskAssessmentSummary.page';
-import { checkThatAssessmentDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
+import { checkThatRiskAssessmentDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
 
 const defaultAssessmentConfig = {
   prisoner: {
@@ -118,54 +118,47 @@ export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) =
 
   expect(assessmentId).to.not.equal(undefined, 'expected to find data-risk-assessment-id on the page');
 
-  checkThatAssessmentDataWasWrittenToDatabaseSync({
-    nomisId: config.prisoner.nomisId,
-    assessmentId,
-    questionData: {
-      introduction: {
-        question_id: 'introduction',
-        question: 'Making this process fair and open',
-        answer: '',
+  checkThatRiskAssessmentDataWasWrittenToDatabaseSync({
+    id: assessmentId,
+    riskAssessment: {
+      outcome: 'shared cell',
+      viperScore: -1,
+      questions: {
+        introduction: {
+          questionId: 'introduction',
+          question: 'Making this process fair and open',
+          answer: '',
+        },
+        'risk-of-violence': { questionId: 'risk-of-violence', question: 'Viper result', answer: '' },
+        'how-do-you-feel': {
+          questionId: 'how-do-you-feel',
+          question: 'How do you think they feel about sharing a cell at this moment?',
+          answer: 'foo comment',
+        },
+        'harm-cell-mate': {
+          questionId: 'harm-cell-mate',
+          question: 'Is there any genuine indication they might seriously hurt a cellmate?',
+          answer: 'no',
+        },
+        vulnerability: {
+          questionId: 'vulnerability',
+          question: "Do you think they're likely to lash out because they're scared or feeling vulnerable?",
+          answer: 'no',
+        },
+        'gang-affiliation': { questionId: 'gang-affiliation', question: 'Are they in a gang?', answer: 'no' },
+        'drug-misuse': {
+          questionId: 'drug-misuse',
+          question: 'Have they taken illicit drugs in the last month?',
+          answer: 'no',
+        },
+        prejudice: { questionId: 'prejudice', question: 'Do they have any hostile views or prejudices?', answer: 'no' },
+        'officers-assessment': {
+          questionId: 'officers-assessment',
+          question: 'Are there any other reasons why you would recommend they have a single cell?',
+          answer: 'no',
+        },
       },
-      'risk-of-violence': { question_id: 'risk-of-violence', question: 'Viper result', answer: '' },
-      'how-do-you-feel': {
-        question_id: 'how-do-you-feel',
-        question: 'How do you think they feel about sharing a cell at this moment?',
-        answer: 'foo comment',
-      },
-      'harm-cell-mate': {
-        question_id: 'harm-cell-mate',
-        question: 'Is there any genuine indication they might seriously hurt a cellmate?',
-        answer: config.answers.harmCellMate,
-      },
-      vulnerability: {
-        question_id: 'vulnerability',
-        question: "Do you think they're likely to lash out because they're scared or feeling vulnerable?",
-        answer: config.answers.vulnerability,
-      },
-      'gang-affiliation': {
-        question_id: 'gang-affiliation',
-        question: 'Are they in a gang?',
-        answer: config.answers.gangAffiliation,
-      },
-      'drug-misuse': {
-        question_id: 'drug-misuse',
-        question: 'Have they taken illicit drugs in the last month?',
-        answer: config.answers.drugMisuse,
-      },
-      prejudice: {
-        question_id: 'prejudice',
-        question: 'Do they have any hostile views or prejudices?',
-        answer: config.answers.prejudice,
-      },
-      'officers-assessment': {
-        question_id: 'officers-assessment',
-        question: 'Are there any other reasons why you would recommend they have a single cell?',
-        answer: config.answers.officersAssessment,
-      },
+      reasons: [],
     },
-    reasons: config.reasons,
-    assessmentOutcome: config.finalRecommendation,
-    viperScore: config.viperScore,
   });
 };

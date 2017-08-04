@@ -42,6 +42,7 @@ describe('Risk assessment for a vulnerable prisoner (single cell outcome)', () =
         },
         nomisId: 'J6285NE',
         dateOfBirth: '3 December 1958',
+        dataBaseDoB: 'Dec 03 1958',
       },
     });
     whenAVulnerablePrisonerIsAssessed(assessmentConfig);
