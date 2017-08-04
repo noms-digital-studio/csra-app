@@ -122,12 +122,12 @@ export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) =
     id: assessmentId,
     riskAssessment: {
       outcome: 'shared cell',
-      viperScore: -1,
+      viperScore: config.viperScore,
       questions: {
         introduction: {
           questionId: 'introduction',
           question: 'Making this process fair and open',
-          answer: '',
+          answer: 'accepted',
         },
         'risk-of-violence': { questionId: 'risk-of-violence', question: 'Viper result', answer: '' },
         'how-do-you-feel': {

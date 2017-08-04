@@ -13,7 +13,10 @@ const checkThatRiskAssessmentDataWasWrittenToDatabase = ({
         undefined,
         `Did not get a result from database for id: ${id}`,
       );
-      expect(JSON.parse(result[0].risk_assessment)).to.eql(riskAssessment);
+      expect(JSON.parse(result[0].risk_assessment).viperScore).to.eql(riskAssessment.viperScore);
+      expect(JSON.parse(result[0].risk_assessment).outcome).to.eql(riskAssessment.outcome);
+      expect(JSON.parse(result[0].risk_assessment).reasons).to.eql(riskAssessment.reasons);
+      expect(JSON.parse(result[0].risk_assessment).questions).to.eql(riskAssessment.questions);
       return result[0];
     });
 
