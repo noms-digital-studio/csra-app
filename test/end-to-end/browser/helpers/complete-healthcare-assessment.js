@@ -124,7 +124,7 @@ const defaultFullAssessmentConfig = {
   prisoner: {
     nomisId: 'J1234LO',
     name: 'John Lowe',
-    dateOfBirth: '1 October 1970',
+    dateOfBirth: '01 October 1970',
   },
   finalOutcome: 'shared cell',
 };
