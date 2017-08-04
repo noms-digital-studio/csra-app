@@ -1,6 +1,7 @@
 import AddPrisonerPage from '../pages/add-prisoner/AddPrisoner.page';
 import PrisonerAddedPage from '../pages/add-prisoner/PrisonerAdded.page';
 import DashboardPage from '../pages/Dashboard.page';
+import { checkThatPrisonerAssessmentDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
 
 const defaultConfig = {
   prisoner: {
@@ -37,6 +38,16 @@ function whenTheOfficerAddsThePrisonersDetails(config = defaultConfig) {
 
   PrisonerAddedPage.clickContinue();
   DashboardPage.waitForMainHeadingWithDataId('dashboard');
+
+  const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
+  const assessmentId = row.getAttribute('data-assessment-id');
+  checkThatPrisonerAssessmentDataWasWrittenToDatabaseSync({
+    id: assessmentId,
+    nomisId: config.prisoner.nomisId,
+    forename: config.prisoner.forename,
+    surname: config.prisoner.surname,
+    dateOfBirth: 'Oct 01 1970',
+  });
 }
 
 export default whenTheOfficerAddsThePrisonersDetails;
