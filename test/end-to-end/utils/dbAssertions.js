@@ -17,6 +17,21 @@ const checkThatRiskAssessmentDataWasWrittenToDatabase = ({
       return result[0];
     });
 
+const checkThatHealthAssessmentDataWasWrittenToDatabase = ({
+  id,
+  healthAssessment,
+}) => db.select()
+    .table('prisoner_assessments')
+    .where('id', Number(id))
+    .then((result) => {
+      expect(result[0]).to.not.equal(
+        undefined,
+        `Did not get a result from database for id: ${id}`,
+      );
+      expect(JSON.parse(result[0].health_assessment)).to.eql(healthAssessment);
+      return result[0];
+    });
+
 const checkThatPrisonerAssessmentDataWasWrittenToDatabase = ({
   id,
   nomisId,
@@ -46,6 +61,14 @@ const checkThatPrisonerAssessmentDataWasWrittenToDatabase = ({
 
 export const checkThatRiskAssessmentDataWasWrittenToDatabaseSync = (args) => {
   const future = Future.fromPromise(checkThatRiskAssessmentDataWasWrittenToDatabase(args));
+
+  Future.wait(future);
+
+  future.get();
+};
+
+export const checkThatHealthAssessmentDataWasWrittenToDatabaseSync = (args) => {
+  const future = Future.fromPromise(checkThatHealthAssessmentDataWasWrittenToDatabase(args));
 
   Future.wait(future);
 

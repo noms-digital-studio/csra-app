@@ -8,7 +8,7 @@ import HealthcareSummary from '../pages/healthcare/HealthcareSummary.page';
 import FullAssessmentOutcomePage from '../pages/FullAssessmentOutcome.page';
 import FullAssessmentCompletePage from '../pages/FullAssessmentComplete.page';
 
-import { checkThatAssessmentDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
+import { checkThatHealthAssessmentDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
 
 
 const defaultAssessmentConfig = {
@@ -86,36 +86,36 @@ const thenTheHealthcareAssessmentIsComplete = (config = defaultAssessmentConfig)
     `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Start Complete`,
   );
 
-  const assessmentId = row.getAttribute('data-health-assessment-id');
+  const assessmentId = row.getAttribute('data-assessment-id');
 
-  checkThatAssessmentDataWasWrittenToDatabaseSync({
-    nomisId: config.prisoner.nomisId,
-    assessmentId,
-    assessmentType: 'healthcare',
-    questionData: {
-      outcome: {
-        question_id: 'outcome',
-        question: 'Does healthcare recommend a single cell?',
-        answer: config.answers.singleCellRecommendation,
+  checkThatHealthAssessmentDataWasWrittenToDatabaseSync({
+    id: assessmentId,
+    healthAssessment: {
+      viperScore: null,
+      questions: {
+        outcome: {
+          questionId: 'outcome',
+          question: 'Does healthcare recommend a single cell?',
+          answer: 'no',
+        },
+        comments: {
+          questionId: 'comments',
+          question: 'Enter all the comments on the healthcare form',
+          answer: 'a healthcare comment',
+        },
+        consent: {
+          questionId: 'consent',
+          question: 'Have they given consent to share their medical information?',
+          answer: 'yes',
+        },
+        assessor: {
+          questionId: 'assessor',
+          question: 'Who completed the healthcare assessment?',
+          answer: 'Nurse, Jane Doe, 21-07-2017',
+        },
       },
-      comments: {
-        question_id: 'comments',
-        question: 'Enter all the comments on the healthcare form',
-        answer: 'a healthcare comment',
-      },
-      consent: {
-        question_id: 'consent',
-        question: 'Have they given consent to share their medical information?',
-        answer: 'yes',
-      },
-      assessor: {
-        question_id: 'assessor',
-        question: 'Who completed the healthcare assessment?',
-        answer: 'Nurse, Jane Doe, 21-07-2017',
-      },
+      outcome: 'shared cell',
     },
-    assessmentOutcome: config.recommendation,
-    viperScore: config.viperScore,
   });
 };
 
