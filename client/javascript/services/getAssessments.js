@@ -40,7 +40,7 @@ const getAssessments = (callback) => {
 
   xhr.get(target, options, (error, resp, body) => {
     debug('get assessments returned %j', error || body);
-    if (error) {
+    if (error || resp.statusCode >= 400) {
       callback(null);
     } else {
       callback(validate(body) ? body : null);

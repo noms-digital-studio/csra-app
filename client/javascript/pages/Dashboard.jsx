@@ -6,8 +6,8 @@ import { Link } from 'react-router';
 import isEmpty from 'ramda/src/isEmpty';
 import path from 'ramda/src/path';
 
-import { selectOffender, getOffenderAssessments } from '../actions';
 import { parseDate, capitalize, extractDateFromUTCString } from '../utils';
+import { selectOffender, getOffenderAssessments, startHealthcareAssessmentFor } from '../actions';
 import getAssessments from '../services/getAssessments';
 
 import routes from '../constants/routes';
@@ -172,6 +172,7 @@ const mapActionsToProps = dispatch => ({
   },
   onOffenderHealthcareSelect: (offender) => {
     dispatch(selectOffender(offender));
+    dispatch(startHealthcareAssessmentFor({ id: offender.id }));
     dispatch(push(`${routes.HEALTHCARE_ASSESSMENT}/outcome`));
   },
   onViewOutcomeClick: (offender) => {

@@ -13,6 +13,7 @@ import {
   COMPLETE_RISK_ASSESSMENT,
   COMPLETE_HEALTH_ASSESSMENT,
   HEALTHCARE_ANSWERS_COMPLETE,
+  STORE_ASSESSMENT,
   START_ASSESSMENT,
   STORE_ASSESSMENT_ANSWER,
   STORE_ASSESSMENT_OUTCOME,
@@ -65,24 +66,49 @@ export const addPrisoner = prisoner => ({
 
 export const confirmPrisoner = () => ({ type: CONFIRM_PRISONER });
 
-export const saveHealthcareAssessmentAnswer = (key, value) => ({
-  type: SAVE_HEALTHCARE_ANSWER,
-  payload: { [key]: value },
+// export const saveHealthcareAssessmentAnswer = (key, value) => ({
+//   type: SAVE_HEALTHCARE_ANSWER,
+//   payload: { [key]: value },
+// });
+
+// export const completeRiskAssessmentFor = ({ recommendation, assessmentId, reasons, rating }) => ({
+//   type: COMPLETE_RISK_ASSESSMENT,
+//   payload: { recommendation, assessmentId, reasons, rating },
+// });
+
+export const storeRiskAssessmentFor = ({ id, assessment }) => ({
+  type: STORE_ASSESSMENT,
+  payload: { assessmentType: 'risk', id, assessment },
 });
 
-export const completeRiskAssessmentFor = ({ recommendation, assessmentId, reasons, rating }) => ({
-  type: COMPLETE_RISK_ASSESSMENT,
-  payload: { recommendation, assessmentId, reasons, rating },
+export const storeHealthcareAssessmentFor = ({ id, assessment }) => ({
+  type: STORE_ASSESSMENT,
+  payload: { assessmentType: 'healthcare', id, assessment },
 });
 
-export const completeHealthAssessmentFor = ({ assessmentId, recommendation }) => ({
-  type: COMPLETE_HEALTH_ASSESSMENT,
-  payload: { assessmentId, recommendation },
+export const startHealthcareAssessmentFor = ({ id }) => ({
+  type: START_ASSESSMENT,
+  payload: { id, assessmentType: 'healthcare', viperScore: null },
 });
+
+export const saveHealthcareAssessmentAnswer = ({ id, question, answer }) => ({
+  type: STORE_ASSESSMENT_ANSWER,
+  payload: { id, questionAnswer: buildQuestionAnswer(question, answer), assessmentType: 'healthcare' },
+});
+
+// export const completeHealthAssessmentFor = ({ assessmentId, recommendation }) => ({
+//   type: COMPLETE_HEALTH_ASSESSMENT,
+//   payload: { assessmentId, recommendation },
+// });
 
 export const completeHealthAnswersFor = ({ assessmentId }) => ({
   type: HEALTHCARE_ANSWERS_COMPLETE,
   payload: { assessmentId },
+});
+
+export const saveHealthcareAssessmentOutcome = ({ id, outcome }) => ({
+  type: STORE_ASSESSMENT_OUTCOME,
+  payload: { assessmentType: 'healthcare', id, outcome },
 });
 
 export const startRiskAssessmentFor = ({ id, viperScore }) => ({
@@ -94,6 +120,7 @@ export const saveRiskAssessmentAnswer = ({ id, question, answer }) => ({
   type: STORE_ASSESSMENT_ANSWER,
   payload: { id, questionAnswer: buildQuestionAnswer(question, answer), assessmentType: 'risk' },
 });
+
 
 export const saveRiskAssessmentOutcome = ({ id, outcome }) => ({
   type: STORE_ASSESSMENT_OUTCOME,

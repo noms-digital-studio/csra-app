@@ -16,7 +16,7 @@ const postAssessment = (prisoner, callback) => {
 
   xhr.post(target, options, (error, resp, body) => {
     debug('posted assessment for %s got %j', prisoner.nomisId, error || body);
-    if (error) {
+    if (error || resp.statusCode >= 400) {
       callback(null);
     } else {
       callback(path(['id'], body) || null);

@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
     questionsAnswers: [
       {
         question: 'How they feel about sharing a cell:',
-        answer: answers['how-do-you-feel'] ? { answer: answers['how-do-you-feel'].comments || 'No comments' } : undefined,
+        answer: answers['how-do-you-feel'] ? { answer: answers['how-do-you-feel'].answer || 'No comments' } : undefined,
         dataTags: { 'data-element-id': 'risk-assessment-feeling' },
       },
       {
@@ -49,5 +49,7 @@ const mapStateToProps = (state) => {
     ],
   };
 };
+
+export { RiskAssessmentSummaryTable };
 
 export default connect(mapStateToProps)(RiskAssessmentSummaryTable);

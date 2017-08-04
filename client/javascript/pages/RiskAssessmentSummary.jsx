@@ -6,7 +6,6 @@ import path from 'ramda/src/path';
 import not from 'ramda/src/not';
 
 import {
-  completeRiskAssessmentFor,
   saveRiskAssessmentOutcome,
   saveRiskAssessmentReasons,
 } from '../actions';
@@ -54,7 +53,7 @@ class RiskAssessmentSummary extends Component {
             e.preventDefault();
 
             onSubmit({
-              prisoner,
+              assessmentId: prisoner.id,
               assessment,
               healthcareAssessmentComplete,
             });
@@ -152,6 +151,8 @@ RiskAssessmentSummary.propTypes = {
   viperScore: PropTypes.number,
   answers: PropTypes.object,
   questions: PropTypes.array,
+  reasons: PropTypes.array,
+  assessment: PropTypes.object,
 };
 
 RiskAssessmentSummary.defaultProps = {
@@ -190,12 +191,10 @@ const mapActionsToProps = dispatch => ({
       }
 
       if (healthcareAssessmentComplete) {
-        dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
-      } else {
-        dispatch(replace(routes.DASHBOARD));
+        return dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
       }
 
-      return true;
+      return dispatch(replace(routes.DASHBOARD));
     });
   },
 });

@@ -176,10 +176,39 @@ export const retrieveViperScoreFor = (nomisId, callback) => {
   });
 };
 
+const joinAssessorValues = assessor =>
+  `${assessor.role}, ${assessor['full-name']}, ${assessor.day}-${assessor.month}-${assessor.year}`;
+
+export const splitAssessorValues = (assessor) => {
+  try {
+    const assessorValues = assessor.split(', ');
+    const role = assessorValues[0];
+    const fullName = assessorValues[1];
+    const date = assessorValues[2].split('-');
+    const day = date[0];
+    const month = date[1];
+    const year = date[2];
+
+    return {
+      role,
+      fullName,
+      day,
+      month,
+      year,
+    };
+  } catch (e) {
+    return {};
+  }
+};
+
 export const buildQuestionAnswer = (question, answer) => {
   const section = path(['section'], question);
   const title = path(['title'], question);
   const answerValues = Object.keys(answer).reduce((answerText, key) => {
+    if (key === 'assessor') {
+      return joinAssessorValues(answer[key]);
+    }
+
     if (key === 'confirmation') {
       return answer[key];
     }

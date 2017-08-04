@@ -53,14 +53,14 @@ Comments.propTypes = {
   aside: PropTypes.object,
   onSubmit: PropTypes.func,
   formDefaults: PropTypes.shape({
-    comments: PropTypes.string,
+    answer: PropTypes.string,
   }),
   isComplete: PropTypes.bool,
 };
 
 Comments.defaultProps = {
   formDefaults: {
-    comments: '',
+    answer: '',
   },
   aside: {},
 };

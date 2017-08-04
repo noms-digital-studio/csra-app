@@ -5,25 +5,20 @@ import { push } from 'react-router-redux';
 
 import path from 'ramda/src/path';
 
-import {
-  getHealthAssessmentQuestions,
-  saveHealthcareAssessmentAnswer,
-} from '../actions';
+import { getHealthAssessmentQuestions, saveHealthcareAssessmentAnswer } from '../actions';
 
 import Questionnaire from '../components/Questionnaire';
 
 import routes from '../constants/routes';
 
-const HealthcareAssessment = props => (
+const HealthcareAssessment = props =>
   <DocumentTitle title={props.title}>
-  <Questionnaire
-    basePath={routes.HEALTHCARE_ASSESSMENT}
-    completionPath={routes.HEALTHCARE_SUMMARY}
-    {...props}
-  />
-  </DocumentTitle>
-);
-
+    <Questionnaire
+      basePath={routes.HEALTHCARE_ASSESSMENT}
+      completionPath={routes.HEALTHCARE_SUMMARY}
+      {...props}
+    />
+  </DocumentTitle>;
 
 HealthcareAssessment.defaultProps = {
   title: 'Healthcare Assessment',
@@ -32,16 +27,13 @@ HealthcareAssessment.defaultProps = {
 const mapStateToProps = (state, ownProps) => ({
   ...ownProps,
   questions: state.questions.healthcare,
-  prisoner: {
-    forename: state.offender.selected.forename,
-    surname: state.offender.selected.surname,
-  },
+  prisoner: state.offender.selected,
   prisonerViperScore: '',
-  answers: path([state.answers.selectedAssessmentId], state.answers.healthcare),
+  answers: path([state.offender.selected.id, 'questions'], state.assessments.healthcare),
   isComplete: Boolean(
     state.healthcareStatus.awaitingSubmission.find(
-      prisoner => prisoner.nomisId === state.offender.selected.nomisId,
-    )
+      item => item.assessmentId === state.offender.selected.id,
+    ),
   ),
 });
 
@@ -49,12 +41,10 @@ const mapActionsToProps = dispatch => ({
   getQuestions: () => {
     dispatch(getHealthAssessmentQuestions());
   },
-  onSubmit: ({ section, answer, nextPath }) => {
-    dispatch(saveHealthcareAssessmentAnswer(section, answer));
+  onSubmit: ({ answer, nextPath, question, prisoner }) => {
+    dispatch(saveHealthcareAssessmentAnswer({ id: prisoner.id, question, answer }));
     dispatch(push(nextPath));
   },
 });
 
-export default connect(mapStateToProps, mapActionsToProps)(
-  HealthcareAssessment,
-);
+export default connect(mapStateToProps, mapActionsToProps)(HealthcareAssessment);
