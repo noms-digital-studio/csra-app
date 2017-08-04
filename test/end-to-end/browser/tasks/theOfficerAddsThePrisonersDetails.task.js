@@ -12,6 +12,7 @@ const defaultConfig = {
       year: 1970,
     },
     nomisId: 'J1234LO',
+    dateOfBirth: '1 October 1970',
   },
 };
 
@@ -31,7 +32,7 @@ function whenTheOfficerAddsThePrisonersDetails(config = defaultConfig) {
 
   expect(PrisonerAddedPage.mainHeading).to.equal('Prisoner Added');
   expect(PrisonerAddedPage.name).to.equal(`${config.prisoner.forename} ${config.prisoner.surname}`);
-  expect(PrisonerAddedPage.dateOfBirth).to.equal('1 October 1970');
+  expect(PrisonerAddedPage.dateOfBirth).to.equal(config.prisoner.dateOfBirth);
   expect(PrisonerAddedPage.nomisId).to.equal(config.prisoner.nomisId);
 
   PrisonerAddedPage.clickContinue();
