@@ -11,7 +11,7 @@ const assessmentConfig = {
     name: 'James Neo',
     dateOfBirth: '03 December 1958',
   },
-  viperScore: -1,
+  viperScore: null,
   initialRecommendation: 'No predictor data available',
   finalRecommendation: 'shared cell',
   answers: {
