@@ -37,7 +37,10 @@ export default (state = defaultState, { type, payload }) => {
           ...state[payload.assessmentType],
           [payload.id]: {
             ...state[payload.assessmentType][payload.id],
-            questions: updateObject(state[payload.assessmentType][payload.id].questions, payload.questionAnswer),
+            questions: updateObject(
+              state[payload.assessmentType][payload.id].questions,
+              payload.questionAnswer,
+            ),
           },
         },
       };

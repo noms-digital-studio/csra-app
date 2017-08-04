@@ -91,7 +91,8 @@ function saveRiskAssessment(db, id, rawAssessment) {
   const schema = Joi.object({
     outcome: Joi.string().valid('single cell', 'shared cell', 'shared cell with conditions'),
     viperScore: Joi.number().allow(null).optional()
-    .min(0).max(1)
+    .min(0)
+    .max(1)
     .precision(2)
     .strict(),
     questions: Joi.object()

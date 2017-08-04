@@ -25,7 +25,7 @@ describe('#saveAssessmentsOutcome', () => {
     saveAssessmentsOutcome(postData, callback);
 
     expect(postStub.lastCall.args[0]).to.match(/\/api\/assessments\/1\/outcome/);
-    expect(postStub.lastCall.args[1].json).to.eql({ outcome: 'foo outcome'});
+    expect(postStub.lastCall.args[1].json).to.eql({ outcome: 'foo outcome' });
     expect(callback.calledOnce).to.equal(true);
     expect(callback.calledWithMatch({ status: 'ok' })).to.equal(true, 'callback called with the correct response');
   });

@@ -109,13 +109,8 @@ describe('<FullAssessmentOutcome', () => {
 
     expect(prisonerProfile).to.contain('Foo-name');
     expect(prisonerProfile).to.contain('foo-surname');
-<<<<<<< HEAD
     expect(prisonerProfile).to.contain('01 January 2010');
     expect(prisonerProfile).to.contain('foo-nomisId');
-=======
-    expect(prisonerProfile).to.contain('1 January 2010');
-    expect(prisonerProfile).to.contain('foo-nomis-id');
->>>>>>> CSRA-547: Integrate with PUT asssessments/<id>/outcome endpoint
   });
 
   it('displays the reasons if outcome is shared with conditions', () => {
