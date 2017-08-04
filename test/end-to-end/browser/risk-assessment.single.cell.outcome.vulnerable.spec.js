@@ -9,7 +9,7 @@ const assessmentConfig = {
   prisoner: {
     nomisId: 'J6285NE',
     name: 'James Neo',
-    dateOfBirth: '3 December 1958',
+    dateOfBirth: '03 December 1958',
   },
   viperScore: -1,
   initialRecommendation: 'No predictor data available',
@@ -41,6 +41,7 @@ describe('Risk assessment for a vulnerable prisoner (single cell outcome)', () =
           year: 1958,
         },
         nomisId: 'J6285NE',
+        dateOfBirth: '3 December 1958',
       },
     });
     whenAVulnerablePrisonerIsAssessed(assessmentConfig);
