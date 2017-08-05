@@ -7,7 +7,6 @@ import path from 'ramda/src/path';
 import allPass from 'ramda/src/allPass';
 import xhr from 'xhr';
 import { LOW_RISK_THRESHOLD } from '../constants/common';
-import defaultViperScores from '../fixtures/viper.json';
 import defaultOffenderProfiles from '../fixtures/nomis.json';
 
 const debug = debugModule('csra');
@@ -34,14 +33,6 @@ export const riskFromViperScore = (viperScore) => {
   }
 
   return 'high';
-};
-
-export const viperScores = () => {
-  if (sessionStorage.getItem('viperScores')) {
-    return JSON.parse(sessionStorage.getItem('viperScores'));
-  }
-
-  return defaultViperScores;
 };
 
 export const readSingleFile = (file, callback) => {
@@ -123,7 +114,9 @@ const extractReasons = ({ questions, answers, viperScore }) => {
     return reasonsList;
   }, []);
 
-  return viperScore > LOW_RISK_THRESHOLD ? ['has a high viper score', ...reasons] : reasons;
+  return viperScore > LOW_RISK_THRESHOLD
+    ? [{ questionId: 'risk-of-violence', reason: 'has a high viper score' }, ...reasons]
+    : reasons;
 };
 
 export const extractDecision = ({ questions, answers, viperScore }) => {

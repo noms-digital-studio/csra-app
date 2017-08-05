@@ -4,15 +4,9 @@ import {
   getRiskAssessmentQuestions,
   getHealthAssessmentQuestions,
   getOffenderAssessments,
-  getViperScores,
-  addViperScore,
   selectOffender,
   addPrisoner,
   confirmPrisoner,
-  saveRiskAssessmentAnswer,
-  saveHealthcareAssessmentAnswer,
-  completeRiskAssessmentFor,
-  completeHealthAssessmentFor,
   completeHealthAnswersFor,
 } from '../../../../client/javascript/actions';
 
@@ -56,34 +50,6 @@ describe('Actions', () => {
       expect(getOffenderAssessments(assessments)).to.eql({
         type: 'GET_OFFENDER_ASSESSMENTS',
         payload: assessments,
-      });
-    });
-  });
-
-  describe('#getViperScores', () => {
-    it('returns a GET_VIPER_SCORES action', () => {
-      const scores = {
-        output: [{
-          nomisId: 'FOO',
-          viperScore: 1,
-        }],
-      };
-      expect(getViperScores(scores)).to.eql({
-        type: 'GET_VIPER_SCORES',
-        payload: scores.output,
-      });
-    });
-  });
-
-  describe('#addViperScore', () => {
-    it('returns a ADD_VIPER_SCORE action', () => {
-      const score = {
-        nomisId: 'FOO',
-        viperScore: 1,
-      };
-      expect(addViperScore(score)).to.eql({
-        type: 'ADD_VIPER_SCORE',
-        payload: score,
       });
     });
   });
@@ -144,66 +110,6 @@ describe('Actions', () => {
   describe('#confirmPrisoner', () => {
     it('returns a CONFIRM_PRISONER action', () => {
       expect(confirmPrisoner()).to.eql({ type: 'CONFIRM_PRISONER' });
-    });
-  });
-
-  describe('#saveRiskAssessmentAnswer', () => {
-    it('returns a SAVE_RISK_ASSESSMENT_ANSWER action', () => {
-      const section = 'foo-risk';
-      const answer = {
-        confirmation: 'accept',
-      };
-
-      expect(saveRiskAssessmentAnswer(section, answer)).to.eql({
-        type: 'SAVE_RISK_ASSESSMENT_ANSWER',
-        payload: {
-          [section]: answer,
-        },
-      });
-    });
-  });
-
-  describe('#saveHealthcareAssessmentAnswer', () => {
-    it('returns a SAVE_HEALTHCARE_ANSWER action', () => {
-      const section = 'foo-risk';
-      const answer = {
-        confirmation: 'accept',
-      };
-
-      expect(saveHealthcareAssessmentAnswer(section, answer)).to.eql({
-        type: 'SAVE_HEALTHCARE_ANSWER',
-        payload: {
-          [section]: answer,
-        },
-      });
-    });
-  });
-
-  describe('#completeRiskAssessmentFor', () => {
-    it('returns a COMPLETE_RISK_ASSESSMENT action', () => {
-      const outcome = {
-        assessmentId: 1,
-        recommendation: 'foo-outccome',
-        reasons: ['foo-reason'],
-        rating: 'foo-rating',
-      };
-      expect(completeRiskAssessmentFor(outcome)).to.eql({
-        type: 'COMPLETE_RISK_ASSESSMENT',
-        payload: outcome,
-      });
-    });
-  });
-
-  describe('#completeHealthAssessmentFor', () => {
-    it('returns a COMPLETE_HEALTH_ASSESSMENT action', () => {
-      const outcome = {
-        assessmentId: 1,
-        recommendation: 'foo-recommendation',
-      };
-      expect(completeHealthAssessmentFor(outcome)).to.eql({
-        type: 'COMPLETE_HEALTH_ASSESSMENT',
-        payload: outcome,
-      });
     });
   });
 

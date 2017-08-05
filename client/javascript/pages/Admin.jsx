@@ -4,11 +4,10 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
 import { storeData, readSingleFile, clearBrowserStorage } from '../services';
-import { getOffenderAssessments, getViperScores } from '../actions';
+import { getOffenderAssessments } from '../actions';
 
 import routes from '../constants/routes';
 
-// getViperScores: () => dispatch(getViperScores()),
 
 class Admin extends Component {
   constructor() {
@@ -37,7 +36,6 @@ class Admin extends Component {
 
       storeData(name, data);
 
-      this.props.getViperScores();
 
       this.setState({
         error: false,
@@ -49,7 +47,6 @@ class Admin extends Component {
 
   addDefaultPrisoners() {
     this.props.getOffenderAssessments();
-    this.props.getViperScores();
 
     this.setState({
       error: false,
@@ -128,7 +125,7 @@ class Admin extends Component {
           </button>
 
           <Link
-            href="/sign-in"
+            href={routes.SIGN_IN}
             className="button c-btn-right--xcustom"
             data-element-id="continue-button"
           >
@@ -144,6 +141,6 @@ Admin.defaultProps = {
   title: 'Secret Admin page',
 };
 
-export default connect(null, { getOffenderAssessments, getViperScores })(
+export default connect(null, { getOffenderAssessments })(
   Admin,
 );

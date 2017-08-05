@@ -176,7 +176,6 @@ HealthCareSummary.propTypes = {
   onSubmit: PropTypes.func,
   saveOutcome: PropTypes.func,
   viperScore: PropTypes.object,
-  questions: PropTypes.array,
 };
 
 HealthCareSummary.defaultProps = {
@@ -197,7 +196,6 @@ const mapStateToProps = (state, ownProps) => {
     answers: path([selectedOffender.id, 'questions'], healthcareAssessment),
     riskAssessmentComplete: selectedOffender.riskAssessmentCompleted,
     viperScore: path([selectedOffender.id, 'viperScore'], healthcareAssessment),
-    questions: state.questions.healthcare,
   };
 };
 const mapActionsToProps = dispatch => ({

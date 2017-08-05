@@ -5,22 +5,20 @@ import { replace } from 'react-router-redux';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import routes from '../constants/routes';
-import { retrieveViperScoreFor } from '../services';
 import postAssessment from '../services/postAssessment';
-import { addViperScore, confirmPrisoner } from '../actions';
+import { confirmPrisoner } from '../actions';
 import { extractDateFromString } from '../utils';
 
+const standardizePrisoner = prisonerData => ({
+  nomisId: prisonerData.nomisId,
+  surname: prisonerData.surname,
+  forename: prisonerData.forename,
+  dateOfBirth:
+      Date.UTC(prisonerData['dob-year'], prisonerData['dob-month'] - 1, prisonerData['dob-day']) /
+      1000,
+});
 
-const standardizePrisoner = (prisonerData) => {
-  return {
-    nomisId: prisonerData.nomisId,
-    surname: prisonerData.surname,
-    forename: prisonerData.forename,
-    dateOfBirth: Date.UTC(prisonerData['dob-year'], prisonerData['dob-month'] - 1, prisonerData['dob-day']) / 1000,
-  };
-};
-
-const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
+const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) =>
   <DocumentTitle title={title}>
     <div>
       <h1 className="heading-xlarge">Prisoner Added</h1>
@@ -34,18 +32,20 @@ const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
           </p>
 
           <p>
-            <span className="heading-small">
-              DOB:&nbsp;&nbsp;&nbsp;&nbsp;
-            </span>
+            <span className="heading-small">DOB:&nbsp;&nbsp;&nbsp;&nbsp;</span>
             <span data-element-id="prisoner-dob">
-              {extractDateFromString(`${prisoner['dob-day']}-${prisoner['dob-month']}-${prisoner['dob-year']}`)}
+              {extractDateFromString(
+                `${prisoner['dob-day']}-${prisoner['dob-month']}-${prisoner['dob-year']}`,
+              )}
             </span>
           </p>
         </div>
         <div className="column-one-half">
           <p>
             <span className="heading-small">NOMIS No: &nbsp;</span>
-            <span data-element-id="nomisId">{prisoner.nomisId}</span>
+            <span data-element-id="nomisId">
+              {prisoner.nomisId}
+            </span>
           </p>
         </div>
       </div>
@@ -60,12 +60,11 @@ const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
           data-element-id="continue-button"
         >
           Confirm
-          </button>
+        </button>
       </p>
       <Link to={routes.ADD_OFFENDER}>Edit</Link>
     </div>
-  </DocumentTitle>
-);
+  </DocumentTitle>;
 
 const mapStateToProps = state => ({
   prisonerDetails: state.offender.prisonerFormData,
@@ -78,16 +77,10 @@ const mapActionsToProps = dispatch => ({
         return dispatch(replace(routes.ERROR_PAGE));
       }
 
-      return retrieveViperScoreFor(prisoner.nomisId, (body) => {
-        if (body) {
-          dispatch(addViperScore({
-            viperScore: body.viperRating,
-            nomisId: body.nomisId,
-          }));
-        }
-        dispatch(confirmPrisoner());
-        return dispatch(replace(routes.DASHBOARD));
-      });
+      dispatch(confirmPrisoner());
+      dispatch(replace(routes.DASHBOARD));
+
+      return true;
     });
   },
 });

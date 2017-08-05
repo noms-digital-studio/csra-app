@@ -25,7 +25,7 @@ describe('<Comments />', () => {
 
   it('pre-populates the forms if data is available', () => {
     const wrapper = mount(
-      <Comments formDefaults={{ comments: 'foo-comment' }} />,
+      <Comments formDefaults={{ answer: 'foo-comment' }} />,
     );
 
     expect(wrapper.find('[data-element="commentBox"]').node.value).to.equal(

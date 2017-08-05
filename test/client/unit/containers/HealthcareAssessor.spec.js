@@ -37,13 +37,14 @@ describe('<HealthcareAssessor />', () => {
     const formDefaults = {
       role: 'foo-role',
       'full-name': 'foo-name',
-      day: '01',
+      day: '1',
       month: '11',
       year: '1991',
     };
+
     const wrapper = mount(
       <HealthcareAssessor
-        formDefaults={formDefaults}
+        formDefaults={{ answer: 'foo-role, foo-name, 1-11-1991' }}
       />,
     );
 

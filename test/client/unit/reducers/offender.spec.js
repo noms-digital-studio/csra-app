@@ -4,21 +4,13 @@ describe('#offenderReducer', () => {
   const defaultState = {
     selected: {},
     assessments: [],
-    viperScores: [],
     prisonerFormData: {},
   };
 
   it('returns a default state', () => {
-    expect(offenderReducer(undefined, 'UNKNOWN_ACTION')).to.eql(defaultState);
+    expect(offenderReducer(undefined, { type: 'UNKNOWN_ACTION' })).to.eql(defaultState);
   });
 
-  it('returns the state with viper scores included', () => {
-    const scores = [{ nomisId: 'FOO', viperScore: 1 }];
-    const action = { type: 'GET_VIPER_SCORES', payload: scores };
-    const expectedState = { ...defaultState, viperScores: scores };
-
-    expect(offenderReducer(undefined, action)).to.eql(expectedState);
-  });
 
   it('returns the state with offenders assessments included', () => {
     const assessments = [
@@ -82,16 +74,5 @@ describe('#offenderReducer', () => {
     };
 
     expect(offenderReducer(state, action)).to.eql(expectedState);
-  });
-
-  it('returns the state with a new viperScore', () => {
-    const viperScore = { nomisId: 'foo-nomisId', viperScore: 0.5 };
-    const action = { type: 'ADD_VIPER_SCORE', payload: viperScore };
-    const expectedState = {
-      ...defaultState,
-      viperScores: [viperScore],
-    };
-
-    expect(offenderReducer(defaultState, action)).to.eql(expectedState);
   });
 });

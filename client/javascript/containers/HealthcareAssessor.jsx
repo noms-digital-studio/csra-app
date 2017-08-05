@@ -148,11 +148,6 @@ HealthAssessment.propTypes = {
 HealthAssessment.defaultProps = {
   formDefaults: {
     answer: ` , , ${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`,
-    role: '',
-    'full-name': '',
-    day: `${new Date().getDate()}`,
-    month: `${new Date().getMonth() + 1}`,
-    year: `${new Date().getFullYear()}`,
   },
 };
 

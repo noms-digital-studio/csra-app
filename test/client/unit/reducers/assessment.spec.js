@@ -52,11 +52,11 @@ describe('#assessments', () => {
     const payload = {
       assessmentType: 'health',
       id: 1,
-      viperScore: 0.1,
+      viperScore: null,
     };
 
     const action = {
-      type: 'START_RISK_ASSESSMENT',
+      type: 'START_ASSESSMENT',
       payload,
     };
 
@@ -64,7 +64,7 @@ describe('#assessments', () => {
       ...defaultState,
       health: {
         1: {
-          viperScore: 0.1,
+          viperScore: null,
         },
       },
     };

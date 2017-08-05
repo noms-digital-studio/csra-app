@@ -5,89 +5,142 @@ import xhr from 'xhr';
 
 import { fakeStore } from '../test-helpers';
 
-import riskAssessmentQuestions from '../fixtures/riskAssessmentQuestions.json';
+import FullAssessmentOutcome from '../../../../client/javascript/pages/FullAssessmentOutcome';
 
-import FullAssessmentOutcome
-  from '../../../../client/javascript/pages/FullAssessmentOutcome';
-
-const prisonerDetails = {
+const prisoner = {
   id: 1,
+  nomisId: 'foo-nomis-id',
   forename: 'foo-name',
   surname: 'foo-surname',
-  dateOfBirth: '2010-01-01T00:00:00.000Z',
-  nomisId: 'foo-nomisId',
+  dateOfBirth: '1990-12-11T00:00:00.000Z',
   outcome: null,
+  riskAssessmentCompleted: true,
+  healthAssessmentCompleted: true,
 };
 
-const riskAssessmentAnswers = {
-  'how-do-you-feel': {
-    comments: 'foo-comment',
+const riskAssessment = {
+  viperScore: null,
+  questions: {
+    introduction: {
+      questionId: 'introduction',
+      question: 'Making this process fair and open',
+      answer: 'accepted',
+    },
+    'risk-of-violence': {
+      questionId: 'risk-of-violence',
+      question: 'Viper result',
+      answer: '',
+    },
+    'how-do-you-feel': {
+      questionId: 'how-do-you-feel',
+      question: 'How do you think they feel about sharing a cell at this moment?',
+      answer: 'foo comment',
+    },
+    'harm-cell-mate': {
+      questionId: 'harm-cell-mate',
+      question: 'Is there any genuine indication they might seriously hurt a cellmate?',
+      answer: 'no',
+    },
+    vulnerability: {
+      questionId: 'vulnerability',
+      question:
+        "Do you think they're likely to lash out because they're scared or feeling vulnerable?",
+      answer: 'no',
+    },
+    'gang-affiliation': {
+      questionId: 'gang-affiliation',
+      question: 'Are they in a gang?',
+      answer: 'no',
+    },
+    'drug-misuse': {
+      questionId: 'drug-misuse',
+      question: 'Have they taken illicit drugs in the last month?',
+      answer: 'no',
+    },
+    prejudice: {
+      questionId: 'prejudice',
+      question: 'Do they have any hostile views or prejudices?',
+      answer: 'no',
+    },
+    'officers-assessment': {
+      questionId: 'officers-assessment',
+      question: 'Are there any other reasons why you would recommend they have a single cell?',
+      answer: 'no',
+    },
   },
-  'harm-cell-mate': {
-    answer: 'no',
-  },
-  vulnerability: {
-    answer: 'no',
-  },
-  'gang-affiliation': {
-    answer: 'no',
-    comments: 'foo-comment',
-  },
-  'drug-misuse': {
-    answer: 'no',
-  },
-  prejudice: {
-    answer: 'no',
-  },
-  'officers-assessment': {
-    answer: 'no',
-  },
+  outcome: 'shared cell with conditions',
+  reasons: [
+    {
+      questionId: 'foo-id',
+      reason: 'foo-reason',
+    },
+    {
+      questionId: 'bar-id',
+      reason: 'bar-reason',
+    },
+  ],
 };
 
-const healthcareAnswers = {
-  outcome: {
-    answer: 'no',
+const healthcareAssessment = {
+  viperScore: null,
+  questions: {
+    outcome: {
+      questionId: 'outcome',
+      question: 'Does healthcare recommend a single cell?',
+      answer: 'no',
+    },
+    comments: {
+      questionId: 'comments',
+      question: 'Enter all the comments on the healthcare form',
+      answer: '',
+    },
+    consent: {
+      questionId: 'consent',
+      question: 'Have they given consent to share their medical information?',
+      answer: 'no',
+    },
+    assessor: {
+      questionId: 'assessor',
+      question: 'Who completed the healthcare assessment?',
+      answer: ' Nurse, Foo Bar, 4-8-2017',
+    },
   },
-  comments: {
-    comments: 'foo-comment',
-  },
-  consent: {
-    answer: 'no',
-  },
-  assessor: {
-    role: 'foo role',
-    'full-name': 'Foo fullname',
-    day: '20',
-    month: '12',
-    year: '1984',
-  },
+  outcome: 'shared cell',
 };
 
 const state = {
-  answers: {
-    selectedAssessmentId: 'foo-nomis-id',
-    riskAssessment: {
-      'foo-nomis-id': riskAssessmentAnswers,
+  offender: {
+    selected: prisoner,
+  },
+  assessments: {
+    risk: {
+      1: riskAssessment,
     },
     healthcare: {
-      'foo-nomis-id': healthcareAnswers,
+      1: healthcareAssessment,
     },
-  },
-  questions: {
-    riskAssessment: riskAssessmentQuestions,
-  },
-  riskAssessmentStatus: {
-    completed: [{ recommendation: 'shared cell', assessmentId: 1, rating: 'standard', reasons: [] }],
-  },
-  healthcareStatus: {
-    completed: [{ recommendation: 'shared cell', assessmentId: 1 }],
-  },
-  offender: {
-    selected: prisonerDetails,
   },
 };
 
 describe('<FullAssessmentOutcome', () => {
+  let getStub;
+
+  beforeEach(() => {
+    getStub = sinon.stub(xhr, 'get');
+    getStub.yields(
+      null,
+      { statusCode: 200 },
+      {
+        riskAssessment: JSON.stringify(riskAssessment),
+        healthAssessment: JSON.stringify(healthcareAssessment),
+      },
+    );
+  });
+
+  afterEach(() => {
+    getStub.restore();
+  });
+
   it('renders the page without errors', () => {
     const store = fakeStore(state);
     mount(
@@ -95,6 +148,25 @@ describe('<FullAssessmentOutcome', () => {
         <FullAssessmentOutcome />
       </Provider>,
     );
+  });
+
+  it('navigates to an error page if it fails to retrieve data', () => {
+    const store = fakeStore(state);
+
+    getStub.yields(null, { statusCode: 500 });
+
+    mount(
+      <Provider store={store}>
+        <FullAssessmentOutcome />
+      </Provider>,
+    );
+
+    expect(
+      store.dispatch.calledWithMatch({
+        type: '@@router/CALL_HISTORY_METHOD',
+        payload: { method: 'replace', args: ['/error'] },
+      }),
+    ).to.equal(true, 'Did not change path to /error');
   });
 
   it('includes the prisoner profile', () => {
@@ -109,24 +181,13 @@ describe('<FullAssessmentOutcome', () => {
 
     expect(prisonerProfile).to.contain('Foo-name');
     expect(prisonerProfile).to.contain('foo-surname');
-    expect(prisonerProfile).to.contain('01 January 2010');
-    expect(prisonerProfile).to.contain('foo-nomisId');
+    expect(prisonerProfile).to.contain('11 December 1990');
+    expect(prisonerProfile).to.contain('foo-nomis-id');
   });
 
   it('displays the reasons if outcome is shared with conditions', () => {
-    const stateWithReasons = {
-      ...state,
-      riskAssessmentStatus: {
-        completed: [
-          {
-            recommendation: 'shared cell with conditions',
-            assessmentId: 1,
-            reasons: ['foo-reason', 'bar-reason'],
-          },
-        ],
-      },
-    };
-    const store = fakeStore(stateWithReasons);
+    const store = fakeStore(state);
+
     const wrapper = mount(
       <Provider store={store}>
         <FullAssessmentOutcome />
@@ -155,6 +216,7 @@ describe('<FullAssessmentOutcome', () => {
 
   it('includes the risk assessment answers', () => {
     const store = fakeStore(state);
+    const questions = riskAssessment.questions;
     const wrapper = mount(
       <Provider store={store}>
         <FullAssessmentOutcome />
@@ -162,19 +224,22 @@ describe('<FullAssessmentOutcome', () => {
     );
 
     const riskAssessmentSummaryText = wrapper
-      .find('[data-risk-summary]')
+      .find('[data-element-id="risk-assessment-summary"]')
       .text();
 
-    Object.keys(riskAssessmentAnswers).forEach((key) => {
-      Object.keys(riskAssessmentAnswers[key]).forEach((innerKey) => {
-        const regex = new RegExp(riskAssessmentAnswers[key][innerKey], 'i');
-        expect(riskAssessmentSummaryText).to.match(regex);
-      });
+    Object.keys(questions).forEach((key) => {
+      if (key === 'introduction') return;
+
+      const answer = questions[key].answer;
+      const regex = new RegExp(answer, 'i');
+
+      expect(riskAssessmentSummaryText).to.match(regex);
     });
   });
 
   it('includes the healthcare assessment answers', () => {
     const store = fakeStore(state);
+    const questions = healthcareAssessment.questions;
     const wrapper = mount(
       <Provider store={store}>
         <FullAssessmentOutcome />
@@ -183,16 +248,18 @@ describe('<FullAssessmentOutcome', () => {
 
     const healthcareSummaryText = wrapper.find('[data-element-id="health-summary"]').text();
 
-    Object.keys(healthcareAnswers).forEach((key) => {
-      Object.keys(healthcareAnswers[key]).forEach((innerKey) => {
-        const regex = new RegExp(healthcareAnswers[key][innerKey], 'i');
+    Object.keys(questions).forEach((key) => {
+      const answer = questions[key].answer;
+      const regex = new RegExp(answer, 'i');
 
-        if (innerKey === 'outcome') {
-          expect(healthcareSummaryText).to.match(/shared cell/i);
-        } else {
-          expect(healthcareSummaryText).to.match(regex);
-        }
-      });
+      if (key === 'assessor') {
+        expect(healthcareSummaryText).to.include('Nurse');
+        expect(healthcareSummaryText).to.include('Foo Bar');
+        expect(healthcareSummaryText).to.include('4 August 2017');
+        return;
+      }
+
+      expect(healthcareSummaryText).to.match(regex);
     });
   });
 
@@ -246,7 +313,7 @@ describe('<FullAssessmentOutcome', () => {
     const stateWithOutcomes = {
       ...state,
       offender: {
-        selected: { ...prisonerDetails, outcome: 'Foo outcome' },
+        selected: { ...prisoner, outcome: 'Foo outcome' },
       },
     };
 

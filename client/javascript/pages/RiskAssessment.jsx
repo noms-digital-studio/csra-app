@@ -29,7 +29,9 @@ const mapStateToProps = (state, ownProps) => ({
   ...ownProps,
   questions: state.questions.riskAssessment,
   prisoner: state.offender.selected,
-  prisonerViperScore: riskFromViperScore(path([state.offender.selected.id, 'viperScore'], state.assessments.risk)),
+  prisonerViperScore: riskFromViperScore(
+    path([state.offender.selected.id, 'viperScore'], state.assessments.risk),
+  ),
   answers: path([state.offender.selected.id, 'questions'], state.assessments.risk),
 });
 

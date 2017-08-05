@@ -10,7 +10,7 @@ describe('<PrisonerProfile />', () => {
       forename: 'foo-name',
       surname: 'foo-surname',
       dateOfBirth: '2010-01-01T00:00:00.000Z',
-      nomisId: 'foo-nomisId',
+      nomisId: 'foo-nomis-id',
     };
 
     const wrapper = shallow(<PrisonerProfile {...prisonerDetails} />);
@@ -19,6 +19,6 @@ describe('<PrisonerProfile />', () => {
     expect(profileText).to.contain('Foo-name');
     expect(profileText).to.contain('foo-surname');
     expect(profileText).to.contain('01 January 2010');
-    expect(profileText).to.contain('foo-nomisId');
+    expect(profileText).to.contain('foo-nomis-id');
   });
 });

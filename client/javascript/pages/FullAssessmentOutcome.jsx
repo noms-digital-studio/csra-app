@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { replace } from 'react-router-redux';
 import { browserHistory } from 'react-router';
 import not from 'ramda/src/not';
-import isEmpty from 'ramda/src/isEmpty';
 import path from 'ramda/src/path';
 
 import { cellAssignment } from '../services';
@@ -24,11 +23,11 @@ import routes from '../constants/routes';
 
 class FullAssessmentOutcome extends Component {
   componentDidMount() {
-    const { prisoner, storeRiskAssessment, storeHealthcareAssessment } = this.props;
+    const { prisoner, storeRiskAssessment, storeHealthcareAssessment, gotToErrorPage } = this.props;
 
     getAssessmentsById(prisoner.id, (response) => {
       if (not(response)) {
-        return browserHistory.replace(routes.ERROR_PAGE);
+        return gotToErrorPage();
       }
 
       const riskAssessment = JSON.parse(response.riskAssessment);
@@ -96,7 +95,7 @@ class FullAssessmentOutcome extends Component {
               </ul>}
           </div>
 
-          <div data-risk-summary>
+          <div data-element-id="risk-assessment-summary">
             <RiskAssessmentSummaryTable title="Risk assessment summary" />
           </div>
 
@@ -143,6 +142,8 @@ class FullAssessmentOutcome extends Component {
 }
 
 FullAssessmentOutcome.propTypes = {
+  riskAssessment: PropTypes.object,
+  healthAssessment: PropTypes.object,
   title: PropTypes.string,
   prisoner: PropTypes.shape({
     id: PropTypes.number,
@@ -151,6 +152,8 @@ FullAssessmentOutcome.propTypes = {
     nomisId: PropTypes.string,
     surname: PropTypes.string,
   }),
+  storeRiskAssessment: PropTypes.func,
+  storeHealthcareAssessment: PropTypes.func,
   onSubmit: PropTypes.func,
   alreadyCompleted: PropTypes.bool,
   onReturnHome: PropTypes.func,
@@ -160,10 +163,12 @@ FullAssessmentOutcome.defaultProps = {
   title: 'Assessment Outcome',
   prisoner: {},
   onSubmit: () => {},
-  riskAssessmentOutcome: {},
-  healthcareOutcome: {},
   onReturnHome: () => {},
+  storeRiskAssessment: () => {},
+  storeHealthcareAssessment: () => {},
   alreadyCompleted: false,
+  riskAssessment: {},
+  healthAssessment: {},
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -179,6 +184,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapActionsToProps = dispatch => ({
+  gotToErrorPage: () => dispatch(replace(routes.ERROR_PAGE)),
   storeRiskAssessment: ({ id, assessment }) => dispatch(storeRiskAssessmentFor({ id, assessment })),
   storeHealthcareAssessment: ({ id, assessment }) =>
     dispatch(storeHealthcareAssessmentFor({ id, assessment })),

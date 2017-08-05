@@ -50,6 +50,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export { RiskAssessmentSummaryTable };
-
 export default connect(mapStateToProps)(RiskAssessmentSummaryTable);

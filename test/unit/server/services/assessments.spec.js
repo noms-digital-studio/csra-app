@@ -28,6 +28,7 @@ describe('prisoner assessment service', () => {
 
   const validHealthAssessment = {
     outcome: 'single cell',
+    viperScore: null,
     questions: {
       Q1: {
         questionId: 'Q1',
@@ -35,12 +36,6 @@ describe('prisoner assessment service', () => {
         answer: 'Yes',
       },
     },
-    reasons: [
-      {
-        questionId: 'Q1',
-        reason: 'They said they were legit',
-      },
-    ],
   };
 
   const fakeAppInfo = {
@@ -343,7 +338,7 @@ describe('prisoner assessment service', () => {
       allows({ viperScore: 0.11 });
       allows({ viperScore: 0.99 });
       allows({ viperScore: undefined }, 'missing "viperScore"');
-      allows({ viperScore: -1 });
+      allows({ viperScore: null });
       doesNotAllow({ viperScore: -2 });
       doesNotAllow({ viperScore: 1.1 });
       doesNotAllow({ viperScore: 0.123 });
@@ -595,28 +590,6 @@ describe('prisoner assessment service', () => {
       doesNotAllow({ questions: { Q1: {
         question_id: 'Q1', question: '', answer: '42',
       } } }, 'missing question in a question');
-
-      allows({ reasons: [] });
-      allows({ reasons: [
-        { questionId: 'Q1', reason: 'I felt like it' },
-      ] });
-      allows({ reasons: [
-        { questionId: 'Q1', reason: 'Looked shifty' },
-        { questionId: 'Q2', reason: 'I felt like it' },
-        { questionId: 'Q7', reason: 'Sounded rather unsure' },
-      ] });
-      allows({ reasons: [
-        { questionId: 'Q1', reason: 'Looked shifty', other: 'stuff' },
-      ] }, 'extra data in reasons');
-      doesNotAllow({ reasons: undefined }, 'missing "reasons"');
-      doesNotAllow({ reasons: [
-        { questionId: 'Q1', reason: 'I felt like it' },
-        { reason: 'Looked shifty' },
-      ] }, 'missing "questionId" in reasons');
-      doesNotAllow({ reasons: [
-        { reason: 'I felt like it' },
-        { questionId: 'Q7', reason: 'Sounded rather unsure' },
-      ] }, 'missing "reason" in reasons');
     });
   });
 

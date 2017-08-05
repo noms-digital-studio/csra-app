@@ -26,10 +26,6 @@ const mountComponent = store =>
 describe('<ConfirmOffender />', () => {
   let postStub;
   let getStub;
-  const viperResult = {
-    nomisId: 'foo-nomis-id',
-    viperRating: 0.50,
-  };
   const store = fakeStore({
     offender: {
       prisonerFormData: prisoner,
@@ -71,27 +67,6 @@ describe('<ConfirmOffender />', () => {
           ).to.equal(true, 'Changed path to /error');
 
           postStub.restore();
-        });
-      });
-
-      context('and a server returns a success response', () => {
-        it('calls the addViperScore action', () => {
-          const wrapper = mountComponent(store);
-
-          postStub.yields(null, {}, { id: 1 });
-
-          getStub.yields(null, { status: 200 }, viperResult);
-
-          wrapper.find('[data-element-id="continue-button"]').simulate('click');
-
-          expect(getStub.lastCall.args[0]).to.match(/\/api\/viper\/foo-nomisId/, "the url didn't match");
-
-          expect(
-            store.dispatch.calledWithMatch({
-              type: 'ADD_VIPER_SCORE',
-              payload: { nomisId: 'foo-nomis-id', viperScore: 0.50 },
-            }),
-          ).to.equal(true, 'did not call the ADD_VIPER_SCORE action');
         });
       });
     });

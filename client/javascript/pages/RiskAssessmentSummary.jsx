@@ -5,10 +5,7 @@ import { replace } from 'react-router-redux';
 import path from 'ramda/src/path';
 import not from 'ramda/src/not';
 
-import {
-  saveRiskAssessmentOutcome,
-  saveRiskAssessmentReasons,
-} from '../actions';
+import { saveRiskAssessmentOutcome, saveRiskAssessmentReasons } from '../actions';
 import { capitalize } from '../utils';
 import { extractDecision } from '../services';
 

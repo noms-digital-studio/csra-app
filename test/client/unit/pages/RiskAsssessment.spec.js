@@ -36,25 +36,42 @@ const questions = [
   },
 ];
 
+const riskAssessment = {
+  viperScore: 0.1,
+  outcome: 'shared cell',
+  questions: {
+    'foo-section': {
+      questionId: 'foo-section',
+      question: 'foo-title',
+      answer: 'foo-answer',
+    },
+    'bar-section': {
+      questionId: 'bar-section',
+      question: 'bar-title',
+      answer: 'bar-answer',
+    },
+  },
+};
+
 describe('<RiskAssessment />', () => {
   let store;
 
   beforeEach(() => {
     store = fakeStore({
-      answers: {
-        selectedAssessmentId: 'foo-prisoner-id',
-        answers: {},
-      },
       questions: {
         riskAssessment: questions,
       },
       offender: {
         selected: {
+          id: 1,
           forename: 'foo-forename',
           surname: 'foo-surname',
           dateOfBirth: '17-Nov-1999',
           nomisId: 'AA54321XX',
         },
+      },
+      assessments: {
+        risk: riskAssessment,
       },
     });
   });
@@ -66,9 +83,10 @@ describe('<RiskAssessment />', () => {
       </Provider>,
     );
 
-    expect(
-      store.dispatch.calledWithMatch({ type: 'GET_RISK_ASSESSMENT_QUESTIONS' }),
-    ).to.equal(true, 'dispatch GET_RISK_ASSESSMENT_QUESTIONS');
+    expect(store.dispatch.calledWithMatch({ type: 'GET_RISK_ASSESSMENT_QUESTIONS' })).to.equal(
+      true,
+      'dispatch GET_RISK_ASSESSMENT_QUESTIONS',
+    );
   });
 
   it('renders offender details', () => {
@@ -94,16 +112,26 @@ describe('<RiskAssessment />', () => {
 
     expect(
       store.dispatch.calledWithMatch({
-        type: 'SAVE_RISK_ASSESSMENT_ANSWER',
-        payload: { 'foo-section': { answer: 'yes' } },
+        type: 'STORE_ASSESSMENT_ANSWER',
+        payload: {
+          id: 1,
+          questionAnswer: {
+            'foo-section': {
+              questionId: 'foo-section',
+              question: 'foo-title',
+              answer: 'yes',
+            },
+          },
+          assessmentType: 'risk',
+        },
       }),
-    ).to.equal(true, 'Dispatched SAVE_RISK_ASSESSMENT_ANSWER');
+    ).to.equal(true, 'Did not dispatched STORE_ASSESSMENT_ANSWER');
 
     expect(
       store.dispatch.calledWithMatch({
         type: '@@router/CALL_HISTORY_METHOD',
         payload: { method: 'push', args: ['/risk-assessment/bar-section'] },
       }),
-    ).to.equal(true, 'Changed path to /risk-assessment/bar-section');
+    ).to.equal(true, 'Did not changed path to /risk-assessment/bar-section');
   });
 });

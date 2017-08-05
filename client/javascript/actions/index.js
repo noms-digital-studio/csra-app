@@ -2,8 +2,6 @@ import {
   GET_RISK_ASSESSMENT_QUESTIONS,
   GET_HEALTH_ASSESSMENT_QUESTIONS,
   GET_OFFENDER_ASSESSMENTS,
-  GET_VIPER_SCORES,
-  ADD_VIPER_SCORE,
   SELECT_OFFENDER,
   SIGN_IN,
   SIGN_OUT,
@@ -20,7 +18,7 @@ import {
 import riskAssessmentQuestions from '../fixtures/risk-assessment-questions.json';
 import healthAssessmentQuestions from '../fixtures/healthcare-questions.json';
 
-import { viperScores, buildQuestionAnswer } from '../services';
+import { buildQuestionAnswer } from '../services';
 
 export const getRiskAssessmentQuestions = (data = riskAssessmentQuestions) => ({
   type: GET_RISK_ASSESSMENT_QUESTIONS,
@@ -37,15 +35,6 @@ export const getOffenderAssessments = assessments => ({
   payload: assessments,
 });
 
-export const getViperScores = (scores = viperScores()) => ({
-  type: GET_VIPER_SCORES,
-  payload: scores.output,
-});
-
-export const addViperScore = ({ nomisId, viperScore }) => ({
-  type: ADD_VIPER_SCORE,
-  payload: { nomisId, viperScore },
-});
 
 export const selectOffender = offender => ({
   type: SELECT_OFFENDER,
