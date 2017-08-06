@@ -91,30 +91,6 @@ describe('<OffenderProfile />', () => {
           }),
         ).to.equal(true, 'did not change path to /risk-assessment/introduction');
       });
-
-      context('and there is a server error', () => {
-        it('navigates to an error page', () => {
-          getStub.yields(null, { statusCode: 500 });
-
-          const wrapper = mount(
-            <Provider store={store}>
-              <ConnectedOffenderProfile />
-            </Provider>,
-          );
-
-          wrapper.find('[data-element-id="continue-button"]').simulate('click');
-
-          expect(
-            store.dispatch.calledWithMatch({
-              type: '@@router/CALL_HISTORY_METHOD',
-              payload: {
-                method: 'replace',
-                args: ['/error'],
-              },
-            }),
-          ).to.equal(true, 'did not change path to /error');
-        });
-      });
     });
   });
 });

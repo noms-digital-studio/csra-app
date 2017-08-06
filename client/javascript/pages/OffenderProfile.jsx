@@ -95,7 +95,7 @@ const mapActionsToProps = dispatch => ({
   onSubmit: (prisoner) => {
     retrieveViperScoreFor(prisoner.nomisId, (response) => {
       if (not(response)) {
-        return dispatch(replace(routes.ERROR_PAGE));
+        return dispatch(push(`${routes.RISK_ASSESSMENT}/introduction`));
       }
 
       dispatch(
