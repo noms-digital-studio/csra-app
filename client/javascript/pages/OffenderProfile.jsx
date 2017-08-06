@@ -2,9 +2,8 @@ import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { push, replace } from 'react-router-redux';
+import { push } from 'react-router-redux';
 import path from 'ramda/src/path';
-import not from 'ramda/src/not';
 
 import { extractDateFromUTCString } from '../utils';
 import { startRiskAssessmentFor } from '../actions';

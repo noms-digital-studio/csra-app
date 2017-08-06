@@ -2,11 +2,7 @@ import Future from 'fibers/future';
 
 import db from '../../util/db';
 
-const clearPrisonerAssessments = () =>
-  db
-  .delete()
-  .table('prisoner_assessments')
-  .then(result => result);
+const clearPrisonerAssessments = () => db.delete().table('prisoner_assessments');
 
 export const clearPrisonerAssessmentsSync = () => {
   const future = Future.fromPromise(clearPrisonerAssessments());

@@ -25,7 +25,7 @@ const assessmentConfig = {
     officersAssessment: 'no',
   },
   reasons: [
-    { question_id: 'harm-cell-mate', reason: 'Officer thinks they might seriously hurt cellmate' },
+    { questionId: 'harm-cell-mate', reason: 'Officer thinks they might seriously hurt cellmate' },
   ],
 };
 

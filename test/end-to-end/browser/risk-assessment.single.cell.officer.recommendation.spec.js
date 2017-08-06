@@ -23,9 +23,8 @@ const assessmentConfig = {
     prejudice: 'no',
     officersAssessment: 'yes',
   },
-
   reasons: [
-    { question_id: 'officers-assessment', reason: 'Officer recommends a single cell' },
+    { questionId: 'officers-assessment', reason: 'Officer recommends a single cell' },
   ],
 };
 

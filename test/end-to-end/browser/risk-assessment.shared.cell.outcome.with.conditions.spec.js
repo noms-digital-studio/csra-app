@@ -24,7 +24,7 @@ const assessmentConfig = {
     officersAssessment: 'no',
   },
   reasons: [
-    { question_id: 'drug-misuse', reason: 'Has indicated drug use' },
+    { questionId: 'drug-misuse', reason: 'Has indicated drug use' },
   ],
 };
 

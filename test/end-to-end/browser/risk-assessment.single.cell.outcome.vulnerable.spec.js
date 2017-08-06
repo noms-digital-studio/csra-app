@@ -23,7 +23,7 @@ const assessmentConfig = {
     officersAssessment: 'no',
   },
   reasons: [
-    { question_id: 'vulnerability', reason: "Officer thinks they're scared or vulnerable" },
+    { questionId: 'vulnerability', reason: "Officer thinks they're scared or vulnerable" },
   ],
 };
 

@@ -24,6 +24,9 @@ const assessmentConfig = {
     prejudice: 'no',
     officersAssessment: 'no',
   },
+  reasons: [
+    { questionId: 'risk-of-violence', reason: 'has a high viper score' },
+  ],
 };
 
 
