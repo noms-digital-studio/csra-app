@@ -1,31 +1,39 @@
 import debugModule from 'debug';
-import Joi from 'joi';
+// import Joi from 'joi';
 import xhr from 'xhr';
+import has from 'ramda/src/has';
+import allPass from 'ramda/src/allPass';
+import all from 'ramda/src/all';
 
 const debug = debugModule('csra');
 
-const schema = Joi.array().items(
-  Joi.object({
-    id: Joi.number(),
-    nomisId: Joi.string().optional(),
-    forename: Joi.string(),
-    surname: Joi.string(),
-    dateOfBirth: Joi.string(),
-    riskAssessmentCompleted: Joi.boolean(),
-    healthAssessmentCompleted: Joi.boolean(),
-    outcome: Joi.string().allow(null),
-  }),
-);
+const validate = (body) => {
+  const hasId = has('id');
+  const hasNomisId = has('nomisId');
+  const hasForename = has('forename');
+  const hasSurname = has('surname');
+  const hasDob = has('dateOfBirth');
+  const hasRiskAssessmentCompleted = has('riskAssessmentCompleted');
+  const hasHealthAssessmentCompleted = has('healthAssessmentCompleted');
+  const hasOutcome = has('outcome');
+  const validResponse = allPass([
+    hasId,
+    hasNomisId,
+    hasForename,
+    hasSurname,
+    hasDob,
+    hasRiskAssessmentCompleted,
+    hasHealthAssessmentCompleted,
+    hasOutcome,
+  ]);
 
-const validate = (assessment) => {
-  const isValid = Joi.validate(assessment, schema, {
-    abortEarly: false,
-    presence: 'required',
-  });
+  if (Array.isArray(body) && all(validResponse, body)) {
+    return body;
+  }
 
-  debug('Validation of get assessments return %j', isValid.error);
+  debug('Validation failed');
 
-  return isValid.error === null;
+  return null;
 };
 
 const getAssessments = (callback) => {
@@ -43,7 +51,7 @@ const getAssessments = (callback) => {
     if (error || resp.statusCode >= 400) {
       callback(null);
     } else {
-      callback(validate(body) ? body : null);
+      callback(validate(body));
     }
   });
 };
