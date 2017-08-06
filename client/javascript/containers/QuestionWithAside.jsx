@@ -5,6 +5,7 @@ import Aside from '../components/asides/Index';
 import SelectableInputGroup from '../components/SelectableInputGroup';
 
 const QuestionWithAside = ({
+  section,
   title,
   description,
   aside,
@@ -23,7 +24,7 @@ const QuestionWithAside = ({
         className="form"
         onSubmit={onSubmit}
       >
-        <h1 data-title={title} className="heading-large">{title}</h1>
+        <h1 data-title={section} className="heading-large">{title}</h1>
         <div dangerouslySetInnerHTML={{ __html: description }} />
 
         <div className="form-group">
@@ -66,6 +67,7 @@ const QuestionWithAside = ({
 );
 
 QuestionWithAside.propTypes = {
+  section: PropTypes.string,
   title: PropTypes.string,
   description: PropTypes.string,
   onSubmit: PropTypes.func,

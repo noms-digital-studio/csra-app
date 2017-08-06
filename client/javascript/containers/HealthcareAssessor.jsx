@@ -11,7 +11,7 @@ class HealthAssessment extends Component {
   }
 
   render() {
-    const { title, aside, onSubmit, formDefaults, isComplete } = this.props;
+    const { title, aside, onSubmit, formDefaults, isComplete, section } = this.props;
 
     const assessor = splitAssessorValues(formDefaults.answer);
 
@@ -19,7 +19,7 @@ class HealthAssessment extends Component {
       <div className="grid-row">
         <div className="column-two-thirds">
           <form key={uuid()} action="/" method="post" className="form" onSubmit={onSubmit}>
-            <h1 data-title={title} className="heading-large">
+            <h1 data-title={section} className="heading-large">
               {title}
             </h1>
 
@@ -132,6 +132,7 @@ class HealthAssessment extends Component {
 }
 
 HealthAssessment.propTypes = {
+  section: PropTypes.string,
   title: PropTypes.string,
   aside: PropTypes.object,
   onSubmit: PropTypes.func,

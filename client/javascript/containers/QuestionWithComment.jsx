@@ -4,6 +4,7 @@ import SelectableInputWithCommentGroup
   from '../components/SelectableInputWithCommentGroup';
 
 const Question = ({
+  section,
   title,
   description,
   onSubmit,
@@ -21,7 +22,7 @@ const Question = ({
         className="form"
         onSubmit={onSubmit}
       >
-        <h1 data-title={title} className="heading-large">{title}</h1>
+        <h1 data-title={section} className="heading-large">{title}</h1>
         <div dangerouslySetInnerHTML={{ __html: description }} />
 
         <div className="form-group">
@@ -63,6 +64,7 @@ const Question = ({
 );
 
 Question.propTypes = {
+  section: PropTypes.string,
   title: PropTypes.string,
   description: PropTypes.string,
   aside: PropTypes.object,

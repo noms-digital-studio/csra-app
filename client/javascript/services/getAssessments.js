@@ -1,5 +1,4 @@
 import debugModule from 'debug';
-// import Joi from 'joi';
 import xhr from 'xhr';
 import has from 'ramda/src/has';
 import allPass from 'ramda/src/allPass';

@@ -124,6 +124,7 @@ class Questionnaire extends Component {
         </div>
 
         {templateSelector({
+          section,
           isComplete,
           completionPath,
           ...question,
