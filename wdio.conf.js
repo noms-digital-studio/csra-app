@@ -16,7 +16,7 @@ exports.config = {
   // NPM script (see https://docs.npmjs.com/cli/run-script) then the current working
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
-  specs: ['./test/end-to-end/browser/**/*.spec.js'],
+  specs: ['./test/end-to-end/browser/**/both.assessments.shared.cell.outcome.spec.js'],
   waitforTimeout: 150000,
   // Patterns to exclude.
   exclude: [
@@ -51,7 +51,7 @@ exports.config = {
       // 5 instance gets started at a time.
       maxInstances: 1,
       //
-      browserName: 'phantomjs', // options: chrome || firefox || phantomjs
+      browserName: 'chrome', // options: chrome || firefox || phantomjs
     },
   ],
   //
@@ -110,7 +110,7 @@ exports.config = {
   // Services take over a specific job you don't want to take care of. They enhance
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
-  services: ['phantomjs'], // to run locally with chrome - 'selenium-standalone'
+  services: ['selenium-standalone'], // to run locally with chrome - 'selenium-standalone'
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
   // see also: http://webdriver.io/guide/testrunner/frameworks.html
