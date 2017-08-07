@@ -1,29 +1,27 @@
 import deepEqual from 'deep-equal';
 
+const monthNames = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
 export const allFormFieldsComplete = (formData = {}, expectedKeys = []) => {
   if (Object.keys(formData).length === 0) return false;
 
   return expectedKeys.every(key => !!formData[key]);
 };
 
-export const parseDate = (date) => {
-  const monthNames = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-
-  return `${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
-};
+export const parseDate = date => (`${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`);
 
 export const addUniqElementToList = (item, list) => {
   if (list.find(elm => deepEqual(elm, item))) {
@@ -43,4 +41,16 @@ export const extractDateFromString = (dateString) => {
   const date = dateArray[0];
 
   return parseDate(new Date(year, month, date));
+};
+
+export const extractDateFromUTCString = (dateString) => {
+  if (dateString) {
+    const dateArray = dateString.split('-');
+    const year = dateArray[0];
+    const month = monthNames[dateArray[1] - 1];
+    const date = dateArray[2].substring(0, 2);
+
+    return `${date} ${month} ${year}`;
+  }
+  return '';
 };

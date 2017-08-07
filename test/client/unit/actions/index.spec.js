@@ -3,24 +3,17 @@ import {
   signOut,
   getRiskAssessmentQuestions,
   getHealthAssessmentQuestions,
-  getOffenderNomisProfiles,
-  getViperScores,
-  addViperScore,
+  getOffenderAssessments,
   selectOffender,
   addPrisoner,
   confirmPrisoner,
-  saveRiskAssessmentAnswer,
-  saveHealthcareAssessmentAnswer,
-  completeRiskAssessmentFor,
-  completeHealthAssessmentFor,
   completeHealthAnswersFor,
-  storeOutcome,
 } from '../../../../client/javascript/actions';
 
 import riskAssessmentQuestions
-  from '../../../../client/javascript/fixtures/risk-assessment-questions.json';
+from '../../../../client/javascript/fixtures/risk-assessment-questions.json';
 import healthcareQuestions
-  from '../../../../client/javascript/fixtures/healthcare-questions.json';
+from '../../../../client/javascript/fixtures/healthcare-questions.json';
 
 describe('Actions', () => {
   describe('#getRiskAssessmentQuestions', () => {
@@ -41,42 +34,22 @@ describe('Actions', () => {
     });
   });
 
-  describe('#getOffenderNomisProfiles', () => {
-    it('return a GET_OFFENDER_NOMIS_PROFILES action', () => {
-      const profiles = {
-        output: [
-          {
-            nomisId: 'foo',
-            surname: 'foobar',
-            firstName: 'foobaz',
-            dob: 'foo-age',
-          },
-        ],
-      };
+  describe('#getOffenderAssessments', () => {
+    it('return a GET_OFFENDER_ASSESSMENTS action', () => {
+      const assessments = [{
+        id: 1,
+        nomisId: 'foo-id',
+        surname: 'foo-surname',
+        forename: 'foo-forename',
+        dateOfBirth: '1-12-2010',
+        riskAssessmentCompleted: true,
+        healthAssessmentCompleted: true,
+        outcome: 'Foo outcome',
+      }];
 
-      expect(getOffenderNomisProfiles(profiles)).to.eql({
-        type: 'GET_OFFENDER_NOMIS_PROFILES',
-        payload: profiles.output,
-      });
-    });
-  });
-
-  describe('#getViperScores', () => {
-    it('returns a GET_VIPER_SCORES action', () => {
-      const scores = { output: [{ nomisId: 'FOO', viperScore: 1 }] };
-      expect(getViperScores(scores)).to.eql({
-        type: 'GET_VIPER_SCORES',
-        payload: scores.output,
-      });
-    });
-  });
-
-  describe('#addViperScore', () => {
-    it('returns a ADD_VIPER_SCORE action', () => {
-      const score = { nomisId: 'FOO', viperScore: 1 };
-      expect(addViperScore(score)).to.eql({
-        type: 'ADD_VIPER_SCORE',
-        payload: score,
+      expect(getOffenderAssessments(assessments)).to.eql({
+        type: 'GET_OFFENDER_ASSESSMENTS',
+        payload: assessments,
       });
     });
   });
@@ -84,10 +57,11 @@ describe('Actions', () => {
   describe('#selectOffender', () => {
     it('returns a SELECT_OFFENDER action', () => {
       const offender = {
+        assessmentId: 1,
         nomisId: 'foo',
         surname: 'foobar',
-        firstName: 'foobaz',
-        dob: 'foo-age',
+        forename: 'foobaz',
+        dateOfBirth: 'foo-age',
       };
 
       expect(selectOffender(offender)).to.eql({
@@ -100,25 +74,30 @@ describe('Actions', () => {
   describe('#signIn', () => {
     it('returns a SIGN_IN action', () => {
       const user = 'Foo bar';
-      expect(signIn(user)).to.eql({ type: 'SIGN_IN', payload: user });
+      expect(signIn(user)).to.eql({
+        type: 'SIGN_IN',
+        payload: user,
+      });
     });
   });
 
   describe('#signOut', () => {
     it('returns a SIGN_OUT action', () => {
-      expect(signOut()).to.eql({ type: 'SIGN_OUT' });
+      expect(signOut()).to.eql({
+        type: 'SIGN_OUT',
+      });
     });
   });
 
   describe('#addPrisoner', () => {
     it('returns a ADD_PRISONER action', () => {
       const prisoner = {
-        'first-name': 'foo',
-        'last-name': 'bar',
+        forename: 'foo',
+        surname: 'bar',
         'dob-day': '01',
         'dob-month': '10',
         'dob-year': '1997',
-        'nomis-id': 'AA12345',
+        nomisId: 'AA12345',
       };
 
       expect(addPrisoner(prisoner)).to.eql({
@@ -129,100 +108,19 @@ describe('Actions', () => {
   });
 
   describe('#confirmPrisoner', () => {
-    const prisonerData = {
-      'first-name': 'foo',
-      'last-name': 'bar',
-      'dob-day': '01',
-      'dob-month': '10',
-      'dob-year': '1997',
-      'nomis-id': 'AA12345',
-    };
-
-    const prisoner = {
-      nomisId: 'AA12345',
-      surname: 'bar',
-      firstName: 'foo',
-      dob: '01-10-1997',
-    };
-
-    expect(confirmPrisoner(prisonerData)).to.eql({
-      type: 'CONFIRM_PRISONER',
-      payload: prisoner,
-    });
-  });
-
-  describe('#saveRiskAssessmentAnswer', () => {
-    it('returns a SAVE_RISK_ASSESSMENT_ANSWER action', () => {
-      const section = 'foo-risk';
-      const answer = { confirmation: 'accept' };
-
-      expect(saveRiskAssessmentAnswer(section, answer)).to.eql({
-        type: 'SAVE_RISK_ASSESSMENT_ANSWER',
-        payload: { [section]: answer },
-      });
-    });
-  });
-
-  describe('#saveHealthcareAssessmentAnswer', () => {
-    it('returns a SAVE_HEALTHCARE_ANSWER action', () => {
-      const section = 'foo-risk';
-      const answer = { confirmation: 'accept' };
-
-      expect(saveHealthcareAssessmentAnswer(section, answer)).to.eql({
-        type: 'SAVE_HEALTHCARE_ANSWER',
-        payload: { [section]: answer },
-      });
-    });
-  });
-
-  describe('#completeRiskAssessmentFor', () => {
-    it('returns a COMPLETE_RISK_ASSESSMENT action', () => {
-      const outcome = {
-        nomisId: 'foo-id',
-        recommendation: 'foo-outccome',
-        reasons: ['foo-reason'],
-        assessmentId: 'foo-nomis-id',
-        rating: 'foo-rating',
-      };
-      expect(completeRiskAssessmentFor(outcome)).to.eql({
-        type: 'COMPLETE_RISK_ASSESSMENT',
-        payload: outcome,
-      });
-    });
-  });
-
-  describe('#completeHealthAssessmentFor', () => {
-    it('returns a COMPLETE_HEALTH_ASSESSMENT action', () => {
-      const outcome = {
-        nomisId: 'foo-id',
-        recommendation: 'foo-recommendation',
-        assessmentId: 'foo-nomis-id',
-      };
-      expect(completeHealthAssessmentFor(outcome)).to.eql({
-        type: 'COMPLETE_HEALTH_ASSESSMENT',
-        payload: outcome,
-      });
+    it('returns a CONFIRM_PRISONER action', () => {
+      expect(confirmPrisoner()).to.eql({ type: 'CONFIRM_PRISONER' });
     });
   });
 
   describe('#completeHealthAnswersFor', () => {
     it('returns a HEALTHCARE_ANSWERS_COMPLETE action', () => {
       const offender = {
-        nomisId: 'foo-nomis-id',
+        assessmentId: 1,
       };
       expect(completeHealthAnswersFor(offender)).to.eql({
         type: 'HEALTHCARE_ANSWERS_COMPLETE',
         payload: offender,
-      });
-    });
-  });
-
-  describe('#storeOutcome', () => {
-    it('returns a SAVE_OUTCOME action', () => {
-      const outcome = { nomisId: 'foo-nomis-id', outcome: 'foo-outcome' };
-      expect(storeOutcome(outcome)).to.eql({
-        type: 'SAVE_OUTCOME',
-        payload: outcome,
       });
     });
   });

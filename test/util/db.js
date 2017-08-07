@@ -1,6 +1,20 @@
 import knex from 'knex';
-// Ensure we use same DB setup as migrations
-import dbConfig from '../../knexfile';
+
+const config = require('../../server/config').default;
+
+const dbConfig = {
+  client: 'mssql',
+  connection: {
+    server: config.dbTestUser.server,
+    user: config.dbTestUser.user,
+    password: config.dbTestUser.password,
+    database: config.dbTestUser.name,
+    options: {
+      encrypt: true,
+    },
+  },
+  acquireConnectionTimeout: 5000,
+};
 
 const db = knex(dbConfig);
 

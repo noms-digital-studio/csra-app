@@ -11,7 +11,7 @@ const assessmentConfig = {
   prisoner: {
     nomisId: 'I9876RA',
     name: 'Ian Rate',
-    dob: '23 March 1988',
+    dateOfBirth: '23 March 1988',
   },
   viperScore: 0.92,
   initialRecommendation: 'single cell',
@@ -24,6 +24,9 @@ const assessmentConfig = {
     prejudice: 'no',
     officersAssessment: 'no',
   },
+  reasons: [
+    { questionId: 'risk-of-violence', reason: 'has a high viper score' },
+  ],
 };
 
 
@@ -42,6 +45,8 @@ describe('Risk assessment for a prisoner with a high VIPER score', () => {
           year: 1988,
         },
         nomisId: 'I9876RA',
+        dateOfBirth: '23 March 1988',
+        dataBaseDoB: 'Mar 23 1988',
       },
     });
     whenAViolentPrisonerIsAssessed(assessmentConfig);

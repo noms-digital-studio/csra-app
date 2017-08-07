@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
-import { capitalize, extractDateFromString } from '../utils';
+import { capitalize, extractDateFromUTCString } from '../utils';
 
 
-const PrisonerProfile = ({ firstName, surname, dob, nomisId }) => (
+const PrisonerProfile = ({ forename, surname, dateOfBirth, nomisId }) => (
   <div className="o-offender-profile u-clear-fix">
     <div className="c-offender-image">
       <img src="/assets/images/profile-placeholder.gif" />
@@ -19,17 +19,17 @@ const PrisonerProfile = ({ firstName, surname, dob, nomisId }) => (
           <tr>
             <td>Full name</td>
             <td data-element-id="prisoner-name">
-              <strong className="heading-small">{capitalize(`${firstName} ${surname}`)}</strong>
+              <strong className="heading-small">{capitalize(`${forename} ${surname}`)}</strong>
             </td>
           </tr>
           <tr>
             <td>Date of birth:</td>
             <td data-element-id="prisoner-dob">
-              <strong className="heading-small">{extractDateFromString(dob)}</strong>
+              <strong className="heading-small">{extractDateFromUTCString(dateOfBirth)}</strong>
             </td>
           </tr>
           <tr>
-            <td>NOMISID:</td>
+            <td>NOMIS ID:</td>
             <td data-element-id="prisoner-nomis-id">
               <strong className="heading-small">{nomisId}</strong>
             </td>
@@ -42,14 +42,14 @@ const PrisonerProfile = ({ firstName, surname, dob, nomisId }) => (
 
 
 PrisonerProfile.propTypes = {
-  firstName: PropTypes.string,
+  forename: PropTypes.string,
   surname: PropTypes.string,
-  dob: PropTypes.string,
+  dateOfBirth: PropTypes.string,
   nomisId: PropTypes.string,
 };
 
 PrisonerProfile.defaultProps = {
-  dob: '',
+  dateOfBirth: '',
 };
 
 export default PrisonerProfile;

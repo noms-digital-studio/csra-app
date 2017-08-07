@@ -43,20 +43,20 @@ class AddPrisoner extends Component {
           </header>
           <form action="/" method="POST" onSubmit={e => this.handleSubmit(e)}>
             <div className="form-group">
-              <label className="form-label-bold" htmlFor="first-name">First name</label>
+              <label className="form-label-bold" htmlFor="forename">First name</label>
               <input
                 className="form-control"
-                name="first-name"
+                name="forename"
                 type="text"
-                id="first-name"
-                defaultValue={prisonerDetails['first-name']}
-                data-element-id="first-name"
+                id="forename"
+                defaultValue={prisonerDetails.forename}
+                data-element-id="forename"
                 ref={(el) => { this.fNameInput = el; }}
               />
             </div>
             <div className="form-group">
-              <label className="form-label-bold" htmlFor="last-name">Last name</label>
-              <input className="form-control" name="last-name" type="text" id="last-name" defaultValue={prisonerDetails['last-name']} data-element-id="last-name" />
+              <label className="form-label-bold" htmlFor="surname">Last name</label>
+              <input className="form-control" name="surname" type="text" id="surname" defaultValue={prisonerDetails.surname} data-element-id="surname" />
             </div>
             <div className="form-group">
               <fieldset>
@@ -112,9 +112,16 @@ class AddPrisoner extends Component {
               </fieldset>
             </div>
             <div className="form-group">
-              <label className="form-label-bold" htmlFor="nomis-id">Nomis ID</label>
-              <span className="form-hint" id="nomis-id-hint">For example, A5558ZO</span>
-              <input className="form-control" name="nomis-id" type="text" id="nomis-id" defaultValue={prisonerDetails['nomis-id']} data-element-id="nomis-id" />
+              <label className="form-label-bold" htmlFor="nomisId">Nomis ID</label>
+              <span className="form-hint" id="nomisId-hint">For example, A5558ZO</span>
+              <input
+                className="form-control"
+                name="nomisId"
+                type="text"
+                id="nomisId"
+                defaultValue={prisonerDetails.nomisId}
+                data-element-id="nomisId"
+              />
             </div>
             <input type="submit" className="button" value="Add prisoner" data-element-id="continue-button" />
           </form>

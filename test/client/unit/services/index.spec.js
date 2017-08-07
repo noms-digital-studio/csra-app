@@ -1,10 +1,8 @@
 import {
   calculateRiskFor,
-  viperScores,
   offenderNomisProfiles,
   clearBrowserStorage,
 } from '../../../../client/javascript/services';
-import localViperScores from '../../../../client/javascript/fixtures/viper.json';
 import localOffenderProfiles from '../../../../client/javascript/fixtures/nomis.json';
 import testViperScores from '../fixtures/viperScore.json';
 import testOffenderProfiles from '../fixtures/offenderProfiles.json';
@@ -24,26 +22,6 @@ describe('Services', () => {
     context("when a score doesn't exist for a given nomisId", () => {
       it('returns unknown', () => {
         expect(calculateRiskFor('nomisIdForUnknown', testViperScores)).to.equal('unknown');
-      });
-    });
-  });
-
-  describe('#viperScores', () => {
-    context('when viperScores are available in browser storage', () => {
-      after(() => sessionStorage.clear());
-
-      it('returns viper scores from browser storage', () => {
-        const scores = JSON.stringify(testViperScores);
-
-        sessionStorage.setItem('viperScores', scores);
-
-        expect(viperScores()).to.eql(JSON.parse(scores));
-      });
-    });
-
-    context('when viperScores are unavailable in browser storage', () => {
-      it('returns viperScores found in a local json file', () => {
-        expect(viperScores()).to.eql(localViperScores);
       });
     });
   });

@@ -34,6 +34,13 @@ const questions = [
   },
 ];
 
+const prisoner = {
+  id: 1,
+  nomisId: 'bar-id',
+  surname: 'foo-surname',
+  forename: 'foo-forename',
+};
+
 describe('<Questionnaire />', () => {
   it('calls actions when component mounts', () => {
     const getQuestions = sinon.spy();
@@ -44,15 +51,10 @@ describe('<Questionnaire />', () => {
   });
 
   it('renders offender name', () => {
-    const prisoner = {
-      'nomis-id': 'bar-id',
-      surname: 'foo-surname',
-      firstName: 'foo-first-name',
-    };
     const wrapper = mount(<Questionnaire prisoner={prisoner} />);
 
     expect(wrapper.text()).to.contain('foo-surname');
-    expect(wrapper.text()).to.contain('foo-first-name');
+    expect(wrapper.text()).to.contain('foo-forename');
   });
 
   context(
@@ -65,6 +67,7 @@ describe('<Questionnaire />', () => {
 
         const wrapper = mount(
           <Questionnaire
+            prisoner={prisoner}
             questions={questions}
             params={params}
             onSubmit={callback}
@@ -82,6 +85,8 @@ describe('<Questionnaire />', () => {
 
         expect(
           callback.calledWith({
+            prisoner,
+            question: questions[0],
             section: 'foo-section',
             answer: { answer: 'yes' },
             nextPath: '/assessment/bar-section',
@@ -113,6 +118,7 @@ describe('<Questionnaire />', () => {
 
       const wrapper = mount(
         <Questionnaire
+          prisoner={prisoner}
           questions={question}
           params={params}
           onSubmit={callback}
@@ -130,6 +136,8 @@ describe('<Questionnaire />', () => {
 
       expect(
         callback.calledWith({
+          prisoner,
+          question: questions[0],
           section: 'foo-section',
           answer: { answer: 'yes' },
           nextPath: '/foo-complete',

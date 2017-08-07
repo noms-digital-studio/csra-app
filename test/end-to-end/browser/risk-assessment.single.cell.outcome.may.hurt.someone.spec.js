@@ -11,7 +11,7 @@ const assessmentConfig = {
   prisoner: {
     nomisId: 'J1234LO',
     name: 'John Lowe',
-    dob: '1 October 1970',
+    dateOfBirth: '01 October 1970',
   },
   viperScore: 0.35,
   initialRecommendation: 'shared cell',
@@ -25,7 +25,7 @@ const assessmentConfig = {
     officersAssessment: 'no',
   },
   reasons: [
-    { question_id: 'harm-cell-mate', reason: 'Officer thinks they might seriously hurt cellmate' },
+    { questionId: 'harm-cell-mate', reason: 'Officer thinks they might seriously hurt cellmate' },
   ],
 };
 

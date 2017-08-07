@@ -22,6 +22,7 @@ const schema = Joi.object({
   }).unknown()),
 });
 
+/* DEPRECATED see assessments.js */
 function record(db, appInfo, rawAssessment) {
   const validated = Joi.validate(rawAssessment, schema, {
     abortEarly: false,

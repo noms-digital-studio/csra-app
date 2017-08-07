@@ -105,7 +105,7 @@ If these are installed then all you need to run is the following:
 
 ## Endpoints
 
-### Viper Rating: GET `/api/viper/{nomisId}`
+### Viper Rating: GET `/api/viper/<nomisId>`
 
 Returns the Viper rating and status 200 for a known Nomis ID or 404 when not found.
 
@@ -121,13 +121,13 @@ Response:
 }
 ```
 
-### Save Assessment: POST `/api/assessment`
+### Save Assessment: POST `/api/assessment` DEPRECATED
 
 e.g.
 
 Request:
 ```
-curl http://localhost:5000/api/assessment -H 'Content-Type: application/json'
+curl -X POST http://localhost:5000/api/assessment -H 'Content-Type: application/json'
 -d '{"nomisId":"J1234LO","type":"risk","outcome":"single cell","viperScore":0.45,
 "questions":{"Q1":{"question_id":"Q1","question":"Are you part of a gang?","answer":"Yes"}},
 "reasons":[{"question_id":"Q1","reason":"reason one"}]}'
@@ -142,6 +142,179 @@ Response:
     }
 }
 ```
+
+### Save Prisoner Assessment: POST `/api/assessments`
+
+Returns 201 (CREATED) and the id of the prisoner assessment that was created, 400 if the request body is invalid
+or 500 if the data cannot be saved.
+
+e.g.
+
+Request:
+```
+curl -X POST http://localhost:5000/api/assessments -H 'Content-Type: application/json'
+-d '{"nomisId":"J1234LO", "forename": "John", "surname":"Lowe", "dateOfBirth":"30 December 1978"}'
+```
+
+Response:
+```
+{
+  "id":123
+}
+```
+
+### Get Prisoner Assessment summary list: GET `/api/assessments`
+
+Returns 200 and the prisoner assessment summary list or 500 if the data cannot be retrieved.
+
+e.g.
+
+Request: ```curl -X GET http://localhost:5000/api/assessments ```
+
+Response:
+```
+[{
+      id: 123
+      nomisId: 'J1234LO',
+      forename: 'John',
+      surname: 'Lowe',
+      dateOfBirth: '14-07-1967',
+      outcome: 'Shared Cell',
+      riskAssessmentCompleted: false,
+      healthAssessmentCompleted: false,
+}]
+```
+
+### Save Risk Assessment: PUT `/api/assessments/<id>/risk`
+
+Returns 200 (OK) to indicate the data was saved, 400 if the request body is invalid, 409 to indicate that the
+risk assessment has already been completed for this record or 500 if the data cannot be saved.
+
+e.g.
+
+Request:
+```
+  curl -X PUT http://localhost:5000/api/assessments/123/risk -H 'Content-Type: application/json'
+  -d '{"viperScore": 0.35, "questions": {"Q1": {"questionId": "Q1", "question": "Example question text?","answer":"Yes"}},
+  "reasons":[{"questionId":"Q1", "reason": "Example reason text"}]}'
+```
+
+### Get Risk Assessment: GET `/api/assessments/<id>/risk`
+
+Returns 200 (OK) and the risk assessment or 404 if the prisoner assessment or risk assessment can't be found.
+500 for any other errors.
+
+e.g.
+
+Request:
+```
+curl http://localhost:5000/api/assessments/1/risk
+```
+
+Response:
+```
+{
+    viperScore: 0.35,
+    questions: {
+      Q1: {
+        questionId: 'Q1',
+        question: 'Example question text?',
+        answer: 'Yes',
+      },
+    },
+    reasons: [
+      {
+        questionId: 'Q1',
+        reason: 'Example reason text',
+      },
+    ],
+  };
+```
+
+### Save Health Assessment: PUT `/api/assessments/<id>/health`
+
+Returns 200 (OK) to indicate the data was saved, 400 if the request body is invalid, 409 to indicate that the
+health assessment has already been completed for this record or 500 if the data cannot be saved.
+
+e.g.
+
+Request:
+```
+  curl -X PUT http://localhost:5000/api/assessments/123/health -H 'Content-Type: application/json'
+  -d '{"questions": {"Q1": {"questionId": "Q1", "question": "Example question text?","answer":"Yes"}},
+  "reasons":[{"questionId":"Q1", "reason": "Example reason text"}]}'
+```
+
+### Get Health Assessment: GET `/api/assessments/<id>/health`
+
+Returns 200 (OK) and the health assessment or 404 if the prisoner assessment or health assessment can't be found.
+500 for any other errors.
+
+e.g.
+
+Request:
+```
+curl http://localhost:5000/api/assessments/1/health
+```
+
+Response:
+```
+{
+    questions: {
+      Q1: {
+        questionId: 'Q1',
+        question: 'Example question text?',
+        answer: 'Yes',
+      },
+    },
+    reasons: [
+      {
+        questionId: 'Q1',
+        reason: 'Example reason text',
+      },
+    ],
+  };
+```
+
+### Get Risk Assessment: GET `/api/assessments/<id>`
+
+Returns 200 (OK) and the assessment or 404 if the prisoner assessment can't be found.
+500 for any other errors.
+
+e.g.
+
+Request:
+```
+curl http://localhost:5000/api/assessments/1
+```
+
+Response:
+```
+{
+    id: 123,
+    createdAt: '2017-07-28T11:54:23.576Z',
+    updatedAt: '2017-07-30T09:00:00.106Z',
+    nomisId: 'J1234LO',
+    forename: 'John',
+    surname: 'Lowe',
+    dateOfBirth: '14-07-1967',
+    outcome: 'Shared Cell',
+    riskAssessment: { ... },
+    healthAssessment: { ... },
+}
+```
+
+### Save assessment outcome: `PUT /api/assessments/<id>/outcome`
+
+Returns 200 to indicate the data was saved, 400 if the request body is invalid or 500 if the data cannot be saved.
+
+Valid outcomes: 'single cell', 'shared cell', 'shared cell with conditions'
+e.g.
+Request:
+```
+curl -X PUT http://localhost:5000/api/assessments/1/outcome -H 'Content-Type: application/json' -d '{"outcome": "single cell"}'
+```
+
 
 ### Monitoring: GET `/health`
 
@@ -207,7 +380,9 @@ EXEC sp_configure 'contained database authentication', 1;
 RECONFIGURE WITH OVERRIDE;
 CREATE DATABASE csra CONTAINMENT = PARTIAL COLLATE SQL_Latin1_General_CP1_CI_AS;
 USE csra;
-CREATE USER <database-user> WITH PASSWORD = '<database-user-password>';
+CREATE USER app WITH PASSWORD = '<database-user-password>';
+CREATE USER tests WITH PASSWORD = '<database-test-user-password>';
+GRANT SELECT, INSERT, UPDATE, DELETE TO tests;
 .quit
 ```
 

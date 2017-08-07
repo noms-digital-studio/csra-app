@@ -7,16 +7,13 @@ import QuestionAndAnswerSummaryTable from '../QuestionAndAnswerSummaryTable';
 const RiskAssessmentSummaryTable = props => <QuestionAndAnswerSummaryTable {...props} />;
 
 const mapStateToProps = (state) => {
-  const answers = path(
-    [state.answers.selectedPrisonerId],
-    state.answers.riskAssessment,
-  );
+  const answers = path([state.offender.selected.id, 'questions'], state.assessments.risk);
 
   return {
     questionsAnswers: [
       {
         question: 'How they feel about sharing a cell:',
-        answer: answers['how-do-you-feel'] ? { answer: answers['how-do-you-feel'].comments || 'No comments' } : undefined,
+        answer: answers['how-do-you-feel'] ? { answer: answers['how-do-you-feel'].answer || 'No comments' } : undefined,
         dataTags: { 'data-element-id': 'risk-assessment-feeling' },
       },
       {

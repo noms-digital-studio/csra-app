@@ -20,8 +20,7 @@ describe('#buildAssessmentRequest', () => {
       'bar-section': {},
     };
 
-    const request = buildAssessmentRequest('foo-type', {
-      nomisId: 'foo-nomis-id',
+    const request = buildAssessmentRequest({
       outcome: 'Single cell',
       viperScore: 0.71,
       questions,
@@ -30,20 +29,18 @@ describe('#buildAssessmentRequest', () => {
 
     expect(request).to.eql(
       {
-        nomisId: 'foo-nomis-id',
         outcome: 'Single cell',
-        type: 'foo-type',
         viperScore: 0.71,
         questions: {
           'bar-section': {
             answer: '',
             question: 'bar-question',
-            question_id: 'bar-section',
+            questionId: 'bar-section',
           },
           'foo-section': {
             answer: '',
             question: 'foo-question',
-            question_id: 'foo-section',
+            questionId: 'foo-section',
           },
         },
         reasons: [],
@@ -70,8 +67,7 @@ describe('#buildAssessmentRequest', () => {
       },
     };
 
-    const request = buildAssessmentRequest('footype', {
-      nomisId: 'foo-nomis-id',
+    const request = buildAssessmentRequest({
       outcome: 'Single cell',
       viperScore: 0.11,
       questions,
@@ -80,15 +76,13 @@ describe('#buildAssessmentRequest', () => {
 
     expect(request).to.eql(
       {
-        nomisId: 'foo-nomis-id',
         outcome: 'Single cell',
-        type: 'footype',
         viperScore: 0.11,
         questions: {
           'foo-section': {
             answer: 'yes',
             question: 'foo-question',
-            question_id: 'foo-section',
+            questionId: 'foo-section',
           },
         },
         reasons: [],
@@ -136,8 +130,7 @@ describe('#buildAssessmentRequest', () => {
       },
     };
 
-    const request = buildAssessmentRequest('footype', {
-      nomisId: 'foo-nomis-id',
+    const request = buildAssessmentRequest({
       outcome: 'Shared cell',
       viperScore: 0.11,
       questions,
@@ -146,31 +139,29 @@ describe('#buildAssessmentRequest', () => {
 
     expect(request).to.eql(
       {
-        nomisId: 'foo-nomis-id',
         outcome: 'Shared cell',
-        type: 'footype',
         viperScore: 0.11,
         questions: {
           'foo-section': {
-            question_id: 'foo-section',
+            questionId: 'foo-section',
             question: 'foo-question',
             answer: 'yes',
             comments: 'foo-comment',
           },
           'bar-section': {
-            question_id: 'bar-section',
+            questionId: 'bar-section',
             question: 'bar-question',
             answer: 'no',
           },
           'baz-section': {
-            question_id: 'baz-section',
+            questionId: 'baz-section',
             question: 'baz-question',
             answer: 'a baz comment',
           },
         },
         reasons: [
           {
-            question_id: 'foo-section',
+            questionId: 'foo-section',
             reason: 'foo reason',
           },
         ],

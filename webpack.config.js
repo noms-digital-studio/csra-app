@@ -25,7 +25,6 @@ function extractInProduction(loader) {
 
 module.exports = {
   context: __dirname,
-
   entry: {
     main: [path.join(__dirname, 'client', 'javascript', 'main.jsx')].concat(
       dev ? ['webpack-hot-middleware/client'] : []

@@ -1,8 +1,7 @@
 import AddPrisonerPage from '../pages/add-prisoner/AddPrisoner.page';
 import PrisonerAddedPage from '../pages/add-prisoner/PrisonerAdded.page';
 import DashboardPage from '../pages/Dashboard.page';
-import { parseDate } from '../../../../client/javascript/utils';
-
+import { checkThatPrisonerAssessmentDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
 
 const defaultConfig = {
   prisoner: {
@@ -14,15 +13,12 @@ const defaultConfig = {
       year: 1970,
     },
     nomisId: 'J1234LO',
+    dateOfBirth: '1 October 1970',
+    dataBaseDoB: 'Oct 01 1970',
   },
 };
 
 function whenTheOfficerAddsThePrisonersDetails(config = defaultConfig) {
-  const date = new Date(
-    config.prisoner.dob.year,
-    config.prisoner.dob.month - 1,
-    config.prisoner.dob.day,
-  );
   DashboardPage.clickAddPrisoner();
 
   expect(AddPrisonerPage.mainHeading).to.equal('Add Prisoner');
@@ -38,11 +34,21 @@ function whenTheOfficerAddsThePrisonersDetails(config = defaultConfig) {
 
   expect(PrisonerAddedPage.mainHeading).to.equal('Prisoner Added');
   expect(PrisonerAddedPage.name).to.equal(`${config.prisoner.forename} ${config.prisoner.surname}`);
-  expect(PrisonerAddedPage.dob).to.equal(parseDate(date));
+  expect(PrisonerAddedPage.dateOfBirth).to.equal(config.prisoner.dateOfBirth);
   expect(PrisonerAddedPage.nomisId).to.equal(config.prisoner.nomisId);
 
   PrisonerAddedPage.clickContinue();
   DashboardPage.waitForMainHeadingWithDataId('dashboard');
+
+  const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
+  const assessmentId = row.getAttribute('data-assessment-id');
+  checkThatPrisonerAssessmentDataWasWrittenToDatabaseSync({
+    id: assessmentId,
+    nomisId: config.prisoner.nomisId,
+    forename: config.prisoner.forename,
+    surname: config.prisoner.surname,
+    dateOfBirth: config.prisoner.dataBaseDoB,
+  });
 }
 
 export default whenTheOfficerAddsThePrisonersDetails;

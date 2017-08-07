@@ -1,5 +1,5 @@
 import express from 'express';
-import { viperRestServiceLogger as log } from '../services/logger';
+import log from '../services/logger';
 
 function errorResponse(res, nomisId, cause) {
   res.status(404);

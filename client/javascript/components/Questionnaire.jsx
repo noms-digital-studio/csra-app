@@ -76,6 +76,7 @@ class Questionnaire extends Component {
       basePath,
       completionPath,
       isComplete,
+      prisoner,
     } = this.props;
     const { sectionIndex, question } = sectionData(questions, section);
     const answer = serialize(event.target, { hash: true });
@@ -90,6 +91,8 @@ class Questionnaire extends Component {
     }
 
     this.props.onSubmit({
+      prisoner,
+      question,
       section: question.section,
       answer,
       nextPath,
@@ -104,7 +107,7 @@ class Questionnaire extends Component {
       completionPath,
       isComplete,
       params: { section },
-      prisoner: { firstName, surname },
+      prisoner: { forename, surname },
     } = this.props;
 
     const { question } = sectionData(
@@ -116,11 +119,12 @@ class Questionnaire extends Component {
       <div className="o-question">
         <div className="">
           <h3 className="bold-medium" id="subsection-title">
-            <span className="u-font-weight-normal">Assessment for:</span> {firstName} {surname}
+            <span className="u-font-weight-normal">Assessment for:</span> {forename} {surname}
           </h3>
         </div>
 
         {templateSelector({
+          section,
           isComplete,
           completionPath,
           ...question,

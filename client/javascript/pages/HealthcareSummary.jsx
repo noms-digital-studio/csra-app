@@ -4,47 +4,30 @@ import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 import { replace } from 'react-router-redux';
 import path from 'ramda/src/path';
+import not from 'ramda/src/not';
 
+import { splitAssessorValues } from '../services';
 import { capitalize, parseDate } from '../utils';
-
 import postAssessmentToBackend from '../services/postAssessmentToBackend';
-
-import {
-  completeHealthAnswersFor,
-  completeHealthAssessmentFor,
-} from '../actions';
+import { completeHealthAnswersFor, saveHealthcareAssessmentOutcome } from '../actions';
 
 import PrisonerProfile from '../components/PrisonerProfile';
 
 import routes from '../constants/routes';
 
-const joinAssessorValues = accessor =>
-  `${accessor.role}, ${accessor['full-name']}, ${accessor.day}-${accessor.month}-${accessor.year}`;
-
-const normalizeAssessorAnswerIn = answers =>
-  Object.keys(answers).reduce((acc, key) => {
-    if (key === 'assessor') {
-      return { ...acc, [key]: { answer: joinAssessorValues(answers[key]) } };
-    }
-    return { ...acc, [key]: answers[key] };
-  }, {});
-
 class HealthCareSummary extends Component {
   componentDidMount() {
-    this.props.completeHealthAnswersFor(this.props.prisoner);
+    const { markAnswersAsCompleteFor, saveOutcome, prisoner, answers } = this.props;
+    const riskText = { no: 'shared cell', yes: 'single cell' };
+
+    markAnswersAsCompleteFor({ assessmentId: this.props.prisoner.id });
+    saveOutcome({ id: prisoner.id, outcome: riskText[answers.outcome.answer] });
   }
 
   render() {
-    const {
-      prisoner,
-      answers,
-      title,
-      riskAssessmentComplete,
-      onSubmit,
-      viperScore,
-      questions,
-    } = this.props;
-    const riskText = { no: 'shared cell', yes: 'single cell' };
+    const { prisoner, answers, title, assessment, riskAssessmentComplete, onSubmit } = this.props;
+
+    const assessor = splitAssessorValues(answers.assessor.answer);
 
     return (
       <DocumentTitle title={title}>
@@ -54,17 +37,8 @@ class HealthCareSummary extends Component {
             e.preventDefault();
             onSubmit({
               riskAssessmentComplete,
-              prisoner: {
-                recommendation: riskText[answers.outcome.answer],
-                nomisId: prisoner.nomisId,
-              },
-              postData: {
-                nomisId: prisoner.nomisId,
-                outcome: riskText[answers.outcome.answer],
-                viperScore: viperScore.viperScore,
-                questions,
-                answers: normalizeAssessorAnswerIn(answers),
-              },
+              assessmentId: prisoner.id,
+              assessment,
             });
           }}
         >
@@ -75,36 +49,34 @@ class HealthCareSummary extends Component {
           </div>
 
           <div className="panel panel-border-wide">
-            <h3 className="heading-large" data-element-id="healthcare-outcome">Healthcare recommendation: {capitalize(riskText[answers.outcome.answer])}</h3>
+            <h3 className="heading-large" data-element-id="healthcare-outcome">
+              Healthcare recommendation: {capitalize(assessment.outcome)}
+            </h3>
           </div>
 
           <table className="check-your-answers u-margin-bottom-charlie">
             <thead>
               <tr>
                 <th colSpan="3">
-                  <h2 className="heading-medium">
-                    Assessment summary
-                  </h2>
+                  <h2 className="heading-medium">Assessment summary</h2>
                 </th>
               </tr>
             </thead>
 
             <tbody>
               <tr data-healthcare-assessor>
-                <td>
-                  Assessment Completed by:
-                </td>
+                <td>Assessment Completed by:</td>
                 <td>
                   <span data-element-id="healthcare-assessor">
-                    {capitalize(answers.assessor['full-name'])}<br />
+                    {capitalize(assessor.fullName)}
+                    <br />
                   </span>
                   <span data-element-id="healthcare-role">
-                    {capitalize(answers.assessor.role)}<br />
+                    {capitalize(assessor.role)}
+                    <br />
                   </span>
-                  <span
-                    data-element-id="healthcare-date"
-                  >
-                    {parseDate(new Date(answers.assessor.year, answers.assessor.month - 1, answers.assessor.day))}
+                  <span data-element-id="healthcare-date">
+                    {parseDate(new Date(assessor.year, assessor.month - 1, assessor.day))}
                   </span>
                 </td>
                 <td className="change-answer">
@@ -117,32 +89,23 @@ class HealthCareSummary extends Component {
                 </td>
               </tr>
               <tr>
-                <td>
-                  Does Healthcare recommend a single cell?
-                </td>
+                <td>Does Healthcare recommend a single cell?</td>
                 <td>
                   <span data-element-id="healthcare-recommendation">
                     {capitalize(answers.outcome.answer)}
                   </span>
                 </td>
                 <td className="change-answer">
-                  <Link
-                    to={`${routes.HEALTHCARE_ASSESSMENT}/outcome`}
-                    data-change-outcome-link
-                  >
-                    Change
-                    {' '}
-                    <span className="visuallyhidden">healthcare recommendation</span>
+                  <Link to={`${routes.HEALTHCARE_ASSESSMENT}/outcome`} data-change-outcome-link>
+                    Change <span className="visuallyhidden">healthcare recommendation</span>
                   </Link>
                 </td>
               </tr>
               <tr>
-                <td>
-                  Comments from the healthcare form:
-                </td>
+                <td>Comments from the healthcare form:</td>
                 <td>
                   <span data-element-id="healthcare-comments">
-                    {capitalize(answers.comments.comments || 'none')}
+                    {capitalize(answers.comments.answer || 'none')}
                   </span>
                 </td>
                 <td className="change-answer">
@@ -150,29 +113,23 @@ class HealthCareSummary extends Component {
                     to={`${routes.HEALTHCARE_ASSESSMENT}/comments`}
                     data-element-id="healthcare-change-comments-link"
                   >
-                    Change
-                    {' '}
-                    <span className="visuallyhidden">further comments</span>
+                    Change <span className="visuallyhidden">further comments</span>
                   </Link>
                 </td>
               </tr>
               <tr>
+                <td>Have they given consent to share their medical information?</td>
                 <td>
-                  Have they given consent to share their medical information?
-                </td>
-                <td>
-                  <span data-element-id="healthcare-consent">{capitalize(answers.consent.answer)}</span>
+                  <span data-element-id="healthcare-consent">
+                    {capitalize(answers.consent.answer)}
+                  </span>
                 </td>
                 <td className="change-answer">
                   <Link
                     to={`${routes.HEALTHCARE_ASSESSMENT}/consent`}
                     data-element-id="healthcare-change-consent-link"
                   >
-                    Change
-                    {' '}
-                    <span className="visuallyhidden">
-                      consent to share information
-                    </span>
+                    Change <span className="visuallyhidden">consent to share information</span>
                   </Link>
                 </td>
               </tr>
@@ -181,33 +138,27 @@ class HealthCareSummary extends Component {
 
           <div className="form-group" data-summary-next-steps>
             {riskAssessmentComplete
-              ? null :
-              <div className="u-margin-bottom-charlie">
+              ? null
+              : <div className="u-margin-bottom-charlie">
                 <h3 className="heading-medium">What happens next?</h3>
                 <p>
-                  You must now complete the risk assessment questions to get a cell sharing outcome.
-                </p>
+                    You must now complete the risk assessment questions to get a cell sharing
+                    outcome.
+                  </p>
               </div>}
 
             <div className="notice c-notice u-clear-fix">
               <i className="icon icon-important">
                 <span className="visually-hidden">Warning</span>
               </i>
-              <strong className="bold-small">
-                Once submitted you cannot change these answers
-              </strong>
+              <strong className="bold-small">Once submitted you cannot change these answers</strong>
             </div>
 
-            <button
-              type="submit"
-              className="button"
-              data-element-id="continue-button"
-            >
+            <button type="submit" className="button" data-element-id="continue-button">
               {riskAssessmentComplete
                 ? 'Submit and see cell sharing outcome'
                 : 'Submit and return to prisoner list'}
             </button>
-
           </div>
         </form>
       </DocumentTitle>
@@ -217,57 +168,52 @@ class HealthCareSummary extends Component {
 
 HealthCareSummary.propTypes = {
   title: PropTypes.string,
+  assessment: PropTypes.object,
   prisoner: PropTypes.object,
   answers: PropTypes.object,
   riskAssessmentComplete: PropTypes.bool,
-  completeHealthAnswersFor: PropTypes.func,
+  markAnswersAsCompleteFor: PropTypes.func,
   onSubmit: PropTypes.func,
+  saveOutcome: PropTypes.func,
   viperScore: PropTypes.object,
-  questions: PropTypes.array,
 };
 
 HealthCareSummary.defaultProps = {
   title: 'Healthcare Summary',
-  completeHealthAnswersFor: () => { },
-  onSubmit: () => { },
+  markAnswersAsCompleteFor: () => {},
+  onSubmit: () => {},
+  saveOutcome: () => {},
 };
 
-const findViperScore = (nomisId, viperScores) =>
-  viperScores.find(item => item.nomisId === nomisId) || -1;
+const mapStateToProps = (state, ownProps) => {
+  const selectedOffender = state.offender.selected;
+  const healthcareAssessment = state.assessments.healthcare;
 
-const mapStateToProps = (state, ownProps) => ({
-  ...ownProps,
-  prisoner: state.offender.selected,
-  answers: path([state.answers.selectedPrisonerId], state.answers.healthcare),
-  riskAssessmentComplete: !!state.riskAssessmentStatus.completed.find(
-    assessment => assessment.nomisId === state.offender.selected.nomisId,
-  ),
-  viperScore: findViperScore(
-    state.offender.selected.nomisId,
-    state.offender.viperScores,
-  ),
-  questions: state.questions.healthcare,
-});
-
+  return {
+    ...ownProps,
+    assessment: path([selectedOffender.id], healthcareAssessment),
+    prisoner: selectedOffender,
+    answers: path([selectedOffender.id, 'questions'], healthcareAssessment),
+    riskAssessmentComplete: selectedOffender.riskAssessmentCompleted,
+    viperScore: path([selectedOffender.id, 'viperScore'], healthcareAssessment),
+  };
+};
 const mapActionsToProps = dispatch => ({
-  onSubmit: ({ prisoner, riskAssessmentComplete, postData }) => {
-    postAssessmentToBackend('healthcare', postData, (assessmentId) => {
-      dispatch(
-        completeHealthAssessmentFor({
-          nomisId: prisoner.nomisId,
-          assessmentId,
-          recommendation: postData.outcome,
-        }),
-      );
-      if (riskAssessmentComplete) {
-        dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
-      } else {
-        dispatch(replace(routes.DASHBOARD));
+  saveOutcome: ({ id, outcome }) => dispatch(saveHealthcareAssessmentOutcome({ id, outcome })),
+  onSubmit: ({ assessmentId, riskAssessmentComplete, assessment }) => {
+    postAssessmentToBackend({ assessmentId, assessmentType: 'health', assessment }, (response) => {
+      if (not(response)) {
+        return dispatch(replace(routes.ERROR_PAGE));
       }
+
+      if (riskAssessmentComplete) {
+        return dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
+      }
+
+      return dispatch(replace(routes.DASHBOARD));
     });
   },
-  completeHealthAnswersFor: profile =>
-    dispatch(completeHealthAnswersFor(profile)),
+  markAnswersAsCompleteFor: profile => dispatch(completeHealthAnswersFor(profile)),
 });
 
 export default connect(mapStateToProps, mapActionsToProps)(HealthCareSummary);

@@ -8,8 +8,9 @@ const Comments = ({
   description,
   onSubmit,
   aside,
-  formDefaults: { comments },
+  formDefaults: { answer },
   isComplete,
+  section,
 }) => (
   <div className="grid-row">
     <div className="column-two-thirds">
@@ -20,12 +21,12 @@ const Comments = ({
         className="form"
         onSubmit={onSubmit}
       >
-        <h1 data-title={title} className="heading-large">{title}</h1>
+        <h1 data-title={section} className="heading-large">{title}</h1>
         <p className="lede text c-text-hint">{description}</p>
         <CommentBox
           id="commentBox"
           limit={300}
-          text={comments}
+          text={answer}
           name="comments"
           cssClassName="form-control form-control-3-4 u-margin-bottom-default"
         />
@@ -48,19 +49,20 @@ const Comments = ({
 );
 
 Comments.propTypes = {
+  section: PropTypes.string,
   title: PropTypes.string,
   description: PropTypes.string,
   aside: PropTypes.object,
   onSubmit: PropTypes.func,
   formDefaults: PropTypes.shape({
-    comments: PropTypes.string,
+    answer: PropTypes.string,
   }),
   isComplete: PropTypes.bool,
 };
 
 Comments.defaultProps = {
   formDefaults: {
-    comments: '',
+    answer: '',
   },
   aside: {},
 };

@@ -8,14 +8,14 @@ import HealthcareSummary from '../pages/healthcare/HealthcareSummary.page';
 import FullAssessmentOutcomePage from '../pages/FullAssessmentOutcome.page';
 import FullAssessmentCompletePage from '../pages/FullAssessmentComplete.page';
 
-import { checkThatAssessmentDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
+import { checkThatHealthAssessmentDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
 
 
 const defaultAssessmentConfig = {
   prisoner: {
     nomisId: 'J1234LO',
     name: 'John Lowe',
-    dob: '1 October 1970',
+    dateOfBirth: '01 October 1970',
   },
   answers: {
     singleCellRecommendation: 'no',
@@ -56,7 +56,7 @@ const whenAPrisonersHealthcareResultsAreEntered = (config = defaultAssessmentCon
 
   expect(HealthcareSummary.mainHeading).to.equal('Healthcare assessment summary');
   expect(HealthcareSummary.prisonerName).to.equalIgnoreCase(config.prisoner.name);
-  expect(HealthcareSummary.prisonerDob).to.equalIgnoreCase(config.prisoner.dob);
+  expect(HealthcareSummary.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);
   expect(HealthcareSummary.prisonerNomisId).to.equalIgnoreCase(config.prisoner.nomisId);
 
   expect(HealthcareSummary.outcome).to.match(caseInSensitive(config.recommendation));
@@ -70,10 +70,8 @@ const whenAPrisonersHealthcareResultsAreEntered = (config = defaultAssessmentCon
   expect(HealthcareSummary.comments).to.equalIgnoreCase('a healthcare comment');
   expect(HealthcareSummary.consent).to.equalIgnoreCase('no');
 
-  /** Test change answers */
   HealthcareSummary.clickChange();
   HealthcareConsentPage.clickYesAndContinue();
-
   expect(HealthcareSummary.consent).to.equalIgnoreCase('yes');
 };
 
@@ -85,39 +83,39 @@ const thenTheHealthcareAssessmentIsComplete = (config = defaultAssessmentConfig)
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
 
   expect(row.getText()).to.equal(
-    `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dob} Start Complete`,
+    `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Start Complete`,
   );
 
-  const assessmentId = row.getAttribute('data-health-assessment-id');
+  const assessmentId = row.getAttribute('data-assessment-id');
 
-  checkThatAssessmentDataWasWrittenToDatabaseSync({
-    nomisId: config.prisoner.nomisId,
-    assessmentId,
-    assessmentType: 'healthcare',
-    questionData: {
-      outcome: {
-        question_id: 'outcome',
-        question: 'Does healthcare recommend a single cell?',
-        answer: config.answers.singleCellRecommendation,
+  checkThatHealthAssessmentDataWasWrittenToDatabaseSync({
+    id: assessmentId,
+    healthAssessment: {
+      viperScore: null,
+      questions: {
+        outcome: {
+          questionId: 'outcome',
+          question: 'Does healthcare recommend a single cell?',
+          answer: 'no',
+        },
+        comments: {
+          questionId: 'comments',
+          question: 'Enter all the comments on the healthcare form',
+          answer: 'a healthcare comment',
+        },
+        consent: {
+          questionId: 'consent',
+          question: 'Have they given consent to share their medical information?',
+          answer: 'yes',
+        },
+        assessor: {
+          questionId: 'assessor',
+          question: 'Who completed the healthcare assessment?',
+          answer: 'Nurse, Jane Doe, 21-07-2017',
+        },
       },
-      comments: {
-        question_id: 'comments',
-        question: 'Enter all the comments on the healthcare form',
-        answer: 'a healthcare comment',
-      },
-      consent: {
-        question_id: 'consent',
-        question: 'Have they given consent to share their medical information?',
-        answer: 'yes',
-      },
-      assessor: {
-        question_id: 'assessor',
-        question: 'Who completed the healthcare assessment?',
-        answer: 'Nurse, Jane Doe, 21-07-2017',
-      },
+      outcome: 'shared cell',
     },
-    assessmentOutcome: config.recommendation,
-    viperScore: config.viperScore,
   });
 };
 
@@ -126,7 +124,7 @@ const defaultFullAssessmentConfig = {
   prisoner: {
     nomisId: 'J1234LO',
     name: 'John Lowe',
-    dob: '1 October 1970',
+    dateOfBirth: '01 October 1970',
   },
   finalOutcome: 'shared cell',
 };
@@ -138,7 +136,7 @@ function thenTheFullAssessmentIsCompleted(config = defaultFullAssessmentConfig) 
   FullAssessmentOutcomePage.waitForMainHeadingWithDataId('full-outcome');
 
   expect(FullAssessmentOutcomePage.prisonerName).to.equalIgnoreCase(config.prisoner.name);
-  expect(FullAssessmentOutcomePage.prisonerDob).to.equalIgnoreCase(config.prisoner.dob);
+  expect(FullAssessmentOutcomePage.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);
   expect(FullAssessmentOutcomePage.prisonerNomisId).to.equalIgnoreCase(config.prisoner.nomisId);
 
   expect(FullAssessmentOutcomePage.recommendOutcome).to.match(caseInSensitive(config.finalOutcome));
@@ -153,7 +151,7 @@ function thenTheFullAssessmentIsCompleted(config = defaultFullAssessmentConfig) 
 
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
 
-  expect(row.getText()).to.equalIgnoreCase(`${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dob} Complete Complete ${config.finalOutcome} View`);
+  expect(row.getText()).to.equalIgnoreCase(`${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Complete Complete ${config.finalOutcome} View`);
 }
 
 
@@ -165,7 +163,7 @@ const viewFullOutcomeForPrisoner = (config = defaultFullAssessmentConfig) => {
   ).to.equal('Risk and healthcare assessment outcome');
 
   expect(FullAssessmentOutcomePage.prisonerName).to.equalIgnoreCase(config.prisoner.name);
-  expect(FullAssessmentOutcomePage.prisonerDob).to.equalIgnoreCase(config.prisoner.dob);
+  expect(FullAssessmentOutcomePage.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);
   expect(FullAssessmentOutcomePage.prisonerNomisId).to.equalIgnoreCase(config.prisoner.nomisId);
 
   expect(FullAssessmentOutcomePage.recommendOutcome).to.match(caseInSensitive(config.finalOutcome));
@@ -175,7 +173,7 @@ const viewFullOutcomeForPrisoner = (config = defaultFullAssessmentConfig) => {
 
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
 
-  expect(row.getText()).to.equalIgnoreCase(`${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dob} Complete Complete ${config.finalOutcome} View`);
+  expect(row.getText()).to.equalIgnoreCase(`${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Complete Complete ${config.finalOutcome} View`);
 };
 
 

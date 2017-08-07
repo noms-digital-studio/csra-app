@@ -1,14 +1,24 @@
 import React, { PropTypes } from 'react';
+import not from 'ramda/src/not';
 import DocumentTitle from 'react-document-title';
 import { replace } from 'react-router-redux';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import routes from '../constants/routes';
-import { retrieveViperScoreFor } from '../services';
-import { confirmPrisoner, addViperScore } from '../actions';
+import postAssessment from '../services/postAssessment';
+import { confirmPrisoner } from '../actions';
 import { extractDateFromString } from '../utils';
 
-const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
+const standardizePrisoner = prisonerData => ({
+  nomisId: prisonerData.nomisId,
+  surname: prisonerData.surname,
+  forename: prisonerData.forename,
+  dateOfBirth:
+      Date.UTC(prisonerData['dob-year'], prisonerData['dob-month'] - 1, prisonerData['dob-day']) /
+      1000,
+});
+
+const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) =>
   <DocumentTitle title={title}>
     <div>
       <h1 className="heading-xlarge">Prisoner Added</h1>
@@ -17,23 +27,25 @@ const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
           <p>
             <span className="heading-small">Name:&nbsp;</span>
             <span data-element-id="prisoner-name">
-              {prisoner['first-name']} {prisoner['last-name']}
+              {prisoner.forename} {prisoner.surname}
             </span>
           </p>
 
           <p>
-            <span className="heading-small">
-              DOB:&nbsp;&nbsp;&nbsp;&nbsp;
-              </span>
-            <span
-              data-element-id="prisoner-dob"
-            >{extractDateFromString(`${prisoner['dob-day']}-${prisoner['dob-month']}-${prisoner['dob-year']}`)}</span>
+            <span className="heading-small">DOB:&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span data-element-id="prisoner-dob">
+              {extractDateFromString(
+                `${prisoner['dob-day']}-${prisoner['dob-month']}-${prisoner['dob-year']}`,
+              )}
+            </span>
           </p>
         </div>
         <div className="column-one-half">
           <p>
-            <span className="heading-small">NOMIS No:</span>
-            <span data-element-id="nomis-id">{prisoner['nomis-id']}</span>
+            <span className="heading-small">NOMIS No: &nbsp;</span>
+            <span data-element-id="nomisId">
+              {prisoner.nomisId}
+            </span>
           </p>
         </div>
       </div>
@@ -42,18 +54,17 @@ const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) => (
         <button
           type="button"
           onClick={() => {
-            onClick(prisoner);
+            onClick(standardizePrisoner(prisoner));
           }}
           className="button"
           data-element-id="continue-button"
         >
           Confirm
-          </button>
+        </button>
       </p>
       <Link to={routes.ADD_OFFENDER}>Edit</Link>
     </div>
-  </DocumentTitle>
-);
+  </DocumentTitle>;
 
 const mapStateToProps = state => ({
   prisonerDetails: state.offender.prisonerFormData,
@@ -61,12 +72,15 @@ const mapStateToProps = state => ({
 
 const mapActionsToProps = dispatch => ({
   onClick: (prisoner) => {
-    retrieveViperScoreFor(prisoner['nomis-id'], (response) => {
-      if (response) {
-        dispatch(addViperScore({ viperScore: response.viperRating, nomisId: response.nomisId }));
+    postAssessment(prisoner, (response) => {
+      if (not(response)) {
+        return dispatch(replace(routes.ERROR_PAGE));
       }
-      dispatch(confirmPrisoner(prisoner));
+
+      dispatch(confirmPrisoner());
       dispatch(replace(routes.DASHBOARD));
+
+      return true;
     });
   },
 });
@@ -75,9 +89,9 @@ ConfirmOffender.propTypes = {
   title: PropTypes.string,
   prisonerDetails: PropTypes.shape({
     nomisId: PropTypes.string,
-    firstName: PropTypes.string,
+    forename: PropTypes.string,
     lastName: PropTypes.string,
-    dob: PropTypes.string,
+    dateOfBirth: PropTypes.string,
   }),
   onClick: PropTypes.func,
 };
@@ -85,7 +99,7 @@ ConfirmOffender.propTypes = {
 ConfirmOffender.defaultProps = {
   title: 'Confirm Prisoner Addition',
   prisonerDetails: {},
-  onClick: () => { },
+  onClick: () => {},
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(ConfirmOffender);

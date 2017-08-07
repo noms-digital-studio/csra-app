@@ -3,9 +3,9 @@ import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
 import whenTheOfficerAddsThePrisonersDetails from './tasks/theOfficerAddsThePrisonersDetails.task';
 
 function thenThePrisonerIsAvailableToAssess() {
-  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
+  expect(DashboardPage.mainHeading).to.contain('Assessments on:');
   const row = browser.element('[data-element-id="profile-row-J1234LO"]');
-  expect(row.getText()).to.equal('John Lowe J1234LO 1 October 1970 Start Start');
+  expect(row.getText()).to.equal('John Lowe J1234LO 01 October 1970 Start Start');
 }
 
 describe('add prisoner', () => {

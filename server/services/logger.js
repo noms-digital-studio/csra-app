@@ -15,11 +15,13 @@ const logger = bunyan.createLogger({
 });
 
 const viperRestServiceLogger = logger.child({ service: 'viperRestService' });
+const prisonerAssessmentsServiceLogger = logger.child({ service: 'prisonerAssessmentsServiceLogger' });
 const databaseLogger = logger.child({ service: 'database' });
 
 export default logger;
 export {
   viperRestServiceLogger,
+  prisonerAssessmentsServiceLogger,
   databaseLogger,
 };
 

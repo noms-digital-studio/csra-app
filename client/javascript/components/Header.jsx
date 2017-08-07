@@ -39,7 +39,7 @@ const Header = ({ username, signedIn, onSignOut }) => {
                       Sign out
                     </button>
                   </div>}
-                <Link to="/" id="proposition-name">Cell sharing risk assessment</Link>
+                <Link to={url} id="proposition-name">Cell sharing risk assessment</Link>
               </nav>
             </div>
           </div>

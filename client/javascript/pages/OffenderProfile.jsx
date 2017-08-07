@@ -3,14 +3,15 @@ import DocumentTitle from 'react-document-title';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
+import path from 'ramda/src/path';
+
+import { extractDateFromUTCString } from '../utils';
+import { startRiskAssessmentFor } from '../actions';
+import { retrieveViperScoreFor } from '../services';
 
 import routes from '../constants/routes';
 
-const OffenderProfile = ({
-  details: { firstName, dob, nomisId, surname },
-  title,
-  onSubmit,
-}) => (
+const OffenderProfile = ({ details, title, onSubmit }) =>
   <DocumentTitle title={title}>
     <div>
       <p>
@@ -19,9 +20,7 @@ const OffenderProfile = ({
         </Link>
       </p>
       <h1 className="heading-xlarge">
-        <span className="heading-secondary">
-          Confirm identity.
-        </span>
+        <span className="heading-secondary">Confirm identity.</span>
         Details
       </h1>
 
@@ -31,28 +30,25 @@ const OffenderProfile = ({
             <div className="c-offender-profile-image">
               <img src="/assets/images/profile-placeholder.gif" />
             </div>
-            <div
-              data-offender-profile-details
-              className="c-offender-profile-details"
-            >
+            <div data-offender-profile-details className="c-offender-profile-details">
               <div>
                 <p className="c-offender-profile-item">
                   <span className="heading-small">Name:&nbsp;</span>
-                  <span data-element-id="prisoner-name">{firstName} {surname}</span>
+                  <span data-element-id="prisoner-name">
+                    {details.forename} {details.surname}
+                  </span>
                 </p>
               </div>
               <div>
                 <p className="c-offender-profile-item">
-                  <span className="heading-small">
-                    DOB:&nbsp;&nbsp;&nbsp;&nbsp;
-                  </span>
-                  {dob}
+                  <span className="heading-small">DOB:&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  {extractDateFromUTCString(details.dateOfBirth)}
                 </p>
               </div>
               <div>
                 <p className="c-offender-profile-item">
                   <span className="heading-small">NOMIS ID:&nbsp;</span>
-                  {nomisId}
+                  {details.nomisId}
                 </p>
               </div>
             </div>
@@ -63,7 +59,7 @@ const OffenderProfile = ({
       <p>
         <button
           type="button"
-          onClick={onSubmit}
+          onClick={() => onSubmit(details)}
           className="button button-start u-margin-bottom-default"
           data-element-id="continue-button"
         >
@@ -71,14 +67,13 @@ const OffenderProfile = ({
         </button>
       </p>
     </div>
-  </DocumentTitle>
-);
+  </DocumentTitle>;
 
 OffenderProfile.propTypes = {
   title: PropTypes.string,
   details: PropTypes.shape({
-    firstName: PropTypes.string,
-    dob: PropTypes.string,
+    forename: PropTypes.string,
+    dateOfBirth: PropTypes.string,
     nomisId: PropTypes.string,
     surname: PropTypes.string,
   }),
@@ -96,8 +91,19 @@ const mapStateToProps = state => ({
 });
 
 const mapActionsToProps = dispatch => ({
-  onSubmit: () => {
-    dispatch(push(`${routes.RISK_ASSESSMENT}/introduction`));
+  onSubmit: (prisoner) => {
+    retrieveViperScoreFor(prisoner.nomisId, (response) => {
+      dispatch(
+        startRiskAssessmentFor({
+          viperScore: path(['viperRating'], response) || null,
+          id: prisoner.id,
+        }),
+      );
+
+      dispatch(push(`${routes.RISK_ASSESSMENT}/introduction`));
+
+      return true;
+    });
   },
 });
 

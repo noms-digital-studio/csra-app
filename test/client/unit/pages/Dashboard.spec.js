@@ -1,78 +1,41 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
+import xhr from 'xhr';
 
 import { fakeStore } from '../test-helpers';
-
-
-import { extractDateFromString } from '../../../../client/javascript/utils';
+import { parseDate } from '../../../../client/javascript/utils';
 
 import ConnectedDashboard, {
   Dashboard,
 } from '../../../../client/javascript/pages/Dashboard';
 
-const profiles = [
+const assessments = [
   {
+    id: 1,
     nomisId: 'foo-id',
     surname: 'foo-surname',
-    firstName: 'foo-first-name',
-    dob: '1-12-2010',
-    assessmentCompleted: {
-      nomisId: 'foo-id',
-      recommendation: 'Foo cell',
-      reasons: ['foo-reason'],
-    },
-    healthAssessmentCompleted: {
-      nomisId: 'foo-id',
-    },
+    forename: 'foo-forename',
+    dateOfBirth: '1970-10-15T00:00:00.000Z',
+    riskAssessmentCompleted: true,
+    healthAssessmentCompleted: true,
     outcome: 'Foo outcome',
   },
   {
+    id: 2,
     nomisId: 'bar-id',
     surname: 'foo-surname',
-    firstName: 'foo-first-name',
-    dob: '12-2-2010',
-    assessmentCompleted: {},
-    healthAssessmentCompleted: {},
-    outcome: undefined,
+    forename: 'foo-forename',
+    dateOfBirth: '2001-03-04T00:00:00.000Z',
+    riskAssessmentCompleted: false,
+    healthAssessmentCompleted: false,
+    outcome: null,
   },
 ];
 
 const state = {
-  riskAssessmentStatus: {
-    completed: [
-      {
-        nomisId: 'foo-id',
-        recommendation: 'Foo cell',
-        reasons: ['foo-reason'],
-      },
-    ],
-  },
-  healthcareStatus: {
-    completed: [
-      {
-        nomisId: 'foo-id',
-      },
-    ],
-  },
-  assessmentOutcomes: {
-    'foo-id': 'Foo outcome',
-  },
   offender: {
-    profiles: [
-      {
-        nomisId: 'foo-id',
-        surname: 'foo-surname',
-        firstName: 'foo-first-name',
-        dob: '1-12-2010',
-      },
-      {
-        nomisId: 'bar-id',
-        surname: 'foo-surname',
-        firstName: 'foo-first-name',
-        dob: '12-2-2010',
-      },
-    ],
+    assessments,
   },
 };
 
@@ -82,8 +45,8 @@ const assertGivenValuesInWhiteListAreInPage = (list, whiteList, component) => {
     const componentText = component.text();
     keys.forEach((key) => {
       if (whiteList.includes(key)) {
-        if (key === 'dob') {
-          expect(componentText).to.include(extractDateFromString(item[key]));
+        if (key === 'dateOfBirth') {
+          expect(componentText).to.include(parseDate(new Date(item[key])));
           return;
         }
         expect(componentText).to.include(item[key]);
@@ -98,7 +61,7 @@ describe('<Dashboard />', () => {
       it('does not display a list of people to assess', () => {
         const wrapper = mount(<Dashboard />);
         expect(wrapper.text()).to.include('There is no one to assess.');
-        expect(wrapper.find('tr[data-element-id]').length).to.equal(0);
+        expect(wrapper.find('table').length).to.equal(0);
       });
 
       it('provides a link to add a person to assess', () => {
@@ -110,76 +73,71 @@ describe('<Dashboard />', () => {
     context('when there are people to assess', () => {
       it('accepts a date', () => {
         const date = 'Fooday FooDay FooMonth FooYear';
-        const wrapper = mount(<Dashboard profiles={profiles} date={date} />);
+        const wrapper = mount(<Dashboard assessments={assessments} date={date} />);
 
         expect(wrapper.text()).to.include(date);
       });
 
-      it('renders the correct number of profiles rows', () => {
-        const wrapper = mount(<Dashboard profiles={profiles} />);
+      it('renders the correct number of assessments rows', () => {
+        const wrapper = mount(<Dashboard assessments={assessments} />);
         expect(wrapper.find('tr[data-element-id]').length).to.equal(2);
       });
 
       it('renders the correct profile information per row', () => {
-        const wrapper = mount(<Dashboard profiles={profiles} />);
-        const whitelist = ['nomisId', 'surname', 'firstName', 'dob'];
+        const wrapper = mount(<Dashboard assessments={assessments} />);
+        const whitelist = ['nomisId', 'surname', 'forename', 'dateOfBirth'];
 
-        assertGivenValuesInWhiteListAreInPage(profiles, whitelist, wrapper);
+        assertGivenValuesInWhiteListAreInPage(assessments, whitelist, wrapper);
       });
 
-      it('displays a completed assessments', () => {
-        const wrapper = mount(<Dashboard profiles={profiles} />);
-        expect(wrapper.find('[data-assessment-complete=true]').length).to.equal(
-          1,
-        );
-        expect(wrapper.find('[data-assessment-complete=true]').text()).to.equal(
-          'Complete',
-        );
+      it('displays a completed risk assessments', () => {
+        const wrapper = mount(<Dashboard assessments={assessments} />);
+        const row = wrapper.find('[data-risk-assessment-complete=true]');
+        expect(row.length).to.equal(1);
+        expect(row.text()).to.equal('Complete');
       });
 
       it('displays a completed health assessments', () => {
-        const wrapper = mount(<Dashboard profiles={profiles} />);
-        expect(
-          wrapper.find('[data-health-assessment-complete=true]').length,
-        ).to.equal(1);
-        expect(
-          wrapper.find('[data-health-assessment-complete=true]').text(),
-        ).to.equal('Complete');
+        const wrapper = mount(<Dashboard assessments={assessments} />);
+        const column = wrapper.find('[data-health-assessment-complete=true]');
+        expect(column.length).to.equal(1);
+        expect(column.text()).to.equal('Complete');
       });
 
       it('displays the cell sharing assessment for a completed prisoner assessment', () => {
-        const wrapper = mount(<Dashboard profiles={profiles} />);
+        const wrapper = mount(<Dashboard assessments={assessments} />);
+        const row = wrapper.find('[data-assessments-complete=true]');
 
-        expect(wrapper.find('[data-cell-recommendation]').length).to.equal(1);
-        expect(wrapper.find('[data-cell-recommendation]').text()).to.equal(
-          'Foo outcome',
-        );
+        expect(row.length).to.equal(1);
+        expect(row.text()).to.include('Foo outcome');
       });
 
       it('does not displays the link to view the full assessment when both assessments not complete', () => {
-        const wrapper = mount(<Dashboard profiles={profiles} />);
+        const wrapper = mount(<Dashboard assessments={assessments} />);
+        const viewOutcomeBtn = wrapper.find('[data-element-id="profile-row-bar-id"] > [data-element-id="view-outcome"] button');
 
-        expect(wrapper.find('[data-element-id="profile-row-bar-id"] > [data-element-id="view-outcome"] button').length).to.equal(0);
+        expect(viewOutcomeBtn.length).to.equal(0);
       });
 
       it('displays the link to view the full assessment when both assessments are complete', () => {
-        const wrapper = mount(<Dashboard profiles={profiles} />);
+        const wrapper = mount(<Dashboard assessments={assessments} />);
+        const viewOutcomeBtn = wrapper.find('[data-element-id="profile-row-foo-id"] > [data-element-id="view-outcome"] button');
 
-        expect(wrapper.find('[data-element-id="profile-row-foo-id"] > [data-element-id="view-outcome"] button').length).to.equal(1);
+        expect(viewOutcomeBtn.length).to.equal(1);
       });
 
       it('responds to the selection of an incomplete risk assessment', () => {
         const callback = sinon.spy();
         const wrapper = mount(
-          <Dashboard profiles={profiles} onOffenderSelect={callback} />,
+          <Dashboard assessments={assessments} onOffenderSelect={callback} />,
         );
 
-        const profileBtn = wrapper.find('[data-assessment-complete=false] > button');
+        const profileBtn = wrapper.find('[data-risk-assessment-complete=false] > button');
 
         profileBtn.simulate('click');
 
         expect(callback.calledOnce).to.equal(true, 'callback called on click');
-        expect(callback.calledWith(profiles[1])).to.equal(
+        expect(callback.calledWith(assessments[1])).to.equal(
           true,
           'callback called with the correct props',
         );
@@ -188,7 +146,34 @@ describe('<Dashboard />', () => {
   });
 
   context('Connected Dashboard', () => {
-    it('renders the correct number of profiles rows', () => {
+    let getStub;
+
+    beforeEach(() => {
+      getStub = sinon.stub(xhr, 'get');
+      getStub.yields(null, { status: 200 }, assessments);
+    });
+
+    afterEach(() => {
+      getStub.restore();
+    });
+
+    it('calls the getOffenderProfiles on component mount', () => {
+      const store = fakeStore(state);
+      mount(
+        <Provider store={store}>
+          <ConnectedDashboard />
+        </Provider>,
+      );
+
+      expect(
+        store.dispatch.calledWithMatch({
+          type: 'GET_OFFENDER_ASSESSMENTS',
+          payload: assessments,
+        }),
+      ).to.equal(true, 'did not call GET_OFFENDER_ASSESSMENTS action');
+    });
+
+    it('renders the correct number of assessments rows', () => {
       const store = fakeStore(state);
 
       const wrapper = mount(
@@ -201,7 +186,7 @@ describe('<Dashboard />', () => {
     });
 
     it('renders the correct profile information per row', () => {
-      const whitelist = ['nomisId', 'surname', 'firstName', 'dob'];
+      const whitelist = ['nomisId', 'surname', 'forename', 'dateOfBirth'];
       const store = fakeStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -209,7 +194,7 @@ describe('<Dashboard />', () => {
         </Provider>,
       );
 
-      assertGivenValuesInWhiteListAreInPage(profiles, whitelist, wrapper);
+      assertGivenValuesInWhiteListAreInPage(assessments, whitelist, wrapper);
     });
 
     it('displays a completed assessments', () => {
@@ -219,42 +204,34 @@ describe('<Dashboard />', () => {
           <ConnectedDashboard />
         </Provider>,
       );
-      expect(wrapper.find('[data-assessment-complete=true]').length).to.equal(
-        1,
-      );
-      expect(wrapper.find('[data-assessment-complete=true]').text()).to.equal(
-        'Complete',
-      );
+      const column = wrapper.find('[data-risk-assessment-complete=true]');
+      expect(column.length).to.equal(1);
+      expect(column.text()).to.equal('Complete');
     });
 
     it('displays a completed health assessments', () => {
       const store = fakeStore(state);
-
       const wrapper = mount(
         <Provider store={store}>
           <ConnectedDashboard />
         </Provider>,
       );
-      expect(
-        wrapper.find('[data-health-assessment-complete=true]').length,
-      ).to.equal(1);
-      expect(
-        wrapper.find('[data-health-assessment-complete=true]').text(),
-      ).to.equal('Complete');
+      const column = wrapper.find('[data-health-assessment-complete=true]');
+      expect(column.length).to.equal(1);
+      expect(column.text()).to.equal('Complete');
     });
 
     it('displays the cell sharing assessment for a completed prisoner assessment', () => {
       const store = fakeStore(state);
-
       const wrapper = mount(
         <Provider store={store}>
           <ConnectedDashboard />
         </Provider>,
       );
-      expect(wrapper.find('[data-cell-recommendation]').length).to.equal(1);
-      expect(wrapper.find('[data-cell-recommendation]').text()).to.equal(
-        'Foo outcome',
-      );
+      const row = wrapper.find('[data-assessments-complete=true]');
+
+      expect(row.length).to.equal(1);
+      expect(row.text()).to.include('Foo outcome');
     });
 
     it('allows you the view the full outcome when both assessments are complete', () => {
@@ -271,7 +248,7 @@ describe('<Dashboard />', () => {
       expect(
         store.dispatch.calledWithMatch({
           type: 'SELECT_OFFENDER',
-          payload: profiles[0],
+          payload: assessments[0],
         }),
       ).to.equal(true, 'did not call SELECT_OFFENDER action');
 
@@ -290,14 +267,14 @@ describe('<Dashboard />', () => {
           <ConnectedDashboard />
         </Provider>,
       );
-      const profileBtn = wrapper.find('[data-assessment-complete=false] > button');
+      const profileBtn = wrapper.find('[data-risk-assessment-complete=false] > button');
 
       profileBtn.simulate('click');
 
       expect(
         store.dispatch.calledWithMatch({
           type: 'SELECT_OFFENDER',
-          payload: profiles[1],
+          payload: assessments[1],
         }),
       ).to.equal(true, 'SELECT_OFFENDER dispatch');
 
@@ -325,7 +302,7 @@ describe('<Dashboard />', () => {
       expect(
         store.dispatch.calledWithMatch({
           type: 'SELECT_OFFENDER',
-          payload: profiles[1],
+          payload: assessments[1],
         }),
       ).to.equal(true, 'SELECT_OFFENDER dispatch');
 

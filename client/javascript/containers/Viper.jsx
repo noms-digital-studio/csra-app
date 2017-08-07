@@ -6,12 +6,13 @@ const Viper = ({
   onSubmit,
   viperScore,
   isComplete,
+  section,
 }) => {
   return (
     <div>
       <div className="grid-row">
         <div className="column-two-thirds">
-          <h1 data-title="viper" className="heading-large">{content[viperScore].title}</h1>
+          <h1 data-title={section} className="heading-large">{content[viperScore].title}</h1>
           <div
             dangerouslySetInnerHTML={{ __html: content[viperScore].description }}
           />
@@ -33,6 +34,7 @@ const Viper = ({
 };
 
 Viper.propTypes = {
+  section: PropTypes.string,
   content: PropTypes.object,
   onSubmit: PropTypes.func,
   viperScore: PropTypes.string,

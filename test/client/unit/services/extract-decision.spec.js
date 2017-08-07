@@ -72,7 +72,7 @@ describe('#extractDecision', () => {
           expect(extractDecision({ questions, answers })).to.eql({
             recommendation: 'shared cell with conditions',
             rating: 'standard',
-            reasons: ['foo reason'],
+            reasons: [{ questionId: 'foo-section', reason: 'foo reason' }],
           });
         });
       });
@@ -94,7 +94,7 @@ describe('#extractDecision', () => {
           expect(extractDecision({ questions, answers })).to.eql({
             recommendation: 'single cell',
             rating: 'high',
-            reasons: ['baz reason'],
+            reasons: [{ questionId: 'baz-section', reason: 'baz reason' }],
           });
         });
       });
@@ -119,7 +119,7 @@ describe('#extractDecision', () => {
             expect(extractDecision({ questions, answers, viperScore })).to.eql({
               recommendation: 'single cell',
               rating: 'high',
-              reasons: ['has a high viper score'],
+              reasons: [{ questionId: 'risk-of-violence', reason: 'has a high viper score' }],
             });
           });
         });
@@ -141,7 +141,10 @@ describe('#extractDecision', () => {
             expect(extractDecision({ questions, answers, viperScore })).to.eql({
               recommendation: 'single cell',
               rating: 'high',
-              reasons: ['has a high viper score', 'foo reason'],
+              reasons: [
+                { questionId: 'risk-of-violence', reason: 'has a high viper score' },
+                { questionId: 'foo-section', reason: 'foo reason' },
+              ],
             });
           });
         });
@@ -163,7 +166,12 @@ describe('#extractDecision', () => {
             expect(extractDecision({ questions, answers, viperScore })).to.eql({
               recommendation: 'single cell',
               rating: 'high',
-              reasons: ['has a high viper score', 'foo reason', 'bar reason', 'baz reason'],
+              reasons: [
+                { questionId: 'risk-of-violence', reason: 'has a high viper score' },
+                { questionId: 'foo-section', reason: 'foo reason' },
+                { questionId: 'bar-section', reason: 'bar reason' },
+                { questionId: 'baz-section', reason: 'baz reason' },
+              ],
             });
           });
         });

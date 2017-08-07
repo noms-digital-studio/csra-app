@@ -4,13 +4,21 @@ import uuid from 'uuid/v4';
 import SelectableInput from '../components/SelectableInput';
 import Aside from '../components/asides/Index';
 
-const ConfirmationWithAside = (
-  { title, description, aside, onSubmit, formDefaults: { confirmation }, isComplete },
-) => (
+const ConfirmationWithAside = ({
+  title,
+  description,
+  aside,
+  onSubmit,
+  formDefaults: { confirmation },
+  isComplete,
+  section,
+}) =>
   <div>
     <div className="grid-row">
       <div className="column-two-thirds">
-        <h1 data-title={title} className="heading-large">{title}</h1>
+        <h1 data-title={section} className="heading-large">
+          {title}
+        </h1>
 
         <div dangerouslySetInnerHTML={{ __html: description }} />
 
@@ -27,7 +35,12 @@ const ConfirmationWithAside = (
             />
           </p>
           <p>
-            <input type="submit" className="button" value={isComplete ? 'Save' : 'Save and continue'} data-element-id="continue-button" />
+            <input
+              type="submit"
+              className="button"
+              value={isComplete ? 'Save' : 'Save and continue'}
+              data-element-id="continue-button"
+            />
           </p>
         </form>
       </div>
@@ -35,10 +48,10 @@ const ConfirmationWithAside = (
         <Aside {...aside} />
       </div>
     </div>
-  </div>
-);
+  </div>;
 
 ConfirmationWithAside.propTypes = {
+  section: PropTypes.string,
   title: PropTypes.string,
   description: PropTypes.string,
   onSubmit: PropTypes.func,

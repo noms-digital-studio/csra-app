@@ -7,12 +7,12 @@ import { fakeStore } from '../test-helpers';
 import ConnectedAddPrisoner, { AddPrisoner } from '../../../../client/javascript/pages/AddPrisoner';
 
 const prisoner = {
-  'first-name': 'foo-first-name',
-  'last-name': 'foo-last-name',
+  forename: 'foo-forename',
+  surname: 'foo-surname',
   'dob-day': '01',
   'dob-month': '11',
   'dob-year': '1960',
-  'nomis-id': 'foo-nomis-id',
+  nomisId: 'foo-nomisId',
 };
 
 const populateForm = (wrapper) => {

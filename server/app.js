@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import path from 'path';
 import express from 'express';
 import { json } from 'body-parser';
@@ -9,9 +10,10 @@ import logger from './services/logger';
 import createHealthRoute from './routes/health';
 import createAssessmentRoute from './routes/assessment';
 import createViperRoute from './routes/viper';
+import createPrisonerAssessmentsRoute from './routes/assessments';
 import index from './routes/index';
 
-export default function createApp(db, appInfo, assessmentService, viperService) {
+export default function createApp(db, appInfo, assessmentService, viperService, prisonerAssessmentsService) {
   const app = express();
   const sixtyDaysInSeconds = 5184000;
 
@@ -31,6 +33,7 @@ export default function createApp(db, appInfo, assessmentService, viperService) 
   app.use('/health', createHealthRoute(db, appInfo));
   app.use('/api/assessment', createAssessmentRoute(assessmentService));
   app.use('/api/viper', createViperRoute(viperService));
+  app.use('/api/assessments', createPrisonerAssessmentsRoute(prisonerAssessmentsService));
   app.use('/', index);
 
   // catch 404 and forward to error handler

@@ -9,9 +9,9 @@ const assessmentConfig = {
   prisoner: {
     nomisId: 'J6285NE',
     name: 'James Neo',
-    dob: '3 December 1958',
+    dateOfBirth: '03 December 1958',
   },
-  viperScore: -1,
+  viperScore: null,
   initialRecommendation: 'No predictor data available',
   finalRecommendation: 'shared cell',
   answers: {
@@ -37,6 +37,8 @@ describe('Risk assessment for a prisoner with no VIPER score (shared cell outcom
           year: 1958,
         },
         nomisId: 'J6285NE',
+        dateOfBirth: '3 December 1958',
+        dataBaseDoB: 'Dec 03 1958',
       },
     });
     whenAPrisonerWithNoViperIsAssessed(assessmentConfig);

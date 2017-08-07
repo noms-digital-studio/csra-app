@@ -5,11 +5,11 @@ class PrisonerAddedPage extends BasePage {
   get name() {
     return browser.getText('[data-element-id="prisoner-name"]');
   }
-  get dob() {
+  get dateOfBirth() {
     return browser.getText('[data-element-id="prisoner-dob"]');
   }
   get nomisId() {
-    return browser.getText('[data-element-id="nomis-id"]');
+    return browser.getText('[data-element-id="nomisId"]');
   }
 }
 

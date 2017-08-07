@@ -10,7 +10,7 @@ const assessmentConfig = {
   prisoner: {
     nomisId: 'J1234LO',
     name: 'John Lowe',
-    dob: '1 October 1970',
+    dateOfBirth: '01 October 1970',
   },
   viperScore: 0.35,
   initialRecommendation: 'shared cell',
@@ -23,9 +23,8 @@ const assessmentConfig = {
     prejudice: 'no',
     officersAssessment: 'yes',
   },
-
   reasons: [
-    { question_id: 'officers-assessment', reason: 'Officer recommends a single cell' },
+    { questionId: 'officers-assessment', reason: 'Officer recommends a single cell' },
   ],
 };
 

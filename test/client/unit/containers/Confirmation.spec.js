@@ -24,7 +24,7 @@ describe('<Confirmation />', () => {
   });
 
   it('pre-populates the forms if data is available', () => {
-    const wrapper = mount(<Confirmation formDefaults={{ confirmation: 'accepted' }} />);
+    const wrapper = mount(<Confirmation formDefaults={{ answer: 'accepted' }} />);
 
     expect(wrapper.find('input[type="checkbox"]').node.checked).to.equal(
       true,

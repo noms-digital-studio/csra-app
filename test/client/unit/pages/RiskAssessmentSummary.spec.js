@@ -5,80 +5,87 @@ import xhr from 'xhr';
 
 import { fakeStore } from '../test-helpers';
 
-import RiskAssessmentSummary
-  from '../../../../client/javascript/pages/RiskAssessmentSummary';
+import RiskAssessmentSummary from '../../../../client/javascript/pages/RiskAssessmentSummary';
 
 import riskAssessmentQuestions from '../fixtures/riskAssessmentQuestions.json';
 
-const prisonerDetails = {
-  firstName: 'foo-name',
+const prisoner = {
+  id: 1,
+  forename: 'foo-name',
   surname: 'foo-surname',
-  dob: '1-1-2010',
+  dateOfBirth: '2010-01-01T00:00:00.000Z',
   nomisId: 'foo-nomis-id',
+  healthAssessmentCompleted: false,
 };
 
-const riskAssessmentAnswers = {
-  'how-do-you-feel': {
-    comments: 'foo-comment',
-  },
-  'harm-cell-mate': {
-    answer: 'no',
-  },
-  vulnerability: {
-    answer: 'no',
-  },
-  'gang-affiliation': {
-    answer: 'no',
-  },
-  'drug-misuse': {
-    answer: 'no',
-  },
-  prejudice: {
-    answer: 'no',
-  },
-  'officers-assessment': {
-    answer: 'no',
+const riskAssessment = {
+  viperScore: 0.1,
+  outcome: 'shared cell',
+  questions: {
+    introduction: {
+      questionId: 'introduction',
+      question: 'Making this process fair and open',
+      answer: 'accepted',
+    },
+    'risk-of-violence': {
+      questionId: 'risk-of-violence',
+      question: 'Viper result',
+      answer: '',
+    },
+    'how-do-you-feel': {
+      questionId: 'how-do-you-feel',
+      question: 'How do you think they feel about sharing a cell at this moment?',
+      answer: 'foo comment',
+    },
+    'harm-cell-mate': {
+      questionId: 'harm-cell-mate',
+      question: 'Is there any genuine indication they might seriously hurt a cellmate?',
+      answer: 'no',
+    },
+    vulnerability: {
+      questionId: 'vulnerability',
+      question:
+        "Do you think they're likely to lash out because they're scared or feeling vulnerable?",
+      answer: 'no',
+    },
+    'gang-affiliation': {
+      questionId: 'gang-affiliation',
+      question: 'Are they in a gang?',
+      answer: 'no',
+    },
+    'drug-misuse': {
+      questionId: 'drug-misuse',
+      question: 'Have they taken illicit drugs in the last month?',
+      answer: 'no',
+    },
+    prejudice: {
+      questionId: 'prejudice',
+      question: 'Do they have any hostile views or prejudices?',
+      answer: 'no',
+    },
+    'officers-assessment': {
+      questionId: 'officers-assessment',
+      question: 'Are there any other reasons why you would recommend they have a single cell?',
+      answer: 'no',
+    },
   },
 };
 
 const state = {
-  answers: {
-    selectedPrisonerId: 'foo-nomis-id',
-    riskAssessment: {
-      'foo-nomis-id': riskAssessmentAnswers,
-    },
-  },
   questions: {
     riskAssessment: riskAssessmentQuestions,
   },
-  riskAssessmentStatus: {
-    completed: [],
-  },
-  healthcareStatus: {
-    completed: [],
-  },
   offender: {
-    selected: prisonerDetails,
-    viperScores: [
-      {
-        nomisId: 'foo-nomis-id',
-        viperScore: 0.10,
-      },
-    ],
+    selected: prisoner,
+  },
+  assessments: {
+    risk: {
+      1: riskAssessment,
+    },
   },
 };
 
-
 describe('<RiskAssessmentSummary />', () => {
-  let postStub;
-  before(() => {
-    postStub = sinon.stub(xhr, 'post');
-    postStub.yields(null, { status: 200 }, { data: { id: 123 } });
-  });
-  after(() => {
-    postStub.restore();
-  });
-
   context('Connected RiskAssessmentSummary', () => {
     context('when the assessment outcome is low', () => {
       it('renders the prisoners profile details', () => {
@@ -93,7 +100,7 @@ describe('<RiskAssessmentSummary />', () => {
 
         expect(prisonerProfile).to.contain('Foo-name');
         expect(prisonerProfile).to.contain('foo-surname');
-        expect(prisonerProfile).to.contain('1 January 2010');
+        expect(prisonerProfile).to.contain('01 January 2010');
         expect(prisonerProfile).to.contain('foo-nomis-id');
       });
 
@@ -104,18 +111,16 @@ describe('<RiskAssessmentSummary />', () => {
             <RiskAssessmentSummary />
           </Provider>,
         );
-        const outcomeText = wrapper
-          .find('[data-element-id="risk-assessment-outcome"]')
-          .text();
+        const outcomeText = wrapper.find('[data-element-id="risk-assessment-outcome"]').text();
+        const riskText = wrapper.find('[data-element-id="risk-assessment-risk"]').text();
+        const reasonsText = wrapper.find('[data-element-id="risk-assessment-reasons"]');
 
-        const riskText =
-          wrapper
-            .find('[data-element-id="risk-assessment-risk"]')
-            .text();
-
-        const reasonsText =
-          wrapper
-            .find('[data-element-id="risk-assessment-reasons"]');
+        expect(
+          store.dispatch.calledWithMatch({
+            type: 'STORE_ASSESSMENT_OUTCOME',
+            payload: { assessmentType: 'risk', id: 1, outcome: 'shared cell' },
+          }),
+        ).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
 
         expect(outcomeText).to.contain('Shared cell');
         expect(riskText).to.contain('Standard');
@@ -123,51 +128,77 @@ describe('<RiskAssessmentSummary />', () => {
       });
 
       it('renders a "shared cell with conditions" outcome', () => {
-        const answers = {
-          ...riskAssessmentAnswers,
-          'gang-affiliation': {
-            answer: 'yes',
-          },
-          'drug-misuse': {
-            answer: 'yes',
-          },
-        };
-        const unknownRiskStore = fakeStore({
+        const sharedCellOutcomeState = {
           ...state,
-          answers: {
-            selectedPrisonerId: 'foo-nomis-id',
-            riskAssessment: {
-              'foo-nomis-id': answers,
+          assessments: {
+            risk: {
+              1: {
+                ...riskAssessment,
+                questions: {
+                  ...riskAssessment.questions,
+                  'gang-affiliation': {
+                    questionId: 'gang-affiliation',
+                    question: 'Are they in a gang?',
+                    answer: 'yes',
+                  },
+                  'drug-misuse': {
+                    questionId: 'drug-misuse',
+                    question: 'Have they taken illicit drugs in the last month?',
+                    answer: 'yes',
+                  },
+                },
+                outcome: 'shared cell with conditions',
+                reasons: [
+                  {
+                    questionId: 'drug-misuse',
+                    reason: 'Has indicated drug use',
+                  },
+                  {
+                    questionId: 'gang-affiliation',
+                    reason: 'Has indicated gang affiliation',
+                  },
+                ],
+              },
             },
           },
-          riskAssessmentStatus: {
-            completed: [],
-          },
-          offender: {
-            selected: prisonerDetails,
-            viperScores: [],
-          },
-        });
+        };
+        const store = fakeStore(sharedCellOutcomeState);
         const wrapper = mount(
-          <Provider store={unknownRiskStore}>
+          <Provider store={store}>
             <RiskAssessmentSummary />
           </Provider>,
         );
 
-        const outcomeText =
-          wrapper
-            .find('[data-element-id="risk-assessment-outcome"]')
-            .text();
+        const outcomeText = wrapper.find('[data-element-id="risk-assessment-outcome"]').text();
+        const riskText = wrapper.find('[data-element-id="risk-assessment-risk"]').text();
+        const reasonsText = wrapper.find('[data-element-id="risk-assessment-reasons"]').text();
 
-        const riskText =
-          wrapper
-            .find('[data-element-id="risk-assessment-risk"]')
-            .text();
+        expect(
+          store.dispatch.calledWithMatch({
+            type: 'STORE_ASSESSMENT_OUTCOME',
+            payload: { assessmentType: 'risk', id: 1, outcome: 'shared cell with conditions' },
+          }),
+        ).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
 
-        const reasonsText =
-          wrapper
-            .find('[data-element-id="risk-assessment-reasons"]')
-            .text();
+        expect(
+          store.dispatch.calledWithMatch({
+            type: 'STORE_ASSESSMENT_REASONS',
+            payload: {
+              assessmentType: 'risk',
+              id: 1,
+              reasons: [
+                {
+                  questionId: 'gang-affiliation',
+                  reason: 'Has indicated gang affiliation',
+                },
+                {
+                  questionId: 'drug-misuse',
+                  reason: 'Has indicated drug use',
+                },
+              ],
+            },
+          }),
+        ).to.equal(true, 'did not triggered STORE_ASSESSMENT_REASONS');
 
         expect(outcomeText).to.contain('Shared cell with conditions');
         expect(riskText).to.contain('Standard');
@@ -176,48 +207,65 @@ describe('<RiskAssessmentSummary />', () => {
       });
 
       it('renders a "single cell" outcome', () => {
-        const answers = {
-          ...riskAssessmentAnswers,
-          'harm-cell-mate': {
-            answer: 'yes',
-          },
-        };
-        const unknownRiskStore = fakeStore({
+        const singleCellOutcomeState = {
           ...state,
-          answers: {
-            selectedPrisonerId: 'foo-nomis-id',
-            riskAssessment: {
-              'foo-nomis-id': answers,
+          assessments: {
+            risk: {
+              1: {
+                ...riskAssessment,
+                questions: {
+                  ...riskAssessment.questions,
+                  'harm-cell-mate': {
+                    questionId: 'harm-cell-mate',
+                    question:
+                      'Is there any genuine indication they might seriously hurt a cellmate?',
+                    answer: 'yes',
+                  },
+                },
+                outcome: 'single cell',
+                reasons: [
+                  {
+                    questionId: 'harm-cell-mate',
+                    reason: 'Officer thinks they might seriously hurt cellmate',
+                  },
+                ],
+              },
             },
           },
-          riskAssessmentStatus: {
-            completed: [],
-          },
-          offender: {
-            selected: prisonerDetails,
-            viperScores: [],
-          },
-        });
+        };
+
+        const store = fakeStore(singleCellOutcomeState);
         const wrapper = mount(
-          <Provider store={unknownRiskStore}>
+          <Provider store={store}>
             <RiskAssessmentSummary />
           </Provider>,
         );
+        const outcomeText = wrapper.find('[data-element-id="risk-assessment-outcome"]').text();
+        const riskText = wrapper.find('[data-element-id="risk-assessment-risk"]').text();
+        const reasonsText = wrapper.find('[data-element-id="risk-assessment-reasons"]').text();
 
-        const outcomeText =
-          wrapper
-            .find('[data-element-id="risk-assessment-outcome"]')
-            .text();
+        expect(
+          store.dispatch.calledWithMatch({
+            type: 'STORE_ASSESSMENT_REASONS',
+            payload: {
+              assessmentType: 'risk',
+              id: 1,
+              reasons: [
+                {
+                  questionId: 'harm-cell-mate',
+                  reason: 'Officer thinks they might seriously hurt cellmate',
+                },
+              ],
+            },
+          }),
+        ).to.equal(true, 'did not triggered STORE_ASSESSMENT_REASONS');
 
-        const riskText =
-          wrapper
-            .find('[data-element-id="risk-assessment-risk"]')
-            .text();
-
-        const reasonsText =
-          wrapper
-            .find('[data-element-id="risk-assessment-reasons"]')
-            .text();
+        expect(
+          store.dispatch.calledWithMatch({
+            type: 'STORE_ASSESSMENT_OUTCOME',
+            payload: { assessmentType: 'risk', id: 1, outcome: 'single cell' },
+          }),
+        ).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
 
         expect(outcomeText).to.contain('Single cell');
         expect(riskText).to.contain('High');
@@ -226,43 +274,46 @@ describe('<RiskAssessmentSummary />', () => {
     });
 
     context('when the assessment outcome is high due to the viper score', () => {
-      const highRiskStore = fakeStore({
-        ...state,
-        riskAssessmentStatus: {
-          completed: [],
-        },
-        offender: {
-          selected: prisonerDetails,
-          viperScores: [
-            {
-              nomisId: 'foo-nomis-id',
-              viperScore: 0.79,
-            },
-          ],
-        },
-      });
-
       it('renders the outcome of a high risk assessment', () => {
+        const store = fakeStore({
+          ...state,
+          assessments: {
+            risk: {
+              1: {
+                ...riskAssessment,
+                viperScore: 0.75,
+                outcome: 'single cell',
+                reasons: [{ questionId: 'risk-of-violence', reason: 'has a high viper score' }],
+              },
+            },
+          },
+        });
         const wrapper = mount(
-          <Provider store={highRiskStore}>
+          <Provider store={store}>
             <RiskAssessmentSummary />
           </Provider>,
         );
+        const outcomeText = wrapper.find('[data-element-id="risk-assessment-outcome"]').text();
+        const riskText = wrapper.find('[data-element-id="risk-assessment-risk"]').text();
+        const reasonsText = wrapper.find('[data-element-id="risk-assessment-reasons"]').text();
 
-        const outcomeText =
-          wrapper
-            .find('[data-element-id="risk-assessment-outcome"]')
-            .text();
+        expect(
+          store.dispatch.calledWithMatch({
+            type: 'STORE_ASSESSMENT_REASONS',
+            payload: {
+              assessmentType: 'risk',
+              id: 1,
+              reasons: [{ questionId: 'risk-of-violence', reason: 'has a high viper score' }],
+            },
+          }),
+        ).to.equal(true, 'did not triggered STORE_ASSESSMENT_REASONS');
 
-        const riskText =
-          wrapper
-            .find('[data-element-id="risk-assessment-risk"]')
-            .text();
-
-        const reasonsText =
-          wrapper
-            .find('[data-element-id="risk-assessment-reasons"]')
-            .text();
+        expect(
+          store.dispatch.calledWithMatch({
+            type: 'STORE_ASSESSMENT_OUTCOME',
+            payload: { assessmentType: 'risk', id: 1, outcome: 'single cell' },
+          }),
+        ).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
 
         expect(outcomeText).to.contain('Single cell');
         expect(riskText).to.contain('High');
@@ -270,94 +321,9 @@ describe('<RiskAssessmentSummary />', () => {
       });
     });
 
-    context('when the assessment is complete', () => {
-      xit('allows the user to change answers', () => {
-        const store = fakeStore(state);
-        const wrapper = mount(
-          <Provider store={store}>
-            <RiskAssessmentSummary />
-          </Provider>,
-        );
-
-        wrapper.find('[data-change-answers]').simulate('click');
-
-        expect(
-          store.dispatch.calledWithMatch({
-            type: '@@router/CALL_HISTORY_METHOD',
-            payload: {
-              method: 'replace',
-              args: ['/risk-assessment/introduction'],
-            },
-          }),
-        ).to.equal(true, 'Changed path to /risk-assessment/introduction');
-      });
-
-      it('marks the assessment as complete on submission', () => {
-        const store = fakeStore(state);
-        const wrapper = mount(
-          <Provider store={store}>
-            <RiskAssessmentSummary />
-          </Provider>,
-        );
-
-        wrapper.find('form').simulate('submit');
-
-        expect(
-          store.dispatch.calledWithMatch({
-            type: 'COMPLETE_RISK_ASSESSMENT',
-            payload: {
-              recommendation: 'shared cell',
-              nomisId: 'foo-nomis-id',
-              assessmentId: 123,
-            },
-          }),
-        ).to.equal(true, 'triggered complete assessment');
-      });
-
-      it('marks the assessment complete with reasons upon submission', () => {
-        const stateWithReason = {
-          ...state,
-          answers: {
-            selectedPrisonerId: 'foo-nomis-id',
-            riskAssessment: {
-              'foo-nomis-id': {
-                ...riskAssessmentAnswers,
-                'gang-affiliation': {
-                  answer: 'yes',
-                },
-              },
-            },
-          },
-        };
-
-        const store = fakeStore(stateWithReason);
-        const wrapper = mount(
-          <Provider store={store}>
-            <RiskAssessmentSummary />
-          </Provider>,
-        );
-        wrapper.find('form').simulate('submit');
-
-        expect(
-          store.dispatch.calledWithMatch({
-            type: 'COMPLETE_RISK_ASSESSMENT',
-            payload: {
-              rating: 'standard',
-              recommendation: 'shared cell with conditions',
-              reasons: ['Has indicated gang affiliation'],
-              nomisId: 'foo-nomis-id',
-              assessmentId: 123,
-            },
-          }),
-        ).to.equal(true, 'triggered complete assessment');
-      });
-    });
-
-
-    context('when the health care assessment is incomplete', () => {
-      const store = fakeStore(state);
-
+    context('when the healthcare assessment is incomplete', () => {
       it('displays a message informing the user that they need to complete the healthcare assessment', () => {
+        const store = fakeStore(state);
         const wrapper = mount(
           <Provider store={store}>
             <RiskAssessmentSummary />
@@ -368,17 +334,22 @@ describe('<RiskAssessmentSummary />', () => {
           'You must print a copy of this summary for healthcare.',
         );
 
-        expect(
-          wrapper.find('[data-element-id="continue-button"]').text(),
-        ).to.equal('Submit and return to prisoner list');
+        expect(wrapper.find('[data-element-id="continue-button"]').text()).to.equal(
+          'Submit and return to prisoner list',
+        );
       });
 
       it('on submission it navigates to the prisoner list', () => {
+        const store = fakeStore(state);
         const wrapper = mount(
           <Provider store={store}>
             <RiskAssessmentSummary />
           </Provider>,
         );
+
+        const putStub = sinon.stub(xhr, 'put');
+
+        putStub.yields(null, { statusCode: 200 }, { foo: 'bar' });
 
         wrapper.find('form').simulate('submit');
 
@@ -388,36 +359,64 @@ describe('<RiskAssessmentSummary />', () => {
             payload: { method: 'replace', args: ['/dashboard'] },
           }),
         ).to.equal(true, 'Changed path to /dashboard');
+
+        putStub.restore();
+      });
+
+      it('navigates to the error page on form submission when there is an error', () => {
+        const store = fakeStore(state);
+        const wrapper = mount(
+          <Provider store={store}>
+            <RiskAssessmentSummary />
+          </Provider>,
+        );
+        const putStub = sinon.stub(xhr, 'put');
+
+        putStub.yields(null, { statusCode: 500 });
+
+        wrapper.find('form').simulate('submit');
+
+        expect(
+          store.dispatch.calledWithMatch({
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: { method: 'replace', args: ['/error'] },
+          }),
+        ).to.equal(true, 'Changed path to /error');
+
+        putStub.restore();
       });
     });
 
     context('when the healthcare assessment is complete', () => {
-      const storeDataCompleted = {
+      const stateWithCompletedHealthcare = {
         ...state,
-        healthcareStatus: {
-          completed: [{ nomisId: 'foo-nomis-id' }],
+        offender: {
+          selected: { ...prisoner, healthAssessmentCompleted: true },
         },
       };
-      const store = fakeStore(storeDataCompleted);
-
       it('displays a message informing the user that they can see their assessment outcome', () => {
+        const store = fakeStore(stateWithCompletedHealthcare);
         const wrapper = mount(
           <Provider store={store}>
             <RiskAssessmentSummary />
           </Provider>,
         );
 
-        expect(
-          wrapper.find('[data-element-id="continue-button"]').text(),
-        ).to.equal('Submit and complete assessment');
+        expect(wrapper.find('[data-element-id="continue-button"]').text()).to.equal(
+          'Submit and complete assessment',
+        );
       });
 
       it('on submission it navigates to the full assessment page', () => {
+        const store = fakeStore(stateWithCompletedHealthcare);
         const wrapper = mount(
           <Provider store={store}>
             <RiskAssessmentSummary />
           </Provider>,
         );
+        const putStub = sinon.stub(xhr, 'put');
+
+        putStub.yields(null, { statusCode: 200 });
 
         wrapper.find('form').simulate('submit');
 
@@ -427,6 +426,8 @@ describe('<RiskAssessmentSummary />', () => {
             payload: { method: 'replace', args: ['/full-assessment-outcome'] },
           }),
         ).to.equal(true, 'Changed path to /full-assessment-outcome');
+
+        putStub.restore();
       });
     });
   });

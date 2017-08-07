@@ -18,8 +18,8 @@ describe('GET /viper/:nomisId', () => {
 
     return request(app)
       .get('/viper/A123')
-      .expect('Content-Type', /json/)
       .expect(200)
+      .expect('Content-Type', /json/)
       .expect((res) => {
         expect(res.body).to.eql({ nomisId: 'A123', viperRating: 0.45 });
       });
@@ -30,8 +30,8 @@ describe('GET /viper/:nomisId', () => {
 
     return request(app)
       .get('/viper/A123')
-      .expect('Content-Type', /json/)
       .expect(404)
+      .expect('Content-Type', /json/)
       .expect((res) => {
         expect(res.body).to.eql({ messasge: 'Error retrieving viper rating for nomisId: A123. The cause was: Not found' });
       });
@@ -42,8 +42,8 @@ describe('GET /viper/:nomisId', () => {
 
     return request(app)
       .get('/viper/A123')
-      .expect('Content-Type', /json/)
       .expect(404)
+      .expect('Content-Type', /json/)
       .expect((res) => {
         expect(res.body).to.eql({ messasge: 'Error retrieving viper rating for nomisId: A123. The cause was: Error: Some strange viperService error' });
       });

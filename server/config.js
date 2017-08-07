@@ -23,6 +23,7 @@ const config = {
   port: process.env.PORT || '5000',
   appinsightsKey: process.env.APPINSIGHTS_INSTRUMENTATIONKEY || 'your-secret-key',
   db: {},
+  dbTestUser: {},
   viper: {
     enabled: false,
     url: null,
@@ -38,6 +39,16 @@ if (dbUri) {
   config.db.user = auth[0];
   config.db.password = auth[1];
   config.db.name = parsed.pathname.slice(1);
+}
+
+const dbUriTests = process.env.DB_URI_TESTS;
+if (dbUriTests) {
+  const parsed = url.parse(dbUriTests);
+  const auth = parsed.auth.split(':');
+  config.dbTestUser.server = parsed.hostname;
+  config.dbTestUser.user = auth[0];
+  config.dbTestUser.password = auth[1];
+  config.dbTestUser.name = parsed.pathname.slice(1);
 }
 
 if (process.env.USE_VIPER_SERVICE === 'true') {
