@@ -181,8 +181,11 @@ exports.config = {
   },
   //
   // Hook that gets executed before the suite starts
-  // beforeSuite: function (suite) {
-  // },
+  beforeSuite: function (suite) {
+    browser.execute(function() {
+      sessionStorage.clear();
+    });
+  },
   //
   // Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
   // beforeEach in Mocha)
