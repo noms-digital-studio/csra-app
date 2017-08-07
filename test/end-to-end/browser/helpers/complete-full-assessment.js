@@ -28,7 +28,10 @@ function thenTheFullAssessmentIsCompleted(config = defaultFullAssessmentConfig) 
 
   FullAssessmentOutcomePage.confirmAndContinue();
 
-  expect(FullAssessmentCompletePage.mainHeading).to.equal('Cell sharing risk assessment complete');
+  expect(
+    FullAssessmentCompletePage.waitForMainHeadingWithDataId('full-assessment-complete'),
+  ).to.equal('Cell sharing risk assessment complete');
+
 
   FullAssessmentCompletePage.clickContinue();
 
