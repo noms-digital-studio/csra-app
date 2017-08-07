@@ -116,8 +116,8 @@ export const fullAssessmentRecommendation = (config) => {
 export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) => {
   DashboardPage.waitForMainHeadingWithDataId('dashboard');
 
-  browser.waitForVisible(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`, 5000);
-  const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
+  // browser.waitForVisible(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`, 5000);
+  const row = browser.element('tbody tr');
   const assessmentId = row.getAttribute('data-assessment-id');
 
   expect(row.getText()).to.equal(
