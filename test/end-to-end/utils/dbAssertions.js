@@ -2,6 +2,21 @@ import Future from 'fibers/future';
 
 import db from '../../util/db';
 
+const checkThatTheOutcomeDataWasWrittenToDatabase = ({
+  id,
+  outcome,
+}) => db.select()
+.table('prisoner_assessments')
+.where('id', Number(id))
+.then((result) => {
+  expect(result[0]).to.not.equal(
+    undefined,
+    `Did not get a result from database for id: ${id}`,
+  );
+  expect(result[0].outcome).to.eql(outcome);
+  return result[0];
+});
+
 const checkThatRiskAssessmentDataWasWrittenToDatabase = ({
   id,
   riskAssessment,
@@ -64,6 +79,14 @@ const checkThatPrisonerAssessmentDataWasWrittenToDatabase = ({
 
 export const checkThatRiskAssessmentDataWasWrittenToDatabaseSync = (args) => {
   const future = Future.fromPromise(checkThatRiskAssessmentDataWasWrittenToDatabase(args));
+
+  Future.wait(future);
+
+  future.get();
+};
+
+export const checkThatTheOutcomeDataWasWrittenToDatabaseSync = (args) => {
+  const future = Future.fromPromise(checkThatTheOutcomeDataWasWrittenToDatabase(args));
 
   Future.wait(future);
 

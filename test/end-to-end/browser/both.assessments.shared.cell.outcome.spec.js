@@ -8,9 +8,12 @@ import {
 
 import {
   whenAPrisonersHealthcareResultsAreEntered as whenHealthcareRecommendsSharedCell,
+} from './helpers/complete-healthcare-assessment';
+
+import {
   thenTheFullAssessmentIsCompleted,
   viewFullOutcomeForPrisoner as andICanViewTheirAssessmentOutcomeAgain,
-} from './helpers/complete-healthcare-assessment';
+} from './helpers/complete-full-assessment';
 
 import config from '../../../server/config';
 import db from '../../util/db';
