@@ -81,7 +81,7 @@ jobs:
               APP_BASE_URL=https://csra-mock.hmpps.dsd.io \
               E2E_REPORTS_PATH=./reports/end-to-end \
               E2E_SCREENSHOTS_PATH=./reports/error-screen-shots \
-                yarn run test:e2e
+                yarn run test:rest
 
             fi
 
