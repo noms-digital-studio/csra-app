@@ -21,7 +21,7 @@ git push --force origin origin/deploy-to-mock:deploy-to-stage
 GIT_REF=`jq -r '.gitRef' build-info.json` WAIT_DURATION=45000 APP_BASE_URL=http://csra-stage.hmpps.dsd.io/health yarn wait-for-deploy
 
 # Run the E2E tests against STAGE
-DB_URI=mssql://csra:$1@csra-stage.database.windows.net:1433/csra-stage APP_BASE_URL=https://csra-stage.hmpps.dsd.io yarn test:e2e
+DB_URI_TESTS=mssql://csra:$1@csra-stage.database.windows.net:1433/csra-stage APP_BASE_URL=https://csra-stage.hmpps.dsd.io yarn test:e2e
 
 # Switch back to master branch
 git checkout master
