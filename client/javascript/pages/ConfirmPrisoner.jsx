@@ -5,7 +5,7 @@ import { replace } from 'react-router-redux';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import routes from '../constants/routes';
-import postAssessment from '../services/postAssessment';
+import startAssessment from '../services/startAssessment';
 import { confirmPrisoner } from '../actions';
 import { extractDateFromString } from '../utils';
 
@@ -72,7 +72,7 @@ const mapStateToProps = state => ({
 
 const mapActionsToProps = dispatch => ({
   onClick: (prisoner) => {
-    postAssessment(prisoner, (response) => {
+    startAssessment(prisoner, (response) => {
       if (not(response)) {
         return dispatch(replace(routes.ERROR_PAGE));
       }

@@ -5,7 +5,7 @@ import path from 'ramda/src/path';
 
 const debug = debugModule('csra');
 
-const postAssessment = (prisoner, callback) => {
+const startAssessment = (prisoner, callback) => {
   debug('posting assessment for %s', prisoner.nomisId);
 
   const target = '/api/assessments';
@@ -24,4 +24,4 @@ const postAssessment = (prisoner, callback) => {
   });
 };
 
-export default postAssessment;
+export default startAssessment;
