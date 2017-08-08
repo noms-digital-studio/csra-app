@@ -1,14 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+import { push, replace } from 'react-router-redux';
 import { Link } from 'react-router';
 import isEmpty from 'ramda/src/isEmpty';
-import path from 'ramda/src/path';
 
 import { parseDate, capitalize, extractDateFromUTCString } from '../utils';
 import { selectOffender, getOffenderAssessments, startHealthcareAssessmentFor } from '../actions';
 import getAssessments from '../services/getAssessments';
+import getAssessmentsById from '../services/getAssessmentsById';
 
 import routes from '../constants/routes';
 
@@ -166,14 +166,30 @@ const mapActionsToProps = dispatch => ({
       }
     });
   },
-  onOffenderSelect: (offender) => {
-    dispatch(selectOffender(offender));
-    dispatch(push(routes.PRISONER_PROFILE));
+  onOffenderSelect: (prisoner) => {
+    getAssessmentsById(prisoner.id, (response) => {
+      if (response && response.riskAssessment) {
+        return dispatch(replace(routes.ERROR_PAGE));
+      }
+
+      dispatch(selectOffender(prisoner));
+      dispatch(push(routes.PRISONER_PROFILE));
+
+      return true;
+    });
   },
-  onOffenderHealthcareSelect: (offender) => {
-    dispatch(selectOffender(offender));
-    dispatch(startHealthcareAssessmentFor({ id: offender.id }));
-    dispatch(push(`${routes.HEALTHCARE_ASSESSMENT}/outcome`));
+  onOffenderHealthcareSelect: (prisoner) => {
+    getAssessmentsById(prisoner.id, (response) => {
+      if (response && response.healthAssessment) {
+        return dispatch(replace(routes.ERROR_PAGE));
+      }
+
+      dispatch(selectOffender(prisoner));
+      dispatch(startHealthcareAssessmentFor({ id: prisoner.id }));
+      dispatch(push(`${routes.HEALTHCARE_ASSESSMENT}/outcome`));
+
+      return true;
+    });
   },
   onViewOutcomeClick: (offender) => {
     dispatch(selectOffender(offender));

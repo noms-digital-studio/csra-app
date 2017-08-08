@@ -6,9 +6,7 @@ import xhr from 'xhr';
 import { fakeStore } from '../test-helpers';
 import { parseDate } from '../../../../client/javascript/utils';
 
-import ConnectedDashboard, {
-  Dashboard,
-} from '../../../../client/javascript/pages/Dashboard';
+import ConnectedDashboard, { Dashboard } from '../../../../client/javascript/pages/Dashboard';
 
 const assessments = [
   {
@@ -56,7 +54,7 @@ const assertGivenValuesInWhiteListAreInPage = (list, whiteList, component) => {
 };
 
 describe('<Dashboard />', () => {
-  context('Standalone Dashboard', () => {
+  describe('Standalone Dashboard', () => {
     context('when there is no one assess', () => {
       it('does not display a list of people to assess', () => {
         const wrapper = mount(<Dashboard />);
@@ -114,23 +112,25 @@ describe('<Dashboard />', () => {
 
       it('does not displays the link to view the full assessment when both assessments not complete', () => {
         const wrapper = mount(<Dashboard assessments={assessments} />);
-        const viewOutcomeBtn = wrapper.find('[data-element-id="profile-row-bar-id"] > [data-element-id="view-outcome"] button');
+        const viewOutcomeBtn = wrapper.find(
+          '[data-element-id="profile-row-bar-id"] > [data-element-id="view-outcome"] button',
+        );
 
         expect(viewOutcomeBtn.length).to.equal(0);
       });
 
       it('displays the link to view the full assessment when both assessments are complete', () => {
         const wrapper = mount(<Dashboard assessments={assessments} />);
-        const viewOutcomeBtn = wrapper.find('[data-element-id="profile-row-foo-id"] > [data-element-id="view-outcome"] button');
+        const viewOutcomeBtn = wrapper.find(
+          '[data-element-id="profile-row-foo-id"] > [data-element-id="view-outcome"] button',
+        );
 
         expect(viewOutcomeBtn.length).to.equal(1);
       });
 
       it('responds to the selection of an incomplete risk assessment', () => {
         const callback = sinon.spy();
-        const wrapper = mount(
-          <Dashboard assessments={assessments} onOffenderSelect={callback} />,
-        );
+        const wrapper = mount(<Dashboard assessments={assessments} onOffenderSelect={callback} />);
 
         const profileBtn = wrapper.find('[data-risk-assessment-complete=false] > button');
 
@@ -145,7 +145,7 @@ describe('<Dashboard />', () => {
     });
   });
 
-  context('Connected Dashboard', () => {
+  describe('Connected Dashboard', () => {
     let getStub;
 
     beforeEach(() => {
@@ -293,9 +293,7 @@ describe('<Dashboard />', () => {
           <ConnectedDashboard />
         </Provider>,
       );
-      const profileBtn = wrapper.find(
-        '[data-health-assessment-complete=false] > button',
-      );
+      const profileBtn = wrapper.find('[data-health-assessment-complete=false] > button');
 
       profileBtn.simulate('click');
 
@@ -313,5 +311,56 @@ describe('<Dashboard />', () => {
         }),
       ).to.equal(true, 'dispatch /healthcare-assessment/outcome');
     });
+
+    context(
+      'when an assessment has already been completed but the assessment list has not been refreshed',
+      () => {
+        it('prevent a risk assessment from being started', () => {
+          const store = fakeStore(state);
+          const wrapper = mount(
+            <Provider store={store}>
+              <ConnectedDashboard />
+            </Provider>,
+          );
+          const profileBtn = wrapper.find('[data-risk-assessment-complete=false] > button');
+
+          getStub.onSecondCall().yields(null, { statusCode: 200 }, { riskAssessment: { foo: 'bar' } });
+
+          profileBtn.simulate('click');
+
+          expect(getStub.callCount).to.equal(2);
+
+          expect(
+            store.dispatch.calledWithMatch({
+              type: '@@router/CALL_HISTORY_METHOD',
+              payload: { method: 'replace', args: ['/error'] },
+            }),
+          ).to.equal(true, 'did not dispatch /error');
+        });
+
+        it('prevent a health assessment from being started', () => {
+          const store = fakeStore(state);
+          const wrapper = mount(
+            <Provider store={store}>
+              <ConnectedDashboard />
+            </Provider>,
+          );
+          const profileBtn = wrapper.find('[data-health-assessment-complete=false] > button');
+
+          getStub.onSecondCall().yields(null, { statusCode: 200 }, { healthAssessment: { foo: 'bar' } });
+
+          profileBtn.simulate('click');
+
+          expect(getStub.callCount).to.equal(2);
+
+          expect(
+            store.dispatch.calledWithMatch({
+              type: '@@router/CALL_HISTORY_METHOD',
+              payload: { method: 'replace', args: ['/error'] },
+            }),
+          ).to.equal(true, 'did not dispatch /error');
+        });
+      },
+    );
   });
 });
