@@ -7,7 +7,7 @@ import path from 'ramda/src/path';
 import isEmpty from 'ramda/src/isEmpty';
 
 import { cellAssignment } from '../services';
-import getAssessmentsById from '../services/getFullOutcome';
+import getAssessmentsById from '../services/getAssessmentsById';
 import saveAssessmentsOutcome from '../services/saveAssessmentsOutcome';
 
 import { capitalize } from '../utils';
