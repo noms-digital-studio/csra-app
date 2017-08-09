@@ -10,6 +10,7 @@ import { capitalize } from '../utils';
 import { extractDecision } from '../services';
 
 import postAssessmentToBackend from '../services/postAssessmentToBackend';
+import getAssessmentsById from '../services/getAssessmentsById';
 
 import PrisonerProfile from '../components/PrisonerProfile';
 import RiskAssessmentSummaryTable from '../components/connected/RiskAssessmentSummaryTable';
@@ -54,7 +55,6 @@ class RiskAssessmentSummary extends Component {
             onSubmit({
               assessmentId: prisoner.id,
               assessment,
-              healthcareAssessmentComplete,
             });
           }}
         >
@@ -125,7 +125,9 @@ class RiskAssessmentSummary extends Component {
               type="submit"
               className="button"
               data-element-id="continue-button"
-              ref={(el) => { this.submitBtn = el; }}
+              ref={(el) => {
+                this.submitBtn = el;
+              }}
             >
               {healthcareAssessmentComplete
                 ? 'Submit and complete assessment'
@@ -188,17 +190,26 @@ const mapStateToProps = (state) => {
 const mapActionsToProps = dispatch => ({
   saveOutcome: ({ id, outcome }) => dispatch(saveRiskAssessmentOutcome({ id, outcome })),
   saveReasons: ({ id, reasons }) => dispatch(saveRiskAssessmentReasons({ id, reasons })),
-  onSubmit: ({ assessment, healthcareAssessmentComplete, assessmentId }) => {
-    postAssessmentToBackend({ assessmentId, assessment, assessmentType: 'risk' }, (response) => {
+  onSubmit: ({ assessment, assessmentId }) => {
+    getAssessmentsById(assessmentId, (response) => {
       if (not(response)) {
         return dispatch(replace(routes.ERROR_PAGE));
       }
 
-      if (healthcareAssessmentComplete) {
-        return dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
-      }
+      return postAssessmentToBackend(
+        { assessmentId, assessment, assessmentType: 'risk' },
+        (_response) => {
+          if (not(_response)) {
+            return dispatch(replace(routes.ERROR_PAGE));
+          }
 
-      return dispatch(replace(routes.DASHBOARD));
+          if (response.healthAssessment) {
+            return dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
+          }
+
+          return dispatch(replace(routes.DASHBOARD));
+        },
+      );
     });
   },
 });
