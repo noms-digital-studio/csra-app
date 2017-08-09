@@ -9,6 +9,7 @@ import not from 'ramda/src/not';
 import { splitAssessorValues } from '../services';
 import { capitalize, parseDate } from '../utils';
 import postAssessmentToBackend from '../services/postAssessmentToBackend';
+import getAssessmentsById from '../services/getAssessmentsById';
 import { completeHealthAnswersFor, saveHealthcareAssessmentOutcome } from '../actions';
 
 import PrisonerProfile from '../components/PrisonerProfile';
@@ -39,7 +40,6 @@ class HealthCareSummary extends Component {
             this.submitBtn.setAttribute('disabled', true);
 
             onSubmit({
-              riskAssessmentComplete,
               assessmentId: prisoner.id,
               assessment,
             });
@@ -208,17 +208,23 @@ const mapStateToProps = (state, ownProps) => {
 };
 const mapActionsToProps = dispatch => ({
   saveOutcome: ({ id, outcome }) => dispatch(saveHealthcareAssessmentOutcome({ id, outcome })),
-  onSubmit: ({ assessmentId, riskAssessmentComplete, assessment }) => {
-    postAssessmentToBackend({ assessmentId, assessmentType: 'health', assessment }, (response) => {
+  onSubmit: ({ assessmentId, assessment }) => {
+    getAssessmentsById(assessmentId, (response) => {
       if (not(response)) {
         return dispatch(replace(routes.ERROR_PAGE));
       }
 
-      if (riskAssessmentComplete) {
-        return dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
-      }
+      return postAssessmentToBackend({ assessmentId, assessmentType: 'health', assessment }, (_response) => {
+        if (not(_response)) {
+          return dispatch(replace(routes.ERROR_PAGE));
+        }
 
-      return dispatch(replace(routes.DASHBOARD));
+        if (response.riskAssessment) {
+          return dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
+        }
+
+        return dispatch(replace(routes.DASHBOARD));
+      });
     });
   },
   markAnswersAsCompleteFor: profile => dispatch(completeHealthAnswersFor(profile)),

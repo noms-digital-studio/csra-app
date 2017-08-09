@@ -199,7 +199,20 @@ describe('<HealthcareSummary />', () => {
   });
 
   context('when the risk assessment is incomplete', () => {
-    const store = fakeStore(state);
+    let store;
+    let putStub;
+    let getStub;
+
+    beforeEach(() => {
+      store = fakeStore(state);
+      putStub = sinon.stub(xhr, 'put');
+      getStub = sinon.stub(xhr, 'get');
+    });
+
+    afterEach(() => {
+      getStub.restore();
+      putStub.restore();
+    });
 
     it('displays a message informing the user that they have to complete the risk assessment', () => {
       const wrapper = mount(
@@ -218,16 +231,16 @@ describe('<HealthcareSummary />', () => {
     });
 
     it('on submission it navigates to the prisoner list', () => {
-      const putStub = sinon.stub(xhr, 'put');
       const wrapper = mount(
         <Provider store={store}>
           <HealthcareSummary />
         </Provider>,
       );
 
-      expect(wrapper.find('button[type="submit"]').getNode().hasAttribute('disabled')).to.equal(false);
-
+      getStub.yields(null, { statusCode: 200 }, { riskAssessment: null });
       putStub.yields(null, { statusCode: 200 });
+
+      expect(wrapper.find('button[type="submit"]').getNode().hasAttribute('disabled')).to.equal(false);
 
       wrapper.find('form').simulate('submit');
 
@@ -239,18 +252,16 @@ describe('<HealthcareSummary />', () => {
           payload: { method: 'replace', args: ['/dashboard'] },
         }),
       ).to.equal(true, 'Changed path to /dashboard');
-
-      putStub.restore();
     });
 
-    it('on submission it navigates to the error page when there is a network error', () => {
-      const putStub = sinon.stub(xhr, 'put');
+    it('on submission it navigates to the error page when it fails to PUT the assessment', () => {
       const wrapper = mount(
         <Provider store={store}>
           <HealthcareSummary />
         </Provider>,
       );
 
+      getStub.yields(null, { statusCode: 200 }, { riskAssessment: null });
       putStub.yields(null, { statusCode: 500 });
 
       wrapper.find('form').simulate('submit');
@@ -261,19 +272,51 @@ describe('<HealthcareSummary />', () => {
           payload: { method: 'replace', args: ['/error'] },
         }),
       ).to.equal(true, 'Changed path to /error');
+    });
 
-      putStub.restore();
+    it('on submission it navigates to the error page when it fails to get an assessment', () => {
+      const wrapper = mount(
+        <Provider store={store}>
+          <HealthcareSummary />
+        </Provider>,
+      );
+
+      getStub.yields(null, { statusCode: 500 });
+      putStub.yields(null, { statusCode: 200 });
+
+      wrapper.find('form').simulate('submit');
+
+      expect(
+        store.dispatch.calledWithMatch({
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: { method: 'replace', args: ['/error'] },
+        }),
+      ).to.equal(true, 'Changed path to /error');
     });
   });
 
   context('when the risk assessment is complete', () => {
+    let store;
+    let putStub;
+    let getStub;
+
     const stateCompleted = {
       ...state,
       offender: {
         selected: { ...prisoner, riskAssessmentCompleted: true },
       },
     };
-    const store = fakeStore(stateCompleted);
+
+    beforeEach(() => {
+      store = fakeStore(stateCompleted);
+      putStub = sinon.stub(xhr, 'put');
+      getStub = sinon.stub(xhr, 'get');
+    });
+
+    afterEach(() => {
+      getStub.restore();
+      putStub.restore();
+    });
 
     it('displays a message informing the user that they can see their assessment outcome', () => {
       const wrapper = mount(
@@ -288,14 +331,15 @@ describe('<HealthcareSummary />', () => {
     });
 
     it('on submission it navigates to the full assessment page', () => {
-      const putStub = sinon.stub(xhr, 'put');
       const wrapper = mount(
         <Provider store={store}>
           <HealthcareSummary />
         </Provider>,
       );
 
+      getStub.yields(null, { statusCode: 200 }, { riskAssessment: { foo: 'bar' } });
       putStub.yields(null, { statusCode: 200 });
+
       wrapper.find('form').simulate('submit');
 
       expect(
@@ -304,8 +348,6 @@ describe('<HealthcareSummary />', () => {
           payload: { method: 'replace', args: ['/full-assessment-outcome'] },
         }),
       ).to.equal(true, 'Changed path to /full-assessment-outcome');
-
-      putStub.restore();
     });
   });
 });
