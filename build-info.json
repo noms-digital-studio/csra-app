@@ -1,0 +1,9 @@
+{
+  "buildNumber": "921",
+  "gitRef": "24bbc7c396d5a4cbb568d54074f45766ebbba16a",
+  "gitDate": "2017-08-09T14:30:11.000Z",
+  "questionHash": {
+    "risk": "ead7e57e86a9ca62ca030e127f3787b751c83751",
+    "healthcare": "1ed3fe4ab79f3351947438a15f017f11d47fd89d"
+  }
+}
