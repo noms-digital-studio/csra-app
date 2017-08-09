@@ -60,7 +60,7 @@ const riskAssessment = {
     prejudice: {
       questionId: 'prejudice',
       question: 'Do they have any hostile views or prejudices?',
-      answer: 'no',
+      answer: 'yes',
     },
     'officers-assessment': {
       questionId: 'officers-assessment',
@@ -131,6 +131,7 @@ describe('<FullAssessmentOutcome', () => {
       null,
       { statusCode: 200 },
       {
+        outcome: null,
         riskAssessment: JSON.stringify(riskAssessment),
         healthAssessment: JSON.stringify(healthcareAssessment),
       },
@@ -148,6 +149,68 @@ describe('<FullAssessmentOutcome', () => {
         <FullAssessmentOutcome />
       </Provider>,
     );
+  });
+
+  it('stores the assessment outcome on mount', () => {
+    const store = fakeStore(state);
+
+    const putStub = sinon.stub(xhr, 'put');
+
+    putStub.onFirstCall().yields(null, { statusCode: 200 });
+
+    mount(
+      <Provider store={store}>
+        <FullAssessmentOutcome />
+      </Provider>,
+    );
+
+    expect(putStub.lastCall.args[0]).to.equal('/api/assessments/1/outcome');
+    expect(putStub.lastCall.args[1]).to.eql({
+      json: {
+        outcome: 'shared cell with conditions',
+      },
+      timeout: 3500,
+    });
+
+    putStub.restore();
+  });
+
+  it('stores the risk assessment on mount', () => {
+    const store = fakeStore(state);
+
+    mount(
+      <Provider store={store}>
+        <FullAssessmentOutcome />
+      </Provider>,
+    );
+
+    expect(store.dispatch.calledWithMatch({
+      type: 'STORE_ASSESSMENT',
+      payload: {
+        assessmentType: 'risk',
+        id: 1,
+        assessment: riskAssessment,
+      },
+    }));
+  });
+
+  it('stores the health assessment on mount', () => {
+    const store = fakeStore(state);
+
+    mount(
+      <Provider store={store}>
+        <FullAssessmentOutcome />
+      </Provider>,
+    );
+
+    expect(store.dispatch.calledWithMatch({
+      type: 'STORE_ASSESSMENT',
+      payload: {
+        assessmentType: 'healthcare',
+        id: 1,
+        assessment: healthcareAssessment,
+      },
+    }));
   });
 
   it('navigates to an error page if it fails to retrieve data', () => {
@@ -168,6 +231,29 @@ describe('<FullAssessmentOutcome', () => {
       }),
     ).to.equal(true, 'Did not change path to /error');
   });
+
+  it('navigates to an error page if it fails to store the assessment outcome', () => {
+    const store = fakeStore(state);
+    const putStub = sinon.stub(xhr, 'put');
+
+    putStub.onFirstCall().yields(null, { statusCode: 500 });
+
+    mount(
+      <Provider store={store}>
+        <FullAssessmentOutcome />
+      </Provider>,
+    );
+
+    expect(
+      store.dispatch.calledWithMatch({
+        type: '@@router/CALL_HISTORY_METHOD',
+        payload: { method: 'replace', args: ['/error'] },
+      }),
+    ).to.equal(true, 'Did not change path to /error');
+
+    putStub.restore();
+  });
+
 
   it('includes the prisoner profile', () => {
     const store = fakeStore(state);
@@ -265,14 +351,12 @@ describe('<FullAssessmentOutcome', () => {
 
   it('navigates to the full assessment complete page on form submission', () => {
     const store = fakeStore(state);
-    const putStub = sinon.stub(xhr, 'put');
+
     const wrapper = mount(
       <Provider store={store}>
         <FullAssessmentOutcome />
       </Provider>,
     );
-
-    putStub.yields(null, { statusCode: 200 });
 
     wrapper.find('form').simulate('submit');
 
@@ -282,31 +366,6 @@ describe('<FullAssessmentOutcome', () => {
         payload: { method: 'replace', args: ['/full-assessment-complete'] },
       }),
     ).to.equal(true, 'Changed path to /full-assessment-complete');
-
-    putStub.restore();
-  });
-
-  it('navigates to the error page on form submission when there is an error', () => {
-    const store = fakeStore(state);
-    const putStub = sinon.stub(xhr, 'put');
-    const wrapper = mount(
-      <Provider store={store}>
-        <FullAssessmentOutcome />
-      </Provider>,
-    );
-
-    putStub.yields(null, { statusCode: 500 });
-
-    wrapper.find('form').simulate('submit');
-
-    expect(
-      store.dispatch.calledWithMatch({
-        type: '@@router/CALL_HISTORY_METHOD',
-        payload: { method: 'replace', args: ['/error'] },
-      }),
-    ).to.equal(true, 'Changed path to /error');
-
-    putStub.restore();
   });
 
   context('when the assessment has already been completed', () => {

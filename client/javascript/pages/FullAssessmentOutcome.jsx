@@ -21,9 +21,26 @@ import SelectableInput from '../components/SelectableInput';
 
 import routes from '../constants/routes';
 
+const calculateFinalOutcome = (healthcareOutcome, riskAssessmentOutcome) =>
+  cellAssignment({
+    healthcare: {
+      sharedCell: healthcareOutcome === 'shared cell',
+    },
+    riskAssessment: {
+      sharedCell: /shared cell/.test(riskAssessmentOutcome),
+      conditions: riskAssessmentOutcome === 'shared cell with conditions',
+    },
+  });
+
 class FullAssessmentOutcome extends Component {
   componentDidMount() {
-    const { prisoner, storeRiskAssessment, storeHealthcareAssessment, gotToErrorPage } = this.props;
+    const {
+      prisoner,
+      storeRiskAssessment,
+      storeHealthcareAssessment,
+      storeOutcome,
+      gotToErrorPage,
+    } = this.props;
 
     getAssessmentsById(prisoner.id, (response) => {
       if (not(response)) {
@@ -32,9 +49,21 @@ class FullAssessmentOutcome extends Component {
 
       const riskAssessment = JSON.parse(response.riskAssessment);
       const healthcareAssessment = JSON.parse(response.healthAssessment);
+      const assessmentOutCome = response.outcome;
+
+      if (not(assessmentOutCome)) {
+        const finalOutcome = calculateFinalOutcome(
+          healthcareAssessment.outcome,
+          riskAssessment.outcome,
+        );
+
+        storeOutcome({ assessmentId: prisoner.id, outcome: finalOutcome });
+      }
 
       storeRiskAssessment({ id: prisoner.id, assessment: riskAssessment });
       storeHealthcareAssessment({ id: prisoner.id, assessment: healthcareAssessment });
+
+      return false;
     });
   }
 
@@ -48,15 +77,8 @@ class FullAssessmentOutcome extends Component {
       onReturnHome,
     } = this.props;
 
-    const finalOutcome = cellAssignment({
-      healthcare: {
-        sharedCell: healthAssessment.outcome === 'shared cell',
-      },
-      riskAssessment: {
-        sharedCell: /shared cell/.test(riskAssessment.outcome),
-        conditions: riskAssessment.outcome === 'shared cell with conditions',
-      },
-    });
+    const finalOutcome =
+      prisoner.outcome || calculateFinalOutcome(healthAssessment.outcome, riskAssessment.outcome);
 
     return (
       <div>
@@ -114,7 +136,7 @@ class FullAssessmentOutcome extends Component {
           : <form
             onSubmit={(e) => {
               e.preventDefault();
-              onSubmit({ assessmentId: prisoner.id, outcome: finalOutcome });
+              onSubmit();
             }}
           >
             <div className="u-clear-fix u-margin-bottom-charlie">
@@ -161,8 +183,10 @@ FullAssessmentOutcome.propTypes = {
     nomisId: PropTypes.string,
     surname: PropTypes.string,
   }),
+  gotToErrorPage: PropTypes.func,
   storeRiskAssessment: PropTypes.func,
   storeHealthcareAssessment: PropTypes.func,
+  storeOutcome: PropTypes.func,
   onSubmit: PropTypes.func,
   alreadyCompleted: PropTypes.bool,
   onReturnHome: PropTypes.func,
@@ -172,9 +196,11 @@ FullAssessmentOutcome.defaultProps = {
   title: 'Assessment Outcome',
   prisoner: {},
   onSubmit: () => {},
+  storeOutcome: () => {},
   onReturnHome: () => {},
   storeRiskAssessment: () => {},
   storeHealthcareAssessment: () => {},
+  gotToErrorPage: () => {},
   alreadyCompleted: false,
   riskAssessment: {},
   healthAssessment: {},
@@ -198,13 +224,14 @@ const mapActionsToProps = dispatch => ({
   storeHealthcareAssessment: ({ id, assessment }) =>
     dispatch(storeHealthcareAssessmentFor({ id, assessment })),
   onReturnHome: () => dispatch(replace(routes.DASHBOARD)),
-  onSubmit: ({ outcome, assessmentId }) => {
+  onSubmit: () => dispatch(replace(routes.FULL_ASSESSMENT_COMPLETE)),
+  storeOutcome: ({ outcome, assessmentId }) => {
     saveAssessmentsOutcome({ outcome, assessmentId }, (response) => {
       if (not(response)) {
         return dispatch(replace(routes.ERROR_PAGE));
       }
 
-      return dispatch(replace(routes.FULL_ASSESSMENT_COMPLETE));
+      return false;
     });
   },
 });
