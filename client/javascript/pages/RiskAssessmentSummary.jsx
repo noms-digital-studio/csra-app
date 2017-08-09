@@ -49,6 +49,8 @@ class RiskAssessmentSummary extends Component {
           onSubmit={(e) => {
             e.preventDefault();
 
+            this.submitBtn.setAttribute('disabled', true);
+
             onSubmit({
               assessmentId: prisoner.id,
               assessment,
@@ -119,7 +121,12 @@ class RiskAssessmentSummary extends Component {
               <strong className="bold-small">Once submitted you cannot change these answers</strong>
             </div>
 
-            <button type="submit" className="button" data-element-id="continue-button">
+            <button
+              type="submit"
+              className="button"
+              data-element-id="continue-button"
+              ref={(el) => { this.submitBtn = el; }}
+            >
               {healthcareAssessmentComplete
                 ? 'Submit and complete assessment'
                 : 'Submit and return to prisoner list'}

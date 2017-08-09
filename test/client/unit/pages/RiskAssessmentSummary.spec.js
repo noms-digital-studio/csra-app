@@ -351,7 +351,11 @@ describe('<RiskAssessmentSummary />', () => {
 
         putStub.yields(null, { statusCode: 200 }, { foo: 'bar' });
 
+        expect(wrapper.find('button[type="submit"]').getNode().hasAttribute('disabled')).to.equal(false);
+
         wrapper.find('form').simulate('submit');
+
+        expect(wrapper.find('button[type="submit"]').getNode().hasAttribute('disabled')).to.equal(true);
 
         expect(
           store.dispatch.calledWithMatch({
