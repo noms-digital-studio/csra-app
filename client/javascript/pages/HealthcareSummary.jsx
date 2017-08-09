@@ -35,6 +35,9 @@ class HealthCareSummary extends Component {
           id="hc-form"
           onSubmit={(e) => {
             e.preventDefault();
+
+            this.submitBtn.setAttribute('disabled', true);
+
             onSubmit({
               riskAssessmentComplete,
               assessmentId: prisoner.id,
@@ -154,7 +157,12 @@ class HealthCareSummary extends Component {
               <strong className="bold-small">Once submitted you cannot change these answers</strong>
             </div>
 
-            <button type="submit" className="button" data-element-id="continue-button">
+            <button
+              type="submit"
+              className="button"
+              data-element-id="continue-button"
+              ref={(el) => { this.submitBtn = el; }}
+            >
               {riskAssessmentComplete
                 ? 'Submit and see cell sharing outcome'
                 : 'Submit and return to prisoner list'}

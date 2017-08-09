@@ -225,9 +225,13 @@ describe('<HealthcareSummary />', () => {
         </Provider>,
       );
 
+      expect(wrapper.find('button[type="submit"]').getNode().hasAttribute('disabled')).to.equal(false);
+
       putStub.yields(null, { statusCode: 200 });
 
       wrapper.find('form').simulate('submit');
+
+      expect(wrapper.find('button[type="submit"]').getNode().hasAttribute('disabled')).to.equal(true);
 
       expect(
         store.dispatch.calledWithMatch({
