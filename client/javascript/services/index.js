@@ -99,10 +99,12 @@ export const cellAssignment = ({ healthcare, riskAssessment }) => {
 const extractReasons = ({ questions, answers, viperScore }) => {
   const questionsWithPredicates = questions.filter(question => !!question.sharedCellPredicate);
 
+  const isViperQuestion = section => section === 'risk-of-violence' && viperScore > LOW_RISK_THRESHOLD;
+
   const reasons = questionsWithPredicates.reduce((reasonsList, question) => {
     if (not(answers[question.section])) return reasonsList;
 
-    if (answers[question.section].answer === 'yes') {
+    if (answers[question.section].answer === 'yes' || isViperQuestion(question.section)) {
       const questionReasons = question.sharedCellPredicate.reasons.map(reason => ({
         questionId: question.section,
         reason,
@@ -114,9 +116,7 @@ const extractReasons = ({ questions, answers, viperScore }) => {
     return reasonsList;
   }, []);
 
-  return viperScore > LOW_RISK_THRESHOLD
-    ? [{ questionId: 'risk-of-violence', reason: 'has a high viper score' }, ...reasons]
-    : reasons;
+  return reasons;
 };
 
 export const extractDecision = ({ questions, answers, viperScore }) => {

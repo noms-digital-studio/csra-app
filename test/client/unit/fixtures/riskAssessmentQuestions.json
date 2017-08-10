@@ -4,7 +4,7 @@
     "sharedCellPredicate": {
       "type": "VIPER_SCORE",
       "value": "low",
-      "reasons": []
+      "reasons": ["has a high viper score"]
     }
   },
   {

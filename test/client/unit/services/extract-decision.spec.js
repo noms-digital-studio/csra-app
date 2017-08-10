@@ -2,6 +2,14 @@ import { extractDecision } from '../../../../client/javascript/services';
 
 const questions = [
   {
+    section: 'risk-of-violence',
+    sharedCellPredicate: {
+      type: 'VIPER_SCORE',
+      value: 'low',
+      reasons: ['has a high viper score'],
+    },
+  },
+  {
     section: 'foo-section',
     sharedCellPredicate: {
       type: 'QUESTION',
@@ -105,6 +113,9 @@ describe('#extractDecision', () => {
         context('And no answers negate any shareCellPredicate', () => {
           it('returns  a "single cell" outcome', () => {
             const answers = {
+              'risk-of-violence': {
+                answer: '',
+              },
               'foo-section': {
                 answer: 'no',
               },
@@ -127,6 +138,9 @@ describe('#extractDecision', () => {
         context('And some answers negate shareCellPredicates', () => {
           it('returns a "single cell" outcome with reasons', () => {
             const answers = {
+              'risk-of-violence': {
+                answer: '',
+              },
               'foo-section': {
                 answer: 'yes',
               },
@@ -152,6 +166,9 @@ describe('#extractDecision', () => {
         context('And all answers negate shareCellPredicates', () => {
           it('returns a "single cell" outcome with reasons', () => {
             const answers = {
+              'risk-of-violence': {
+                answer: '',
+              },
               'foo-section': {
                 answer: 'yes',
               },

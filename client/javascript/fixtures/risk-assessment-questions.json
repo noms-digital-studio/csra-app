@@ -23,8 +23,8 @@
     "template": "viper",
     "sharedCellPredicate": {
       "type": "VIPER_SCORE",
-      "value": "low",
-      "reasons": []
+      "value": "standard",
+      "reasons": ["The cell violence predictor recommends a single cell"]
     },
     "aside": {
       "template": "violence_risk"

@@ -220,6 +220,7 @@ describe('<RiskAssessmentSummary />', () => {
                     question:
                       'Is there any genuine indication they might seriously hurt a cellmate?',
                     answer: 'yes',
+                    'reasons-yes': 'foo-reason-yes answer',
                   },
                 },
                 outcome: 'single cell',
@@ -269,7 +270,8 @@ describe('<RiskAssessmentSummary />', () => {
 
         expect(outcomeText).to.contain('Single cell');
         expect(riskText).to.contain('High');
-        expect(reasonsText).to.equal('Officer thinks they might seriously hurt cellmate');
+        expect(reasonsText).to.include('Officer thinks they might seriously hurt cellmate');
+        expect(reasonsText).to.include('foo-reason-yes answer');
       });
     });
 
