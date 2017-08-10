@@ -25,7 +25,7 @@ const assessmentConfig = {
     officersAssessment: 'no',
   },
   reasons: [
-    { questionId: 'risk-of-violence', reason: 'has a high viper score' },
+    { questionId: 'risk-of-violence', reason: 'The cell violence predictor recommends a single cell' },
   ],
 };
 
