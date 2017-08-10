@@ -22,7 +22,7 @@ const Viper = ({
               <input
                 type="submit"
                 className="button"
-                value={isComplete ? 'Save' : 'Save and continue'}
+                value={isComplete ? 'Save' : 'Continue to questions'}
                 data-element-id="continue-button"
               />
             </p>
