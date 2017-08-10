@@ -346,6 +346,10 @@ describe('<RiskAssessmentSummary />', () => {
           </Provider>,
         );
 
+        expect(wrapper.find('[data-element-id="assessment-results"]').text()).to.contain(
+          'Both the risk and allocation recommendation',
+        );
+
         expect(wrapper.find('[data-summary-next-steps]').text()).to.contain(
           'You must print a copy of this summary for healthcare.',
         );
@@ -365,11 +369,15 @@ describe('<RiskAssessmentSummary />', () => {
         getStub.yields(null, { statusCode: 200 }, { healthAssessment: null });
         putStub.yields(null, { statusCode: 200 }, { foo: 'bar' });
 
-        expect(wrapper.find('button[type="submit"]').getNode().hasAttribute('disabled')).to.equal(false);
+        expect(wrapper.find('button[type="submit"]').getNode().hasAttribute('disabled')).to.equal(
+          false,
+        );
 
         wrapper.find('form').simulate('submit');
 
-        expect(wrapper.find('button[type="submit"]').getNode().hasAttribute('disabled')).to.equal(true);
+        expect(wrapper.find('button[type="submit"]').getNode().hasAttribute('disabled')).to.equal(
+          true,
+        );
 
         expect(
           store.dispatch.calledWithMatch({
@@ -446,6 +454,10 @@ describe('<RiskAssessmentSummary />', () => {
           <Provider store={store}>
             <RiskAssessmentSummary />
           </Provider>,
+        );
+
+        expect(wrapper.find('[data-element-id="assessment-results"]').text()).to.not.contain(
+          'Both the risk and allocation recommendation',
         );
 
         expect(wrapper.find('[data-element-id="continue-button"]').text()).to.equal(
