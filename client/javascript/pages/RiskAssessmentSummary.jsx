@@ -105,7 +105,7 @@ class RiskAssessmentSummary extends Component {
                 </ul>
               </div>}
             {not(healthcareAssessmentComplete) &&
-              <p>
+              <p className="u-margin-top-charlie">
                 Both the risk and allocation recommendation could change after the healthcare
                 assessment.
               </p>}
