@@ -1,7 +1,6 @@
 import DashboardPage from '../pages/Dashboard.page';
 import HealthcareSummary from '../pages/healthcare/HealthcareSummary.page';
 import FullAssessmentOutcomePage from '../pages/FullAssessmentOutcome.page';
-import FullAssessmentCompletePage from '../pages/FullAssessmentComplete.page';
 import { checkThatTheOutcomeDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
 
 const caseInSensitive = text => new RegExp(text, 'i');
@@ -28,14 +27,7 @@ function thenTheFullAssessmentIsCompleted(config = defaultFullAssessmentConfig) 
 
   FullAssessmentOutcomePage.confirmAndContinue();
 
-  expect(
-    FullAssessmentCompletePage.waitForMainHeadingWithDataId('full-assessment-complete'),
-  ).to.equal('Cell sharing risk assessment complete');
-
-
-  FullAssessmentCompletePage.clickContinue();
-
-  expect(DashboardPage.mainHeading).to.contain('Assessments on:');
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
 
   browser.waitForVisible(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`, 5000);
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
@@ -54,7 +46,7 @@ const viewFullOutcomeForPrisoner = (config = defaultFullAssessmentConfig) => {
 
   expect(
     FullAssessmentOutcomePage.waitForMainHeadingWithDataId('full-outcome'),
-  ).to.equal('Risk and healthcare assessment outcome');
+  ).to.equal('Assessment complete');
 
   expect(FullAssessmentOutcomePage.prisonerName).to.equalIgnoreCase(config.prisoner.name);
   expect(FullAssessmentOutcomePage.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);

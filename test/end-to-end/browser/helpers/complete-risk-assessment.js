@@ -48,9 +48,7 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
   expect(RiskAssessmentExplanationPage.mainHeading).to.equal('Making this process fair and open');
   RiskAssessmentExplanationPage.confirmAndContinue();
 
-  expect(RiskAssessmentExplanationPage.mainHeading).to.match(
-    caseInSensitive(config.initialRecommendation),
-  );
+  expect(RiskAssessmentExplanationPage.mainHeading).to.equal('Cell violence predictor');
   RiskAssessmentExplanationPage.clickContinue();
 
   expect(RiskAssessmentCommentsPage.mainHeading).to.equal(

@@ -20,7 +20,6 @@ import Feedback from './pages/Feedback';
 import FeedbackConfirmation from './pages/FeedbackThankyou';
 import HealthcareSummary from './pages/HealthcareSummary';
 import FullAssessmentOutcome from './pages/FullAssessmentOutcome';
-import FullAssessmentComplete from './pages/FullAssessmentComplete';
 
 import Error404 from './pages/Error404';
 import ErrorPage from './pages/ErrorPage';
@@ -79,10 +78,6 @@ export default (store) => {
           <Route
             path="/full-assessment-outcome"
             component={FullAssessmentOutcome}
-          />
-          <Route
-            path="/full-assessment-complete"
-            component={FullAssessmentComplete}
           />
           <Route
             path="/error"
