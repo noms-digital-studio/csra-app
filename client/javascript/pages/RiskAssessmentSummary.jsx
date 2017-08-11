@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { replace } from 'react-router-redux';
 import path from 'ramda/src/path';
 import not from 'ramda/src/not';
+import isEmpty from 'ramda/src/isEmpty';
 
 import { saveRiskAssessmentOutcome, saveRiskAssessmentReasons } from '../actions';
 import { capitalize } from '../utils';
@@ -82,24 +83,27 @@ class RiskAssessmentSummary extends Component {
             <h3 className="heading-medium" data-element-id="risk-assessment-outcome">
               Allocation recommendation: {capitalize(outcome)}
             </h3>
-            <p>Why:</p>
-            {reasons &&
-              <ul
-                data-element-id="risk-assessment-reasons"
-                className="list list-bullet c-reasons-list"
-              >
-                {reasons.map(item =>
-                  <li key={item.questionId}>
-                    <span className="u-d-block">
-                      {item.reason}
-                    </span>
-                    <span className="u-d-block">
-                      {assessment.questions[item.questionId]['reasons-yes'] &&
-                        `“${assessment.questions[item.questionId]['reasons-yes']}”`}
-                    </span>
-                  </li>,
-                )}
-              </ul>}
+
+            {not(isEmpty(reasons)) &&
+              <div>
+                <p>Why:</p>
+                <ul
+                  data-element-id="risk-assessment-reasons"
+                  className="list list-bullet c-reasons-list"
+                >
+                  {reasons.map(item =>
+                    <li key={item.questionId}>
+                      <span className="u-d-block">
+                        {item.reason}
+                      </span>
+                      <span className="u-d-block">
+                        {assessment.questions[item.questionId]['reasons-yes'] &&
+                          `“${assessment.questions[item.questionId]['reasons-yes']}”`}
+                      </span>
+                    </li>,
+                  )}
+                </ul>
+              </div>}
             {not(healthcareAssessmentComplete) &&
               <p>
                 Both the risk and allocation recommendation could change after the healthcare
@@ -108,7 +112,7 @@ class RiskAssessmentSummary extends Component {
           </div>
 
           <div className="u-margin-bottom-bravo">
-            <RiskAssessmentSummaryTable title="Assessment Summary" />
+            <RiskAssessmentSummaryTable title="Assessment answers" />
           </div>
 
           <div className="form-group" data-summary-next-steps>
@@ -144,9 +148,7 @@ class RiskAssessmentSummary extends Component {
                 this.submitBtn = el;
               }}
             >
-              {healthcareAssessmentComplete
-                ? 'Submit and complete assessment'
-                : 'Submit and return to prisoner list'}
+             Finish assessment
             </button>
           </div>
         </form>

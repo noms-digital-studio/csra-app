@@ -71,11 +71,11 @@ const riskAssessment = {
   outcome: 'shared cell with conditions',
   reasons: [
     {
-      questionId: 'foo-id',
+      questionId: 'harm-cell-mate',
       reason: 'foo-reason',
     },
     {
-      questionId: 'bar-id',
+      questionId: 'gang-affiliation',
       reason: 'bar-reason',
     },
   ],
@@ -280,9 +280,11 @@ describe('<FullAssessmentOutcome', () => {
       </Provider>,
     );
 
-    const reasons = wrapper.find('[data-element-id="reasons"]').text();
+    const rating = wrapper.find('[data-element-id="recommended-rating"]').text();
+    const reasons = wrapper.find('[data-element-id="risk-assessment-reasons"]').text();
     const outcome = wrapper.find('[data-element-id="recommended-outcome"]').text();
 
+    expect(rating).to.include('Standard');
     expect(outcome).to.include('Shared cell with conditions');
     expect(reasons).to.include('foo-reason');
     expect(reasons).to.include('bar-reason');
@@ -363,9 +365,9 @@ describe('<FullAssessmentOutcome', () => {
     expect(
       store.dispatch.calledWithMatch({
         type: '@@router/CALL_HISTORY_METHOD',
-        payload: { method: 'replace', args: ['/full-assessment-complete'] },
+        payload: { method: 'replace', args: ['/dashboard'] },
       }),
-    ).to.equal(true, 'Changed path to /full-assessment-complete');
+    ).to.equal(true, 'Changed path to /dashboard');
   });
 
   context('when the assessment has already been completed', () => {

@@ -163,9 +163,7 @@ class HealthCareSummary extends Component {
               data-element-id="continue-button"
               ref={(el) => { this.submitBtn = el; }}
             >
-              {riskAssessmentComplete
-                ? 'Submit and see cell sharing outcome'
-                : 'Submit and return to prisoner list'}
+              Finish assessment
             </button>
           </div>
         </form>

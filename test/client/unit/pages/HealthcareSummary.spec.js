@@ -226,7 +226,7 @@ describe('<HealthcareSummary />', () => {
       );
 
       expect(wrapper.find('[data-summary-next-steps] button').text()).to.equal(
-        'Submit and return to prisoner list',
+        'Finish assessment',
       );
     });
 
@@ -326,7 +326,7 @@ describe('<HealthcareSummary />', () => {
       );
 
       expect(wrapper.find('[data-summary-next-steps] button').text()).to.equal(
-        'Submit and see cell sharing outcome',
+        'Finish assessment',
       );
     });
 

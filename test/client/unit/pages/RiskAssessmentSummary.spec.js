@@ -355,7 +355,7 @@ describe('<RiskAssessmentSummary />', () => {
         );
 
         expect(wrapper.find('[data-element-id="continue-button"]').text()).to.equal(
-          'Submit and return to prisoner list',
+          'Finish assessment',
         );
       });
 
@@ -461,7 +461,7 @@ describe('<RiskAssessmentSummary />', () => {
         );
 
         expect(wrapper.find('[data-element-id="continue-button"]').text()).to.equal(
-          'Submit and complete assessment',
+          'Finish assessment',
         );
       });
 
