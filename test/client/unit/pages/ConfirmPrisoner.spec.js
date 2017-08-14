@@ -78,7 +78,7 @@ describe('<ConfirmOffender />', () => {
       expect(pageText).to.contain('1 November 1960');
       expect(pageText).to.contain('foo-forename');
       expect(pageText).to.contain('foo-surname');
-      expect(pageText).to.contain('foo-nomisId');
+      expect(pageText).to.contain('FOO-NOMISID');
     });
   });
 });

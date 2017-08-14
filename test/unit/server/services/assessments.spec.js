@@ -2,7 +2,7 @@ import createPrisonerAssessmentService from '../../../../server/services/assessm
 
 describe('prisoner assessment service', () => {
   const validPrisonerAssessment = {
-    nomisId: 'J1234LO',
+    nomisId: ' j1234LO ',
     forename: 'John',
     surname: 'Lowe',
     dateOfBirth: 599529600,
