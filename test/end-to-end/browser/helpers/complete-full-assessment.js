@@ -27,7 +27,7 @@ function thenTheFullAssessmentIsCompleted(config = defaultFullAssessmentConfig) 
 
   FullAssessmentOutcomePage.confirmAndContinue();
 
-  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('Assessments on:');
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
 
   browser.waitForVisible(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`, 5000);
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
@@ -55,7 +55,7 @@ const viewFullOutcomeForPrisoner = (config = defaultFullAssessmentConfig) => {
   expect(FullAssessmentOutcomePage.recommendOutcome).to.match(caseInSensitive(config.finalOutcome));
 
   FullAssessmentOutcomePage.clickContinue();
-  expect(DashboardPage.mainHeading).to.contain('Assessments on:');
+  expect(DashboardPage.mainHeading).to.contain('All assessments');
 
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
 

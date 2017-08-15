@@ -103,7 +103,7 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
 };
 
 export const fullAssessmentRecommendation = (config) => {
-  expect(DashboardPage.mainHeading).to.contain('Assessments on:');
+  expect(DashboardPage.mainHeading).to.contain('All assessments');
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
   expect(row.getText()).to.equal(
     `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner
