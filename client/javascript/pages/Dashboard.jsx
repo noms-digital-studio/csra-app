@@ -4,86 +4,105 @@ import { connect } from 'react-redux';
 import { push, replace } from 'react-router-redux';
 import { Link } from 'react-router';
 import isEmpty from 'ramda/src/isEmpty';
+import compose from 'ramda/src/compose';
+import map from 'ramda/src/map';
+import filter from 'ramda/src/filter';
 
-import { parseDate, capitalize, extractDateFromUTCString } from '../utils';
+import { getTimeStamp } from '../utils';
 import { selectOffender, getOffenderAssessments, startHealthcareAssessmentFor } from '../actions';
 import getAssessments from '../services/getAssessments';
 import getAssessmentsById from '../services/getAssessmentsById';
 
 import routes from '../constants/routes';
 
+import AssessmentRow from '../components/AssessmentRow';
+
+const fortyEightHoursAgoInMilliseconds = () => {
+  const date = new Date();
+  date.setHours(0, 0, 0, 0);
+
+  const fortyEightHoursInMilliseconds = 1.728e8;
+  const startOfTheDayInMilliseconds = getTimeStamp(date);
+  return startOfTheDayInMilliseconds - fortyEightHoursInMilliseconds;
+};
+
+const isWithin48Hours = ({ createdAt }) =>
+  getTimeStamp(new Date(createdAt)) >= fortyEightHoursAgoInMilliseconds();
+
+const AssessmentTable = children =>
+  <table className="c-table-vam">
+    <thead>
+      <tr>
+        <th scope="col" />
+        <th scope="col">Name</th>
+        <th scope="col">NOMIS ID</th>
+        <th scope="col">DOB</th>
+        <th scope="col">Assessment</th>
+        <th scope="col">Healthcare</th>
+        <th className="u-text-align-center" scope="col">
+          Cell sharing outcome
+        </th>
+        <th scope="col">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {children}
+    </tbody>
+  </table>;
+
+const renderAssessmentList = map(AssessmentRow);
+const renderLast48Hours = compose(renderAssessmentList, filter(isWithin48Hours));
+
 class Dashboard extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      filterLast48Hours: false,
+    };
+  }
   componentDidMount() {
     this.props.getOffenderAssessments();
   }
 
-  renderProfiles() {
-    return this.props.assessments.map(profile => (
-      <tr
-        data-element-id={`profile-row-${profile.nomisId}`}
-        key={profile.id}
-        data-assessment-id={profile.id}
-        data-assessments-complete={profile.healthAssessmentCompleted && profile.riskAssessmentCompleted}
-      >
-        <td>
-          <span className="c-profile-holder" />
-        </td>
-        <td>{profile.forename} {profile.surname}</td>
-        <td>{profile.nomisId}</td>
-        <td>{extractDateFromUTCString(profile.dateOfBirth)}</td>
-        <td
-          data-risk-assessment-complete={profile.riskAssessmentCompleted}
-        >
-          {profile.riskAssessmentCompleted
-            ? <span>Complete</span>
-            : <button
-              type="button"
-              onClick={() => this.props.onOffenderSelect(profile)}
-              className="link u-link"
-              data-element-id={`start-csra-link-${profile.nomisId}`}
-            >
-              Start
-            </button>
-          }
-        </td>
-        <td
-          data-health-assessment-complete={profile.healthAssessmentCompleted}
-        >
-          {profile.healthAssessmentCompleted
-            ? <span>Complete</span>
-            : <button
-              type="button"
-              onClick={() => this.props.onOffenderHealthcareSelect(profile)}
-              className="link u-link"
-              data-element-id={`start-healthcare-link-${profile.nomisId}`}
-            >
-              Start
-            </button>
-          }
-        </td>
-        <td
-          className="u-text-align-center"
-        >
-          {profile.outcome
-            ? <span>{capitalize(profile.outcome)}</span>
-            : <span className="c-status-indicator" />}
+  toggleFilter() {
+    this.setState({ filterLast48Hours: !this.state.filterLast48Hours });
+  }
 
-        </td>
-        <td data-element-id="view-outcome" className="u-text-align-center">
-          {profile.outcome
-            ? <span>
-              <button
-                className="link u-link"
-                onClick={() => this.props.onViewOutcomeClick(profile)}
-                data-element-id={`view-outcome-link-${profile.nomisId}`}
-              >
-                View
-              </button>
-            </span>
-            : <span />}
-        </td>
-      </tr>
-    ));
+  renderAssessments() {
+    const {
+      assessments,
+      onViewOutcomeClick,
+      onOffenderHealthcareSelect,
+      onOffenderSelect,
+    } = this.props;
+
+    const addClickFuncsToAssessment = item => ({
+      ...item,
+      onViewOutcomeClick,
+      onOffenderHealthcareSelect,
+      onOffenderSelect,
+    });
+
+    const profiles = map(addClickFuncsToAssessment, assessments);
+
+    if (this.state.filterLast48Hours) {
+      const assessmentsInTheLast48Hours = renderLast48Hours(assessments);
+
+      if (isEmpty(assessmentsInTheLast48Hours)) {
+        return (
+          <div className="u-text-align-center">
+            <h1 className="heading-large">
+              <span>No assessments found in the last 48 hours</span>
+            </h1>
+          </div>
+        );
+      }
+
+      return AssessmentTable(assessmentsInTheLast48Hours);
+    }
+
+    return AssessmentTable(renderAssessmentList(profiles));
   }
 
   render() {
@@ -95,13 +114,9 @@ class Dashboard extends Component {
               <h1 className="heading-large">
                 <span>There is no one to assess.</span>
               </h1>
-              <Link
-                to={routes.ADD_OFFENDER}
-                className="button"
-                data-element-id="continue-button"
-              >
-                Add someone to assess
-              </Link>
+              <Link to={routes.ADD_OFFENDER} className="button" data-element-id="continue-button">
+                  Add someone to assess
+                </Link>
             </div>
             : <div>
               <div className="c-dashboard-header">
@@ -119,33 +134,27 @@ class Dashboard extends Component {
                 </div>
               </div>
               <div className="c-date-title">
-                <h1 data-title="dashboard" className="heading-large">
-                  <span className="heading-secondary">
-                      Assessments on:
+                <div className="grid-row">
+                  <div className="column-two-thirds">
+                    <h1 data-title="dashboard" className="heading-large">
+                      {this.state.filterLast48Hours
+                          ? 'Assessments from last 48 hours'
+                          : 'All assessments'}
+                    </h1>
+                  </div>
+                  <div className="column-one-third">
+                    <span
+                      onClick={() => this.toggleFilter()}
+                      className="link c-main-heading-link"
+                    >
+                      {this.state.filterLast48Hours
+                          ? 'View all assessments'
+                          : 'View Last 48 hours'}
                     </span>
-                  {this.props.date}
-                </h1>
+                  </div>
+                </div>
               </div>
-
-              <table className="c-table-vam">
-                <thead>
-                  <tr>
-                    <th scope="col" />
-                    <th scope="col">Name</th>
-                    <th scope="col">NOMIS ID</th>
-                    <th scope="col">DOB</th>
-                    <th scope="col">Assessment</th>
-                    <th scope="col">Healthcare</th>
-                    <th className="u-text-align-center" scope="col">
-                        Cell sharing outcome
-                      </th>
-                    <th scope="col">&nbsp;</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.renderProfiles()}
-                </tbody>
-              </table>
+              {this.renderAssessments()}
             </div>}
         </div>
       </DocumentTitle>
@@ -214,7 +223,6 @@ Dashboard.propTypes = {
   onOffenderHealthcareSelect: PropTypes.func,
   onOffenderSelect: PropTypes.func,
   onViewOutcomeClick: PropTypes.func,
-  date: PropTypes.string,
 };
 
 Dashboard.defaultProps = {
@@ -224,7 +232,6 @@ Dashboard.defaultProps = {
   onOffenderSelect: () => {},
   onViewOutcomeClick: () => {},
   assessments: [],
-  date: parseDate(new Date()),
 };
 
 export { Dashboard };

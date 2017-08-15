@@ -18,6 +18,7 @@ const assessments = [
     riskAssessmentCompleted: true,
     healthAssessmentCompleted: true,
     outcome: 'Foo outcome',
+    createdAt: '2017-01-01T00:00:00.000Z',
   },
   {
     id: 2,
@@ -28,6 +29,7 @@ const assessments = [
     riskAssessmentCompleted: false,
     healthAssessmentCompleted: false,
     outcome: null,
+    createdAt: '2017-01-02T00:00:00.000Z',
   },
 ];
 
@@ -69,13 +71,6 @@ describe('<Dashboard />', () => {
     });
 
     context('when there are people to assess', () => {
-      it('accepts a date', () => {
-        const date = 'Fooday FooDay FooMonth FooYear';
-        const wrapper = mount(<Dashboard assessments={assessments} date={date} />);
-
-        expect(wrapper.text()).to.include(date);
-      });
-
       it('renders the correct number of assessments rows', () => {
         const wrapper = mount(<Dashboard assessments={assessments} />);
         expect(wrapper.find('tr[data-element-id]').length).to.equal(2);
@@ -137,10 +132,8 @@ describe('<Dashboard />', () => {
         profileBtn.simulate('click');
 
         expect(callback.calledOnce).to.equal(true, 'callback called on click');
-        expect(callback.calledWith(assessments[1])).to.equal(
-          true,
-          'callback called with the correct props',
-        );
+
+        expect(callback.lastCall.args[0]).to.deep.include(assessments[1]);
       });
     });
   });

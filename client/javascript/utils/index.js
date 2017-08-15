@@ -54,3 +54,18 @@ export const extractDateFromUTCString = (dateString) => {
   }
   return '';
 };
+
+
+export const getTimeStamp = (date) => {
+  const utcDateTimeStamp = Date.UTC(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate(),
+    date.getUTCHours(),
+    date.getUTCMinutes(),
+    date.getUTCSeconds(),
+    date.getUTCMilliseconds(),
+  );
+
+  return utcDateTimeStamp;
+};
