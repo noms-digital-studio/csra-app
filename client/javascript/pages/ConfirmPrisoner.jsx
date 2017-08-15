@@ -4,10 +4,15 @@ import DocumentTitle from 'react-document-title';
 import { replace } from 'react-router-redux';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import toUpper from 'ramda/src/toUpper';
+import trim from 'ramda/src/trim';
+import compose from 'ramda/src/compose';
 import routes from '../constants/routes';
 import startAssessment from '../services/startAssessment';
 import { confirmPrisoner } from '../actions';
 import { extractDateFromString } from '../utils';
+
+const toUpperAndTrim = compose(toUpper, trim);
 
 const standardizePrisoner = prisonerData => ({
   nomisId: prisonerData.nomisId,
@@ -44,7 +49,7 @@ const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) =>
           <p>
             <span className="heading-small">NOMIS No: &nbsp;</span>
             <span data-element-id="nomisId">
-              {prisoner.nomisId}
+              {toUpperAndTrim(prisoner.nomisId)}
             </span>
           </p>
         </div>
@@ -77,8 +82,8 @@ const mapActionsToProps = dispatch => ({
         return dispatch(replace(routes.ERROR_PAGE));
       }
 
-      dispatch(confirmPrisoner());
       dispatch(replace(routes.DASHBOARD));
+      dispatch(confirmPrisoner());
 
       return true;
     });

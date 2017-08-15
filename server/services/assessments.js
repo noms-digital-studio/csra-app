@@ -4,6 +4,13 @@ import { databaseLogger, prisonerAssessmentsServiceLogger as log } from './logge
 
 function save(db, appInfo, rawAssessment) {
   log.info(`Saving prisoner assessment for nomisId: ${rawAssessment.nomisId}`);
+  let assessmentForValidation = rawAssessment;
+  if (rawAssessment.nomisId) {
+    assessmentForValidation = {
+      ...rawAssessment,
+      nomisId: rawAssessment.nomisId.toUpperCase().trim(),
+    };
+  }
 
   const schema = Joi.object({
     nomisId: Joi.string().max(10).optional(),
@@ -12,7 +19,7 @@ function save(db, appInfo, rawAssessment) {
     dateOfBirth: Joi.date().timestamp('unix'),
   });
 
-  const validated = Joi.validate(rawAssessment, schema, {
+  const validated = Joi.validate(assessmentForValidation, schema, {
     abortEarly: false,
     presence: 'required',
   });
