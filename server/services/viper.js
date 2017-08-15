@@ -41,7 +41,7 @@ function viperRatingFromApi(nomisId) {
 
           const bodyText = res.text;
           const body = res.body;
-          if (body.nomsId && body.viperRating) {
+          if (body.nomsId && body.viperRating >= 0) {
             log.info(`Viper rating found from API for nomisId: ${nomisId}`);
             resolve(body.viperRating);
           }
