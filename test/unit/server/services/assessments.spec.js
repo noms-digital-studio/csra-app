@@ -148,6 +148,7 @@ describe('prisoner assessment service', () => {
     before(() => {
       fakeDB = { raw: x => x };
       fakeDB.select = sinon.stub().returns(fakeDB);
+      fakeDB.orderBy = sinon.stub().returns(fakeDB);
       prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
     });
 
@@ -162,6 +163,8 @@ describe('prisoner assessment service', () => {
           outcome: null,
           risk_assessment: '{"data": "value"}',
           health_assessment: null,
+          created_at: '2017-08-15T10:13:35.006Z',
+          updated_at: '2017-08-15T10:14:35.006Z',
         },
         {
           id: 567,
@@ -172,6 +175,8 @@ describe('prisoner assessment service', () => {
           outcome: 'Shared Cell',
           risk_assessment: '{"data": "value"}',
           health_assessment: '{"data": "value"}',
+          created_at: '2017-08-14T10:13:35.006Z',
+          updated_at: '2017-08-14T10:14:35.006Z',
         }],
       );
       return prisonerAssessmentService.list()
@@ -186,6 +191,8 @@ describe('prisoner assessment service', () => {
           outcome: null,
           riskAssessmentCompleted: true,
           healthAssessmentCompleted: false,
+          created_at: '2017-08-15T10:13:35.006Z',
+          updated_at: '2017-08-15T10:14:35.006Z',
         },
         {
           id: 567,
@@ -196,6 +203,8 @@ describe('prisoner assessment service', () => {
           outcome: 'Shared Cell',
           riskAssessmentCompleted: true,
           healthAssessmentCompleted: true,
+          created_at: '2017-08-14T10:13:35.006Z',
+          updated_at: '2017-08-14T10:14:35.006Z',
         }]);
       });
     });

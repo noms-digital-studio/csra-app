@@ -53,6 +53,7 @@ function list(db) {
   log.info('Retrieving prisoner assessment summaries from the database');
   return db
     .select()
+    .orderBy('created_at', 'desc')
     .table('prisoner_assessments')
     .then((result) => {
       if (result && result.length > 0) {
@@ -66,6 +67,8 @@ function list(db) {
           outcome: row.outcome,
           riskAssessmentCompleted: !!row.risk_assessment,
           healthAssessmentCompleted: !!row.health_assessment,
+          created_at: row.created_at,
+          updated_at: row.updated_at,
         }));
       }
       databaseLogger.info('No prisoner assessment data found in database.');
