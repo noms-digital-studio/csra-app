@@ -87,7 +87,7 @@ class Dashboard extends Component {
     const profiles = map(addClickFuncsToAssessment, assessments);
 
     if (this.state.filterLast48Hours) {
-      const assessmentsInTheLast48Hours = renderLast48Hours(assessments);
+      const assessmentsInTheLast48Hours = renderLast48Hours(profiles);
 
       if (isEmpty(assessmentsInTheLast48Hours)) {
         return (
