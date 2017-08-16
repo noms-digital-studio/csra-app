@@ -191,8 +191,8 @@ describe('prisoner assessment service', () => {
           outcome: null,
           riskAssessmentCompleted: true,
           healthAssessmentCompleted: false,
-          created_at: '2017-08-15T10:13:35.006Z',
-          updated_at: '2017-08-15T10:14:35.006Z',
+          createdAt: '2017-08-15T10:13:35.006Z',
+          updatedAt: '2017-08-15T10:14:35.006Z',
         },
         {
           id: 567,
@@ -203,8 +203,8 @@ describe('prisoner assessment service', () => {
           outcome: 'Shared Cell',
           riskAssessmentCompleted: true,
           healthAssessmentCompleted: true,
-          created_at: '2017-08-14T10:13:35.006Z',
-          updated_at: '2017-08-14T10:14:35.006Z',
+          createdAt: '2017-08-14T10:13:35.006Z',
+          updatedAt: '2017-08-14T10:14:35.006Z',
         }]);
       });
     });
