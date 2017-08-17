@@ -27,10 +27,6 @@ describe('GET /health', () => {
     nock.cleanAll();
   });
 
-  after(() => {
-    nock.restore();
-  });
-
   it('responds with 200 { status: "OK" } when downstream dependencies are healthy', () => {
     fakeViperRestService
       .get('/analytics/health')
