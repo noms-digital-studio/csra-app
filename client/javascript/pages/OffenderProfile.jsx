@@ -93,9 +93,11 @@ const mapStateToProps = state => ({
 const mapActionsToProps = dispatch => ({
   onSubmit: (prisoner) => {
     retrieveViperScoreFor(prisoner.nomisId, (response) => {
+      const viperScore = path(['viperRating'], response);
+
       dispatch(
         startRiskAssessmentFor({
-          viperScore: path(['viperRating'], response) || null,
+          viperScore: viperScore >= 0 ? viperScore : null,
           id: prisoner.id,
         }),
       );

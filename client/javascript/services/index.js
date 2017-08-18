@@ -14,7 +14,7 @@ const debug = debugModule('csra');
 export const calculateRiskFor = (nomisId, riskScores = []) => {
   const offenderRiskScore = riskScores.find(offender => offender.nomisId === nomisId);
 
-  if (not(offenderRiskScore)) return 'unknown';
+  if (offenderRiskScore === undefined || offenderRiskScore === null) return 'unknown';
 
   const { viperScore } = offenderRiskScore;
 
@@ -26,7 +26,7 @@ export const calculateRiskFor = (nomisId, riskScores = []) => {
 };
 
 export const riskFromViperScore = (viperScore) => {
-  if (not(viperScore)) return 'unknown';
+  if (viperScore === undefined || viperScore === null) return 'unknown';
 
   if (viperScore <= LOW_RISK_THRESHOLD) {
     return 'low';
@@ -165,7 +165,9 @@ export const retrieveViperScoreFor = (nomisId, callback) => {
   debug('requesting viper score for %s', nomisId);
   xhr.get(url, { json: true, timeout: 3500 }, (_error, _response, body) => {
     debug('got viper score for %s of %j', nomisId, _error || body);
-    callback(validateViperResponse(body));
+    const result = validateViperResponse(body);
+
+    callback(result);
   });
 };
 
