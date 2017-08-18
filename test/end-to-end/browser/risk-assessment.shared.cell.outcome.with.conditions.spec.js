@@ -6,14 +6,29 @@ import {
 } from './helpers/complete-risk-assessment';
 import upsertViperTableWith from './../utils/upsertViperTable';
 
+const prisonerConfig = {
+  prisoner: {
+    forename: 'Joe',
+    surname: 'Bloggs',
+    dob: {
+      day: 1,
+      month: 10,
+      year: 1970,
+    },
+    nomisId: 'J0000BL',
+    dateOfBirth: '1 October 1970',
+    dataBaseDoB: 'Oct 01 1970',
+  },
+};
+
 const assessmentConfig = {
   prisoner: {
-    nomisId: 'J1234LO',
-    name: 'John Lowe',
+    nomisId: 'J0000BL',
+    name: 'Joe Bloggs',
     dateOfBirth: '01 October 1970',
   },
-  viperScore: 0.35,
-  initialRecommendation: 'shared cell',
+  viperScore: 0,
+  initialRecommendation: 'The predictor has found this person in its records',
   finalRecommendation: 'shared cell with conditions',
   answers: {
     harmCellMate: 'no',
@@ -29,11 +44,11 @@ const assessmentConfig = {
 };
 
 describe('Risk assessment (shared cell outcome with conditions)', () => {
-  before(() => upsertViperTableWith({ nomisId: 'J1234LO', viperScore: 0.35 }));
+  before(() => upsertViperTableWith({ nomisId: 'J0000BL', viperScore: 0 }));
 
   it('Assesses a low risk prisoner who uses drugs', () => {
     givenThatTheOfficerIsSignedIn();
-    whenTheOfficerAddsThePrisonersDetails();
+    whenTheOfficerAddsThePrisonersDetails(prisonerConfig);
     whenPrisonerIsAssessed(assessmentConfig);
     thenTheAssessmentIsCompleted(assessmentConfig);
   });

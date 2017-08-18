@@ -12,7 +12,7 @@ const defaultAssessmentConfig = {
     name: 'John Lowe',
     dateOfBirth: '01 October 1970',
   },
-  initialRecommendation: 'shared cell',
+  initialRecommendation: 'The predictor has found this person in its records',
   answers: {
     harmCellMate: 'no',
     vulnerability: 'no',
@@ -48,7 +48,7 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
   expect(RiskAssessmentExplanationPage.mainHeading).to.equal('Making this process fair and open');
   RiskAssessmentExplanationPage.confirmAndContinue();
 
-  expect(RiskAssessmentExplanationPage.mainHeading).to.equal('Cell violence predictor');
+  expect(RiskAssessmentExplanationPage.viperHeading).to.equal(config.initialRecommendation);
   RiskAssessmentExplanationPage.clickContinue();
 
   expect(RiskAssessmentCommentsPage.mainHeading).to.equal(

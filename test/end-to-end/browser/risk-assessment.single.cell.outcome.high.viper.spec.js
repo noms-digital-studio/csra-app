@@ -14,7 +14,7 @@ const assessmentConfig = {
     dateOfBirth: '23 March 1988',
   },
   viperScore: 0.92,
-  initialRecommendation: 'single cell',
+  initialRecommendation: 'The predictor has found this person in its records',
   finalRecommendation: 'single cell',
   answers: {
     harmCellMate: 'no',
