@@ -7,6 +7,8 @@ import isEmpty from 'ramda/src/isEmpty';
 import compose from 'ramda/src/compose';
 import map from 'ramda/src/map';
 import filter from 'ramda/src/filter';
+import not from 'ramda/src/not';
+import path from 'ramda/src/path';
 
 import { getTimeStamp } from '../utils';
 import { selectOffender, getOffenderAssessments, startHealthcareAssessmentFor } from '../actions';
@@ -71,23 +73,26 @@ class Dashboard extends Component {
 
   renderAssessments() {
     const {
-      assessments,
+      assessments: rawAssessments,
       onViewOutcomeClick,
       onOffenderHealthcareSelect,
       onOffenderSelect,
+      location,
     } = this.props;
 
-    const addClickFuncsToAssessment = item => ({
+    const displayTestAssessments = path(['query', 'displayTestAssessments'], location);
+    const addClickFunctionsToAssessment = map(item => ({
       ...item,
       onViewOutcomeClick,
       onOffenderHealthcareSelect,
       onOffenderSelect,
-    });
-
-    const profiles = map(addClickFuncsToAssessment, assessments);
+    }));
+    const excludeTestAssessments = filter(assessment => not(assessment.nomisId.startsWith('TEST')) || displayTestAssessments === 'true');
+    const generateAssessments = compose(addClickFunctionsToAssessment, excludeTestAssessments);
+    const assessments = generateAssessments(rawAssessments);
 
     if (this.state.filterLast48Hours) {
-      const assessmentsInTheLast48Hours = renderLast48Hours(profiles);
+      const assessmentsInTheLast48Hours = renderLast48Hours(assessments);
 
       if (isEmpty(assessmentsInTheLast48Hours)) {
         return (
@@ -102,7 +107,7 @@ class Dashboard extends Component {
       return AssessmentTable(assessmentsInTheLast48Hours);
     }
 
-    return AssessmentTable(renderAssessmentList(profiles));
+    return AssessmentTable(renderAssessmentList(assessments));
   }
 
   render() {
@@ -219,6 +224,7 @@ Dashboard.propTypes = {
       outcome: PropTypes.string,
     }),
   ),
+  location: PropTypes.object,
   getOffenderAssessments: PropTypes.func,
   onOffenderHealthcareSelect: PropTypes.func,
   onOffenderSelect: PropTypes.func,
@@ -232,6 +238,7 @@ Dashboard.defaultProps = {
   onOffenderSelect: () => {},
   onViewOutcomeClick: () => {},
   assessments: [],
+  location: {},
 };
 
 export { Dashboard };

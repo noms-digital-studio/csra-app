@@ -66,8 +66,6 @@ Runs tests and linter
 yarn verify
 ```
 
-
-
 ### Run
 Starts the server on `PORT 5000` in dev mode
 ```
@@ -80,6 +78,15 @@ yarn start
 ```
 
 Then go to [http://localhost:5000/](http://localhost:5000/)
+
+### Filtering in test assessments on the dashboard
+Nomis IDs that start with 'TEST' will be automatically filtered out from the dashboard to allow us to smoke test
+in production. To view the test assessments add a query param - 'displayTestAssessments=true'
+
+e.g.
+```
+http://localhost:5000/dashboard?displayTestAssessments=true
+```
 
 ### Deploy to Stage
 Deploy the application to the STAGE environment and run the E2E tests against STAGE. See the note above regarding Firefox
