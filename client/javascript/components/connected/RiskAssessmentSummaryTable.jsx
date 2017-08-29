@@ -12,37 +12,39 @@ const mapStateToProps = (state) => {
   return {
     questionsAnswers: [
       {
-        question: 'How they feel about sharing a cell:',
-        answer: answers['how-do-you-feel'] ? { answer: answers['how-do-you-feel'].answer || 'No comments' } : undefined,
+        question: answers['how-do-you-feel'].question,
+        answer: answers['how-do-you-feel']
+          ? { answer: answers['how-do-you-feel'].answer || 'No comments' }
+          : undefined,
         dataTags: { 'data-element-id': 'risk-assessment-feeling' },
       },
       {
-        question: 'Have they indicated they’d seriously hurt a cellmate:',
+        question: answers['harm-cell-mate'].question,
         answer: answers['harm-cell-mate'],
         dataTags: { 'data-element-id': 'risk-assessment-harm' },
       },
       {
-        question: 'Vulnerable:',
+        question: answers.vulnerability.question,
         answer: answers.vulnerability,
         dataTags: { 'data-element-id': 'risk-assessment-vulnerability' },
       },
       {
-        question: 'In a gang, or likely to join one:',
+        question: answers['gang-affiliation'].question,
         answer: answers['gang-affiliation'],
         dataTags: { 'data-element-id': 'risk-assessment-gang' },
       },
       {
-        question: 'Drugs:',
+        question: answers['drug-misuse'].question,
         answer: answers['drug-misuse'],
         dataTags: { 'data-element-id': 'risk-assessment-narcotics' },
       },
       {
-        question: 'Hostile or prejudiced views:',
+        question: answers['drug-misuse'].question,
         answer: answers.prejudice,
         dataTags: { 'data-element-id': 'risk-assessment-prejudice' },
       },
       {
-        question: 'Any other reasons they should have single cell:',
+        question: answers['officers-assessment'].question,
         answer: answers['officers-assessment'],
         dataTags: { 'data-element-id': 'risk-assessment-officer-comments' },
       },

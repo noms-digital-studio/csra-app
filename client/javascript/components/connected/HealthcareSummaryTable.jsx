@@ -35,17 +35,17 @@ const HealthcareSummaryTable = ({ answers }) => {
           </td>
         </tr>
         <QuestionAnswerRow
-          question={'Does Healthcare recommend a single cell?:'}
+          question={answers.outcome.question}
           answer={{ answer: answers.outcome.answer }}
           dataTags={{ 'data-element-id': 'healthcare-outcome' }}
         />
         <QuestionAnswerRow
-          question={'Comments from the healthcare form:'}
+          question={answers.comments.question}
           answer={{ answer: answers.comments.comments || 'No comments' }}
           dataTags={{ 'data-element-id': 'healthcare-comments' }}
         />
         <QuestionAnswerRow
-          question={'Consent given:'}
+          question={answers.consent.question}
           answer={answers.consent}
           dataTags={{ 'data-element-id': 'healthcare-consent' }}
         />
