@@ -15,14 +15,21 @@ const selected = {
   nomisId: 'foo-nomis-id',
 };
 
+const storeData = {
+  offender: { selected },
+  assessmentStatus: {
+    awaitingSubmission: {
+      risk: [],
+    },
+  },
+};
+
 describe('<OffenderProfile />', () => {
   context('Connected OffenderProfile', () => {
     let store;
 
     beforeEach(() => {
-      store = fakeStore({
-        offender: { selected },
-      });
+      store = fakeStore(storeData);
     });
 
     it('accepts and correctly renders a profile', () => {
@@ -70,7 +77,7 @@ describe('<OffenderProfile />', () => {
         ).to.equal(true, 'did not trigger START_ASSESSMENT');
       });
 
-      it('navigate to the dashboard', () => {
+      it('navigate to the first question', () => {
         const wrapper = mount(
           <Provider store={store}>
             <ConnectedOffenderProfile />
@@ -90,6 +97,38 @@ describe('<OffenderProfile />', () => {
             },
           }),
         ).to.equal(true, 'did not change path to /risk-assessment/introduction');
+      });
+
+      context('and the assessment question have already been answered but not submitted', () => {
+        it('navigate the the summary page', () => {
+          const newStore = fakeStore({
+            ...storeData,
+            assessmentStatus: {
+              awaitingSubmission: {
+                risk: [{ assessmentId: 1 }],
+              },
+            },
+          });
+          const wrapper = mount(
+            <Provider store={newStore}>
+              <ConnectedOffenderProfile />
+            </Provider>,
+          );
+
+          getStub.yields(null, { statusCode: 200 }, { viperRating: 0.1, nomisId: 'foo-nomis-id' });
+
+          wrapper.find('[data-element-id="continue-button"]').simulate('click');
+
+          expect(
+            newStore.dispatch.calledWithMatch({
+              type: '@@router/CALL_HISTORY_METHOD',
+              payload: {
+                method: 'push',
+                args: ['/risk-assessment-summary'],
+              },
+            }),
+          ).to.equal(true, 'did not change path to /risk-assessment-summary');
+        });
       });
     });
   });

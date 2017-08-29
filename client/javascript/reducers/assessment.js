@@ -27,7 +27,9 @@ export default (state = defaultState, { type, payload }) => {
         ...state,
         [payload.assessmentType]: {
           ...state[payload.assessmentType],
-          [payload.id]: updateObject(state[payload.id], { viperScore: payload.viperScore }),
+          [payload.id]: updateObject(state[payload.assessmentType][payload.id], {
+            viperScore: payload.viperScore,
+          }),
         },
       };
     case STORE_ASSESSMENT_ANSWER:

@@ -31,7 +31,7 @@ const mapStateToProps = (state, ownProps) => ({
   prisonerViperScore: '',
   answers: path([state.offender.selected.id, 'questions'], state.assessments.healthcare),
   isComplete: Boolean(
-    state.healthcareStatus.awaitingSubmission.find(
+    state.assessmentStatus.awaitingSubmission.healthcare.find(
       item => item.assessmentId === state.offender.selected.id,
     ),
   ),

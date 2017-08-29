@@ -14,6 +14,7 @@ const prisoner = {
   dateOfBirth: '2010-01-01T00:00:00.000Z',
   nomisId: 'foo-nomis-id',
   riskAssessmentCompleted: false,
+  healthAssessmentCompleted: false,
 };
 
 const healthcareAssessment = {
@@ -52,9 +53,14 @@ const state = {
       1: healthcareAssessment,
     },
   },
+  assessmentStatus: {
+    awaitingSubmission: {
+      risk: [],
+    },
+  },
 };
 
-describe('<HealthcareSummary />', () => {
+describe.only('<HealthcareSummary />', () => {
   context('Connected HealthcareSummary', () => {
     it('accepts and correctly renders a prisoner`s details', () => {
       const store = fakeStore(state);
@@ -69,6 +75,39 @@ describe('<HealthcareSummary />', () => {
       expect(prisonerProfile).to.contain('foo-surname');
       expect(prisonerProfile).to.contain('01 January 2010');
       expect(prisonerProfile).to.contain('foo-nomis-id');
+    });
+
+    context('When the component mounts', () => {
+      it('marks questions as complete on mount', () => {
+        const store = fakeStore(state);
+
+        mount(
+          <Provider store={store}>
+            <HealthcareSummary />
+          </Provider>,
+        );
+
+        expect(
+          store.dispatch.calledWithMatch({
+            type: 'HEALTHCARE_ANSWERS_COMPLETE',
+            payload: { assessmentId: 1 },
+          }),
+        ).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
+      });
+    });
+
+    context('When answers are already complete', () => {
+      it('displays change options', () => {
+        const store = fakeStore(state);
+
+        const wrapper = mount(
+          <Provider store={store}>
+            <HealthcareSummary />
+          </Provider>,
+        );
+
+        const changeLinks = wrapper.find('[data-element-id="change-answer-link"]');
+      });
     });
 
     context('Healthcare outcome', () => {
@@ -294,6 +333,10 @@ describe('<HealthcareSummary />', () => {
       ).to.equal(true, 'Changed path to /error');
     });
   });
+
+  // context('', () => {
+
+  // });
 
   context('when the risk assessment is complete', () => {
     let store;

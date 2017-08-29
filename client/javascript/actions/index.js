@@ -8,6 +8,7 @@ import {
   ADD_PRISONER,
   CONFIRM_PRISONER,
   HEALTHCARE_ANSWERS_COMPLETE,
+  RISK_ANSWERS_COMPLETE,
   STORE_ASSESSMENT,
   START_ASSESSMENT,
   STORE_ASSESSMENT_ANSWER,
@@ -74,6 +75,11 @@ export const saveHealthcareAssessmentAnswer = ({ id, question, answer }) => ({
 
 export const completeHealthAnswersFor = ({ assessmentId }) => ({
   type: HEALTHCARE_ANSWERS_COMPLETE,
+  payload: { assessmentId },
+});
+
+export const completeRiskAnswersFor = ({ assessmentId }) => ({
+  type: RISK_ANSWERS_COMPLETE,
   payload: { assessmentId },
 });
 

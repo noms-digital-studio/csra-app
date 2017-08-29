@@ -48,9 +48,9 @@ describe('#assessments', () => {
     expect(assessmentsReducer(undefined, action)).to.eql(expectedState);
   });
 
-  it('returns the state with a new empty assessment', () => {
+  it('returns the state with a new assessment', () => {
     const payload = {
-      assessmentType: 'health',
+      assessmentType: 'healthcare',
       id: 1,
       viperScore: null,
     };
@@ -62,7 +62,7 @@ describe('#assessments', () => {
 
     const expectedState = {
       ...defaultState,
-      health: {
+      healthcare: {
         1: {
           viperScore: null,
         },

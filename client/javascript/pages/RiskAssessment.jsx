@@ -33,6 +33,11 @@ const mapStateToProps = (state, ownProps) => ({
     path([state.offender.selected.id, 'viperScore'], state.assessments.risk),
   ),
   answers: path([state.offender.selected.id, 'questions'], state.assessments.risk),
+  isComplete: Boolean(
+    state.assessmentStatus.awaitingSubmission.risk.find(
+      item => item.assessmentId === state.offender.selected.id,
+    ),
+  ),
 });
 
 const mapActionsToProps = dispatch => ({

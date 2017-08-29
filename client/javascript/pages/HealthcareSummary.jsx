@@ -13,6 +13,7 @@ import getAssessmentsById from '../services/getAssessmentsById';
 import { completeHealthAnswersFor, saveHealthcareAssessmentOutcome } from '../actions';
 
 import PrisonerProfile from '../components/PrisonerProfile';
+import HealthcareSummaryTable from '../components/connected/HealthcareSummaryTable';
 
 import routes from '../constants/routes';
 
@@ -26,9 +27,7 @@ class HealthCareSummary extends Component {
   }
 
   render() {
-    const { prisoner, answers, title, assessment, riskAssessmentComplete, onSubmit } = this.props;
-
-    const assessor = splitAssessorValues(answers.assessor.answer);
+    const { prisoner, title, assessment, riskAssessmentComplete, onSubmit } = this.props;
 
     return (
       <DocumentTitle title={title}>
@@ -57,87 +56,9 @@ class HealthCareSummary extends Component {
             </h3>
           </div>
 
-          <table className="check-your-answers u-margin-bottom-charlie">
-            <thead>
-              <tr>
-                <th colSpan="3">
-                  <h2 className="heading-medium">Assessment summary</h2>
-                </th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr data-healthcare-assessor>
-                <td>Assessment Completed by:</td>
-                <td>
-                  <span data-element-id="healthcare-assessor">
-                    {capitalize(assessor.fullName)}
-                    <br />
-                  </span>
-                  <span data-element-id="healthcare-role">
-                    {capitalize(assessor.role)}
-                    <br />
-                  </span>
-                  <span data-element-id="healthcare-date">
-                    {parseDate(new Date(assessor.year, assessor.month - 1, assessor.day))}
-                  </span>
-                </td>
-                <td className="change-answer">
-                  <Link
-                    to={`${routes.HEALTHCARE_ASSESSMENT}/assessor`}
-                    data-change-completed-by-link
-                  >
-                    Change <span className="visuallyhidden">completed by</span>
-                  </Link>
-                </td>
-              </tr>
-              <tr>
-                <td>Does Healthcare recommend a single cell?</td>
-                <td>
-                  <span data-element-id="healthcare-recommendation">
-                    {capitalize(answers.outcome.answer)}
-                  </span>
-                </td>
-                <td className="change-answer">
-                  <Link to={`${routes.HEALTHCARE_ASSESSMENT}/outcome`} data-change-outcome-link>
-                    Change <span className="visuallyhidden">healthcare recommendation</span>
-                  </Link>
-                </td>
-              </tr>
-              <tr>
-                <td>Comments from the healthcare form:</td>
-                <td>
-                  <span data-element-id="healthcare-comments">
-                    {capitalize(answers.comments.answer || 'none')}
-                  </span>
-                </td>
-                <td className="change-answer">
-                  <Link
-                    to={`${routes.HEALTHCARE_ASSESSMENT}/comments`}
-                    data-element-id="healthcare-change-comments-link"
-                  >
-                    Change <span className="visuallyhidden">further comments</span>
-                  </Link>
-                </td>
-              </tr>
-              <tr>
-                <td>Have they given consent to share their medical information?</td>
-                <td>
-                  <span data-element-id="healthcare-consent">
-                    {capitalize(answers.consent.answer)}
-                  </span>
-                </td>
-                <td className="change-answer">
-                  <Link
-                    to={`${routes.HEALTHCARE_ASSESSMENT}/consent`}
-                    data-element-id="healthcare-change-consent-link"
-                  >
-                    Change <span className="visuallyhidden">consent to share information</span>
-                  </Link>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div data-element-id="health-summary" className="u-margin-bottom-alpha">
+            <HealthcareSummaryTable title="Assessment summary" />
+          </div>
 
           <div className="form-group" data-summary-next-steps>
             {riskAssessmentComplete
@@ -176,7 +97,6 @@ HealthCareSummary.propTypes = {
   title: PropTypes.string,
   assessment: PropTypes.object,
   prisoner: PropTypes.object,
-  answers: PropTypes.object,
   riskAssessmentComplete: PropTypes.bool,
   markAnswersAsCompleteFor: PropTypes.func,
   onSubmit: PropTypes.func,

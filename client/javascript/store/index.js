@@ -9,7 +9,7 @@ import persistState from 'redux-sessionstorage';
 import questionnaireReducer from '../reducers/questionnaire';
 import offenderReducer from '../reducers/offender';
 import loginReducer from '../reducers/login';
-import healthcareStatusReducer from '../reducers/healthcareStatus';
+import assessmentStatusReducer from '../reducers/assessmentStatus';
 import assessmentReducer from '../reducers/assessment';
 
 
@@ -32,7 +32,7 @@ const reducers = combineReducers({
   questions: questionnaireReducer,
   offender: offenderReducer,
   login: loginReducer,
-  healthcareStatus: healthcareStatusReducer,
+  assessmentStatus: assessmentStatusReducer,
   assessments: assessmentReducer,
 });
 

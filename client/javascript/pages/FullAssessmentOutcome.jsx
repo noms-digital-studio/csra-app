@@ -148,11 +148,11 @@ class FullAssessmentOutcome extends Component {
         </div>
 
         <div data-element-id="risk-assessment-summary">
-          <RiskAssessmentSummaryTable title="Cell violence assessment" />
+          <RiskAssessmentSummaryTable assessmentComplete title="Cell violence assessment" />
         </div>
 
         <div data-element-id="health-summary" className="u-margin-bottom-alpha">
-          <HealthcareSummaryTable title="Healthcare assessment" />
+          <HealthcareSummaryTable assessmentComplete title="Healthcare assessment" />
         </div>
 
         <h3 className="heading-medium">What happens next?</h3>
