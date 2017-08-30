@@ -351,6 +351,19 @@ describe('<FullAssessmentOutcome', () => {
     });
   });
 
+  it('does not display change answer links for questions', () => {
+    const store = fakeStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <FullAssessmentOutcome />
+      </Provider>,
+    );
+
+    const changeLinks = wrapper.find('[data-element-id="change-answer-link"]');
+
+    expect(changeLinks.length).to.be.equal(0);
+  });
+
   it('navigates to the full assessment complete page on form submission', () => {
     const store = fakeStore(state);
 

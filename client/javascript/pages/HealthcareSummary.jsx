@@ -6,8 +6,7 @@ import { replace } from 'react-router-redux';
 import path from 'ramda/src/path';
 import not from 'ramda/src/not';
 
-import { splitAssessorValues } from '../services';
-import { capitalize, parseDate } from '../utils';
+import { capitalize } from '../utils';
 import postAssessmentToBackend from '../services/postAssessmentToBackend';
 import getAssessmentsById from '../services/getAssessmentsById';
 import { completeHealthAnswersFor, saveHealthcareAssessmentOutcome } from '../actions';
@@ -27,7 +26,14 @@ class HealthCareSummary extends Component {
   }
 
   render() {
-    const { prisoner, title, assessment, riskAssessmentComplete, onSubmit } = this.props;
+    const {
+      prisoner,
+      title,
+      assessment,
+      riskAssessmentComplete,
+      onSubmit,
+      healthcareAssessmentComplete,
+    } = this.props;
 
     return (
       <DocumentTitle title={title}>
@@ -57,19 +63,21 @@ class HealthCareSummary extends Component {
           </div>
 
           <div data-element-id="health-summary" className="u-margin-bottom-alpha">
-            <HealthcareSummaryTable title="Assessment summary" />
+            <HealthcareSummaryTable
+              assessmentComplete={healthcareAssessmentComplete}
+              title="Assessment summary"
+            />
           </div>
 
           <div className="form-group" data-summary-next-steps>
-            {riskAssessmentComplete
-              ? null
-              : <div className="u-margin-bottom-charlie">
+            {riskAssessmentComplete ? null : (
+              <div className="u-margin-bottom-charlie">
                 <h3 className="heading-medium">What happens next?</h3>
                 <p>
-                    You must now complete the risk assessment questions to get a cell sharing
-                    outcome.
-                  </p>
-              </div>}
+                  You must now complete the risk assessment questions to get a cell sharing outcome.
+                </p>
+              </div>
+            )}
 
             <div className="notice c-notice u-clear-fix">
               <i className="icon icon-important">
@@ -82,7 +90,9 @@ class HealthCareSummary extends Component {
               type="submit"
               className="button"
               data-element-id="continue-button"
-              ref={(el) => { this.submitBtn = el; }}
+              ref={(el) => {
+                this.submitBtn = el;
+              }}
             >
               Finish assessment
             </button>
@@ -121,6 +131,7 @@ const mapStateToProps = (state, ownProps) => {
     prisoner: selectedOffender,
     answers: path([selectedOffender.id, 'questions'], healthcareAssessment),
     riskAssessmentComplete: selectedOffender.riskAssessmentCompleted,
+    healthcareAssessmentComplete: selectedOffender.healthcareAssessmentCompleted,
     viperScore: path([selectedOffender.id, 'viperScore'], healthcareAssessment),
   };
 };
@@ -132,17 +143,20 @@ const mapActionsToProps = dispatch => ({
         return dispatch(replace(routes.ERROR_PAGE));
       }
 
-      return postAssessmentToBackend({ assessmentId, assessmentType: 'health', assessment }, (_response) => {
-        if (not(_response)) {
-          return dispatch(replace(routes.ERROR_PAGE));
-        }
+      return postAssessmentToBackend(
+        { assessmentId, assessmentType: 'health', assessment },
+        (_response) => {
+          if (not(_response)) {
+            return dispatch(replace(routes.ERROR_PAGE));
+          }
 
-        if (response.riskAssessment) {
-          return dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
-        }
+          if (response.riskAssessment) {
+            return dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
+          }
 
-        return dispatch(replace(routes.DASHBOARD));
-      });
+          return dispatch(replace(routes.DASHBOARD));
+        },
+      );
     });
   },
   markAnswersAsCompleteFor: profile => dispatch(completeHealthAnswersFor(profile)),

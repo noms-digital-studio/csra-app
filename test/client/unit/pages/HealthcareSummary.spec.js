@@ -60,7 +60,7 @@ const state = {
   },
 };
 
-describe.only('<HealthcareSummary />', () => {
+describe('<HealthcareSummary />', () => {
   context('Connected HealthcareSummary', () => {
     it('accepts and correctly renders a prisoner`s details', () => {
       const store = fakeStore(state);
@@ -97,7 +97,7 @@ describe.only('<HealthcareSummary />', () => {
     });
 
     context('When answers are already complete', () => {
-      it('displays change options', () => {
+      it('displays change answer options for each question', () => {
         const store = fakeStore(state);
 
         const wrapper = mount(
@@ -107,6 +107,32 @@ describe.only('<HealthcareSummary />', () => {
         );
 
         const changeLinks = wrapper.find('[data-element-id="change-answer-link"]');
+
+        expect(changeLinks.length).to.be.equal(4);
+      });
+    });
+
+    context('When assessment is already marked as completed', () => {
+      it('does not displays change answer options for each question', () => {
+        const store = fakeStore({
+          ...state,
+          offender: {
+            selected: {
+              ...prisoner,
+              healthAssessmentCompleted: true,
+            },
+          },
+        });
+
+        const wrapper = mount(
+          <Provider store={store}>
+            <HealthcareSummary />
+          </Provider>,
+        );
+
+        const changeLinks = wrapper.find('[data-element-id="change-answer-link"]');
+
+        expect(changeLinks.length).to.be.equal(0);
       });
     });
 

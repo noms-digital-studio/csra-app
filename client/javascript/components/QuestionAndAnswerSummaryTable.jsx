@@ -1,11 +1,11 @@
 import React, { PropTypes } from 'react';
 import QuestionAnswerRow from './QuestionAnswerRow';
 
-const QuestionAndAnswerSummaryTable = ({ title, questionsAnswers, assessmentComplete }) => (
+const QuestionAndAnswerSummaryTable = ({ title, questionsAnswers, withChangeAnswerOption }) => (
   <table className="check-your-answers c-answers-table">
     <thead>
       <tr>
-        <th colSpan={assessmentComplete ? 3 : 2}>
+        <th colSpan={withChangeAnswerOption ? 3 : 2}>
           <h2 className="heading-medium">
             {title}
           </h2>
@@ -15,7 +15,7 @@ const QuestionAndAnswerSummaryTable = ({ title, questionsAnswers, assessmentComp
 
     <tbody className="c-answers-table-vat">
       {questionsAnswers.map((qna, index) => (
-        <QuestionAnswerRow tableHasChangeAnswers={assessmentComplete} {...qna} key={index} />
+        <QuestionAnswerRow tableHasChangeAnswers={withChangeAnswerOption} {...qna} key={index} />
       ))}
     </tbody>
   </table>
@@ -23,7 +23,7 @@ const QuestionAndAnswerSummaryTable = ({ title, questionsAnswers, assessmentComp
 
 QuestionAndAnswerSummaryTable.propTypes = {
   title: PropTypes.string,
-  assessmentComplete: PropTypes.bool,
+  withChangeAnswerOption: PropTypes.bool,
   questionsAnswers: PropTypes.arrayOf(
     PropTypes.shape({
       question: PropTypes.string,
@@ -38,7 +38,7 @@ QuestionAndAnswerSummaryTable.propTypes = {
 
 QuestionAndAnswerSummaryTable.defaultProps = {
   questionsAnswers: [],
-  assessmentComplete: false,
+  withChangeAnswerOption: false,
 };
 
 export default QuestionAndAnswerSummaryTable;

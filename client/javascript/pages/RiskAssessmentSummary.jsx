@@ -52,6 +52,7 @@ class RiskAssessmentSummary extends Component {
       outcome,
       reasons,
       healthcareAssessmentComplete,
+      riskAssessmentComplete,
       assessment,
     } = this.props;
 
@@ -125,7 +126,10 @@ class RiskAssessmentSummary extends Component {
           </div>
 
           <div className="u-margin-bottom-bravo">
-            <RiskAssessmentSummaryTable title="Assessment answers" />
+            <RiskAssessmentSummaryTable
+              assessmentComplete={riskAssessmentComplete}
+              title="Assessment answers"
+            />
           </div>
 
           <div className="form-group" data-summary-next-steps>
@@ -185,6 +189,7 @@ RiskAssessmentSummary.propTypes = {
     surname: PropTypes.string,
   }),
   healthcareAssessmentComplete: PropTypes.bool,
+  riskAssessmentComplete: PropTypes.bool,
   viperScore: PropTypes.number,
   answers: PropTypes.object,
   questions: PropTypes.array,
@@ -215,6 +220,7 @@ const mapStateToProps = (state) => {
     outcome: path([selectedOffender.id, 'outcome'], state.assessments.risk),
     reasons: path([selectedOffender.id, 'reasons'], state.assessments.risk),
     healthcareAssessmentComplete: selectedOffender.healthAssessmentCompleted,
+    riskAssessmentComplete: selectedOffender.riskAssessmentCompleted,
   };
 };
 

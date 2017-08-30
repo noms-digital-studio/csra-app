@@ -39,13 +39,12 @@ const QuestionAnswerRow = ({
   tableHasChangeAnswers,
 }) => not(isEmpty(answer)) ? (
   <tr>
-    <td className="heading-small">{question}</td>
+    <td>{question}</td>
     <td {...dataTags}>
       <p>{capitalize(answer.answer)}</p>
       {answer[`reasons-${answer.answer}`] && (
       <p data-element-id="healthcare-comments">
-        <span className="heading-small u-d-block">Comments</span>
-        <span>{capitalize(answer[`reasons-${answer.answer}`])}</span>
+        <span>“{capitalize(answer[`reasons-${answer.answer}`])}”</span>
       </p>
         )}
     </td>
