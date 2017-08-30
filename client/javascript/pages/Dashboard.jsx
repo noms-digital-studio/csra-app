@@ -31,7 +31,7 @@ const fortyEightHoursAgoInMilliseconds = () => {
 const isWithin48Hours = ({ createdAt }) =>
   getTimeStamp(new Date(createdAt)) >= fortyEightHoursAgoInMilliseconds();
 
-const AssessmentTable = children =>
+const AssessmentTable = children => (
   <table className="c-table-vam">
     <thead>
       <tr>
@@ -47,10 +47,9 @@ const AssessmentTable = children =>
         <th scope="col">&nbsp;</th>
       </tr>
     </thead>
-    <tbody>
-      {children}
-    </tbody>
-  </table>;
+    <tbody>{children}</tbody>
+  </table>
+);
 
 const renderAssessmentList = map(AssessmentRow);
 const renderLast48Hours = compose(renderAssessmentList, filter(isWithin48Hours));
@@ -74,6 +73,7 @@ class Dashboard extends Component {
   renderAssessments() {
     const {
       assessments: rawAssessments,
+      isAwaitingSubmission,
       onViewOutcomeClick,
       onOffenderHealthcareSelect,
       onOffenderSelect,
@@ -83,11 +83,14 @@ class Dashboard extends Component {
     const displayTestAssessments = path(['query', 'displayTestAssessments'], location);
     const addClickFunctionsToAssessment = map(item => ({
       ...item,
+      isAwaitingSubmission,
       onViewOutcomeClick,
       onOffenderHealthcareSelect,
       onOffenderSelect,
     }));
-    const excludeTestAssessments = filter(assessment => not(assessment.nomisId.startsWith('TEST')) || displayTestAssessments === 'true');
+    const excludeTestAssessments = filter(
+      assessment => not(assessment.nomisId.startsWith('TEST')) || displayTestAssessments === 'true',
+    );
     const generateAssessments = compose(addClickFunctionsToAssessment, excludeTestAssessments);
     const assessments = generateAssessments(rawAssessments);
 
@@ -114,16 +117,17 @@ class Dashboard extends Component {
     return (
       <DocumentTitle title={this.props.title}>
         <div>
-          {isEmpty(this.props.assessments)
-            ? <div className="u-text-align-center">
+          {isEmpty(this.props.assessments) ? (
+            <div className="u-text-align-center">
               <h1 className="heading-large">
                 <span>There is no one to assess.</span>
               </h1>
               <Link to={routes.ADD_OFFENDER} className="button" data-element-id="continue-button">
-                  Add someone to assess
-                </Link>
+                Add someone to assess
+              </Link>
             </div>
-            : <div>
+          ) : (
+            <div>
               <div className="c-dashboard-header">
                 <div className="grid-row">
                   <div className="column-one-half">
@@ -132,8 +136,8 @@ class Dashboard extends Component {
                       className="button"
                       data-element-id="continue-button"
                     >
-                        Add someone to assess
-                      </Link>
+                      Add someone to assess
+                    </Link>
                   </div>
                   <div className="column-one-half u-text-align-right" />
                 </div>
@@ -142,25 +146,23 @@ class Dashboard extends Component {
                 <div className="grid-row">
                   <div className="column-two-thirds">
                     <h1 data-title="dashboard" className="heading-large">
-                      {this.state.filterLast48Hours
-                          ? 'Assessments from last 48 hours'
-                          : 'All assessments'}
+                      {this.state.filterLast48Hours ? (
+                        'Assessments from last 48 hours'
+                      ) : (
+                        'All assessments'
+                      )}
                     </h1>
                   </div>
                   <div className="column-one-third">
-                    <span
-                      onClick={() => this.toggleFilter()}
-                      className="link c-main-heading-link"
-                    >
-                      {this.state.filterLast48Hours
-                          ? 'View all assessments'
-                          : 'View Last 48 hours'}
+                    <span onClick={() => this.toggleFilter()} className="link c-main-heading-link">
+                      {this.state.filterLast48Hours ? 'View all assessments' : 'View Last 48 hours'}
                     </span>
                   </div>
                 </div>
               </div>
               {this.renderAssessments()}
-            </div>}
+            </div>
+          )}
         </div>
       </DocumentTitle>
     );
@@ -170,6 +172,10 @@ class Dashboard extends Component {
 const mapStateToProps = state => ({
   assessments: state.offender.assessments,
   answers: state.answers,
+  isAwaitingSubmission: id =>
+    Boolean(
+      state.assessmentStatus.awaitingSubmission.healthcare.find(item => item.assessmentId === id),
+    ),
 });
 
 const mapActionsToProps = dispatch => ({
@@ -200,9 +206,12 @@ const mapActionsToProps = dispatch => ({
 
       dispatch(selectOffender(prisoner));
       dispatch(startHealthcareAssessmentFor({ id: prisoner.id }));
-      dispatch(push(`${routes.HEALTHCARE_ASSESSMENT}/outcome`));
 
-      return true;
+      if (prisoner.isAwaitingSubmission) {
+        return dispatch(push(routes.HEALTHCARE_SUMMARY));
+      }
+
+      return dispatch(push(`${routes.HEALTHCARE_ASSESSMENT}/outcome`));
     });
   },
   onViewOutcomeClick: (offender) => {
@@ -213,6 +222,7 @@ const mapActionsToProps = dispatch => ({
 
 Dashboard.propTypes = {
   title: PropTypes.string,
+  isAwaitingSubmission: PropTypes.func,
   assessments: PropTypes.arrayOf(
     PropTypes.shape({
       nomisId: PropTypes.string,

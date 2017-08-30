@@ -62,6 +62,12 @@ const state = {
   offender: {
     assessments,
   },
+  assessmentStatus: {
+    awaitingSubmission: {
+      risk: [],
+      healthcare: [],
+    },
+  },
 };
 
 const assertGivenValuesInWhiteListAreInPage = (list, whiteList, component) => {
@@ -320,30 +326,65 @@ describe('<Dashboard />', () => {
       ).to.equal(true, 'dispatch /offender-profile');
     });
 
-    it('responds to the selection of an incomplete health assessment by navigation to the first question', () => {
-      const store = fakeStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <ConnectedDashboard />
-        </Provider>,
+    context('When a healthcare assessment is incomplete', () => {
+      it('responds to the selection of an incomplete health assessment by navigation to the first question', () => {
+        const store = fakeStore(state);
+        const wrapper = mount(
+          <Provider store={store}>
+            <ConnectedDashboard />
+          </Provider>,
+        );
+        const profileBtn = wrapper.find('[data-health-assessment-complete=false] > button');
+
+        profileBtn.simulate('click');
+
+        expect(
+          store.dispatch.calledWithMatch({
+            type: 'SELECT_OFFENDER',
+            payload: assessments[1],
+          }),
+        ).to.equal(true, 'SELECT_OFFENDER dispatch');
+
+        expect(
+          store.dispatch.calledWithMatch({
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: { method: 'push', args: ['/healthcare-assessment/outcome'] },
+          }),
+        ).to.equal(true, 'dispatch /healthcare-assessment/outcome');
+      });
+
+      context(
+        'and the assessment question have already been answered but not submitted',
+        () => {
+          it('navigates to the the summary page', () => {
+            const newStore = fakeStore({
+              ...state,
+              assessmentStatus: {
+                awaitingSubmission: {
+                  healthcare: [{ assessmentId: 2 }],
+                },
+              },
+            });
+            const wrapper = mount(
+              <Provider store={newStore}>
+                <ConnectedDashboard />
+              </Provider>,
+            );
+
+            wrapper.find('[data-health-assessment-complete=false] > button').simulate('click');
+
+            expect(
+              newStore.dispatch.calledWithMatch({
+                type: '@@router/CALL_HISTORY_METHOD',
+                payload: {
+                  method: 'push',
+                  args: ['/healthcare-summary'],
+                },
+              }),
+            ).to.equal(true, 'did not change path to /healthcare-summary');
+          });
+        },
       );
-      const profileBtn = wrapper.find('[data-health-assessment-complete=false] > button');
-
-      profileBtn.simulate('click');
-
-      expect(
-        store.dispatch.calledWithMatch({
-          type: 'SELECT_OFFENDER',
-          payload: assessments[1],
-        }),
-      ).to.equal(true, 'SELECT_OFFENDER dispatch');
-
-      expect(
-        store.dispatch.calledWithMatch({
-          type: '@@router/CALL_HISTORY_METHOD',
-          payload: { method: 'push', args: ['/healthcare-assessment/outcome'] },
-        }),
-      ).to.equal(true, 'dispatch /healthcare-assessment/outcome');
     });
 
     context(
@@ -358,7 +399,9 @@ describe('<Dashboard />', () => {
           );
           const profileBtn = wrapper.find('[data-risk-assessment-complete=false] > button');
 
-          getStub.onSecondCall().yields(null, { statusCode: 200 }, { riskAssessment: { foo: 'bar' } });
+          getStub
+            .onSecondCall()
+            .yields(null, { statusCode: 200 }, { riskAssessment: { foo: 'bar' } });
 
           profileBtn.simulate('click');
 
@@ -381,7 +424,9 @@ describe('<Dashboard />', () => {
           );
           const profileBtn = wrapper.find('[data-health-assessment-complete=false] > button');
 
-          getStub.onSecondCall().yields(null, { statusCode: 200 }, { healthAssessment: { foo: 'bar' } });
+          getStub
+            .onSecondCall()
+            .yields(null, { statusCode: 200 }, { healthAssessment: { foo: 'bar' } });
 
           profileBtn.simulate('click');
 

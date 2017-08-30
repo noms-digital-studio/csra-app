@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 import { capitalize, extractDateFromUTCString } from '../utils';
 
-const AssessmentRow = props =>
+const AssessmentRow = props => (
   <tr
     data-element-id={`profile-row-${props.nomisId}`}
     key={props.id}
@@ -15,46 +15,50 @@ const AssessmentRow = props =>
     <td>
       {props.forename} {props.surname}
     </td>
-    <td>
-      {props.nomisId}
-    </td>
-    <td>
-      {extractDateFromUTCString(props.dateOfBirth)}
-    </td>
+    <td>{props.nomisId}</td>
+    <td>{extractDateFromUTCString(props.dateOfBirth)}</td>
     <td data-risk-assessment-complete={props.riskAssessmentCompleted}>
-      {props.riskAssessmentCompleted
-        ? <span>Complete</span>
-        : <button
-          type="button"
-          onClick={() => props.onOffenderSelect(props)}
-          className="link u-link"
-          data-element-id={`start-csra-link-${props.nomisId}`}
-        >
+      {props.riskAssessmentCompleted ? (
+        <span>Complete</span>
+        ) : (
+          <button
+            type="button"
+            onClick={() => props.onOffenderSelect(props)}
+            className="link u-link"
+            data-element-id={`start-csra-link-${props.nomisId}`}
+          >
             Start
-          </button>}
+          </button>
+        )}
     </td>
     <td data-health-assessment-complete={props.healthAssessmentCompleted}>
-      {props.healthAssessmentCompleted
-        ? <span>Complete</span>
-        : <button
-          type="button"
-          onClick={() => props.onOffenderHealthcareSelect(props)}
-          className="link u-link"
-          data-element-id={`start-healthcare-link-${props.nomisId}`}
-        >
+      {props.healthAssessmentCompleted ? (
+        <span>Complete</span>
+        ) : (
+          <button
+            type="button"
+            onClick={() =>
+              props.onOffenderHealthcareSelect({
+                ...props,
+                isAwaitingSubmission: props.isAwaitingSubmission(props.id),
+              })}
+            className="link u-link"
+            data-element-id={`start-healthcare-link-${props.nomisId}`}
+          >
             Start
-          </button>}
+          </button>
+        )}
     </td>
     <td className="u-text-align-center">
-      {props.outcome
-        ? <span>
-          {capitalize(props.outcome)}
-        </span>
-        : <span className="c-status-indicator" />}
+      {props.outcome ? (
+        <span>{capitalize(props.outcome)}</span>
+        ) : (
+          <span className="c-status-indicator" />
+        )}
     </td>
     <td data-element-id="view-outcome" className="u-text-align-center">
-      {props.outcome
-        ? <span>
+      {props.outcome ? (
+        <span>
           <button
             className="link u-link"
             onClick={() => props.onViewOutcomeClick(props)}
@@ -63,9 +67,12 @@ const AssessmentRow = props =>
               View
             </button>
         </span>
-        : <span />}
+        ) : (
+          <span />
+        )}
     </td>
-  </tr>;
+  </tr>
+  );
 
 AssessmentRow.propTypes = {
   id: PropTypes.number,
@@ -74,6 +81,7 @@ AssessmentRow.propTypes = {
   surname: PropTypes.string,
   dateOfBirth: PropTypes.string,
   outcome: PropTypes.string,
+  isAwaitingSubmission: PropTypes.func,
   healthAssessmentCompleted: PropTypes.bool,
   riskAssessmentCompleted: PropTypes.bool,
   onOffenderSelect: PropTypes.func,
