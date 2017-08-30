@@ -8,7 +8,7 @@ import { parseDate } from '../../../../client/javascript/utils';
 
 import ConnectedDashboard, { Dashboard } from '../../../../client/javascript/pages/Dashboard';
 
-const assessments = [
+const filteredAssessments = [
   {
     id: 1,
     nomisId: 'foo-id',
@@ -32,6 +32,31 @@ const assessments = [
     createdAt: '2017-01-02T00:00:00.000Z',
   },
 ];
+
+const assessments = filteredAssessments.concat([
+  {
+    id: 3,
+    nomisId: 'TEST1-ID',
+    surname: 'test1-surname',
+    forename: 'test1-forename',
+    dateOfBirth: '2001-03-04T00:00:00.000Z',
+    riskAssessmentCompleted: false,
+    healthAssessmentCompleted: false,
+    outcome: null,
+    createdAt: '2017-01-02T00:00:00.000Z',
+  },
+  {
+    id: 4,
+    nomisId: 'TEST2-ID',
+    surname: 'test2-surname',
+    forename: 'test2-forename',
+    dateOfBirth: '2001-03-04T00:00:00.000Z',
+    riskAssessmentCompleted: true,
+    healthAssessmentCompleted: true,
+    outcome: 'test outcome',
+    createdAt: '2017-01-02T00:00:00.000Z',
+  },
+]);
 
 const state = {
   offender: {
@@ -80,7 +105,7 @@ describe('<Dashboard />', () => {
         const wrapper = mount(<Dashboard assessments={assessments} />);
         const whitelist = ['nomisId', 'surname', 'forename', 'dateOfBirth'];
 
-        assertGivenValuesInWhiteListAreInPage(assessments, whitelist, wrapper);
+        assertGivenValuesInWhiteListAreInPage(filteredAssessments, whitelist, wrapper);
       });
 
       it('displays a completed risk assessments', () => {
@@ -135,6 +160,12 @@ describe('<Dashboard />', () => {
 
         expect(callback.lastCall.args[0]).to.deep.include(assessments[1]);
       });
+
+      it('does not display any nomis ids that start with the word `TEST`', () => {
+        const wrapper = mount(<Dashboard assessments={assessments} />);
+        const table = wrapper.find('table');
+        expect(table.text().toUpperCase()).to.not.contain('TEST');
+      });
     });
   });
 
@@ -148,6 +179,16 @@ describe('<Dashboard />', () => {
 
     afterEach(() => {
       getStub.restore();
+    });
+
+    it('displays test assessments when the `displayTestAssessments` query param is present', () => {
+      const store = fakeStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <ConnectedDashboard location={{ query: { displayTestAssessments: 'true' } }} />
+        </Provider>,
+      );
+      expect(wrapper.find('tr[data-element-id]').length).to.equal(4);
     });
 
     it('calls the getOffenderProfiles on component mount', () => {
@@ -187,7 +228,7 @@ describe('<Dashboard />', () => {
         </Provider>,
       );
 
-      assertGivenValuesInWhiteListAreInPage(assessments, whitelist, wrapper);
+      assertGivenValuesInWhiteListAreInPage(filteredAssessments, whitelist, wrapper);
     });
 
     it('displays a completed assessments', () => {
