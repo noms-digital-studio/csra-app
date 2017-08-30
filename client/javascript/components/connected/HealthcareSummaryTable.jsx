@@ -5,8 +5,8 @@ import QuestionAnswerRow from '../QuestionAnswerRow';
 import { capitalize, parseDate } from '../../utils';
 import { splitAssessorValues } from '../../services';
 
-const HealthcareSummaryTable = ({ answers }) => {
-  const assessor = splitAssessorValues(answers.assessor.answer);
+const HealthcareSummaryTable = ({ questionAnswers }) => {
+  const assessor = splitAssessorValues(questionAnswers.assessor.answer);
 
   return (
     <table className="check-your-answers c-answers-table">
@@ -35,18 +35,18 @@ const HealthcareSummaryTable = ({ answers }) => {
           </td>
         </tr>
         <QuestionAnswerRow
-          question={answers.outcome.question}
-          answer={{ answer: answers.outcome.answer }}
+          question={questionAnswers.outcome.question}
+          answer={{ answer: questionAnswers.outcome.answer }}
           dataTags={{ 'data-element-id': 'healthcare-outcome' }}
         />
         <QuestionAnswerRow
-          question={answers.comments.question}
-          answer={{ answer: answers.comments.comments || 'No comments' }}
+          question={questionAnswers.comments.question}
+          answer={{ answer: questionAnswers.comments.comments || 'No comments' }}
           dataTags={{ 'data-element-id': 'healthcare-comments' }}
         />
         <QuestionAnswerRow
-          question={answers.consent.question}
-          answer={answers.consent}
+          question={questionAnswers.consent.question}
+          answer={questionAnswers.consent}
           dataTags={{ 'data-element-id': 'healthcare-consent' }}
         />
       </tbody>
@@ -55,7 +55,7 @@ const HealthcareSummaryTable = ({ answers }) => {
 };
 
 const mapStateToProps = state => ({
-  answers: path([state.offender.selected.id, 'questions'], state.assessments.healthcare),
+  questionAnswers: path([state.offender.selected.id, 'questions'], state.assessments.healthcare),
 });
 
 export default connect(mapStateToProps)(HealthcareSummaryTable);
