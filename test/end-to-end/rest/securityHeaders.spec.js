@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 describe('Security headers', () => {
   it('returns a response with security headers present', function test(done) {
-    this.timeout(5000);
+    this.timeout(25000);
     const baseUrl = process.env.APP_BASE_URL;
     request(baseUrl)
       .get('/')

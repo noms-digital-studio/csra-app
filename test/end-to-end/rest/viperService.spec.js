@@ -7,6 +7,7 @@ import db from '../../util/db';
 import config from '../../../server/config';
 
 const baseUrl = process.env.APP_BASE_URL;
+const timeoutDuration = 25000;
 
 function primeDatabase(nomisId) {
   return db
@@ -31,7 +32,7 @@ describe('/api/viper/:nomisId', () => {
   const nomisId = generateNomisId();
 
   before(function beforeTests() {
-    this.timeout(5000);
+    this.timeout(timeoutDuration);
     if (!config.viper.enabled) {
       return primeDatabase(nomisId);
     }
@@ -62,7 +63,7 @@ describe('/api/viper/:nomisId', () => {
   });
 
   it('returns a viper rating for a known nomis id', function test() {
-    this.timeout(5000);
+    this.timeout(timeoutDuration);
     return request(baseUrl).get(`/api/viper/${nomisId}`).expect(200).then((res) => {
       expect(res.body).to.eql({ nomisId, viperRating: 0.42 });
     });
@@ -77,7 +78,7 @@ describe('/api/viper/:nomisId', () => {
 
     it('returns a viper rating for a known nomis id when response contains extra fields', function test() {
       const newNomisId = generateNomisId();
-      this.timeout(5000);
+      this.timeout(timeoutDuration);
       return primeMock({
         request: {
           method: 'GET',
@@ -103,7 +104,7 @@ describe('/api/viper/:nomisId', () => {
     });
 
     it('returns a 404 (not found) when an unauthorised (401) response is received', function test() {
-      this.timeout(5000);
+      this.timeout(timeoutDuration);
       return primeMock({
         request: {
           method: 'GET',
@@ -128,7 +129,7 @@ describe('/api/viper/:nomisId', () => {
     });
 
     it('returns a 404 (not found) when a forbidden (403) response is received', function test() {
-      this.timeout(5000);
+      this.timeout(timeoutDuration);
       primeMock({
         request: {
           method: 'GET',
@@ -153,7 +154,7 @@ describe('/api/viper/:nomisId', () => {
     });
 
     it('returns a 404 (not found) when a bad request (400) response is received', function test() {
-      this.timeout(5000);
+      this.timeout(timeoutDuration);
       return primeMock({
         request: {
           method: 'GET',
@@ -177,7 +178,7 @@ describe('/api/viper/:nomisId', () => {
     });
 
     it('returns a 404 (not found) when an unexpected error (500) response is received', function test() {
-      this.timeout(5000);
+      this.timeout(timeoutDuration);
       return primeMock({
         request: {
           method: 'GET',
@@ -201,7 +202,7 @@ describe('/api/viper/:nomisId', () => {
     });
 
     it('returns a 404 (not found) when an empty response is received', function test() {
-      this.timeout(5000);
+      this.timeout(timeoutDuration);
       return primeMock({
         request: {
           method: 'GET',
@@ -221,7 +222,7 @@ describe('/api/viper/:nomisId', () => {
     });
 
     it('returns a 404 (not found) when connection is closed during response', function test() {
-      this.timeout(5000);
+      this.timeout(timeoutDuration);
       return primeMock({
         request: {
           method: 'GET',
@@ -241,7 +242,7 @@ describe('/api/viper/:nomisId', () => {
     });
 
     it('returns a 404 (not found) when response is malformed', function test() {
-      this.timeout(5000);
+      this.timeout(timeoutDuration);
       return primeMock({
         request: {
           method: 'GET',
@@ -260,7 +261,7 @@ describe('/api/viper/:nomisId', () => {
     });
 
     it('returns a 404 (not found) when response body is invalid', function test() {
-      this.timeout(5000);
+      this.timeout(timeoutDuration);
       primeMock({
         request: {
           method: 'GET',
@@ -284,7 +285,7 @@ describe('/api/viper/:nomisId', () => {
     });
 
     it('returns a 404 (not found) when response is the wrong format', function test() {
-      this.timeout(5000);
+      this.timeout(timeoutDuration);
       return primeMock({
         request: {
           method: 'GET',
@@ -308,7 +309,7 @@ describe('/api/viper/:nomisId', () => {
     });
 
     it('returns a 404 (not found) when no response is receive within timeout limit', function test() {
-      this.timeout(5000);
+      this.timeout(timeoutDuration);
       return primeMock({
         request: {
           method: 'GET',
@@ -334,7 +335,7 @@ describe('/api/viper/:nomisId', () => {
   });
 
   it('returns a 404 (not found) for an unknown nomis id', function test() {
-    this.timeout(5000);
+    this.timeout(timeoutDuration);
     const unknownNomisId = uuid().substring(0, 8);
     return request(baseUrl).get(`/api/viper/${unknownNomisId}`).expect(404).then((res) => {
       expect(res.body).to.eql({

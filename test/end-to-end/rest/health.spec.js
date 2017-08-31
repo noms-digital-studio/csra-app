@@ -5,7 +5,7 @@ import config from '../../../server/config';
 
 describe('/health', () => {
   it('displays the health status of the app', function test(done) {
-    this.timeout(5000);
+    this.timeout(25000);
     const baseUrl = process.env.APP_BASE_URL;
     request(baseUrl).get('/health')
       .expect(200)
