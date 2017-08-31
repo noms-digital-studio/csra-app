@@ -30,7 +30,7 @@ const HealthcareSummaryTable = ({ questionsAnswers, assessmentFinished, assessme
       </thead>
       <tbody className="c-answers-table-vat">
         <tr data-healthcare-assessor>
-          <td className="heading-small">Completed by:</td>
+          <td>Completed by:</td>
           <td>
             <span data-element-id="healthcare-assessor">{capitalize(assessor.fullName)}</span>
             <br />
