@@ -124,7 +124,7 @@ class FullAssessmentOutcome extends Component {
                 Allocation recommendation: {capitalize(finalOutcome)}
               </h3>
 
-              {not(isEmpty(reasons)) && (
+              {(not(isEmpty(reasons)) || healthAssessment.outcome === 'single cell') && (
                 <div>
                   <p>Why:</p>
                   <ul
