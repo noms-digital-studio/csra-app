@@ -16,6 +16,7 @@ const prisoner = {
   dateOfBirth: '2010-01-01T00:00:00.000Z',
   nomisId: 'foo-nomis-id',
   healthAssessmentCompleted: false,
+  riskAssessmentCompleted: false,
 };
 
 const riskAssessment = {
@@ -102,6 +103,65 @@ describe('<RiskAssessmentSummary />', () => {
         expect(prisonerProfile).to.contain('foo-surname');
         expect(prisonerProfile).to.contain('01 January 2010');
         expect(prisonerProfile).to.contain('foo-nomis-id');
+      });
+
+      context('When the component mounts', () => {
+        it('marks questions as complete on mount', () => {
+          const store = fakeStore(state);
+
+          mount(
+            <Provider store={store}>
+              <RiskAssessmentSummary />
+            </Provider>,
+          );
+
+          expect(
+            store.dispatch.calledWithMatch({
+              type: 'RISK_ANSWERS_COMPLETE',
+              payload: { assessmentId: 1 },
+            }),
+          ).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
+        });
+      });
+
+      context('When answers are already complete', () => {
+        it('displays change answer options for each question', () => {
+          const store = fakeStore(state);
+
+          const wrapper = mount(
+            <Provider store={store}>
+              <RiskAssessmentSummary />
+            </Provider>,
+          );
+
+          const changeLinks = wrapper.find('[data-element-id="change-answer-link"]');
+
+          expect(changeLinks.length).to.be.equal(7);
+        });
+      });
+
+      context('When assessment is already marked as completed', () => {
+        it('does not displays change answer options for each question', () => {
+          const store = fakeStore({
+            ...state,
+            offender: {
+              selected: {
+                ...prisoner,
+                riskAssessmentCompleted: true,
+              },
+            },
+          });
+
+          const wrapper = mount(
+            <Provider store={store}>
+              <RiskAssessmentSummary />
+            </Provider>,
+          );
+
+          const changeLinks = wrapper.find('[data-element-id="change-answer-link"]');
+
+          expect(changeLinks.length).to.be.equal(0);
+        });
       });
 
       it('renders a "shared cell" outcome', () => {
@@ -369,15 +429,21 @@ describe('<RiskAssessmentSummary />', () => {
         getStub.yields(null, { statusCode: 200 }, { healthAssessment: null });
         putStub.yields(null, { statusCode: 200 }, { foo: 'bar' });
 
-        expect(wrapper.find('button[type="submit"]').getNode().hasAttribute('disabled')).to.equal(
-          false,
-        );
+        expect(
+          wrapper
+            .find('button[type="submit"]')
+            .getNode()
+            .hasAttribute('disabled'),
+        ).to.equal(false);
 
         wrapper.find('form').simulate('submit');
 
-        expect(wrapper.find('button[type="submit"]').getNode().hasAttribute('disabled')).to.equal(
-          true,
-        );
+        expect(
+          wrapper
+            .find('button[type="submit"]')
+            .getNode()
+            .hasAttribute('disabled'),
+        ).to.equal(true);
 
         expect(
           store.dispatch.calledWithMatch({

@@ -11,7 +11,7 @@ import { retrieveViperScoreFor } from '../services';
 
 import routes from '../constants/routes';
 
-const OffenderProfile = ({ details, title, onSubmit }) =>
+const OffenderProfile = ({ details, title, onSubmit, isAlreadyComplete }) => (
   <DocumentTitle title={title}>
     <div>
       <p>
@@ -59,7 +59,7 @@ const OffenderProfile = ({ details, title, onSubmit }) =>
       <p>
         <button
           type="button"
-          onClick={() => onSubmit(details)}
+          onClick={() => onSubmit(details, isAlreadyComplete)}
           className="button button-start u-margin-bottom-default"
           data-element-id="continue-button"
         >
@@ -67,7 +67,8 @@ const OffenderProfile = ({ details, title, onSubmit }) =>
         </button>
       </p>
     </div>
-  </DocumentTitle>;
+  </DocumentTitle>
+);
 
 OffenderProfile.propTypes = {
   title: PropTypes.string,
@@ -77,6 +78,7 @@ OffenderProfile.propTypes = {
     nomisId: PropTypes.string,
     surname: PropTypes.string,
   }),
+  isAlreadyComplete: PropTypes.bool,
   onSubmit: PropTypes.func,
 };
 
@@ -88,12 +90,18 @@ OffenderProfile.defaultProps = {
 
 const mapStateToProps = state => ({
   details: state.offender.selected,
+  isAlreadyComplete: Boolean(
+    state.assessmentStatus.awaitingSubmission.risk.find(
+      item => item.assessmentId === state.offender.selected.id,
+    ),
+  ),
 });
 
 const mapActionsToProps = dispatch => ({
-  onSubmit: (prisoner) => {
+  onSubmit: (prisoner, isAlreadyComplete) => {
     retrieveViperScoreFor(prisoner.nomisId, (response) => {
       const viperScore = path(['viperRating'], response);
+
 
       dispatch(
         startRiskAssessmentFor({
@@ -102,9 +110,11 @@ const mapActionsToProps = dispatch => ({
         }),
       );
 
-      dispatch(push(`${routes.RISK_ASSESSMENT}/introduction`));
+      if (isAlreadyComplete) {
+        return dispatch(push(routes.RISK_ASSESSMENT_SUMMARY));
+      }
 
-      return true;
+      return dispatch(push(`${routes.RISK_ASSESSMENT}/introduction`));
     });
   },
 });

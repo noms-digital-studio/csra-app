@@ -53,27 +53,34 @@ const riskAssessment = {
   },
 };
 
+const storeData = {
+  questions: {
+    riskAssessment: questions,
+  },
+  offender: {
+    selected: {
+      id: 1,
+      forename: 'foo-forename',
+      surname: 'foo-surname',
+      dateOfBirth: '17-Nov-1999',
+      nomisId: 'AA54321XX',
+    },
+  },
+  assessments: {
+    risk: riskAssessment,
+  },
+  assessmentStatus: {
+    awaitingSubmission: {
+      risk: [],
+    },
+  },
+};
+
 describe('<RiskAssessment />', () => {
   let store;
 
   beforeEach(() => {
-    store = fakeStore({
-      questions: {
-        riskAssessment: questions,
-      },
-      offender: {
-        selected: {
-          id: 1,
-          forename: 'foo-forename',
-          surname: 'foo-surname',
-          dateOfBirth: '17-Nov-1999',
-          nomisId: 'AA54321XX',
-        },
-      },
-      assessments: {
-        risk: riskAssessment,
-      },
-    });
+    store = fakeStore(storeData);
   });
 
   it('calls actions when component mounts', () => {

@@ -123,36 +123,39 @@ class FullAssessmentOutcome extends Component {
               <h3 className="heading-medium" data-element-id="recommended-outcome">
                 Allocation recommendation: {capitalize(finalOutcome)}
               </h3>
-              <p>Why:</p>
-              {reasons &&
-                <ul
-                  data-element-id="risk-assessment-reasons"
-                  className="list list-bullet c-reasons-list"
-                >
-                  {healthAssessment.outcome === 'single cell' &&
-                    <li>The healthcare assessment recommends a single cell</li>}
-                  {reasons.map(item =>
-                    <li key={item.questionId}>
-                      <span className="u-d-block">
-                        {item.reason}
-                      </span>
-                      <span className="u-d-block">
-                        {riskAssessment.questions[item.questionId]['reasons-yes'] &&
-                          `“${riskAssessment.questions[item.questionId]['reasons-yes']}”`}
-                      </span>
-                    </li>,
-                  )}
-                </ul>}
+
+              {not(isEmpty(reasons)) && (
+                <div>
+                  <p>Why:</p>
+                  <ul
+                    data-element-id="risk-assessment-reasons"
+                    className="list list-bullet c-reasons-list"
+                  >
+                    {healthAssessment.outcome === 'single cell' && (
+                      <li>The healthcare assessment recommends a single cell</li>
+                    )}
+                    {reasons.map(item => (
+                      <li key={item.questionId}>
+                        <span className="u-d-block">{item.reason}</span>
+                        <span className="u-d-block">
+                          {riskAssessment.questions[item.questionId]['reasons-yes'] &&
+                            `“${riskAssessment.questions[item.questionId]['reasons-yes']}”`}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         <div data-element-id="risk-assessment-summary">
-          <RiskAssessmentSummaryTable title="Cell violence assessment" />
+          <RiskAssessmentSummaryTable assessmentComplete title="Cell violence assessment" />
         </div>
 
         <div data-element-id="health-summary" className="u-margin-bottom-alpha">
-          <HealthcareSummaryTable title="Healthcare assessment" />
+          <HealthcareSummaryTable assessmentComplete title="Healthcare assessment" />
         </div>
 
         <h3 className="heading-medium">What happens next?</h3>
@@ -164,24 +167,25 @@ class FullAssessmentOutcome extends Component {
             className="c-icon-button link u-print-hide"
             onClick={() => window.print()}
           >
-              Print Page
-            </button>
+            Print Page
+          </button>
         </p>
-        <p className="u-margin-bottom-bravo">You must explain this outcome to the prisoner so that they understand it.</p>
+        <p className="u-margin-bottom-bravo">
+          You must explain this outcome to the prisoner so that they understand it.
+        </p>
 
-        {alreadyCompleted
-          ? <button
+        {alreadyCompleted ? (
+          <button
             className="button"
             type="button"
             data-element-id="continue-button"
             to={routes.DASHBOARD}
             onClick={onReturnHome}
           >
-              Return to Dashboard
-            </button>
-          : <form
-            onSubmit={onReturnHome}
-          >
+            Return to Dashboard
+          </button>
+        ) : (
+          <form onSubmit={onReturnHome}>
             <div className="u-clear-fix u-margin-bottom-charlie">
               <SelectableInput
                 required
@@ -196,7 +200,8 @@ class FullAssessmentOutcome extends Component {
             <button className="button" type="submit" data-element-id="continue-button">
               Return to Dashboard
             </button>
-          </form>}
+          </form>
+        )}
       </div>
     );
   }
@@ -207,9 +212,7 @@ class FullAssessmentOutcome extends Component {
 
     return (
       <DocumentTitle title={title}>
-        <div>
-          {assessmentIsAvailable && this.renderFullOutcome()}
-        </div>
+        <div>{assessmentIsAvailable && this.renderFullOutcome()}</div>
       </DocumentTitle>
     );
   }

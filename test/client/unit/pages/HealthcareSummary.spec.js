@@ -14,6 +14,7 @@ const prisoner = {
   dateOfBirth: '2010-01-01T00:00:00.000Z',
   nomisId: 'foo-nomis-id',
   riskAssessmentCompleted: false,
+  healthAssessmentCompleted: false,
 };
 
 const healthcareAssessment = {
@@ -52,6 +53,11 @@ const state = {
       1: healthcareAssessment,
     },
   },
+  assessmentStatus: {
+    awaitingSubmission: {
+      risk: [],
+    },
+  },
 };
 
 describe('<HealthcareSummary />', () => {
@@ -69,6 +75,65 @@ describe('<HealthcareSummary />', () => {
       expect(prisonerProfile).to.contain('foo-surname');
       expect(prisonerProfile).to.contain('01 January 2010');
       expect(prisonerProfile).to.contain('foo-nomis-id');
+    });
+
+    context('When the component mounts', () => {
+      it('marks questions as complete on mount', () => {
+        const store = fakeStore(state);
+
+        mount(
+          <Provider store={store}>
+            <HealthcareSummary />
+          </Provider>,
+        );
+
+        expect(
+          store.dispatch.calledWithMatch({
+            type: 'HEALTHCARE_ANSWERS_COMPLETE',
+            payload: { assessmentId: 1 },
+          }),
+        ).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
+      });
+    });
+
+    context('When answers are already complete', () => {
+      it('displays change answer options for each question', () => {
+        const store = fakeStore(state);
+
+        const wrapper = mount(
+          <Provider store={store}>
+            <HealthcareSummary />
+          </Provider>,
+        );
+
+        const changeLinks = wrapper.find('[data-element-id="change-answer-link"]');
+
+        expect(changeLinks.length).to.be.equal(4);
+      });
+    });
+
+    context('When assessment is already marked as completed', () => {
+      it('does not displays change answer options for each question', () => {
+        const store = fakeStore({
+          ...state,
+          offender: {
+            selected: {
+              ...prisoner,
+              healthAssessmentCompleted: true,
+            },
+          },
+        });
+
+        const wrapper = mount(
+          <Provider store={store}>
+            <HealthcareSummary />
+          </Provider>,
+        );
+
+        const changeLinks = wrapper.find('[data-element-id="change-answer-link"]');
+
+        expect(changeLinks.length).to.be.equal(0);
+      });
     });
 
     context('Healthcare outcome', () => {

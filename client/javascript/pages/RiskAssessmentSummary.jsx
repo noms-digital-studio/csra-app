@@ -6,7 +6,11 @@ import path from 'ramda/src/path';
 import not from 'ramda/src/not';
 import isEmpty from 'ramda/src/isEmpty';
 
-import { saveRiskAssessmentOutcome, saveRiskAssessmentReasons } from '../actions';
+import {
+  saveRiskAssessmentOutcome,
+  saveRiskAssessmentReasons,
+  completeRiskAnswersFor,
+} from '../actions';
 import { capitalize } from '../utils';
 import { extractDecision } from '../services';
 
@@ -20,13 +24,22 @@ import routes from '../constants/routes';
 
 class RiskAssessmentSummary extends Component {
   componentDidMount() {
-    const { prisoner, questions, answers, viperScore, saveOutcome, saveReasons } = this.props;
+    const {
+      prisoner,
+      questions,
+      answers,
+      viperScore,
+      saveOutcome,
+      saveReasons,
+      markAnswersAsCompleteFor,
+    } = this.props;
     const decision = extractDecision({
       questions,
       answers,
       viperScore,
     });
 
+    markAnswersAsCompleteFor({ assessmentId: prisoner.id });
     saveOutcome({ id: prisoner.id, outcome: decision.recommendation });
     saveReasons({ id: prisoner.id, reasons: decision.reasons });
   }
@@ -39,6 +52,7 @@ class RiskAssessmentSummary extends Component {
       outcome,
       reasons,
       healthcareAssessmentComplete,
+      riskAssessmentComplete,
       assessment,
     } = this.props;
 
@@ -84,41 +98,43 @@ class RiskAssessmentSummary extends Component {
               Allocation recommendation: {capitalize(outcome)}
             </h3>
 
-            {not(isEmpty(reasons)) &&
+            {not(isEmpty(reasons)) && (
               <div>
                 <p>Why:</p>
                 <ul
                   data-element-id="risk-assessment-reasons"
                   className="list list-bullet c-reasons-list"
                 >
-                  {reasons.map(item =>
+                  {reasons.map(item => (
                     <li key={item.questionId}>
-                      <span className="u-d-block">
-                        {item.reason}
-                      </span>
+                      <span className="u-d-block">{item.reason}</span>
                       <span className="u-d-block">
                         {assessment.questions[item.questionId]['reasons-yes'] &&
                           `“${assessment.questions[item.questionId]['reasons-yes']}”`}
                       </span>
-                    </li>,
-                  )}
+                    </li>
+                  ))}
                 </ul>
-              </div>}
-            {not(healthcareAssessmentComplete) &&
+              </div>
+            )}
+            {not(healthcareAssessmentComplete) && (
               <p className="u-margin-top-charlie">
                 Both the risk and allocation recommendation could change after the healthcare
                 assessment.
-              </p>}
+              </p>
+            )}
           </div>
 
           <div className="u-margin-bottom-bravo">
-            <RiskAssessmentSummaryTable title="Assessment answers" />
+            <RiskAssessmentSummaryTable
+              assessmentComplete={riskAssessmentComplete}
+              title="Assessment answers"
+            />
           </div>
 
           <div className="form-group" data-summary-next-steps>
-            {healthcareAssessmentComplete
-              ? null
-              : <div className="u-margin-bottom-charlie">
+            {healthcareAssessmentComplete ? null : (
+              <div className="u-margin-bottom-charlie">
                 <h3 className="heading-medium">What happens next?</h3>
                 <p className="u-margin-bottom-charlie">
                   <span>You must print a copy of this summary for healthcare.</span>
@@ -128,10 +144,11 @@ class RiskAssessmentSummary extends Component {
                     className="c-icon-button link u-print-hide"
                     onClick={() => window.print()}
                   >
-                      Print Page
-                    </button>
+                    Print Page
+                  </button>
                 </p>
-              </div>}
+              </div>
+            )}
 
             <div className="notice c-notice u-clear-fix">
               <i className="icon icon-important">
@@ -148,7 +165,7 @@ class RiskAssessmentSummary extends Component {
                 this.submitBtn = el;
               }}
             >
-             Finish assessment
+              Finish assessment
             </button>
           </div>
         </form>
@@ -163,6 +180,7 @@ RiskAssessmentSummary.propTypes = {
   onSubmit: PropTypes.func,
   saveOutcome: PropTypes.func,
   saveReasons: PropTypes.func,
+  markAnswersAsCompleteFor: PropTypes.func,
   prisoner: PropTypes.shape({
     id: PropTypes.number,
     forename: PropTypes.string,
@@ -171,6 +189,7 @@ RiskAssessmentSummary.propTypes = {
     surname: PropTypes.string,
   }),
   healthcareAssessmentComplete: PropTypes.bool,
+  riskAssessmentComplete: PropTypes.bool,
   viperScore: PropTypes.number,
   answers: PropTypes.object,
   questions: PropTypes.array,
@@ -201,10 +220,12 @@ const mapStateToProps = (state) => {
     outcome: path([selectedOffender.id, 'outcome'], state.assessments.risk),
     reasons: path([selectedOffender.id, 'reasons'], state.assessments.risk),
     healthcareAssessmentComplete: selectedOffender.healthAssessmentCompleted,
+    riskAssessmentComplete: selectedOffender.riskAssessmentCompleted,
   };
 };
 
 const mapActionsToProps = dispatch => ({
+  markAnswersAsCompleteFor: profile => dispatch(completeRiskAnswersFor(profile)),
   saveOutcome: ({ id, outcome }) => dispatch(saveRiskAssessmentOutcome({ id, outcome })),
   saveReasons: ({ id, reasons }) => dispatch(saveRiskAssessmentReasons({ id, reasons })),
   onSubmit: ({ assessment, assessmentId }) => {
