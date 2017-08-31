@@ -170,9 +170,6 @@ class FullAssessmentOutcome extends Component {
             Print Page
           </button>
         </p>
-        <p className="u-margin-bottom-bravo">
-          You must explain this outcome to the prisoner so that they understand it.
-        </p>
 
         {alreadyCompleted ? (
           <button
@@ -186,6 +183,9 @@ class FullAssessmentOutcome extends Component {
           </button>
         ) : (
           <form onSubmit={onReturnHome}>
+            <p className="u-margin-bottom-bravo">
+              You must explain this outcome to the prisoner so that they understand it.
+            </p>
             <div className="u-clear-fix u-margin-bottom-charlie">
               <SelectableInput
                 required
