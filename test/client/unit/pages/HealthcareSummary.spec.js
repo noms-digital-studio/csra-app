@@ -360,10 +360,6 @@ describe('<HealthcareSummary />', () => {
     });
   });
 
-  // context('', () => {
-
-  // });
-
   context('when the risk assessment is complete', () => {
     let store;
     let putStub;
