@@ -54,7 +54,7 @@ const HealthcareSummaryTable = ({ questionsAnswers, assessmentFinished, assessme
         <QuestionAnswerRow
           question={questionsAnswers.outcome.question}
           answer={{ answer: questionsAnswers.outcome.answer }}
-          dataTags={{ 'data-element-id': 'healthcare-outcome-answer' }}
+          dataTags={{ 'data-element-id': 'healthcare-recommendation' }}
           withChangeAnswer={withChangeLink}
           changeAnswerLink={`${routes.HEALTHCARE_ASSESSMENT}/${questionsAnswers.outcome.questionId}`}
         />

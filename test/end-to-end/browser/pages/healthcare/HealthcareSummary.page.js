@@ -17,18 +17,18 @@ class HealthcareSummary extends BasePage {
   }
 
   get recommendation() {
-    return browser.getText('[data-element-id="healthcare-recommendation"]');
+    return browser.getText('[data-element-id="healthcare-recommendation"] [data-element-id="row-answer"]');
   }
 
   get comments() {
-    return browser.getText('[data-element-id="healthcare-comments"]');
+    return browser.getText('[data-element-id="healthcare-comments"] [data-element-id="row-answer"]');
   }
   get consent() {
-    return browser.getText('[data-element-id="healthcare-consent"]');
+    return browser.getText('[data-element-id="healthcare-consent"] [data-element-id="row-answer"]');
   }
 
   clickChange() {
-    browser.click('[data-element-id="healthcare-change-consent-link"]');
+    browser.click('[data-element-id="healthcare-consent"] [data-element-id="change-answer-link"]');
   }
 }
 
