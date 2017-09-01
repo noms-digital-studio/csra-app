@@ -1,6 +1,6 @@
 import knex from 'knex';
 
-const config = require('../../server/config').default;
+const config = require('../../server/config');
 
 const dbConfig = {
   client: 'mssql',
