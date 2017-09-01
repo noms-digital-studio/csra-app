@@ -1,6 +1,7 @@
-import path from 'path';
-import { execSync } from 'child_process';
-import { calculateHash } from '../../utils/question-hash';
+const path = require('path');
+const { execSync } = require('child_process');
+
+const { calculateHash } = require('../../utils/question-hash');
 
 function staticAppInfo(buildInfo) {
   return {
@@ -59,9 +60,9 @@ function dynamicAppInfo() {
   return { getBuildInfo, getGitRef, getGitDate, getQuestionHash };
 }
 
-export default function createAppInfoService(buildInfo) {
+module.exports = function createAppInfoService(buildInfo) {
   if (!buildInfo) {
     return dynamicAppInfo();
   }
   return staticAppInfo(buildInfo);
-}
+};

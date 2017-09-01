@@ -1,4 +1,4 @@
-import bunyan from 'bunyan';
+const bunyan = require('bunyan');
 
 const logger = bunyan.createLogger({
   name: 'csra:server',
@@ -18,8 +18,8 @@ const viperRestServiceLogger = logger.child({ service: 'viperRestService' });
 const prisonerAssessmentsServiceLogger = logger.child({ service: 'prisonerAssessmentsServiceLogger' });
 const databaseLogger = logger.child({ service: 'database' });
 
-export default logger;
-export {
+module.exports = {
+  logger,
   viperRestServiceLogger,
   prisonerAssessmentsServiceLogger,
   databaseLogger,

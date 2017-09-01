@@ -1,10 +1,10 @@
-import express from 'express';
-import superagent from 'superagent';
-import url from 'url';
-import config from '../config';
-import log from '../services/logger';
+const express = require('express');
+const superagent = require('superagent');
+const url = require('url');
+const config = require('../config');
+const { logger: log } = require('../services/logger');
 
-export default function createRouter(db, appInfo) {
+module.exports = function createRouter(db, appInfo) {
   const router = express.Router();
 
   function dbCheck() {
@@ -69,4 +69,4 @@ export default function createRouter(db, appInfo) {
   });
 
   return router;
-}
+};

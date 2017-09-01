@@ -1,19 +1,19 @@
 /* eslint-disable max-len */
-import path from 'path';
-import express from 'express';
-import { json } from 'body-parser';
-import helmet from 'helmet';
-import hsts from 'hsts';
-import bunyanMiddleware from 'bunyan-middleware';
+const path = require('path');
+const express = require('express');
+const { json } = require('body-parser');
+const helmet = require('helmet');
+const hsts = require('hsts');
+const bunyanMiddleware = require('bunyan-middleware');
 
-import logger from './services/logger';
-import createHealthRoute from './routes/health';
-import createAssessmentRoute from './routes/assessment';
-import createViperRoute from './routes/viper';
-import createPrisonerAssessmentsRoute from './routes/assessments';
-import index from './routes/index';
+const { logger } = require('./services/logger');
+const createHealthRoute = require('./routes/health');
+const createAssessmentRoute = require('./routes/assessment');
+const createViperRoute = require('./routes/viper');
+const createPrisonerAssessmentsRoute = require('./routes/assessments');
+const index = require('./routes/index');
 
-export default function createApp(db, appInfo, assessmentService, viperService, prisonerAssessmentsService) {
+module.exports = function createApp(db, appInfo, assessmentService, viperService, prisonerAssessmentsService) {
   const app = express();
   const sixtyDaysInSeconds = 5184000;
 
@@ -54,4 +54,4 @@ export default function createApp(db, appInfo, assessmentService, viperService, 
   });
 
   return app;
-}
+};

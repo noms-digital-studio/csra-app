@@ -2,9 +2,7 @@
  * This file is automatically loaded when knex runs migrations
  */
 
-require('babel-register')();
-
-const config = require('./server/config').default;
+const config = require('./server/config');
 
 module.exports = {
   client: 'mssql',

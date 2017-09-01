@@ -1,5 +1,6 @@
-import Joi from 'joi';
-import { databaseLogger as log } from './logger';
+const Joi = require('joi');
+
+const { databaseLogger: log } = require('./logger');
 
 const schema = Joi.object({
   type: Joi.string().valid('risk', 'healthcare'),
@@ -57,6 +58,6 @@ function record(db, appInfo, rawAssessment) {
     .then(result => ({ assessment_id: result[0] }));
 }
 
-export default function createAssessmentService(db, appInfo) {
+module.exports = function createAssessmentService(db, appInfo) {
   return { record: assessment => record(db, appInfo, assessment) };
-}
+};

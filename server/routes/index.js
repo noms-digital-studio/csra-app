@@ -1,15 +1,11 @@
-import fs from 'fs';
-import path from 'path';
-import express from 'express';
-import mustache from 'mustache';
+const fs = require('fs');
+const path = require('path');
+const express = require('express');
+const mustache = require('mustache');
 
-import webpack from 'webpack';
-import webpackMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
+const webpackConfig = require('../../webpack.config');
 
-import webpackConfig from '../../webpack.config';
-
-import config from '../config';
+const config = require('../config');
 
 const router = express.Router();
 
@@ -19,6 +15,13 @@ const renderData = {
 const templatePath = path.join(__dirname, '../../public/dist/index.html');
 
 if (config.dev) {
+  // eslint-disable-next-line
+  const webpack = require('webpack');
+  // eslint-disable-next-line
+  const webpackMiddleware = require('webpack-dev-middleware');
+  // eslint-disable-next-line
+  const webpackHotMiddleware = require('webpack-hot-middleware');
+
   const compiler = webpack(webpackConfig);
   const middleware = webpackMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath,
@@ -43,4 +46,4 @@ if (config.dev) {
   });
 }
 
-export default router;
+module.exports = router;

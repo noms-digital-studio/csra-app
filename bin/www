@@ -1,16 +1,14 @@
 #!/usr/bin/env node
 
-require('babel-register')();
-
 // Load any extra environment variables from .env
 require('dotenv').config();
 
 const http = require('http');
 
 const appInsights = require('../utils/applicationinsights');
-const log = require('../server/services/logger').default;
-const config = require('../server/config').default;
-const app = require('../server/index').default;
+const { logger: log } = require('../server/services/logger');
+const config = require('../server/config');
+const app = require('../server/index');
 
 
 const normalizePort = (val) => {

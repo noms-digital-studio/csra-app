@@ -1,5 +1,5 @@
-import express from 'express';
-import log from '../services/logger';
+const express = require('express');
+const { logger: log } = require('../services/logger');
 
 function handleErrors(err, res) {
   log.error(err);
@@ -38,7 +38,7 @@ function handleErrors(err, res) {
   }
 }
 
-export default function createRouter(prisonerAssessmentsService) {
+module.exports = function createRouter(prisonerAssessmentsService) {
   const router = express.Router();
 
   router.post('/', (req, res) => {
@@ -150,4 +150,4 @@ export default function createRouter(prisonerAssessmentsService) {
   });
 
   return router;
-}
+};

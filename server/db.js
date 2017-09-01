@@ -1,8 +1,8 @@
-import knex from 'knex';
+const knex = require('knex');
 
 // Ensure we use same DB setup as migrations
-import dbConfig from '../knexfile';
+const dbConfig = require('../knexfile');
 
-export default function createDBConnectionPool() {
+module.exports = function createDBConnectionPool() {
   return knex(dbConfig);
-}
+};

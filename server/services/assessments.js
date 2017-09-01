@@ -1,6 +1,6 @@
-import Joi from 'joi';
+const Joi = require('joi');
 
-import { databaseLogger, prisonerAssessmentsServiceLogger as log } from './logger';
+const { databaseLogger, prisonerAssessmentsServiceLogger: log } = require('./logger');
 
 function save(db, appInfo, rawAssessment) {
   log.info(`Saving prisoner assessment for nomisId: ${rawAssessment.nomisId}`);
@@ -321,7 +321,7 @@ function saveOutcome(db, id, rawRequest) {
   });
 }
 
-export default function createPrisonerAssessmentService(db, appInfo) {
+module.exports = function createPrisonerAssessmentService(db, appInfo) {
   return {
     save: assessment => save(db, appInfo, assessment),
     list: () => list(db),
@@ -332,5 +332,4 @@ export default function createPrisonerAssessmentService(db, appInfo) {
     assessmentFor: id => assessmentFor(db, id),
     saveOutcome: (id, outcome) => saveOutcome(db, id, outcome),
   };
-}
-
+};

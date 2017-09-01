@@ -1,8 +1,8 @@
-import superagent from 'superagent';
-import url from 'url';
+const superagent = require('superagent');
+const url = require('url');
 
-import config from '../config';
-import { databaseLogger, viperRestServiceLogger as log } from './logger';
+const config = require('../config');
+const { databaseLogger, viperRestServiceLogger: log } = require('./logger');
 
 function viperRatingFromDatabase(db, nomisId) {
   log.info(`Getting Viper rating from the database for nomisID: ${nomisId}`);
@@ -63,6 +63,6 @@ function ratingFor(db, nomisId) {
   return viperRatingFromDatabase(db, nomisId);
 }
 
-export default function createViperService(db) {
+module.exports = function createViperService(db) {
   return { rating: nomisId => ratingFor(db, nomisId) };
-}
+};

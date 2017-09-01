@@ -1,12 +1,13 @@
-import express from 'express';
-import log from '../services/logger';
+const express = require('express');
+
+const { logger: log } = require('../services/logger');
 
 function errorResponse(res, nomisId, cause) {
   res.status(404);
   res.json({ messasge: `Error retrieving viper rating for nomisId: ${nomisId}. The cause was: ${cause}` });
 }
 
-export default function createRouter(viperService) {
+module.exports = function createRouter(viperService) {
   const router = express.Router();
 
   router.get('/:nomisId', (req, res) => {
@@ -28,4 +29,4 @@ export default function createRouter(viperService) {
   });
 
   return router;
-}
+};

@@ -1,10 +1,9 @@
 /**
  * Central place for accessing application config from the environment
  */
-
-import url from 'url';
-
 require('dotenv').config();
+
+const url = require('url');
 
 const production = process.env.NODE_ENV === 'production';
 
@@ -58,4 +57,4 @@ if (process.env.USE_VIPER_SERVICE === 'true') {
 }
 
 
-export default config;
+module.exports = config;

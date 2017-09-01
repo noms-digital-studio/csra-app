@@ -1,7 +1,7 @@
-import express from 'express';
-import log from '../services/logger';
+const express = require('express');
+const { logger: log } = require('../services/logger');
 
-export default function createRouter(assessment) {
+module.exports = function createRouter(assessment) {
   const router = express.Router();
 
   router.post('/', (req, res) => {
@@ -35,4 +35,4 @@ export default function createRouter(assessment) {
   });
 
   return router;
-}
+};
