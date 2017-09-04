@@ -117,5 +117,15 @@
     .c-print-link {
       display: none;
     }
+    .check-your-answers tbody td:nth-child(1) {
+      width: 50%;
+    }
+    .check-your-answers tbody td:nth-child(3) {
+      width: 50%;
+    }
+
+    .check-your-answers tbody td:nth-child(3) {
+      display: none;
+    }
 
 }
