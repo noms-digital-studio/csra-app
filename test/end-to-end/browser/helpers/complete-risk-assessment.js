@@ -39,61 +39,58 @@ const caseInSensitive = text => new RegExp(text, 'i');
 export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
   DashboardPage.startRiskAssessmentFor(config.prisoner.nomisId);
 
-  RiskAssessmentPrisonerProfilePage.waitForMainHeadingWithDataId('prisoner-confirmation');
-  expect(RiskAssessmentPrisonerProfilePage.mainHeading).to.contain('Confirm identity');
+  expect(
+    RiskAssessmentPrisonerProfilePage.waitForMainHeadingWithDataId('prisoner-confirmation'),
+  ).to.contain('Confirm identity');
   expect(RiskAssessmentPrisonerProfilePage.prisonerName).to.equal(config.prisoner.name);
   RiskAssessmentPrisonerProfilePage.clickContinue();
 
-  RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('introduction');
-  expect(RiskAssessmentExplanationPage.mainHeading).to.equal('Making this process fair and open');
+  expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('introduction')).to.equal(
+    'Making this process fair and open',
+  );
   RiskAssessmentExplanationPage.confirmAndContinue();
 
   expect(RiskAssessmentExplanationPage.viperHeading).to.equal(config.initialRecommendation);
   RiskAssessmentExplanationPage.clickContinue();
 
-  RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('how-do-you-feel');
-  expect(RiskAssessmentCommentsPage.mainHeading).to.equal(
+  expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('how-do-you-feel')).to.equal(
     'How do you think they feel about sharing a cell at this moment?',
   );
   RiskAssessmentCommentsPage.commentAndContinue('foo comment');
 
-
-  RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('harm-cell-mate');
-  expect(RiskAssessmentYesNoPage.mainHeading).to.equal(
+  expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('harm-cell-mate')).to.equal(
     'Is there any genuine indication they might seriously hurt a cellmate?',
   );
   selectYesNoAnswer(config.answers.harmCellMate);
 
-  RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('vulnerability');
-  expect(RiskAssessmentYesNoPage.mainHeading).to.equal(
+  expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('vulnerability')).to.equal(
     "Do you think they're likely to lash out because they're scared or feeling vulnerable?",
   );
   selectYesNoAnswer(config.answers.vulnerability);
 
-  RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('gang-affiliation');
-  expect(RiskAssessmentYesNoPage.mainHeading).to.equal('Are they in a gang?');
+  expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('gang-affiliation')).to.equal(
+    'Are they in a gang?',
+  );
   selectYesNoAnswer(config.answers.gangAffiliation);
 
-  RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('drug-misuse');
-  expect(RiskAssessmentYesNoPage.mainHeading).to.equal(
+  expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('drug-misuse')).to.equal(
     'Have they taken illicit drugs in the last month?',
   );
   selectYesNoAnswer(config.answers.drugMisuse);
 
-  RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('prejudice');
-  expect(RiskAssessmentYesNoPage.mainHeading).to.equal(
+  expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('prejudice')).to.equal(
     'Do they have any hostile views or prejudices?',
   );
   selectYesNoAnswer(config.answers.prejudice);
 
-  RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('officers-assessment');
-  expect(RiskAssessmentYesNoPage.mainHeading).to.equal(
-    'Are there any other reasons why you would recommend they have a single cell?',
-  );
+  expect(
+    RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('officers-assessment'),
+  ).to.equal('Are there any other reasons why you would recommend they have a single cell?');
   selectYesNoAnswer(config.answers.officersAssessment);
 
-  RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('risk-summary');
-  expect(RiskAssessmentSummaryPage.mainHeading).to.equal('Risk assessment summary');
+  expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('risk-summary')).to.equal(
+    'Risk assessment summary',
+  );
   expect(RiskAssessmentSummaryPage.prisonerName).to.equalIgnoreCase(config.prisoner.name);
   expect(RiskAssessmentSummaryPage.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);
   expect(RiskAssessmentSummaryPage.prisonerNomisId).to.equalIgnoreCase(config.prisoner.nomisId);
@@ -112,8 +109,9 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
 };
 
 export const fullAssessmentRecommendation = (config) => {
-  DashboardPage.waitForMainHeadingWithDataId('dashboard');
-  expect(DashboardPage.mainHeading).to.contain('All assessments');
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
+
+  browser.waitForVisible(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`, 5000);
 
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
   expect(row.getText()).to.equal(
@@ -168,7 +166,8 @@ export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) =
         },
         vulnerability: {
           questionId: 'vulnerability',
-          question: "Do you think they're likely to lash out because they're scared or feeling vulnerable?",
+          question:
+            "Do you think they're likely to lash out because they're scared or feeling vulnerable?",
           answer: config.answers.vulnerability,
         },
         'gang-affiliation': {

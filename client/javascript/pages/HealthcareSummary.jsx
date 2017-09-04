@@ -50,7 +50,9 @@ class HealthCareSummary extends Component {
             });
           }}
         >
-          <h1 className="heading-xlarge">Healthcare assessment summary</h1>
+          <h1 data-title="healthcare-summary" className="heading-xlarge">
+            Healthcare assessment summary
+          </h1>
 
           <div className="u-margin-bottom-bravo">
             <PrisonerProfile {...prisoner} />

@@ -33,22 +33,32 @@ const caseInSensitive = text => new RegExp(text, 'i');
 const whenAPrisonersHealthcareResultsAreEntered = (config = defaultAssessmentConfig) => {
   DashboardPage.startHealthcareAssessmentFor(config.prisoner.nomisId);
 
-  expect(HealthcareOutcomePage.mainHeading).to.contain('Does healthcare recommend a single cell?');
+  expect(HealthcareOutcomePage.waitForMainHeadingWithDataId('outcome')).to.contain(
+    'Does healthcare recommend a single cell?',
+  );
   selectYesNoAnswer(config.answers.singleCellRecommendation);
 
-  expect(HealthcareCommentsPage.mainHeading).to.contain('Enter all the comments on the healthcare form');
+  expect(HealthcareCommentsPage.waitForMainHeadingWithDataId('comments')).to.contain(
+    'Enter all the comments on the healthcare form',
+  );
   HealthcareCommentsPage.commentAndContinue('a healthcare comment');
 
-  expect(HealthcareConsentPage.mainHeading).to.contain('Have they given consent to share their medical information?');
+  expect(HealthcareConsentPage.waitForMainHeadingWithDataId('consent')).to.contain(
+    'Have they given consent to share their medical information?',
+  );
   HealthcareConsentPage.clickNoAndContinue();
 
-  expect(HealthcareNursePage.mainHeading).to.contain('Who completed the healthcare assessment?');
+  expect(HealthcareNursePage.waitForMainHeadingWithDataId('assessor')).to.contain(
+    'Who completed the healthcare assessment?',
+  );
   HealthcareNursePage.enterRole('Nurse');
   HealthcareNursePage.enterName('Jane Doe');
   HealthcareNursePage.enterDate('21', '07', '2017');
   HealthcareNursePage.clickContinue();
 
-  expect(HealthcareSummary.mainHeading).to.equal('Healthcare assessment summary');
+  expect(HealthcareSummary.waitForMainHeadingWithDataId('healthcare-summary')).to.equal(
+    'Healthcare assessment summary',
+  );
   expect(HealthcareSummary.prisonerName).to.equalIgnoreCase(config.prisoner.name);
   expect(HealthcareSummary.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);
   expect(HealthcareSummary.prisonerNomisId).to.equalIgnoreCase(config.prisoner.nomisId);
@@ -58,9 +68,9 @@ const whenAPrisonersHealthcareResultsAreEntered = (config = defaultAssessmentCon
   expect(HealthcareSummary.assessor).to.equalIgnoreCase('Jane Doe');
   expect(HealthcareSummary.role).to.equalIgnoreCase('nurse');
   expect(HealthcareSummary.date).to.equalIgnoreCase('21 July 2017');
-  expect(
-    HealthcareSummary.recommendation,
-  ).to.equalIgnoreCase(config.answers.singleCellRecommendation);
+  expect(HealthcareSummary.recommendation).to.equalIgnoreCase(
+    config.answers.singleCellRecommendation,
+  );
   expect(HealthcareSummary.comments).to.equalIgnoreCase('a healthcare comment');
   expect(HealthcareSummary.consent).to.equalIgnoreCase('no');
 
@@ -77,7 +87,8 @@ const thenTheHealthcareAssessmentIsComplete = (config = defaultAssessmentConfig)
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
 
   expect(row.getText()).to.equal(
-    `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Start Complete`,
+    `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner
+      .dateOfBirth} Start Complete`,
   );
 
   const assessmentId = row.getAttribute('data-assessment-id');
@@ -113,7 +124,4 @@ const thenTheHealthcareAssessmentIsComplete = (config = defaultAssessmentConfig)
   });
 };
 
-export {
-  whenAPrisonersHealthcareResultsAreEntered,
-  thenTheHealthcareAssessmentIsComplete,
-};
+export { whenAPrisonersHealthcareResultsAreEntered, thenTheHealthcareAssessmentIsComplete };
