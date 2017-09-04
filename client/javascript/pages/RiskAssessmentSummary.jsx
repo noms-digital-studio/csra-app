@@ -75,7 +75,7 @@ class RiskAssessmentSummary extends Component {
         >
           <div className="grid-row">
             <div className="column-two-thirds">
-              <h1 className="heading-xlarge">Risk assessment summary</h1>
+              <h1 data-title="risk-summary" className="heading-xlarge">Risk assessment summary</h1>
             </div>
             <div className="column-one-third">
               <div className="c-print-link c-print-link--small-mt">

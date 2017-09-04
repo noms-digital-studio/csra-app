@@ -2,7 +2,7 @@
 class BasePage {
 
   get mainHeading() {
-    browser.waitForVisible('h1', 5000);
+    browser.waitForVisible('h1', 10000);
     return browser.getText('h1');
   }
 
@@ -27,7 +27,7 @@ class BasePage {
   }
 
   waitForMainHeadingWithDataId(id) {
-    browser.waitForVisible(`[data-title="${id}"]`, 5000);
+    browser.waitForVisible(`[data-title="${id}"]`, 10000);
     return browser.getText('h1');
   }
 

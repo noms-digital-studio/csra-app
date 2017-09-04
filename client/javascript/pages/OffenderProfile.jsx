@@ -19,7 +19,7 @@ const OffenderProfile = ({ details, title, onSubmit, isAlreadyComplete }) => (
           Back to dashboard
         </Link>
       </p>
-      <h1 className="heading-xlarge">
+      <h1 data-title="prisoner-confirmation" className="heading-xlarge">
         <span className="heading-secondary">Confirm identity.</span>
         Details
       </h1>
