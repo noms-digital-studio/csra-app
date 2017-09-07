@@ -2,6 +2,7 @@
 Cell Sharing Risk Assessment application.
 
 [![CircleCI](https://circleci.com/gh/noms-digital-studio/csra-app.svg?style=svg)](https://circleci.com/gh/noms-digital-studio/csra-app)
+[![Known Vulnerabilities](https://snyk.io/test/github/noms-digital-studio/csra-app/badge.svg)](https://snyk.io/test/github/noms-digital-studio/csra-app)
 
 ## Before you start
 The app uses a `.env` file to manage the applications environmental variables.
