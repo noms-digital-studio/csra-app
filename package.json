@@ -13,7 +13,8 @@
     "start:dev": "rimraf public/dist && DEBUG=csra* node ./bin/www | bunyan -j",
     "lint": "eslint . --cache --max-warnings 0",
     "test": "mocha test/*.spec.js test/**/*.spec.js test/unit/**/*.spec.js test/unit/**/**/*.spec.js test/client/**/*.spec.js test/client/**/**/*.spec.js",
-    "verify": "yarn lint && yarn test",
+    "verify": "snyk test && yarn lint && yarn test",
+    "snyk-test": "snyk test",
     "test:watch": "yarn test -- --watch",
     "test:integration": "yarn test:e2e && yarn test:rest",
     "test:rest": "mocha test/end-to-end/rest/*.spec.js",
@@ -158,7 +159,8 @@
     "webdriverio": "^4.8.0",
     "webpack": "^2.3.0",
     "webpack-cleanup-plugin": "^0.5.1",
-    "webpack-hot-middleware": "^2.18.0"
+    "webpack-hot-middleware": "^2.18.0",
+    "snyk": "^1.40.2"
   },
   "contributors": [
     {

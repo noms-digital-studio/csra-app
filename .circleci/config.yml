@@ -40,6 +40,9 @@ jobs:
           command: yarn build
           environment:
             NODE_ENV: production
+      - run:
+          name: Snyk vulnerability checks
+          command: yarn snyk-test
 
       - deploy:
           name: Build Derived Git Commit
