@@ -7,9 +7,6 @@ if [ $# -eq 0 ]
     exit
 fi
 
-# This script requires the 'jq' command line tool
-brew install jq
-
 # Grab the MOCK build
 git checkout deploy-to-mock
 git pull --rebase
@@ -18,10 +15,12 @@ git pull --rebase
 git push --force origin origin/deploy-to-mock:deploy-to-stage
 
 # Wait for STAGE deploy to finish
-GIT_REF=`jq -r '.gitRef' build-info.json` WAIT_DURATION=45000 APP_BASE_URL=http://csra-stage.hmpps.dsd.io/health yarn wait-for-deploy
+GIT_REF=`cat build-info.json | python -c 'import json,sys;print json.load(sys.stdin)["gitRef"]'`\
+ WAIT_DURATION=45000 APP_BASE_URL=http://csra-stage.hmpps.dsd.io/health yarn wait-for-deploy
 
 # Run the E2E tests against STAGE
-DB_URI_TESTS=mssql://csra:$1@csra-stage.database.windows.net:1433/csra-stage APP_BASE_URL=https://csra-stage.hmpps.dsd.io yarn test:e2e
+DB_URI_TESTS=mssql://csra:$1@csra-stage.database.windows.net:1433/csra-stage\
+ APP_BASE_URL=https://csra-stage.hmpps.dsd.io yarn test:e2e
 
 # Switch back to master branch
 git checkout master
