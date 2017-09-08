@@ -88,6 +88,17 @@ jobs:
 
             fi
 
+      - deploy:
+          name: Run End to end tests against mock environment
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+
+              APP_BASE_URL=https://csra-mock.hmpps.dsd.io \
+              E2E_REPORTS_PATH=./reports/end-to-end \
+              E2E_SCREENSHOTS_PATH=./reports/error-screen-shots \
+                yarn run test:e2e
+            fi
+
       - store_test_results:
           path: ./reports
       - store_artifacts:
