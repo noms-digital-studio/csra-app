@@ -86,10 +86,9 @@ const thenTheHealthcareAssessmentIsComplete = (config = defaultAssessmentConfig)
 
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
 
-  expect(row.getText()).to.equal(
-    `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner
-      .dateOfBirth} Start Complete`,
-  );
+  browser.waitUntil(() => (
+    row.getText().toLowerCase() === (`${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Start Complete`).toLowerCase()
+  ), 5000, 'expected text to be different after 5s');
 
   const assessmentId = row.getAttribute('data-assessment-id');
 

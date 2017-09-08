@@ -114,10 +114,10 @@ export const fullAssessmentRecommendation = (config) => {
   browser.waitForVisible(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`, 5000);
 
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
-  expect(row.getText()).to.equal(
-    `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner
-      .dateOfBirth} Complete Start ${config.finalRecommendation}`,
-  );
+
+  browser.waitUntil(() => (
+    row.getText().toLowerCase() === (`${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Complete Start ${config.finalRecommendation}`).toLowerCase()
+  ), 5000, 'expected text to be different after 5s');
 };
 
 export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) => {
@@ -128,10 +128,10 @@ export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) =
   const row = browser.element('tbody tr');
   const assessmentId = row.getAttribute('data-assessment-id');
 
-  expect(row.getText()).to.equal(
-    `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner
-      .dateOfBirth} Complete Start`,
-  );
+
+  browser.waitUntil(() => (
+    row.getText().toLowerCase() === (`${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Complete Start`).toLowerCase()
+  ), 5000, 'expected text to be different after 5s');
 
   expect(assessmentId).to.not.equal(
     undefined,
