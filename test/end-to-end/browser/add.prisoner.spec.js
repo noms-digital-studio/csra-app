@@ -2,6 +2,7 @@ import DashboardPage from './pages/Dashboard.page';
 import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
 import whenTheOfficerAddsThePrisonersDetails from './tasks/theOfficerAddsThePrisonersDetails.task';
 
+
 function thenThePrisonerIsAvailableToAssess() {
   expect(DashboardPage.mainHeading).to.contain('All assessments');
   const row = browser.element('[data-element-id="profile-row-J1234LO"]');

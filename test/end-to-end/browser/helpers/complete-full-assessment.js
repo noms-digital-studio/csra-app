@@ -33,7 +33,14 @@ function thenTheFullAssessmentIsCompleted(config = defaultFullAssessmentConfig) 
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
   const assessmentId = row.getAttribute('data-assessment-id');
 
-  expect(row.getText()).to.equalIgnoreCase(`${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Complete Complete ${config.finalOutcome} View`);
+  browser.waitUntil(
+    () =>
+      row.getText().toLowerCase() ===
+      `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner
+        .dateOfBirth} Complete Complete ${config.finalOutcome} View`.toLowerCase(),
+    5000,
+    'expected text to be different after 5s',
+  );
 
   checkThatTheOutcomeDataWasWrittenToDatabaseSync({
     id: assessmentId,
@@ -44,9 +51,9 @@ function thenTheFullAssessmentIsCompleted(config = defaultFullAssessmentConfig) 
 const viewFullOutcomeForPrisoner = (config = defaultFullAssessmentConfig) => {
   DashboardPage.viewFullOutcomeFor(config.prisoner.nomisId);
 
-  expect(
-    FullAssessmentOutcomePage.waitForMainHeadingWithDataId('full-outcome'),
-  ).to.equal('Assessment complete');
+  expect(FullAssessmentOutcomePage.waitForMainHeadingWithDataId('full-outcome')).to.equal(
+    'Assessment complete',
+  );
 
   expect(FullAssessmentOutcomePage.prisonerName).to.equalIgnoreCase(config.prisoner.name);
   expect(FullAssessmentOutcomePage.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);
@@ -55,14 +62,18 @@ const viewFullOutcomeForPrisoner = (config = defaultFullAssessmentConfig) => {
   expect(FullAssessmentOutcomePage.recommendOutcome).to.match(caseInSensitive(config.finalOutcome));
 
   FullAssessmentOutcomePage.clickContinue();
-  expect(DashboardPage.mainHeading).to.contain('All assessments');
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
 
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
 
-  expect(row.getText()).to.equalIgnoreCase(`${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Complete Complete ${config.finalOutcome} View`);
+  browser.waitUntil(
+    () =>
+      row.getText().toLowerCase() ===
+      `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner
+        .dateOfBirth} Complete Complete ${config.finalOutcome} View`.toLowerCase(),
+    5000,
+    'expected text to be different after 5s',
+  );
 };
 
-export {
-  thenTheFullAssessmentIsCompleted,
-  viewFullOutcomeForPrisoner,
-};
+export { thenTheFullAssessmentIsCompleted, viewFullOutcomeForPrisoner };
