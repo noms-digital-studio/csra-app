@@ -1,0 +1,8 @@
+# maxNamedPipeConnectionRetry - number of times IIS will retry to establish a named pipe connection with a
+# node process in order to send a new HTTP request
+
+maxNamedPipeConnectionRetry: 150
+
+# namedPipeConnectionRetryDelay - delay in milliseconds between connection retries
+
+namedPipeConnectionRetryDelay: 300
