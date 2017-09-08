@@ -8,9 +8,13 @@
     "src": "src",
     "server": "sever"
   },
+  "nodemonConfig": {
+    "ignore": [".circleci/*", "migrations/*", "node_modules/*"],
+    "delay": "2500"
+  },
   "scripts": {
     "start": "node ./bin/www",
-    "start:dev": "rimraf public/dist && DEBUG=csra* node ./bin/www | bunyan -j",
+    "start:dev": "rimraf public/dist && DEBUG=csra* nodemon ./bin/www | bunyan -j",
     "lint": "eslint . --cache --max-warnings 0",
     "test": "mocha test/*.spec.js test/**/*.spec.js test/unit/**/*.spec.js test/unit/**/**/*.spec.js test/client/**/*.spec.js test/client/**/**/*.spec.js",
     "verify": "snyk test && yarn lint && yarn test",
@@ -136,6 +140,7 @@
     "mocha": "^3.2.0",
     "mocha-junit-reporter": "^1.13.0",
     "nock": "^9.0.11",
+    "nodemon": "1.12.0",
     "node-sass": "^4.5.3",
     "optimize-css-assets-webpack-plugin": "^1.3.0",
     "postcss": "^5.2.15",
