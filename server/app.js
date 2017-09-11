@@ -8,12 +8,11 @@ const bunyanMiddleware = require('bunyan-middleware');
 
 const { logger } = require('./services/logger');
 const createHealthRoute = require('./routes/health');
-const createAssessmentRoute = require('./routes/assessment');
 const createViperRoute = require('./routes/viper');
 const createPrisonerAssessmentsRoute = require('./routes/assessments');
 const index = require('./routes/index');
 
-module.exports = function createApp(db, appInfo, assessmentService, viperService, prisonerAssessmentsService) {
+module.exports = function createApp({ db, appInfo, viperService, prisonerAssessmentsService }) {
   const app = express();
   const sixtyDaysInSeconds = 5184000;
 
@@ -31,7 +30,6 @@ module.exports = function createApp(db, appInfo, assessmentService, viperService
   app.use(express.static(path.join(__dirname, '..', 'public')));
 
   app.use('/health', createHealthRoute(db, appInfo));
-  app.use('/api/assessment', createAssessmentRoute(assessmentService));
   app.use('/api/viper', createViperRoute(viperService));
   app.use('/api/assessments', createPrisonerAssessmentsRoute(prisonerAssessmentsService));
   app.use('/', index);
