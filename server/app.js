@@ -12,7 +12,7 @@ const createViperRoute = require('./routes/viper');
 const createPrisonerAssessmentsRoute = require('./routes/assessments');
 const index = require('./routes/index');
 
-module.exports = function createApp(db, appInfo, viperService, prisonerAssessmentsService) {
+module.exports = function createApp({ db, appInfo, viperService, prisonerAssessmentsService }) {
   const app = express();
   const sixtyDaysInSeconds = 5184000;
 

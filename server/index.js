@@ -13,6 +13,6 @@ const db = createDB();
 const appInfo = createAppInfoService(buildInfo);
 const viperService = createViperService(db);
 const prisonerAssessmentsService = createPrisonerAssessmentService(db, appInfo);
-const app = createApp(db, appInfo, viperService, prisonerAssessmentsService);
+const app = createApp({ db, appInfo, viperService, prisonerAssessmentsService });
 
 module.exports = app;
