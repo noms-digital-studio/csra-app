@@ -2,7 +2,7 @@ import Future from 'fibers/future';
 
 import db from '../../util/db';
 
-const checkThatTheOutcomeDataWasWrittenToDatabase = ({
+export const checkThatTheOutcomeDataWasWrittenToDatabase = ({
   id,
   outcome,
 }) => db.select()
@@ -17,7 +17,7 @@ const checkThatTheOutcomeDataWasWrittenToDatabase = ({
   return result[0];
 });
 
-const checkThatRiskAssessmentDataWasWrittenToDatabase = ({
+export const checkThatRiskAssessmentDataWasWrittenToDatabase = ({
   id,
   riskAssessment,
 }) => db.select()
@@ -35,7 +35,7 @@ const checkThatRiskAssessmentDataWasWrittenToDatabase = ({
       return result[0];
     });
 
-const checkThatHealthAssessmentDataWasWrittenToDatabase = ({
+export const checkThatHealthAssessmentDataWasWrittenToDatabase = ({
   id,
   healthAssessment,
 }) => db.select()
@@ -50,32 +50,31 @@ const checkThatHealthAssessmentDataWasWrittenToDatabase = ({
       return result[0];
     });
 
-const checkThatPrisonerAssessmentDataWasWrittenToDatabase = ({
+export function checkThatPrisonerAssessmentDataWasWrittenToDatabase({
   id,
   nomisId,
   forename,
   surname,
   dateOfBirth,
-}) => db.select()
-    .table('prisoner_assessments')
-    .where('id', Number(id))
-    .then((result) => {
-      expect(result[0]).to.not.equal(
+}) {
+  return db.select().table('prisoner_assessments').where('id', Number(id)).then((result) => {
+    expect(result[0]).to.not.equal(
         undefined,
         `Did not get a result from database for id: ${id}`,
       );
-      expect(result[0].nomis_id).to.equal(nomisId);
-      expect(result[0].forename).to.equal(forename);
-      expect(result[0].surname).to.equal(surname);
-      expect(result[0].date_of_birth.toString()).to.contain(dateOfBirth);
-      expect(result[0].questions_hash).to.not.equal(undefined, 'expected a questions_hash');
-      expect(result[0].created_at).to.not.equal(undefined, 'expected a created_at');
-      expect(result[0].updated_at).to.not.equal(undefined, 'expected a created_at');
-      expect(result[0].git_version).to.not.equal(undefined, 'expected a git_version');
-      expect(result[0].git_date).to.not.equal(undefined, 'expected a git_date');
+    expect(result[0].nomis_id).to.equalIgnoreCase(nomisId);
+    expect(result[0].forename).to.equal(forename);
+    expect(result[0].surname).to.equal(surname);
+    expect(result[0].date_of_birth.toString()).to.contain(dateOfBirth);
+    expect(result[0].questions_hash).to.not.equal(undefined, 'expected a questions_hash');
+    expect(result[0].created_at).to.not.equal(undefined, 'expected a created_at');
+    expect(result[0].updated_at).to.not.equal(undefined, 'expected a created_at');
+    expect(result[0].git_version).to.not.equal(undefined, 'expected a git_version');
+    expect(result[0].git_date).to.not.equal(undefined, 'expected a git_date');
 
-      return result[0];
-    });
+    return result[0];
+  });
+}
 
 export const checkThatRiskAssessmentDataWasWrittenToDatabaseSync = (args) => {
   const future = Future.fromPromise(checkThatRiskAssessmentDataWasWrittenToDatabase(args));

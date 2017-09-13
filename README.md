@@ -135,28 +135,6 @@ Response:
 }
 ```
 
-### Save Assessment: POST `/api/assessment` DEPRECATED
-
-e.g.
-
-Request:
-```
-curl -X POST http://localhost:5000/api/assessment -H 'Content-Type: application/json'
--d '{"nomisId":"J1234LO","type":"risk","outcome":"single cell","viperScore":0.45,
-"questions":{"Q1":{"question_id":"Q1","question":"Are you part of a gang?","answer":"Yes"}},
-"reasons":[{"question_id":"Q1","reason":"reason one"}]}'
-```
-
-Response:
-```
-{
-  "status":"OK",
-  "data": {
-    "id":48
-    }
-}
-```
-
 ### Save Prisoner Assessment: POST `/api/assessments`
 
 Returns 201 (CREATED) and the id of the prisoner assessment that was created, 400 if the request body is invalid
@@ -209,7 +187,7 @@ e.g.
 Request:
 ```
   curl -X PUT http://localhost:5000/api/assessments/123/risk -H 'Content-Type: application/json'
-  -d '{"viperScore": 0.35, "questions": {"Q1": {"questionId": "Q1", "question": "Example question text?","answer":"Yes"}},
+  -d '{"outcome": "single cell", viperScore": 0.35, "questions": {"Q1": {"questionId": "Q1", "question": "Example question text?","answer":"Yes"}},
   "reasons":[{"questionId":"Q1", "reason": "Example reason text"}]}'
 ```
 
@@ -255,7 +233,7 @@ e.g.
 Request:
 ```
   curl -X PUT http://localhost:5000/api/assessments/123/health -H 'Content-Type: application/json'
-  -d '{"questions": {"Q1": {"questionId": "Q1", "question": "Example question text?","answer":"Yes"}},
+  -d '{"outcome": "single cell", viperScore": 0.35, "questions": {"Q1": {"questionId": "Q1", "question": "Example question text?","answer":"Yes"}},
   "reasons":[{"questionId":"Q1", "reason": "Example reason text"}]}'
 ```
 
