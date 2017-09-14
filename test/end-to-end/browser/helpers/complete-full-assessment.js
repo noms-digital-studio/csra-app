@@ -30,7 +30,7 @@ function thenTheFullAssessmentIsCompleted(config = defaultFullAssessmentConfig) 
 
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
 
-  if (config.prodSmokeTest) {
+  if (config.smokeTest) {
     browser.url('/dashboard?displayTestAssessments=true');
   }
 
@@ -52,7 +52,7 @@ function thenTheFullAssessmentIsCompleted(config = defaultFullAssessmentConfig) 
     'expected text to be different after 5s',
   );
 
-  if (!config.prodSmokeTest) {
+  if (!config.smokeTest) {
     checkThatTheOutcomeDataWasWrittenToDatabaseSync({
       id: assessmentId,
       outcome: config.finalOutcome,
@@ -61,7 +61,7 @@ function thenTheFullAssessmentIsCompleted(config = defaultFullAssessmentConfig) 
 }
 
 const viewFullOutcomeForPrisoner = (config = defaultFullAssessmentConfig) => {
-  if (config.prodSmokeTest) {
+  if (config.smokeTest) {
     browser.url('/dashboard?displayTestAssessments=true');
   }
 
@@ -81,7 +81,7 @@ const viewFullOutcomeForPrisoner = (config = defaultFullAssessmentConfig) => {
 
   FullAssessmentOutcomePage.clickContinue();
 
-  if (config.prodSmokeTest) {
+  if (config.smokeTest) {
     browser.url('/dashboard?displayTestAssessments=true');
   }
 

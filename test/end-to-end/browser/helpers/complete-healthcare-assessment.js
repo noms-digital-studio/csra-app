@@ -32,7 +32,7 @@ const selectYesNoAnswer = (answer) => {
 const caseInSensitive = text => new RegExp(text, 'i');
 
 const whenAPrisonersHealthcareResultsAreEntered = (config = defaultAssessmentConfig) => {
-  if (config.prodSmokeTest) {
+  if (config.smokeTest) {
     browser.url('/dashboard?displayTestAssessments=true');
   }
 

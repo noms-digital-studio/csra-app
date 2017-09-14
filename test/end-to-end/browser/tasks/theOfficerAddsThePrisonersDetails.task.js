@@ -4,7 +4,7 @@ import DashboardPage from '../pages/Dashboard.page';
 import { checkThatPrisonerAssessmentDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
 
 const defaultConfig = {
-  prodSmokeTest: false,
+  smokeTest: false,
   prisoner: {
     forename: 'John',
     surname: 'Lowe',
@@ -41,7 +41,7 @@ function whenTheOfficerAddsThePrisonersDetails(config = defaultConfig) {
   PrisonerAddedPage.clickContinue();
   DashboardPage.waitForMainHeadingWithDataId('dashboard');
 
-  if (!config.prodSmokeTest) {
+  if (!config.smokeTest) {
     const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
     const assessmentId = row.getAttribute('data-assessment-id');
     checkThatPrisonerAssessmentDataWasWrittenToDatabaseSync({

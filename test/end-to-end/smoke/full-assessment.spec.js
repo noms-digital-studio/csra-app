@@ -43,7 +43,7 @@ const prisonerShort = {
 };
 
 const assessmentConfig = {
-  prodSmokeTest: true,
+  smokeTest: true,
   prisoner: prisonerShort,
   viperScore: null,
   initialRecommendation: 'No predictor data available',
@@ -62,7 +62,7 @@ const assessmentConfig = {
 };
 
 const healthcareAssessmentConfig = {
-  prodSmokeTest: true,
+  smokeTest: true,
   prisoner: prisonerShort,
   answers: {
     singleCellRecommendation: 'yes',
@@ -72,7 +72,7 @@ const healthcareAssessmentConfig = {
 };
 
 const fullAssessmentCompleteConfig = {
-  prodSmokeTest: true,
+  smokeTest: true,
   prisoner: prisonerShort,
   finalOutcome: 'single cell',
 };
@@ -82,8 +82,8 @@ const selector = `[data-element-id="profile-row-${uniqueTestNomisId}"]`;
 describe('Smoke test for prod', () => {
   // eslint-disable-next-line
   before(function () {
-    givenThatTheOfficerIsSignedIn({ prodSmokeTest: true });
-    whenTheOfficerAddsThePrisonersDetails({ prisoner, prodSmokeTest: true });
+    givenThatTheOfficerIsSignedIn({ smokeTest: true });
+    whenTheOfficerAddsThePrisonersDetails({ prisoner, smokeTest: true });
   });
 
   context('when the `displayTestAssessments` queryString is absent', () => {

@@ -38,7 +38,7 @@ const selectYesNoAnswer = (answer) => {
 const caseInSensitive = text => new RegExp(text, 'i');
 
 export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
-  if (config.prodSmokeTest) {
+  if (config.smokeTest) {
     browser.url('/dashboard?displayTestAssessments=true');
   }
 
@@ -123,7 +123,7 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
 };
 
 export const fullAssessmentRecommendation = (config) => {
-  if (config.prodSmokeTest) {
+  if (config.smokeTest) {
     browser.url('/dashboard?displayTestAssessments=true');
   }
 
@@ -139,7 +139,7 @@ export const fullAssessmentRecommendation = (config) => {
 };
 
 export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) => {
-  if (config.prodSmokeTest) {
+  if (config.smokeTest) {
     browser.url('/dashboard?displayTestAssessments=true');
   }
 
@@ -161,7 +161,7 @@ export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) =
   );
 
 
-  if (!config.prodSmokeTest) {
+  if (!config.smokeTest) {
     checkThatRiskAssessmentDataWasWrittenToDatabaseSync({
       id: assessmentId,
       riskAssessment: {

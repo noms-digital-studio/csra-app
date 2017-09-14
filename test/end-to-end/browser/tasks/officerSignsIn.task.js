@@ -3,8 +3,8 @@ import BeforeYouStartPage from '../pages/BeforeYouStart.page';
 import DashboardPage from '../pages/Dashboard.page';
 import { clearPrisonerAssessmentsSync } from '../../utils/dbClear';
 
-function givenThatTheOfficerIsSignedIn({ prodSmokeTest } = {}) {
-  if (!prodSmokeTest) {
+function givenThatTheOfficerIsSignedIn({ smokeTest } = {}) {
+  if (!smokeTest) {
     clearPrisonerAssessmentsSync();
   }
 
@@ -15,7 +15,7 @@ function givenThatTheOfficerIsSignedIn({ prodSmokeTest } = {}) {
   expect(BeforeYouStartPage.mainHeading).to.equal('Cell sharing risk assessment');
   BeforeYouStartPage.clickContinue();
 
-  if (!prodSmokeTest) {
+  if (!smokeTest) {
     expect(DashboardPage.mainHeading).to.equal('There is no one to assess.');
   }
 }
