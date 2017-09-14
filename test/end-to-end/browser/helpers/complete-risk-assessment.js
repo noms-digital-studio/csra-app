@@ -1,3 +1,4 @@
+import { ELEMENT_SEARCH_TIMEOUT } from '../../constants';
 import DashboardPage from '../pages/Dashboard.page';
 import RiskAssessmentPrisonerProfilePage from '../pages/risk-assessment/RiskAssessmentPrisonerProfile.page';
 import RiskAssessmentExplanationPage from '../pages/risk-assessment/RiskAssessmentExplanation.page';
@@ -128,13 +129,13 @@ export const fullAssessmentRecommendation = (config) => {
 
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
 
-  browser.waitForVisible(`tr[data-element-id="profile-row-${config.prisoner.nomisId}"]`, 5000);
+  browser.waitForVisible(`tr[data-element-id="profile-row-${config.prisoner.nomisId}"]`, ELEMENT_SEARCH_TIMEOUT);
 
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
 
   browser.waitUntil(() => (
     row.getText().toLowerCase() === (`${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Complete Start ${config.finalRecommendation}`).toLowerCase()
-  ), 5000, 'expected text to be different after 5s');
+  ), ELEMENT_SEARCH_TIMEOUT, 'expected text to be different after 5s');
 };
 
 export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) => {
@@ -144,7 +145,7 @@ export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) =
 
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
 
-  browser.waitForVisible(`tr[data-element-id="profile-row-${config.prisoner.nomisId}"]`, 5000);
+  browser.waitForVisible(`tr[data-element-id="profile-row-${config.prisoner.nomisId}"]`, ELEMENT_SEARCH_TIMEOUT);
 
   const row = browser.element('tbody tr');
   const assessmentId = row.getAttribute('data-assessment-id');
@@ -152,7 +153,7 @@ export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) =
 
   browser.waitUntil(() => (
     row.getText().toLowerCase() === (`${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Complete Start`).toLowerCase()
-  ), 5000, 'expected text to be different after 5s');
+  ), ELEMENT_SEARCH_TIMEOUT, 'expected text to be different after 5s');
 
   expect(assessmentId).to.not.equal(
     undefined,

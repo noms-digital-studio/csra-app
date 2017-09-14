@@ -1,6 +1,9 @@
 import uuid from 'uuid/v4';
 import randomName from 'random-name';
 import toUpper from 'ramda/src/toUpper';
+
+import { ELEMENT_SEARCH_TIMEOUT } from '../constants';
+
 import givenThatTheOfficerIsSignedIn from '../browser/tasks/officerSignsIn.task';
 import whenTheOfficerAddsThePrisonersDetails from '../browser/tasks/theOfficerAddsThePrisonersDetails.task';
 import {
@@ -87,7 +90,7 @@ describe('Smoke test for prod', () => {
     it('does not display the test user', () => {
       browser.url('/dashboard');
 
-      expect(() => browser.waitForVisible(selector, 5000)).to.throw();
+      expect(() => browser.waitForVisible(selector, ELEMENT_SEARCH_TIMEOUT)).to.throw();
     });
   });
 
@@ -95,7 +98,7 @@ describe('Smoke test for prod', () => {
   context('when the `displayTestAssessments` queryString is present', () => {
     it('displays the test user', () => {
       browser.url('/dashboard?displayTestAssessments=true');
-      browser.waitForVisible(selector, 5000);
+      browser.waitForVisible(selector, ELEMENT_SEARCH_TIMEOUT);
       expect(browser.isVisible(selector)).to.equal(true);
     });
 
