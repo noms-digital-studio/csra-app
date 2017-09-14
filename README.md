@@ -55,6 +55,12 @@ yarn test:e2e
 yarn test:rest
 ```
 
+#### Run Smoke tests
+The smoke test do not interact with the database like the e2e test do. Instead it creates a test user which is hidden from the dashboard and can only be seen on the dashboard with the query string `?displayTestAssessments=true`
+```
+yarn test:rest
+```
+
 ### Lint
 Runs the lint using [eslint-config-airbnb](https://www.npmjs.com/package/eslint-config-airbnb)
 ```

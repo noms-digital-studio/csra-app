@@ -1,3 +1,4 @@
+import { ELEMENT_SEARCH_TIMEOUT } from '../../constants';
 import HealthcareOutcomePage from '../pages/healthcare/HealthcareOutcome.page';
 import HealthcareCommentsPage from '../pages/healthcare/HealthcareComments.page';
 import HealthcareConsentPage from '../pages/healthcare/HealthcareConsent.page';
@@ -31,6 +32,12 @@ const selectYesNoAnswer = (answer) => {
 const caseInSensitive = text => new RegExp(text, 'i');
 
 const whenAPrisonersHealthcareResultsAreEntered = (config = defaultAssessmentConfig) => {
+  if (config.smokeTest) {
+    browser.url('/dashboard?displayTestAssessments=true');
+  }
+
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
+
   DashboardPage.startHealthcareAssessmentFor(config.prisoner.nomisId);
 
   expect(HealthcareOutcomePage.waitForMainHeadingWithDataId('outcome')).to.contain(
@@ -88,7 +95,7 @@ const thenTheHealthcareAssessmentIsComplete = (config = defaultAssessmentConfig)
 
   browser.waitUntil(() => (
     row.getText().toLowerCase() === (`${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Start Complete`).toLowerCase()
-  ), 5000, 'expected text to be different after 5s');
+  ), ELEMENT_SEARCH_TIMEOUT, 'expected text to be different after 5s');
 
   const assessmentId = row.getAttribute('data-assessment-id');
 

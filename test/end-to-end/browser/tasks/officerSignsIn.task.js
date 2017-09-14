@@ -3,8 +3,10 @@ import BeforeYouStartPage from '../pages/BeforeYouStart.page';
 import DashboardPage from '../pages/Dashboard.page';
 import { clearPrisonerAssessmentsSync } from '../../utils/dbClear';
 
-function givenThatTheOfficerIsSignedIn() {
-  clearPrisonerAssessmentsSync();
+function givenThatTheOfficerIsSignedIn({ smokeTest } = {}) {
+  if (!smokeTest) {
+    clearPrisonerAssessmentsSync();
+  }
 
   expect(LoginPage.mainHeading).to.equal('Your full name');
   LoginPage.enterUsername('officer1');
@@ -12,7 +14,10 @@ function givenThatTheOfficerIsSignedIn() {
   expect(BeforeYouStartPage.headerUsername).to.equal('officer1');
   expect(BeforeYouStartPage.mainHeading).to.equal('Cell sharing risk assessment');
   BeforeYouStartPage.clickContinue();
-  expect(DashboardPage.mainHeading).to.equal('There is no one to assess.');
+
+  if (!smokeTest) {
+    expect(DashboardPage.mainHeading).to.equal('There is no one to assess.');
+  }
 }
 
 export default givenThatTheOfficerIsSignedIn;

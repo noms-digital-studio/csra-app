@@ -1,3 +1,4 @@
+import { ELEMENT_SEARCH_TIMEOUT } from '../../constants';
 import DashboardPage from '../pages/Dashboard.page';
 import HealthcareSummary from '../pages/healthcare/HealthcareSummary.page';
 import FullAssessmentOutcomePage from '../pages/FullAssessmentOutcome.page';
@@ -29,7 +30,16 @@ function thenTheFullAssessmentIsCompleted(config = defaultFullAssessmentConfig) 
 
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
 
-  browser.waitForVisible(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`, 5000);
+  if (config.smokeTest) {
+    browser.url('/dashboard?displayTestAssessments=true');
+  }
+
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
+
+  browser.waitForVisible(
+    `[data-element-id="profile-row-${config.prisoner.nomisId}"]`,
+    ELEMENT_SEARCH_TIMEOUT,
+  );
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
   const assessmentId = row.getAttribute('data-assessment-id');
 
@@ -38,17 +48,25 @@ function thenTheFullAssessmentIsCompleted(config = defaultFullAssessmentConfig) 
       row.getText().toLowerCase() ===
       `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner
         .dateOfBirth} Complete Complete ${config.finalOutcome} View`.toLowerCase(),
-    5000,
+    ELEMENT_SEARCH_TIMEOUT,
     'expected text to be different after 5s',
   );
 
-  checkThatTheOutcomeDataWasWrittenToDatabaseSync({
-    id: assessmentId,
-    outcome: config.finalOutcome,
-  });
+  if (!config.smokeTest) {
+    checkThatTheOutcomeDataWasWrittenToDatabaseSync({
+      id: assessmentId,
+      outcome: config.finalOutcome,
+    });
+  }
 }
 
 const viewFullOutcomeForPrisoner = (config = defaultFullAssessmentConfig) => {
+  if (config.smokeTest) {
+    browser.url('/dashboard?displayTestAssessments=true');
+  }
+
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
+
   DashboardPage.viewFullOutcomeFor(config.prisoner.nomisId);
 
   expect(FullAssessmentOutcomePage.waitForMainHeadingWithDataId('full-outcome')).to.equal(
@@ -62,6 +80,11 @@ const viewFullOutcomeForPrisoner = (config = defaultFullAssessmentConfig) => {
   expect(FullAssessmentOutcomePage.recommendOutcome).to.match(caseInSensitive(config.finalOutcome));
 
   FullAssessmentOutcomePage.clickContinue();
+
+  if (config.smokeTest) {
+    browser.url('/dashboard?displayTestAssessments=true');
+  }
+
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
 
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
@@ -71,7 +94,7 @@ const viewFullOutcomeForPrisoner = (config = defaultFullAssessmentConfig) => {
       row.getText().toLowerCase() ===
       `${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner
         .dateOfBirth} Complete Complete ${config.finalOutcome} View`.toLowerCase(),
-    5000,
+    ELEMENT_SEARCH_TIMEOUT,
     'expected text to be different after 5s',
   );
 };
