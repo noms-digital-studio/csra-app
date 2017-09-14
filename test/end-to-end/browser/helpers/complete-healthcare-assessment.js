@@ -31,6 +31,12 @@ const selectYesNoAnswer = (answer) => {
 const caseInSensitive = text => new RegExp(text, 'i');
 
 const whenAPrisonersHealthcareResultsAreEntered = (config = defaultAssessmentConfig) => {
+  if (config.prodSmokeTest) {
+    browser.url('/dashboard?displayTestAssessments=true');
+  }
+
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
+
   DashboardPage.startHealthcareAssessmentFor(config.prisoner.nomisId);
 
   expect(HealthcareOutcomePage.waitForMainHeadingWithDataId('outcome')).to.contain(

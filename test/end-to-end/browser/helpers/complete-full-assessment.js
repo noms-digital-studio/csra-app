@@ -29,6 +29,13 @@ function thenTheFullAssessmentIsCompleted(config = defaultFullAssessmentConfig) 
 
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
 
+  if (config.prodSmokeTest) {
+    browser.url('/dashboard?displayTestAssessments=true');
+  }
+
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
+
+
   browser.waitForVisible(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`, 5000);
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
   const assessmentId = row.getAttribute('data-assessment-id');
@@ -42,13 +49,21 @@ function thenTheFullAssessmentIsCompleted(config = defaultFullAssessmentConfig) 
     'expected text to be different after 5s',
   );
 
-  checkThatTheOutcomeDataWasWrittenToDatabaseSync({
-    id: assessmentId,
-    outcome: config.finalOutcome,
-  });
+  if (!config.prodSmokeTest) {
+    checkThatTheOutcomeDataWasWrittenToDatabaseSync({
+      id: assessmentId,
+      outcome: config.finalOutcome,
+    });
+  }
 }
 
 const viewFullOutcomeForPrisoner = (config = defaultFullAssessmentConfig) => {
+  if (config.prodSmokeTest) {
+    browser.url('/dashboard?displayTestAssessments=true');
+  }
+
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
+
   DashboardPage.viewFullOutcomeFor(config.prisoner.nomisId);
 
   expect(FullAssessmentOutcomePage.waitForMainHeadingWithDataId('full-outcome')).to.equal(
@@ -62,6 +77,11 @@ const viewFullOutcomeForPrisoner = (config = defaultFullAssessmentConfig) => {
   expect(FullAssessmentOutcomePage.recommendOutcome).to.match(caseInSensitive(config.finalOutcome));
 
   FullAssessmentOutcomePage.clickContinue();
+
+  if (config.prodSmokeTest) {
+    browser.url('/dashboard?displayTestAssessments=true');
+  }
+
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
 
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);

@@ -17,7 +17,7 @@ const prisonerConfig = {
     },
     nomisId: 'J0000BL',
     dateOfBirth: '1 October 1970',
-    dataBaseDoB: 'Oct 01 1970',
+    databaseDoB: 'Oct 01 1970',
   },
 };
 

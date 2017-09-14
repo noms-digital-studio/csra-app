@@ -122,7 +122,7 @@ class Dashboard extends Component {
               <h1 className="heading-large">
                 <span>There is no one to assess.</span>
               </h1>
-              <Link to={routes.ADD_OFFENDER} className="button" data-element-id="continue-button">
+              <Link to={routes.ADD_OFFENDER} className="button" data-element-id="add-assessment">
                 Add someone to assess
               </Link>
             </div>
@@ -134,7 +134,7 @@ class Dashboard extends Component {
                     <Link
                       to={routes.ADD_OFFENDER}
                       className="button"
-                      data-element-id="continue-button"
+                      data-element-id="add-assessment"
                     >
                       Add someone to assess
                     </Link>

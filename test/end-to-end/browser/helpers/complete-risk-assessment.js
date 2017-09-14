@@ -37,6 +37,12 @@ const selectYesNoAnswer = (answer) => {
 const caseInSensitive = text => new RegExp(text, 'i');
 
 export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
+  if (config.prodSmokeTest) {
+    browser.url('/dashboard?displayTestAssessments=true');
+  }
+
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
+
   DashboardPage.startRiskAssessmentFor(config.prisoner.nomisId);
 
   expect(
@@ -91,6 +97,13 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
   expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('risk-summary')).to.equal(
     'Risk assessment summary',
   );
+
+  if (config.reasons) {
+    config.reasons.forEach((reasonObj) => {
+      expect(RiskAssessmentSummaryPage.reasons).to.match(caseInSensitive(reasonObj.reason));
+    });
+  }
+
   expect(RiskAssessmentSummaryPage.prisonerName).to.equalIgnoreCase(config.prisoner.name);
   expect(RiskAssessmentSummaryPage.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);
   expect(RiskAssessmentSummaryPage.prisonerNomisId).to.equalIgnoreCase(config.prisoner.nomisId);
@@ -109,9 +122,13 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
 };
 
 export const fullAssessmentRecommendation = (config) => {
+  if (config.prodSmokeTest) {
+    browser.url('/dashboard?displayTestAssessments=true');
+  }
+
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
 
-  browser.waitForVisible(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`, 5000);
+  browser.waitForVisible(`tr[data-element-id="profile-row-${config.prisoner.nomisId}"]`, 5000);
 
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
 
@@ -121,9 +138,13 @@ export const fullAssessmentRecommendation = (config) => {
 };
 
 export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) => {
-  DashboardPage.waitForMainHeadingWithDataId('dashboard');
+  if (config.prodSmokeTest) {
+    browser.url('/dashboard?displayTestAssessments=true');
+  }
 
-  browser.waitForVisible(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`, 5000);
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
+
+  browser.waitForVisible(`tr[data-element-id="profile-row-${config.prisoner.nomisId}"]`, 5000);
 
   const row = browser.element('tbody tr');
   const assessmentId = row.getAttribute('data-assessment-id');
@@ -138,60 +159,63 @@ export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) =
     'expected to find data-risk-assessment-id on the page',
   );
 
-  checkThatRiskAssessmentDataWasWrittenToDatabaseSync({
-    id: assessmentId,
-    riskAssessment: {
-      outcome: config.finalRecommendation,
-      viperScore: config.viperScore,
-      questions: {
-        introduction: {
-          questionId: 'introduction',
-          question: 'Making this process fair and open',
-          answer: 'accepted',
+
+  if (!config.prodSmokeTest) {
+    checkThatRiskAssessmentDataWasWrittenToDatabaseSync({
+      id: assessmentId,
+      riskAssessment: {
+        outcome: config.finalRecommendation,
+        viperScore: config.viperScore,
+        questions: {
+          introduction: {
+            questionId: 'introduction',
+            question: 'Making this process fair and open',
+            answer: 'accepted',
+          },
+          'risk-of-violence': {
+            questionId: 'risk-of-violence',
+            question: 'Viper result',
+            answer: '',
+          },
+          'how-do-you-feel': {
+            questionId: 'how-do-you-feel',
+            question: 'How do you think they feel about sharing a cell at this moment?',
+            answer: 'foo comment',
+          },
+          'harm-cell-mate': {
+            questionId: 'harm-cell-mate',
+            question: 'Is there any genuine indication they might seriously hurt a cellmate?',
+            answer: config.answers.harmCellMate,
+          },
+          vulnerability: {
+            questionId: 'vulnerability',
+            question:
+              "Do you think they're likely to lash out because they're scared or feeling vulnerable?",
+            answer: config.answers.vulnerability,
+          },
+          'gang-affiliation': {
+            questionId: 'gang-affiliation',
+            question: 'Are they in a gang?',
+            answer: config.answers.gangAffiliation,
+          },
+          'drug-misuse': {
+            questionId: 'drug-misuse',
+            question: 'Have they taken illicit drugs in the last month?',
+            answer: config.answers.drugMisuse,
+          },
+          prejudice: {
+            questionId: 'prejudice',
+            question: 'Do they have any hostile views or prejudices?',
+            answer: config.answers.prejudice,
+          },
+          'officers-assessment': {
+            questionId: 'officers-assessment',
+            question: 'Are there any other reasons why you would recommend they have a single cell?',
+            answer: config.answers.officersAssessment,
+          },
         },
-        'risk-of-violence': {
-          questionId: 'risk-of-violence',
-          question: 'Viper result',
-          answer: '',
-        },
-        'how-do-you-feel': {
-          questionId: 'how-do-you-feel',
-          question: 'How do you think they feel about sharing a cell at this moment?',
-          answer: 'foo comment',
-        },
-        'harm-cell-mate': {
-          questionId: 'harm-cell-mate',
-          question: 'Is there any genuine indication they might seriously hurt a cellmate?',
-          answer: config.answers.harmCellMate,
-        },
-        vulnerability: {
-          questionId: 'vulnerability',
-          question:
-            "Do you think they're likely to lash out because they're scared or feeling vulnerable?",
-          answer: config.answers.vulnerability,
-        },
-        'gang-affiliation': {
-          questionId: 'gang-affiliation',
-          question: 'Are they in a gang?',
-          answer: config.answers.gangAffiliation,
-        },
-        'drug-misuse': {
-          questionId: 'drug-misuse',
-          question: 'Have they taken illicit drugs in the last month?',
-          answer: config.answers.drugMisuse,
-        },
-        prejudice: {
-          questionId: 'prejudice',
-          question: 'Do they have any hostile views or prejudices?',
-          answer: config.answers.prejudice,
-        },
-        'officers-assessment': {
-          questionId: 'officers-assessment',
-          question: 'Are there any other reasons why you would recommend they have a single cell?',
-          answer: config.answers.officersAssessment,
-        },
+        reasons: config.reasons || [],
       },
-      reasons: config.reasons || [],
-    },
-  });
+    });
+  }
 };

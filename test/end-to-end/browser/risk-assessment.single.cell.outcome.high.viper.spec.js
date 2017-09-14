@@ -46,7 +46,7 @@ describe('Risk assessment for a prisoner with a high VIPER score', () => {
         },
         nomisId: 'I9876RA',
         dateOfBirth: '23 March 1988',
-        dataBaseDoB: 'Mar 23 1988',
+        databaseDoB: 'Mar 23 1988',
       },
     });
     whenAViolentPrisonerIsAssessed(assessmentConfig);

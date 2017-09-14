@@ -38,7 +38,7 @@ describe('Risk assessment for a prisoner with no VIPER score (shared cell outcom
         },
         nomisId: 'J6285NE',
         dateOfBirth: '3 December 1958',
-        dataBaseDoB: 'Dec 03 1958',
+        databaseDoB: 'Dec 03 1958',
       },
     });
     whenAPrisonerWithNoViperIsAssessed(assessmentConfig);

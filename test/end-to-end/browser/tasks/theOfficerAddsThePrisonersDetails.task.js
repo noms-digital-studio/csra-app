@@ -4,6 +4,7 @@ import DashboardPage from '../pages/Dashboard.page';
 import { checkThatPrisonerAssessmentDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
 
 const defaultConfig = {
+  prodSmokeTest: false,
   prisoner: {
     forename: 'John',
     surname: 'Lowe',
@@ -14,7 +15,7 @@ const defaultConfig = {
     },
     nomisId: 'J1234LO',
     dateOfBirth: '1 October 1970',
-    dataBaseDoB: 'Oct 01 1970',
+    databaseDoB: 'Oct 01 1970',
   },
 };
 
@@ -40,15 +41,17 @@ function whenTheOfficerAddsThePrisonersDetails(config = defaultConfig) {
   PrisonerAddedPage.clickContinue();
   DashboardPage.waitForMainHeadingWithDataId('dashboard');
 
-  const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
-  const assessmentId = row.getAttribute('data-assessment-id');
-  checkThatPrisonerAssessmentDataWasWrittenToDatabaseSync({
-    id: assessmentId,
-    nomisId: config.prisoner.nomisId,
-    forename: config.prisoner.forename,
-    surname: config.prisoner.surname,
-    dateOfBirth: config.prisoner.dataBaseDoB,
-  });
+  if (!config.prodSmokeTest) {
+    const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
+    const assessmentId = row.getAttribute('data-assessment-id');
+    checkThatPrisonerAssessmentDataWasWrittenToDatabaseSync({
+      id: assessmentId,
+      nomisId: config.prisoner.nomisId,
+      forename: config.prisoner.forename,
+      surname: config.prisoner.surname,
+      dateOfBirth: config.prisoner.databaseDoB,
+    });
+  }
 }
 
 export default whenTheOfficerAddsThePrisonersDetails;
