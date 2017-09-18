@@ -34,12 +34,11 @@ function thenTheFullAssessmentIsCompleted(config = defaultFullAssessmentConfig) 
     browser.url('/dashboard?displayTestAssessments=true');
   }
 
-  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
-
   browser.waitForVisible(
     `[data-element-id="profile-row-${config.prisoner.nomisId}"]`,
     ELEMENT_SEARCH_TIMEOUT,
   );
+
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
   const assessmentId = row.getAttribute('data-assessment-id');
 
@@ -61,10 +60,6 @@ function thenTheFullAssessmentIsCompleted(config = defaultFullAssessmentConfig) 
 }
 
 const viewFullOutcomeForPrisoner = (config = defaultFullAssessmentConfig) => {
-  if (config.smokeTest) {
-    browser.url('/dashboard?displayTestAssessments=true');
-  }
-
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
 
   DashboardPage.viewFullOutcomeFor(config.prisoner.nomisId);
@@ -80,6 +75,8 @@ const viewFullOutcomeForPrisoner = (config = defaultFullAssessmentConfig) => {
   expect(FullAssessmentOutcomePage.recommendOutcome).to.match(caseInSensitive(config.finalOutcome));
 
   FullAssessmentOutcomePage.clickContinue();
+
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
 
   if (config.smokeTest) {
     browser.url('/dashboard?displayTestAssessments=true');

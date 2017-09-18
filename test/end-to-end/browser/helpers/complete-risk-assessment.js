@@ -120,6 +120,7 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
   );
 
   RiskAssessmentSummaryPage.clickContinue();
+  RiskAssessmentSummaryPage.clickContinue();
 };
 
 export const fullAssessmentRecommendation = (config) => {
@@ -139,17 +140,16 @@ export const fullAssessmentRecommendation = (config) => {
 };
 
 export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) => {
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
+
   if (config.smokeTest) {
     browser.url('/dashboard?displayTestAssessments=true');
   }
-
-  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
 
   browser.waitForVisible(`tr[data-element-id="profile-row-${config.prisoner.nomisId}"]`, ELEMENT_SEARCH_TIMEOUT);
 
   const row = browser.element('tbody tr');
   const assessmentId = row.getAttribute('data-assessment-id');
-
 
   browser.waitUntil(() => (
     row.getText().toLowerCase() === (`${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Complete Start`).toLowerCase()
