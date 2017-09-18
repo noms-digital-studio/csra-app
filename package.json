@@ -12,7 +12,8 @@
     "ignore": [
       ".circleci/*",
       "migrations/*",
-      "node_modules/*"
+      "node_modules/*",
+      "test/*"
     ],
     "delay": "2500"
   },
