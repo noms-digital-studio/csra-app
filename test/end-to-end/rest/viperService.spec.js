@@ -24,7 +24,6 @@ function primeMock(mapping) {
 
 function generateNomisId() {
   const nomisId = uuid().substring(0, 8);
-  console.log('Generated NomisId for test: ', nomisId);
   return nomisId;
 }
 

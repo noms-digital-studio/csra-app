@@ -6,7 +6,7 @@ import HealthcareNursePage from '../pages/healthcare/HealthcareNurse.page';
 import DashboardPage from '../pages/Dashboard.page';
 import HealthcareSummary from '../pages/healthcare/HealthcareSummary.page';
 
-import { checkThatHealthAssessmentDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
+import { checkThatHealthAssessmentDataWasWrittenToDatabase } from '../../utils/dbAssertions';
 
 const defaultAssessmentConfig = {
   prisoner: {
@@ -99,7 +99,7 @@ const thenTheHealthcareAssessmentIsComplete = (config = defaultAssessmentConfig)
 
   const assessmentId = row.getAttribute('data-assessment-id');
 
-  checkThatHealthAssessmentDataWasWrittenToDatabaseSync({
+  checkThatHealthAssessmentDataWasWrittenToDatabase({
     id: assessmentId,
     healthAssessment: {
       viperScore: null,
