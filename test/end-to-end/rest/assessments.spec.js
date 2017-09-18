@@ -16,7 +16,8 @@ function generateNomisId() {
   return nomisId.toUpperCase();
 }
 
-function primeDatabase(nomisId, riskAssessment, healthAssessment, outcome) {
+function primeDatabase({ nomisId, riskAssessment = null,
+  healthAssessment = null, outcome = null }) {
   return db
   .insert({
     nomis_id: nomisId,
@@ -34,6 +35,7 @@ function primeDatabase(nomisId, riskAssessment, healthAssessment, outcome) {
   .returning('id')
   .then(result => ({ id: result[0] }));
 }
+
 describe('/api/assessments/', () => {
   const nomisId = generateNomisId();
 
@@ -60,7 +62,7 @@ describe('/api/assessments/', () => {
   });
 
   it('retrieves the prisoner assessments list', async function test() {
-    await primeDatabase(nomisId, null, null);
+    await primeDatabase({ nomisId });
 
     const result = await request(baseUrl).get('/api/assessments/').expect(200);
 
@@ -74,7 +76,7 @@ describe('/api/assessments/', () => {
   });
 
   it('saves the risk assessment', async function test() {
-    const result = await primeDatabase(nomisId, null, null);
+    const result = await primeDatabase({ nomisId });
     const id = result.id;
 
     await request(baseUrl).put(`/api/assessments/${id}/risk`).send(
@@ -97,7 +99,8 @@ describe('/api/assessments/', () => {
   });
 
   it('retrieves a risk assessment', async function test() {
-    const dbResult = await primeDatabase(nomisId, JSON.stringify({ outcome: 'single cell', viperScore: 0.35, questions: { Q1: { questionId: 'Q1', question: 'Example question text?', answer: 'Yes' } }, reasons: [{ questionId: 'Q1', reason: 'Example reason text' }] }), null);
+    const dbResult = await primeDatabase({ nomisId,
+      riskAssessment: JSON.stringify({ outcome: 'single cell', viperScore: 0.35, questions: { Q1: { questionId: 'Q1', question: 'Example question text?', answer: 'Yes' } }, reasons: [{ questionId: 'Q1', reason: 'Example reason text' }] }) });
     const id = dbResult.id;
 
     const result = await request(baseUrl).get(`/api/assessments/${id}/risk`).expect(200);
@@ -106,7 +109,7 @@ describe('/api/assessments/', () => {
   });
 
   it('saves the health assessment', async function test() {
-    const result = await primeDatabase(nomisId, null, null);
+    const result = await primeDatabase({ nomisId });
     const id = result.id;
 
     await request(baseUrl).put(`/api/assessments/${id}/health`).send(
@@ -127,7 +130,8 @@ describe('/api/assessments/', () => {
   });
 
   it('retrieves a health assessment', async function test() {
-    const dbResult = await primeDatabase(nomisId, null, JSON.stringify({ outcome: 'single cell', viperScore: 0.35, questions: { Q1: { questionId: 'Q1', question: 'Example question text?', answer: 'Yes' } }, reasons: [{ questionId: 'Q1', reason: 'Example reason text' }] }));
+    const dbResult = await primeDatabase({ nomisId,
+      healthAssessment: JSON.stringify({ outcome: 'single cell', viperScore: 0.35, questions: { Q1: { questionId: 'Q1', question: 'Example question text?', answer: 'Yes' } }, reasons: [{ questionId: 'Q1', reason: 'Example reason text' }] }) });
     const id = dbResult.id;
 
     const result = await request(baseUrl).get(`/api/assessments/${id}/health`).expect(200);
@@ -136,7 +140,7 @@ describe('/api/assessments/', () => {
   });
 
   it('saves the outcome', async function test() {
-    const result = await primeDatabase(nomisId, null, null);
+    const result = await primeDatabase({ nomisId });
     const id = result.id;
 
     await request(baseUrl).put(`/api/assessments/${id}/outcome`).send({ outcome: 'single cell' }).expect(200);
@@ -145,7 +149,7 @@ describe('/api/assessments/', () => {
   });
 
   it('retrieves a health assessment', async function test() {
-    const dbResult = await primeDatabase(nomisId, null, null, 'shared cell');
+    const dbResult = await primeDatabase({ nomisId, outcome: 'shared cell' });
     const id = dbResult.id;
 
     const result = await request(baseUrl).get(`/api/assessments/${id}`).expect(200);
