@@ -66,13 +66,14 @@ describe('/api/assessments/', () => {
 
     const result = await request(baseUrl).get('/api/assessments/').expect(200);
 
-    expect(result.body[0].nomisId).to.equal(nomisId);
-    expect(result.body[0].forename).to.equal('assessmentService');
-    expect(result.body[0].surname).to.equal('test');
-    expect(result.body[0].riskAssessmentCompleted).to.equal(false);
-    expect(result.body[0].healthAssessmentCompleted).to.equal(false);
-    expect(result.body[0].outcome).to.equal(null);
-    expect(result.body[0]).to.have.property('dateOfBirth');
+    const prisonerAssessment = result.body[0];
+    expect(prisonerAssessment.nomisId).to.equal(nomisId);
+    expect(prisonerAssessment.forename).to.equal('assessmentService');
+    expect(prisonerAssessment.surname).to.equal('test');
+    expect(prisonerAssessment.riskAssessmentCompleted).to.equal(false);
+    expect(prisonerAssessment.healthAssessmentCompleted).to.equal(false);
+    expect(prisonerAssessment.outcome).to.equal(null);
+    expect(prisonerAssessment).to.have.property('dateOfBirth');
   });
 
   it('saves the risk assessment', async function test() {
