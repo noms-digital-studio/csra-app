@@ -18,7 +18,7 @@ function generateNomisId() {
 
 async function primeDatabase({
   nomisId, riskAssessment = null,
-  healthAssessment = null, outcome = null
+  healthAssessment = null, outcome = null,
 }) {
   const result = await db.insert({
     nomis_id: nomisId,

@@ -1,7 +1,7 @@
 import AddPrisonerPage from '../pages/add-prisoner/AddPrisoner.page';
 import PrisonerAddedPage from '../pages/add-prisoner/PrisonerAdded.page';
 import DashboardPage from '../pages/Dashboard.page';
-import { checkThatPrisonerAssessmentDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
+import { checkThatPrisonerAssessmentDataWasWrittenToDatabase } from '../../utils/dbAssertions';
 
 const defaultConfig = {
   smokeTest: false,
@@ -44,7 +44,7 @@ function whenTheOfficerAddsThePrisonersDetails(config = defaultConfig) {
   if (!config.smokeTest) {
     const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
     const assessmentId = row.getAttribute('data-assessment-id');
-    checkThatPrisonerAssessmentDataWasWrittenToDatabaseSync({
+    checkThatPrisonerAssessmentDataWasWrittenToDatabase({
       id: assessmentId,
       nomisId: config.prisoner.nomisId,
       forename: config.prisoner.forename,

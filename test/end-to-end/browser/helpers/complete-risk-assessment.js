@@ -5,7 +5,7 @@ import RiskAssessmentExplanationPage from '../pages/risk-assessment/RiskAssessme
 import RiskAssessmentCommentsPage from '../pages/risk-assessment/RiskAssessmentComments.page';
 import RiskAssessmentYesNoPage from '../pages/risk-assessment/RiskAssessmentYesNo.page';
 import RiskAssessmentSummaryPage from '../pages/risk-assessment/RiskAssessmentSummary.page';
-import { checkThatRiskAssessmentDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
+import { checkThatRiskAssessmentDataWasWrittenToDatabase } from '../../utils/dbAssertions';
 
 const defaultAssessmentConfig = {
   prisoner: {
@@ -160,9 +160,8 @@ export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) =
     'expected to find data-risk-assessment-id on the page',
   );
 
-
   if (!config.smokeTest) {
-    checkThatRiskAssessmentDataWasWrittenToDatabaseSync({
+    checkThatRiskAssessmentDataWasWrittenToDatabase({
       id: assessmentId,
       riskAssessment: {
         outcome: config.finalRecommendation,

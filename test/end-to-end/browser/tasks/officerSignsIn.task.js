@@ -1,11 +1,11 @@
 import LoginPage from '../pages/Login.page';
 import BeforeYouStartPage from '../pages/BeforeYouStart.page';
 import DashboardPage from '../pages/Dashboard.page';
-import { clearPrisonerAssessmentsSync } from '../../utils/dbClear';
+import clearPrisonerAssessments from '../../utils/dbClear';
 
 function givenThatTheOfficerIsSignedIn({ smokeTest } = {}) {
   if (!smokeTest) {
-    clearPrisonerAssessmentsSync();
+    clearPrisonerAssessments();
   }
 
   expect(LoginPage.mainHeading).to.equal('Your full name');
