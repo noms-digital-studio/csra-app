@@ -16,10 +16,11 @@ function generateNomisId() {
   return nomisId.toUpperCase();
 }
 
-function primeDatabase({ nomisId, riskAssessment = null,
-  healthAssessment = null, outcome = null }) {
-  return db
-  .insert({
+async function primeDatabase({
+  nomisId, riskAssessment = null,
+  healthAssessment = null, outcome = null
+}) {
+  const result = await db.insert({
     nomis_id: nomisId,
     forename: 'assessmentService',
     surname: 'test',
@@ -30,10 +31,9 @@ function primeDatabase({ nomisId, riskAssessment = null,
     risk_assessment: riskAssessment,
     health_assessment: healthAssessment,
     outcome,
-  })
-  .into('prisoner_assessments')
-  .returning('id')
-  .then(result => ({ id: result[0] }));
+  }).into('prisoner_assessments').returning('id');
+
+  return { id: result[0] };
 }
 
 describe('/api/assessments/', () => {
