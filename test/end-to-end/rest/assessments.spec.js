@@ -57,7 +57,7 @@ describe('/api/assessments/', () => {
       nomisId,
       forename: 'assessmentService',
       surname: 'test',
-      dateOfBirth: 'Sat Dec 31 1988 00:00:00 GMT+0000 (GMT)',
+      dateOfBirth: 'Sat Dec 31 1988',
     });
   });
 
