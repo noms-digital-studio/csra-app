@@ -15,17 +15,7 @@ import {
   viewFullOutcomeForPrisoner as andICanViewTheirAssessmentOutcomeAgain,
 } from './helpers/complete-full-assessment';
 
-import config from '../../../server/config';
-import db from '../../util/db';
-
 describe('Both assessments (Shared cell outcome)', () => {
-  before(() => {
-    if (config.viper.enabled) {
-      return Promise.resolve();
-    }
-    return db.raw("IF NOT EXISTS (SELECT * FROM viper WHERE nomis_id = 'J1234LO') INSERT INTO viper VALUES('J1234LO', 0.35) ELSE UPDATE viper SET rating = 0.35 WHERE nomis_id = 'J1234LO'");
-  });
-
   it('Assesses a low risk prisoner', () => {
     browser.url('/');
 

@@ -39,17 +39,11 @@ describe('GET /health', () => {
       .expect((res) => {
         expect(res.body).to.have.property('status', 'OK');
         expect(res.body).to.have.deep.property('checks.db', 'OK');
-        expect(res.body).to.have.deep.property('checks.viperRestService',
-          config.viper.enabled ? 'OK' : 'Not enabled');
+        expect(res.body).to.have.deep.property('checks.viperRestService', 'OK');
       });
   });
 
-  it('responds with 500 {status: "ERROR" } when viper rest service is unhealthy', function test() {
-    if (!config.viper.enabled) {
-      this.skip();
-      return null;
-    }
-
+  it('responds with 500 {status: "ERROR" } when viper rest service is unhealthy', () => {
     fakeViperRestService
       .get('/health')
       .reply(500, { healthy: false });

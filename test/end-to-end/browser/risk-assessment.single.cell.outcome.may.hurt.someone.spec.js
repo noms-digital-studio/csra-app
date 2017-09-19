@@ -5,7 +5,6 @@ import {
   whenPrisonerIsAssessed as whenAPrisonerWhoMayHurtSomeoneIsAssessed,
   thenTheAssessmentIsCompleted,
 } from './helpers/complete-risk-assessment';
-import upsertViperTableWith from '../utils/upsertViperTable';
 
 const assessmentConfig = {
   prisoner: {
@@ -31,8 +30,6 @@ const assessmentConfig = {
 
 
 describe('Risk assessment for a prisoner who may hurt someone (single cell outcome)', () => {
-  before(() => upsertViperTableWith({ nomisId: 'J1234LO', viperScore: 0.35 }));
-
   it('Assesses a prisoner who may hurt someone', () => {
     givenThatTheOfficerIsSignedIn();
     whenTheOfficerAddsThePrisonersDetails();

@@ -392,18 +392,3 @@ The `sql-cli` package installed above gives you a commandline client called `mss
 mssql -s localhost -u <database-user> -p <password> -d csra
 select * from assessments
 ```
-
-### Seeding database viper table
-** Caution when runing this script ensure that you are pointing to your database driver to the correct database enviroment **
-
-Simply running the following command will generate 100 random seeds to the viper table.
-``` ./bin/seed-viper ```
-
-To specify a different number of random viper data to generate simply specify the number using the environmental variable `SEED_AMOUNT`:
-
-```SEED_AMOUNT={number of seeds (int)} ./bin/seed-viper```
-
-# Feature switches
-With `USE_VIPER_SERVICE=false` the application will obtain viper ratings from it's local database. With
-`USE_VIPER_SERVICE=true` the application will obtain viper ratings via a REST call to the analytics
-gateway.

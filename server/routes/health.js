@@ -15,11 +15,6 @@ module.exports = function createRouter(db, appInfo) {
 
   function viperRestServiceCheck() {
     return new Promise((resolve, reject) => {
-      if (!config.viper.enabled) {
-        resolve({ name: 'viperRestService', status: 'OK', message: 'Not enabled' });
-        return;
-      }
-
       superagent
         .get(url.resolve(`${config.viper.url}`, '/analytics/health'))
         .set('API-key', config.viper.apiKey)

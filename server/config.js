@@ -24,7 +24,6 @@ const config = {
   db: {},
   dbTestUser: {},
   viper: {
-    enabled: false,
     url: null,
     apiKey: null,
   },
@@ -50,11 +49,7 @@ if (dbUriTests) {
   config.dbTestUser.name = parsed.pathname.slice(1);
 }
 
-if (process.env.USE_VIPER_SERVICE === 'true') {
-  config.viper.enabled = true;
-  config.viper.url = neededInProd('VIPER_SERVICE_URL');
-  config.viper.apiKey = neededInProd('VIPER_SERVICE_API_KEY');
-}
-
+config.viper.url = neededInProd('VIPER_SERVICE_URL');
+config.viper.apiKey = neededInProd('VIPER_SERVICE_API_KEY');
 
 module.exports = config;
