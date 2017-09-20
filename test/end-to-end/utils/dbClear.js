@@ -1,7 +1,15 @@
+import Future from 'fibers/future';
+
 import db from '../../util/db';
 
-async function clearPrisonerAssessments() {
-  await db.delete().table('prisoner_assessments');
-}
+const clearPrisonerAssessments = () => db.delete().table('prisoner_assessments');
+
+export const clearPrisonerAssessmentsSync = () => {
+  const future = Future.fromPromise(clearPrisonerAssessments());
+
+  Future.wait(future);
+
+  future.get();
+};
 
 export default clearPrisonerAssessments;

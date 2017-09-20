@@ -45,7 +45,6 @@ describe('Both assessments (Single cell outcome)', () => {
     thenTheRiskAssessmentIsCompleted();
     whenHealthcareRecommendsSharedCell(healthcareAssessmentConfig);
     thenTheFullAssessmentIsCompleted(fullAssessmentCompleteConfig);
-
     andICanViewTheirAssessmentOutcomeAgain(fullAssessmentCompleteConfig);
   });
 });

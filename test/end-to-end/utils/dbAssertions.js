@@ -1,67 +1,106 @@
+import Future from 'fibers/future';
+
 import db from '../../util/db';
 
-export async function checkThatTheOutcomeDataWasWrittenToDatabase({ id, outcome }) {
-  const dbResult = await db.select()
-    .table('prisoner_assessments')
-    .where('id', Number(id));
-  const result = dbResult[0];
-
-  expect(result).to.not.equal(
-    undefined,
-    `Did not get a result from database for id: ${id}`,
-  );
-  expect(result.outcome).to.eql(outcome);
+export function checkThatTheOutcomeDataWasWrittenToDatabase({
+  id,
+  outcome,
+}) {
+  return db.select().table('prisoner_assessments').where('id', Number(id)).then((result) => {
+    const assessment = result[0];
+    expect(assessment).to.not.equal(
+      undefined,
+      `Did not get a result from database for id: ${id}`,
+    );
+    expect(assessment.outcome).to.eql(outcome);
+  });
 }
 
-export async function checkThatRiskAssessmentDataWasWrittenToDatabase({ id, riskAssessment }) {
-  const dbResult = await db.select()
-  .table('prisoner_assessments')
-  .where('id', Number(id));
-  const result = dbResult[0];
+export function checkThatRiskAssessmentDataWasWrittenToDatabase({
+  id,
+  riskAssessment,
+}) {
+  return db.select().table('prisoner_assessments').where('id', Number(id)).then((result) => {
+    expect(result[0]).to.not.equal(
+      undefined,
+      `Did not get a result from database for id: ${id}`,
+    );
 
-  expect(result).to.not.equal(
-    undefined,
-    `Did not get a result from database for id: ${id}`,
-  );
-  expect(JSON.parse(result.risk_assessment)).to.eql(riskAssessment);
+    const actualRiskAssessment = JSON.parse(result[0].risk_assessment);
+    expect(actualRiskAssessment.viperScore).to.eql(riskAssessment.viperScore);
+    expect(actualRiskAssessment.outcome).to.eql(riskAssessment.outcome);
+    expect(actualRiskAssessment.reasons).to.eql(riskAssessment.reasons);
+    expect(actualRiskAssessment.questions).to.eql(riskAssessment.questions);
+  });
 }
 
-export async function checkThatHealthAssessmentDataWasWrittenToDatabase({ id, healthAssessment }) {
-  const dbResult = await db.select()
-    .table('prisoner_assessments')
-    .where('id', Number(id));
-  const result = dbResult[0];
-
-  expect(result).to.not.equal(
-    undefined,
-    `Did not get a result from database for id: ${id}`,
-  );
-  expect(JSON.parse(result.health_assessment)).to.eql(healthAssessment);
+export function checkThatHealthAssessmentDataWasWrittenToDatabase({
+  id,
+  healthAssessment,
+}) {
+  return db.select().table('prisoner_assessments').where('id', Number(id)).then((result) => {
+    const assessment = result[0];
+    expect(assessment).to.not.equal(
+      undefined,
+      `Did not get a result from database for id: ${id}`,
+    );
+    expect(JSON.parse(assessment.health_assessment)).to.eql(healthAssessment);
+  });
 }
 
-export async function checkThatPrisonerAssessmentDataWasWrittenToDatabase({
+export function checkThatPrisonerAssessmentDataWasWrittenToDatabase({
   id,
   nomisId,
   forename,
   surname,
   dateOfBirth,
 }) {
-  const dbResult = await db.select()
-    .table('prisoner_assessments')
-    .where('id', Number(id));
-  const result = dbResult[0];
-
-  expect(result).to.not.equal(
-    undefined,
-    `Did not get a result from database for id: ${id}`,
-  );
-  expect(result.nomis_id).to.equalIgnoreCase(nomisId);
-  expect(result.forename).to.equal(forename);
-  expect(result.surname).to.equal(surname);
-  expect(result.date_of_birth.toString()).to.contain(dateOfBirth);
-  expect(result.questions_hash).to.not.equal(undefined, 'expected a questions_hash');
-  expect(result.created_at).to.not.equal(undefined, 'expected a created_at');
-  expect(result.updated_at).to.not.equal(undefined, 'expected a created_at');
-  expect(result.git_version).to.not.equal(undefined, 'expected a git_version');
-  expect(result.git_date).to.not.equal(undefined, 'expected a git_date');
+  return db.select().table('prisoner_assessments').where('id', Number(id)).then((result) => {
+    const assessment = result[0];
+    expect(assessment).to.not.equal(
+      undefined,
+      `Did not get a result from database for id: ${id}`,
+    );
+    expect(assessment.nomis_id).to.equalIgnoreCase(nomisId);
+    expect(assessment.forename).to.equal(forename);
+    expect(assessment.surname).to.equal(surname);
+    expect(assessment.date_of_birth.toString()).to.contain(dateOfBirth);
+    expect(assessment.questions_hash).to.not.equal(undefined, 'expected a questions_hash');
+    expect(assessment.created_at).to.not.equal(undefined, 'expected a created_at');
+    expect(assessment.updated_at).to.not.equal(undefined, 'expected a created_at');
+    expect(assessment.git_version).to.not.equal(undefined, 'expected a git_version');
+    expect(assessment.git_date).to.not.equal(undefined, 'expected a git_date');
+  });
 }
+
+export const checkThatRiskAssessmentDataWasWrittenToDatabaseSync = (args) => {
+  const future = Future.fromPromise(checkThatRiskAssessmentDataWasWrittenToDatabase(args));
+
+  Future.wait(future);
+
+  future.get();
+};
+
+export const checkThatTheOutcomeDataWasWrittenToDatabaseSync = (args) => {
+  const future = Future.fromPromise(checkThatTheOutcomeDataWasWrittenToDatabase(args));
+
+  Future.wait(future);
+
+  future.get();
+};
+
+export const checkThatHealthAssessmentDataWasWrittenToDatabaseSync = (args) => {
+  const future = Future.fromPromise(checkThatHealthAssessmentDataWasWrittenToDatabase(args));
+
+  Future.wait(future);
+
+  future.get();
+};
+
+export const checkThatPrisonerAssessmentDataWasWrittenToDatabaseSync = (args) => {
+  const future = Future.fromPromise(checkThatPrisonerAssessmentDataWasWrittenToDatabase(args));
+
+  Future.wait(future);
+
+  future.get();
+};
