@@ -1,8 +1,6 @@
 import request from 'supertest';
 import { expect } from 'chai';
 
-import config from '../../../server/config';
-
 describe('/health', () => {
   it('displays the health status of the app', function test(done) {
     this.timeout(25000);
@@ -26,8 +24,6 @@ describe('/health', () => {
         expect(res.body).to.have.property('checks')
           .which.is.an('object');
         expect(res.body).to.have.deep.property('checks.db', 'OK');
-        expect(res.body).to.have.deep.property('checks.viperRestService',
-          config.viper.enabled ? 'OK' : 'Not enabled');
         done();
       });
   });

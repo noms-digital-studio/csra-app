@@ -120,7 +120,6 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
   );
 
   RiskAssessmentSummaryPage.clickContinue();
-  RiskAssessmentSummaryPage.clickContinue();
 };
 
 export const fullAssessmentRecommendation = (config) => {
