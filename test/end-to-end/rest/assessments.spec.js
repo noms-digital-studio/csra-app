@@ -39,11 +39,8 @@ async function primeDatabase({
 describe('/api/assessments/', () => {
   const nomisId = generateNomisId();
 
-  before(function beforeTests() {
-    this.timeout(timeoutDuration);
-  });
-
   it('saves the prisoner data', async function test() {
+    this.timeout(timeoutDuration);
     const result = await request(baseUrl).post('/api/assessments/').send({
       nomisId,
       forename: 'assessmentService',
@@ -62,6 +59,7 @@ describe('/api/assessments/', () => {
   });
 
   it('retrieves the prisoner assessments list', async function test() {
+    this.timeout(timeoutDuration);
     await primeDatabase({ nomisId });
 
     const result = await request(baseUrl).get('/api/assessments/').expect(200);
@@ -77,6 +75,7 @@ describe('/api/assessments/', () => {
   });
 
   it('saves the risk assessment', async function test() {
+    this.timeout(timeoutDuration);
     const result = await primeDatabase({ nomisId });
     const id = result.id;
 
@@ -100,6 +99,7 @@ describe('/api/assessments/', () => {
   });
 
   it('retrieves a risk assessment', async function test() {
+    this.timeout(timeoutDuration);
     const dbResult = await primeDatabase({ nomisId,
       riskAssessment: JSON.stringify({ outcome: 'single cell', viperScore: 0.35, questions: { Q1: { questionId: 'Q1', question: 'Example question text?', answer: 'Yes' } }, reasons: [{ questionId: 'Q1', reason: 'Example reason text' }] }) });
     const id = dbResult.id;
@@ -110,6 +110,7 @@ describe('/api/assessments/', () => {
   });
 
   it('saves the health assessment', async function test() {
+    this.timeout(timeoutDuration);
     const result = await primeDatabase({ nomisId });
     const id = result.id;
 
@@ -131,6 +132,7 @@ describe('/api/assessments/', () => {
   });
 
   it('retrieves a health assessment', async function test() {
+    this.timeout(timeoutDuration);
     const dbResult = await primeDatabase({ nomisId,
       healthAssessment: JSON.stringify({ outcome: 'single cell', viperScore: 0.35, questions: { Q1: { questionId: 'Q1', question: 'Example question text?', answer: 'Yes' } }, reasons: [{ questionId: 'Q1', reason: 'Example reason text' }] }) });
     const id = dbResult.id;
@@ -141,6 +143,7 @@ describe('/api/assessments/', () => {
   });
 
   it('saves the outcome', async function test() {
+    this.timeout(timeoutDuration);
     const result = await primeDatabase({ nomisId });
     const id = result.id;
 
@@ -150,6 +153,7 @@ describe('/api/assessments/', () => {
   });
 
   it('retrieves a health assessment', async function test() {
+    this.timeout(timeoutDuration);
     const dbResult = await primeDatabase({ nomisId, outcome: 'shared cell' });
     const id = dbResult.id;
 
