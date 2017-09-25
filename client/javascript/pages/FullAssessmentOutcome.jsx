@@ -47,8 +47,8 @@ class FullAssessmentOutcome extends Component {
         return gotToErrorPage();
       }
 
-      const riskAssessment = JSON.parse(response.riskAssessment);
-      const healthcareAssessment = JSON.parse(response.healthAssessment);
+      const riskAssessment = response.riskAssessment;
+      const healthcareAssessment = response.healthAssessment;
       const assessmentOutCome = response.outcome;
 
       if (not(assessmentOutCome)) {

@@ -270,8 +270,8 @@ function assessmentFor(db, id) {
         surname: _result[0].surname,
         dateOfBirth: _result[0].date_of_birth,
         outcome: _result[0].outcome,
-        riskAssessment: _result[0].risk_assessment,
-        healthAssessment: _result[0].health_assessment,
+        riskAssessment: JSON.parse(_result[0].risk_assessment),
+        healthAssessment: JSON.parse(_result[0].health_assessment),
       };
     }
     const err = new Error(`No assessment found for id: ${id}`);

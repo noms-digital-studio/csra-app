@@ -132,8 +132,8 @@ describe('<FullAssessmentOutcome', () => {
       { statusCode: 200 },
       {
         outcome: null,
-        riskAssessment: JSON.stringify(riskAssessment),
-        healthAssessment: JSON.stringify(healthcareAssessment),
+        riskAssessment,
+        healthAssessment: healthcareAssessment,
       },
     );
   });
