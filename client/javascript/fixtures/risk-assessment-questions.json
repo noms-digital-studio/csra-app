@@ -69,7 +69,7 @@
         "no": { "text": "No" }
       }
     },
-    "description": "<p class='lede text'>Examples of evidence to look for:</p> <ul class='list list-bullet text u-margin-bottom-charlie'><li>they've previously been a victim of prison violence</li><li>they are in debt to another prisoner</li><li>there's reasons why someone in this prison might want to hurt them</li></ul>",
+    "description": "<p class='lede text'>Examples of evidence to look for:</p> <ul class='list list-bullet text'><li>they've previously been a victim of prison violence</li><li>they are in debt to another prisoner</li><li>there's reasons why someone in this prison might want to hurt them</li></ul>",
     "sharedCellPredicate": {
       "type": "QUESTION",
       "value": "no",
@@ -133,7 +133,7 @@
   {
     "section": "prejudice",
     "title": "Do they have any hostile views or prejudices?",
-    "description": "<p class='lede text'>For example, they express prejudices about:</p><ul class='list list-bullet text u-margin-bottom-charlie'><li>race</li><li>religion</li><li>sexual orientation</li><li>particular addictions</li> </ul>",
+    "description": "<p class='lede text'>For example, they express prejudices about:</p><ul class='list list-bullet text'><li>race</li><li>religion</li><li>sexual orientation</li><li>particular addictions</li> </ul>",
     "template": "default_with_comment",
     "formFields": {
       "input": {

@@ -7,7 +7,6 @@ import path from 'ramda/src/path';
 import allPass from 'ramda/src/allPass';
 import xhr from 'xhr';
 import { LOW_RISK_THRESHOLD } from '../constants/common';
-import defaultOffenderProfiles from '../fixtures/nomis.json';
 
 const debug = debugModule('csra');
 
@@ -33,38 +32,6 @@ export const riskFromViperScore = (viperScore) => {
   }
 
   return 'high';
-};
-
-export const readSingleFile = (file, callback) => {
-  if (not(file)) return;
-
-  const reader = new FileReader();
-  reader.onload = ({ target: { result } }) => {
-    callback(null, result);
-  };
-
-  reader.onerror = (error) => {
-    callback(error.message, null);
-  };
-
-  reader.readAsText(file);
-};
-
-export const storeData = (key, data) => {
-  sessionStorage.setItem(key, data);
-};
-
-export const offenderNomisProfiles = () => {
-  if (sessionStorage.getItem('offenderProfiles')) {
-    return JSON.parse(sessionStorage.getItem('offenderProfiles'));
-  }
-
-  return defaultOffenderProfiles;
-};
-
-export const clearBrowserStorage = () => {
-  sessionStorage.clear();
-  localStorage.clear();
 };
 
 export const isSharedCellOutcome = ({ question, answers }) => {

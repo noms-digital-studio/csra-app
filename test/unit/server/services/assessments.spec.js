@@ -669,8 +669,8 @@ describe('prisoner assessment service', () => {
         surname: 'Lowe',
         date_of_birth: -77932800,
         outcome: 'Shared Cell',
-        risk_assessment: { someKey: 'some valid data' },
-        health_assessment: { someKey: 'some valid data' },
+        risk_assessment: JSON.stringify({ someKey: 'some valid data' }),
+        health_assessment: JSON.stringify({ someKey: 'some valid data' }),
       }]);
 
       return prisonerAssessmentService.assessmentFor(123)
