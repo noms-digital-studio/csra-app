@@ -21,7 +21,7 @@
     "start": "node ./bin/www",
     "start:dev": "rimraf public/dist && DEBUG=csra* nodemon ./bin/www | bunyan -j",
     "lint": "eslint . --cache --max-warnings 0",
-    "test": "mocha test/*.spec.js test/**/*.spec.js test/unit/**/*.spec.js test/unit/**/**/*.spec.js test/client/**/*.spec.js test/client/**/**/*.spec.js",
+    "test": "snyk test && mocha test/*.spec.js test/**/*.spec.js test/unit/**/*.spec.js test/unit/**/**/*.spec.js test/client/**/*.spec.js test/client/**/**/*.spec.js",
     "verify": "snyk test && yarn lint && yarn test",
     "snyk-test": "snyk test",
     "test:watch": "yarn test -- --watch",
@@ -34,7 +34,9 @@
     "record-build-info": "node ./bin/record-build-info",
     "wait-for-deploy": "node ./bin/wait-for-deploy",
     "knex": "knex",
-    "migrate": "knex migrate:latest"
+    "migrate": "knex migrate:latest",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "engines": {
     "node": ">= 8.4.0",
@@ -70,7 +72,7 @@
     "bunyan": "^1.8.12",
     "bunyan-middleware": "^0.8.0",
     "classnames": "2.2.5",
-    "debug": "^3.0.1",
+    "debug": "^2.6.9",
     "deep-equal": "^1.0.1",
     "dotenv": "^4.0.0",
     "es5-shim": "4.5.9",
@@ -78,7 +80,7 @@
     "form-serialize": "0.7.1",
     "govuk-elements-sass": "3.0.0",
     "govuk_frontend_toolkit": "^5.2.0",
-    "helmet": "^3.6.1",
+    "helmet": "^3.8.1",
     "history": "4.5.1",
     "hsts": "^2.0.0",
     "joi": "^10.5.2",
@@ -107,7 +109,8 @@
     "url": "0.11.0",
     "uuid": "3.0.1",
     "webpack-dev-middleware": "1.10.1",
-    "xhr": "^2.4.0"
+    "xhr": "^2.4.0",
+    "snyk": "^1.41.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.6",
@@ -161,7 +164,6 @@
     "sass-loader": "^6.0.2",
     "sinon": "^2.1.0",
     "snake-case": "^2.1.0",
-    "snyk": "^1.40.2",
     "style-loader": "^0.13.2",
     "supertest": "^3.0.0",
     "url-loader": "^0.5.8",
@@ -184,5 +186,6 @@
       "name": "Nick Redshaw",
       "email": "nick.redshaw@digital.justice.gov.uk"
     }
-  ]
+  ],
+  "snyk": true
 }
