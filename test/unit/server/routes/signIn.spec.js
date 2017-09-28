@@ -11,12 +11,15 @@ app.use(createSignInEndpoint(fakeSignInService));
 
 describe('POST /signin', () => {
   it('responds with status OK (200) when signed in correctly', () => {
-    fakeSignInService.signin = sinon.stub().resolves({ token: 'xxx.yyy.zzz' });
+    fakeSignInService.signin = sinon.stub().resolves({ forename: 'firstname', surname: 'lastname' });
 
     return request(app).post('/').send({
       username: 'myUsername',
       password: 'myPassword',
     })
-    .expect(200);
+    .expect(200)
+    .expect((res) => {
+      expect(res.body).to.eql({ forename: 'firstname', surname: 'lastname' });
+    });
   });
 });

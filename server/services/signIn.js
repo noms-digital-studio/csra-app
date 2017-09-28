@@ -1,9 +1,9 @@
 import superagent from 'superagent';
 import jwt from 'jsonwebtoken';
 import url from 'url';
+import config from '../config';
 
-const config = require('../config');
-const { viperRestServiceLogger: log } = require('./logger');
+const { logger: log } = require('./logger');
 
 function generateApiGatewayToken() {
   const mojDevToken = `${config.elite2.apiGatewayToken}`;
@@ -21,10 +21,9 @@ function generateApiGatewayToken() {
 
 function signIn(username, password) {
   log.info(`Signing in user: ${username}`);
-
   return new Promise((resolve, reject) => {
     superagent
-      .post(url.resolve(`${config.elite2.url}`, '/users/login'))
+      .post(url.resolve(`${config.elite2.url}`, '/elite2api/users/login'))
       .set('Authorization', `Bearer ${generateApiGatewayToken()}`)
       .send({ username, password })
       .timeout({
@@ -34,8 +33,21 @@ function signIn(username, password) {
       .end((error, res) => {
         try {
           log.info('Sign in to Elite 2 successful');
+          if (error) log.error(error);
+
+          // console.log(error);
           const token = res.body.token;
-          resolve({ token });
+          // TODO store token in session and remove the log line below
+          log.info(token);
+
+          superagent.get(url.resolve(`${config.elite2.url}`, '/elite2api/users/me'))
+          .set('Authorization', `Bearer ${generateApiGatewayToken()}`)
+          .set('Elite-Authorization', `${res.body.token}`)
+          .end((error2, res2) => {
+            if (error2) log.error(error2);
+
+            resolve({ forename: res2.body.firstName, surname: res2.body.lastName });
+          });
         } catch (exception) {
           log.error(exception);
           reject(exception);

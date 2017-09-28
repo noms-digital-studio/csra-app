@@ -31,7 +31,7 @@ const config = {
     url: null,
     apiGatewayToken: null,
     apiGatewayPrivateKey: null,
-  }
+  },
 };
 
 const dbUri = neededInProd('DB_URI');
