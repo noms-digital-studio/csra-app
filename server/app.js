@@ -10,9 +10,10 @@ const { logger } = require('./services/logger');
 const createHealthRoute = require('./routes/health');
 const createViperRoute = require('./routes/viper');
 const createPrisonerAssessmentsRoute = require('./routes/assessments');
+const createSigninRoute = require('./routes/signIn');
 const index = require('./routes/index');
 
-module.exports = function createApp({ db, appInfo, viperService, prisonerAssessmentsService }) {
+module.exports = function createApp({ db, appInfo, viperService, prisonerAssessmentsService, signinService }) {
   const app = express();
   const sixtyDaysInSeconds = 5184000;
 
@@ -32,6 +33,7 @@ module.exports = function createApp({ db, appInfo, viperService, prisonerAssessm
   app.use('/health', createHealthRoute(db, appInfo));
   app.use('/api/viper', createViperRoute(viperService));
   app.use('/api/assessments', createPrisonerAssessmentsRoute(prisonerAssessmentsService));
+  app.use('/signin', createSigninRoute(signinService));
   app.use('/', index);
 
   // catch 404 and forward to error handler

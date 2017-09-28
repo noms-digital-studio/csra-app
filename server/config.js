@@ -27,6 +27,11 @@ const config = {
     url: null,
     apiKey: null,
   },
+  elite2: {
+    url: null,
+    apiGatewayToken: null,
+    apiGatewayPrivateKey: null,
+  }
 };
 
 const dbUri = neededInProd('DB_URI');
@@ -51,5 +56,9 @@ if (dbUriTests) {
 
 config.viper.url = neededInProd('VIPER_SERVICE_URL');
 config.viper.apiKey = neededInProd('VIPER_SERVICE_API_KEY');
+
+config.elite2.url = neededInProd('ELITE2_URL');
+config.elite2.apiGatewayToken = neededInProd('ELITE2_API_GATEWAY_TOKEN');
+config.elite2.apiGatewayPrivateKey = neededInProd('ELITE2_API_GATEWAY_PRIVATE_KEY');
 
 module.exports = config;
