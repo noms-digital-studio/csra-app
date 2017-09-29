@@ -4,7 +4,10 @@ module.exports = function createRouter(signInService) {
   const router = express.Router();
 
   router.post('/', (req, res) => {
-    signInService.signin(req.body)
+    const username = req.body.username;
+    const password = req.body.password;
+
+    signInService.signIn(username, password)
     .then((userdetails) => {
       res.status(200);
       res.json(userdetails);

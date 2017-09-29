@@ -11,7 +11,7 @@ app.use(createSignInEndpoint(fakeSignInService));
 
 describe('POST /signin', () => {
   it('responds with status OK (200) when signed in correctly', () => {
-    fakeSignInService.signin = sinon.stub().resolves({ forename: 'firstname', surname: 'lastname' });
+    fakeSignInService.signIn = sinon.stub().resolves({ forename: 'firstname', surname: 'lastname' });
 
     return request(app).post('/').send({
       username: 'myUsername',

@@ -1,7 +1,7 @@
-import superagent from 'superagent';
-import jwt from 'jsonwebtoken';
-import url from 'url';
-import config from '../config';
+const jwt = require('jsonwebtoken');
+const superagent = require('superagent');
+const url = require('url');
+const config = require('../config');
 
 const { logger: log } = require('./logger');
 
@@ -33,9 +33,11 @@ function signIn(username, password) {
       .end((error, res) => {
         try {
           log.info('Sign in to Elite 2 successful');
-          if (error) log.error(error);
+          if (error) {
+            log.error(error);
+            reject(error);
+          }
 
-          // console.log(error);
           const token = res.body.token;
           // TODO store token in session and remove the log line below
           log.info(token);
