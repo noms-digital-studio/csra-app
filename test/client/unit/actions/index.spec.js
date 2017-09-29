@@ -71,24 +71,6 @@ describe('Actions', () => {
     });
   });
 
-  describe('#signIn', () => {
-    it('returns a SIGN_IN action', () => {
-      const user = 'Foo bar';
-      expect(signIn(user)).to.eql({
-        type: 'SIGN_IN',
-        payload: user,
-      });
-    });
-  });
-
-  describe('#signOut', () => {
-    it('returns a SIGN_OUT action', () => {
-      expect(signOut()).to.eql({
-        type: 'SIGN_OUT',
-      });
-    });
-  });
-
   describe('#addPrisoner', () => {
     it('returns a ADD_PRISONER action', () => {
       const prisoner = {

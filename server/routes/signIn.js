@@ -11,6 +11,7 @@ module.exports = function createRouter(signInService) {
   router.use(bodyParser.urlencoded({ extended: true }));
 
   router.post('/', (req, res) => {
+    console.log(req.body);
     const username = req.body.username;
     const password = req.body.password;
 
