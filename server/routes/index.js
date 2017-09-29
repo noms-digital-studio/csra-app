@@ -7,8 +7,6 @@ const router = express.Router();
 
 const renderData = {
   appinsightsKey: config.appinsightsKey,
-  isLoggedIn: true,
-  name: 'John Doe',
 };
 
 if (config.dev) {
@@ -29,7 +27,11 @@ if (config.dev) {
   router.use(middleware);
   router.use(webpackHotMiddleware(compiler));
   router.get('*', (req, res) => {
-    res.render('index', renderData);
+    if (req.session.user) {
+      res.render('index', { ...renderData, isLoggedIn: true, name: `${req.session.user.forename} ${req.session.user.surname}` });
+    } else {
+      res.redirect('/signin');
+    }
   });
 } else {
   router.get('*', (req, res) => {

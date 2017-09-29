@@ -5,6 +5,8 @@ const { json } = require('body-parser');
 const helmet = require('helmet');
 const hsts = require('hsts');
 const bunyanMiddleware = require('bunyan-middleware');
+const session = require('express-session');
+
 
 const { logger } = require('./services/logger');
 const createHealthRoute = require('./routes/health');
@@ -28,6 +30,12 @@ module.exports = function createApp({ db, appInfo, viperService, prisonerAssessm
     preload: true,
   }));
 
+  app.use(session({
+    secret: 'PUT ME IN AN ENVIRONMENT VARIABLE',
+    resave: false,
+    saveUninitialized: true,
+  }));
+  app.use(express.cookieParser());
   app.use(json());
 
   app.use(bunyanMiddleware({ logger }));
