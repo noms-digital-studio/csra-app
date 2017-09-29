@@ -11,7 +11,7 @@ app.use(urlencoded({ extended: true }));
 app.use(session({ secret: 'test' }));
 app.use(createSignInEndpoint(fakeSignInService));
 
-describe.only('POST /signin', () => {
+describe('POST /signin', () => {
   it('responds with status OK (200) when signed in correctly', () => {
     fakeSignInService.signIn = sinon.stub().resolves({ forename: 'firstname', surname: 'lastname' });
 

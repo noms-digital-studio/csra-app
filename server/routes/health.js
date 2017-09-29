@@ -2,6 +2,7 @@ const express = require('express');
 const superagent = require('superagent');
 const url = require('url');
 const config = require('../config');
+const generateApiGatewayToken = require('../apiGateway');
 const { logger: log } = require('../services/logger');
 
 module.exports = function createRouter(db, appInfo) {
@@ -42,12 +43,40 @@ module.exports = function createRouter(db, appInfo) {
     });
   }
 
+  function elite2RestServiceCheck() {
+    return new Promise((resolve, reject) => {
+      superagent.get(url.resolve(`${config.elite2.url}`, '/elite2api/info/health'))
+      .set('Authorization', `Bearer ${generateApiGatewayToken()}`)
+      .timeout({
+        response: 2000,
+        deadline: 2500,
+      })
+      .end((error, result) => {
+        try {
+          if (error) {
+            log.error(error, 'Error calling elite 2 REST service health endpoint');
+            resolve({ name: 'elite2RestService', status: 'ERROR', message: 'ERROR' });
+          }
+
+          if ((result.status === 200) && (result.body.status === 'UP')) {
+            resolve({ name: 'elite2RestService', status: 'OK', message: 'OK' });
+          }
+
+          reject({ name: 'elite2RestService', status: 'ERROR', message: `Status: ${result.error}` });
+        } catch (exception) {
+          log.error(exception, 'Error calling elite 2 REST service health endpoint');
+          reject(exception);
+        }
+      });
+    });
+  }
+
   function gatherCheckInfo(total, currentValue) {
     return { ...total, [currentValue.name]: currentValue.message };
   }
 
   router.get('/', (req, res) => {
-    const checks = [dbCheck, viperRestServiceCheck];
+    const checks = [dbCheck, viperRestServiceCheck, elite2RestServiceCheck];
 
     Promise
       .all(checks.map(fn => fn()))

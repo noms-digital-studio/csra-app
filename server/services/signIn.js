@@ -1,23 +1,8 @@
-const jwt = require('jsonwebtoken');
 const superagent = require('superagent');
 const url = require('url');
 const config = require('../config');
-
+const generateApiGatewayToken = require('../apiGateway');
 const { logger: log } = require('./logger');
-
-function generateApiGatewayToken() {
-  const mojDevToken = `${config.elite2.apiGatewayToken}`;
-  const milliseconds = Math.round((new Date()).getTime() / 1000);
-
-  const payload = {
-    iat: milliseconds,
-    token: mojDevToken,
-  };
-
-  const privateKey = `${config.elite2.apiGatewayPrivateKey}`;
-  const cert = new Buffer(privateKey);
-  return jwt.sign(payload, cert, { algorithm: 'ES256' });
-}
 
 function signIn(username, password) {
   log.info(`Signing in user: ${username}`);
