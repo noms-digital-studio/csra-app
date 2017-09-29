@@ -17,6 +17,10 @@ module.exports = function createApp({ db, appInfo, viperService, prisonerAssessm
   const app = express();
   const sixtyDaysInSeconds = 5184000;
 
+  // view engine setup
+  app.set('views', path.join(__dirname, 'views'));
+  app.set('view engine', 'pug');
+
   app.use(helmet());
   app.use(hsts({
     maxAge: sixtyDaysInSeconds,

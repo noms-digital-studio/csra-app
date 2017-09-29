@@ -39,3 +39,5 @@ reports
 test-results.xml
 build-info.json
 temp
+
+public/assets/stylesheets/*.css

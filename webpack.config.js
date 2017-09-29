@@ -1,27 +1,11 @@
 const path = require('path');
 
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const BabiliPlugin = require('babili-webpack-plugin');
 
-const precss = require('precss');
-const autoprefixer = require('autoprefixer');
-
 const dev = process.env.NODE_ENV !== 'production';
-
-function extractInProduction(loader) {
-  if (dev) {
-    return ['style-loader'].concat(loader);
-  }
-  return ExtractTextPlugin.extract({
-    fallback: 'style-loader',
-    use: loader,
-  });
-}
 
 module.exports = {
   context: __dirname,
@@ -36,8 +20,8 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'public', 'dist'),
     publicPath: '/dist',
-    filename: '[name].[hash].bundle.js',
-    sourceMapFilename: '[name].[hash].map',
+    filename: 'main.bundle.js',
+    sourceMapFilename: 'main.map',
   },
 
   module: {
@@ -50,51 +34,6 @@ module.exports = {
           presets: dev ? ['env', 'react-hmre'] : ['env'],
         },
       },
-      {
-        test: /\.css$/,
-        use: extractInProduction([
-          'css-loader',
-          {
-            loader: 'postcss-loader',
-            options: {
-              plugins: () => [precss, autoprefixer],
-            },
-          },
-        ]),
-      },
-      {
-        test: /\.scss/,
-        use: extractInProduction([
-          {
-            loader: 'css-loader',
-            options: { sourceMap: true },
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: true,
-              includePaths: [
-                path.join(
-                  __dirname,
-                  'node_modules/govuk-elements-sass/public/sass'
-                ),
-                path.join(
-                  __dirname,
-                  'node_modules/govuk_frontend_toolkit/stylesheets'
-                ),
-              ],
-            },
-          },
-        ]),
-      },
-      {
-        test: /\.(eot|svg|ttf|woff|woff2)$/,
-        use: 'url-loader?limit=10000',
-      },
-      {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        use: 'url-loader?limit=10000',
-      },
     ],
   },
 
@@ -104,24 +43,6 @@ module.exports = {
     new webpack.NamedModulesPlugin(),
     dev && new webpack.NoEmitOnErrorsPlugin(),
     dev && new webpack.HotModuleReplacementPlugin(),
-
-    new HtmlWebpackPlugin({
-      inject: true,
-      template: 'server/views/index.tmpl.html',
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeRedundantAttributes: true,
-        useShortDoctype: true,
-        removeEmptyAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        keepClosingSlash: true,
-        minifyJS: true,
-        minifyCSS: true,
-        minifyURLs: true,
-      },
-    }),
-
     // React uses this to do dead code elimination
     !dev &&
       new webpack.DefinePlugin({
@@ -136,17 +57,6 @@ module.exports = {
         threshold: 10240,
         minRatio: 0.8,
       }),
-
-    !dev &&
-      new OptimizeCssAssetsPlugin({
-        assetNameRegExp: /\.css$/g,
-        cssProcessor: require('cssnano'),
-        cssProcessorOptions: { discardComments: { removeAll: true } },
-        canPrint: false,
-      }),
-
-    // CSS is moved into an external file for production
-    !dev && new ExtractTextPlugin('[name].[hash].css'),
 
     // Minify code in production only
     !dev && new BabiliPlugin(),
