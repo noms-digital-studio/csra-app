@@ -6,7 +6,7 @@ import express from 'express';
 import createSignInEndpoint from '../../../../server/routes/signIn';
 import mockAuthentication from '../helpers/mockAuthentication';
 
-describe.only('POST /signin', () => {
+describe('POST /signin', () => {
   const app = express();
   const fakeSignInService = sinon.stub();
 
