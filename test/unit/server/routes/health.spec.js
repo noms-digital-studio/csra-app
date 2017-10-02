@@ -35,6 +35,7 @@ describe('GET /health', () => {
       .reply(200, { healthy: true });
 
     fakeElite2RestService
+      .matchHeader('Accept', 'application/json')
       .get('/elite2api/info/health')
       .reply(200, { status: 'UP' });
 
