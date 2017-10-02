@@ -2,6 +2,7 @@ const express = require('express');
 
 const webpackConfig = require('../../webpack.config');
 const config = require('../config');
+const { authenticationMiddleware } = require('../authentication');
 
 const router = express.Router();
 
@@ -26,16 +27,12 @@ if (config.dev) {
 
   router.use(middleware);
   router.use(webpackHotMiddleware(compiler));
-  router.get('*', (req, res) => {
-    if (req.session.user) {
-      res.render('index', { ...renderData, isLoggedIn: true, name: `${req.session.user.forename} ${req.session.user.surname}` });
-    } else {
-      res.redirect('/signin');
-    }
+  router.get('*', authenticationMiddleware(), (req, res) => {
+    res.render('index', { ...renderData, name: req.user.name });
   });
 } else {
-  router.get('*', (req, res) => {
-    res.render('index', renderData);
+  router.get('*', authenticationMiddleware(), (req, res) => {
+    res.render('index', { ...renderData, name: req.user.name });
   });
 }
 

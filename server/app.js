@@ -7,8 +7,12 @@ const hsts = require('hsts');
 const bunyanMiddleware = require('bunyan-middleware');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const passport = require('passport');
+
 
 const { logger } = require('./services/logger');
+const authentication = require('./authentication');
+
 const createHealthRoute = require('./routes/health');
 const createViperRoute = require('./routes/viper');
 const createPrisonerAssessmentsRoute = require('./routes/assessments');
@@ -30,13 +34,19 @@ module.exports = function createApp({ db, appInfo, viperService, prisonerAssessm
     preload: true,
   }));
 
+  authentication.init(signInService);
+
+  app.use(cookieParser());
+  app.use(json());
+
   app.use(session({
     secret: 'PUT ME IN AN ENVIRONMENT VARIABLE',
     resave: false,
     saveUninitialized: true,
   }));
-  app.use(cookieParser());
-  app.use(json());
+
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   app.use(bunyanMiddleware({ logger }));
 
@@ -45,7 +55,7 @@ module.exports = function createApp({ db, appInfo, viperService, prisonerAssessm
   app.use('/health', createHealthRoute(db, appInfo));
   app.use('/api/viper', createViperRoute(viperService));
   app.use('/api/assessments', createPrisonerAssessmentsRoute(prisonerAssessmentsService));
-  app.use('/signin', createSignInRoute(signInService));
+  app.use('/signin', createSignInRoute(passport));
   app.use('/', index);
 
   // catch 404 and forward to error handler
