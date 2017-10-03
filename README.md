@@ -86,7 +86,7 @@ yarn start
 
 Then go to [http://localhost:5000/](http://localhost:5000/)
 
-### Filtering in test assessments on the dashboard
+## Filtering in test assessments on the dashboard
 Nomis IDs that start with 'TEST' will be automatically filtered out from the dashboard to allow us to smoke test
 in production. To view the test assessments add a query param - 'displayTestAssessments=true'
 
@@ -95,7 +95,7 @@ e.g.
 http://localhost:5000/dashboard?displayTestAssessments=true
 ```
 
-### Deploy to Stage
+## Deploy to Stage
 Deploy the application to the STAGE environment and run the E2E tests against STAGE. See the note above regarding Firefox
 
 *Note when running this script you will need firefox and jq installed*
@@ -331,6 +331,20 @@ Response:
     "viperRestService": "OK"
   }
 }
+```
+
+### Sign In POST `/signin`
+
+Signs the user in via the NOMIS ELite 2 REST API. 
+
+Returns 302 for successful sign in that takes the user to the first page in the service. The forename and surname
+returned from the Elite 2 API are stored in a session cookie.
+
+e.g.
+
+Request:
+```
+curl -X POST http://localhost:5000/signin -H 'Content-Type: application/json' -d '{"username": "officer", "password": "password"}'
 ```
 
 ## Database connections
