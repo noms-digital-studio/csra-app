@@ -1,6 +1,14 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
 version: v1.7.1
-ignore: {}
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  'npm:superagent:20170807':
+    - superagent:
+        reason: no upgrade available
+        expires: '2017-11-02T10:27:41.280Z'
+    - poll-endpoint-for > superagent:
+        reason: no upgrade available
+        expires: '2017-11-02T10:27:41.280Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   'npm:debug:20170905':
