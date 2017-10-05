@@ -6,10 +6,6 @@ const { authenticationMiddleware } = require('../authentication');
 
 const router = express.Router();
 
-const renderData = {
-  appinsightsKey: config.appinsightsKey,
-};
-
 if (config.dev) {
   // eslint-disable-next-line
   const webpack = require('webpack');
@@ -27,13 +23,10 @@ if (config.dev) {
 
   router.use(middleware);
   router.use(webpackHotMiddleware(compiler));
-  router.get('*', authenticationMiddleware(), (req, res) => {
-    res.render('index', { ...renderData, name: req.user.name });
-  });
-} else {
-  router.get('*', authenticationMiddleware(), (req, res) => {
-    res.render('index', { ...renderData, isLoggedIn: req.isAuthenticated(), name: req.user && `${req.user.forename} ${req.user.surname}` });
-  });
 }
+
+router.get('*', authenticationMiddleware(), (req, res) => {
+  res.render('index', { appinsightsKey: config.appinsightsKey, isLoggedIn: true, name: req.user && `${req.user.forename} ${req.user.surname}` });
+});
 
 module.exports = router;
