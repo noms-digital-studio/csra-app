@@ -16,7 +16,7 @@ passport.serializeUser(({ forename, surname }, done) => done(null, `${forename} 
 
 passport.deserializeUser((username, done) => {
   const name = username.split(' ');
-  done(null, { forename: name[0], surname: name[0] });
+  done(null, { forename: name[0], surname: name[1] });
 });
 
 function init(signInService) {

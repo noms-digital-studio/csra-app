@@ -32,7 +32,7 @@ if (config.dev) {
   });
 } else {
   router.get('*', authenticationMiddleware(), (req, res) => {
-    res.render('index', { ...renderData, name: req.user.name });
+    res.render('index', { ...renderData, isLoggedIn: req.isAuthenticated(), name: req.user && `${req.user.forename} ${req.user.surname}` });
   });
 }
 
