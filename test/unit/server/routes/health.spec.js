@@ -36,7 +36,7 @@ describe('GET /health', () => {
 
     fakeElite2RestService
       .matchHeader('Accept', 'application/json')
-      .get('/elite2api/info/health')
+      .get('/info/health')
       .reply(200, { status: 'UP' });
 
     return request(app)
@@ -57,7 +57,7 @@ describe('GET /health', () => {
       .reply(500, { healthy: false });
 
     fakeElite2RestService
-    .get('/elite2api/info/health')
+    .get('/info/health')
     .reply(200, { status: 'UP' });
 
     return request(app)
@@ -78,7 +78,7 @@ describe('GET /health', () => {
     .reply(200, { healthy: true });
 
     fakeElite2RestService
-    .get('/elite2api/info/health')
+    .get('info/health')
     .reply(500, { status: 'DOWN' });
 
     return request(app)
@@ -102,7 +102,7 @@ describe('GET /health', () => {
       .reply(200, { healthy: true });
 
       fakeElite2RestService
-      .get('/elite2api/info/health')
+      .get('/info/health')
       .reply(200, { status: 'UP' });
     });
 
@@ -131,7 +131,7 @@ describe('GET /health', () => {
         .reply(200, { healthy: true });
 
       fakeElite2RestService
-      .get('/elite2api/info/health')
+      .get('/info/health')
       .reply(200, { status: 'UP' });
     });
 

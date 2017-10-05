@@ -14,7 +14,7 @@ describe('signIn service', () => {
   describe('successful sign in', () => {
     it('signs in when Elite 2 returns a JWT bearer token', () => {
       fakeElite2RestService
-      .post('/elite2api/users/login')
+      .post('/users/login')
       .reply(200, {
         token: 'Bearer XXX.YYY.ZZZ',
         issuedAt: 1506093099586,
@@ -24,7 +24,7 @@ describe('signIn service', () => {
       });
 
       fakeElite2RestService
-      .get('/elite2api/users/me')
+      .get('/users/me')
       .reply(200, {
         staffId: 123,
         username: 'username',

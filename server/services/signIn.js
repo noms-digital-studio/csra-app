@@ -8,7 +8,7 @@ function signIn(username, password) {
   log.info(`Signing in user: ${username}`);
   return new Promise((resolve, reject) => {
     superagent
-      .post(url.resolve(`${config.elite2.url}`, '/elite2api/users/login'))
+      .post(url.resolve(`${config.elite2.url}`, 'users/login'))
       .set('Authorization', `Bearer ${generateApiGatewayToken()}`)
       .send({ username, password })
       .timeout({
@@ -27,7 +27,7 @@ function signIn(username, password) {
           // TODO store token in session and remove the log line below
           log.info(token);
 
-          superagent.get(url.resolve(`${config.elite2.url}`, '/elite2api/users/me'))
+          superagent.get(url.resolve(`${config.elite2.url}`, 'users/me'))
           .set('Authorization', `Bearer ${generateApiGatewayToken()}`)
           .set('Elite-Authorization', `${res.body.token}`)
           .end((error2, res2) => {

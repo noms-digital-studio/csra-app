@@ -45,7 +45,7 @@ module.exports = function createRouter(db, appInfo) {
 
   function elite2RestServiceCheck() {
     return new Promise((resolve, reject) => {
-      superagent.get(url.resolve(`${config.elite2.url}`, '/elite2api/info/health'))
+      superagent.get(url.resolve(`${config.elite2.url}`, 'info/health'))
       .set('Authorization', `Bearer ${generateApiGatewayToken()}`)
       .set('Accept', 'application/json')
       .timeout({
