@@ -23,17 +23,16 @@ function signIn(username, password) {
             reject(error);
           }
 
-          const token = res.body.token;
-          // TODO store token in session and remove the log line below
-          log.info(token);
-
+          const eliteAuthorisationToken = res.body.token;
           superagent.get(url.resolve(`${config.elite2.url}`, 'users/me'))
           .set('Authorization', `Bearer ${generateApiGatewayToken()}`)
-          .set('Elite-Authorization', `${res.body.token}`)
+          .set('Elite-Authorization', eliteAuthorisationToken)
           .end((error2, res2) => {
             if (error2) log.error(error2);
-
-            resolve({ forename: res2.body.firstName, surname: res2.body.lastName });
+            resolve({
+              forename: res2.body.firstName,
+              surname: res2.body.lastName,
+              eliteAuthorisationToken });
           });
         } catch (exception) {
           log.error(exception);

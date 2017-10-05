@@ -37,7 +37,7 @@ describe('signIn service', () => {
 
       return signInService.signIn('myUsername', 'myPassword')
       .then((result) => {
-        expect(result).to.eql({ forename: 'firstname', surname: 'lastname' });
+        expect(result).to.eql({ forename: 'firstname', surname: 'lastname', eliteAuthorisationToken: 'Bearer XXX.YYY.ZZZ' });
       });
     });
   });

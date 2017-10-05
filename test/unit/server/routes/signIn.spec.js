@@ -17,7 +17,7 @@ describe('POST /signin', () => {
 
   context('Successful sign in', () => {
     it('redirects to "/" path', () => {
-      fakeSignInService.signIn = sinon.stub().resolves({ forename: 'John', surname: 'Doe' });
+      fakeSignInService.signIn = sinon.stub().resolves({ forename: 'John', surname: 'Doe', eliteAuthorisationToken: 'token' });
 
       return request(app)
         .post('/')
