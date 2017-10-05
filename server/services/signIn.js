@@ -17,8 +17,8 @@ function signIn(username, password) {
       })
       .end((error, res) => {
         try {
-          log.info('Sign in to Elite 2 successful');
           if (error) {
+            log.error(`Sign in to Elite 2 failed for [${username}] with error:`);
             log.error(error);
             reject(error);
           }
@@ -28,13 +28,17 @@ function signIn(username, password) {
           .set('Authorization', `Bearer ${generateApiGatewayToken()}`)
           .set('Elite-Authorization', eliteAuthorisationToken)
           .end((error2, res2) => {
-            if (error2) log.error(error2);
+            if (error2) {
+              log.error(error2);
+            }
+            log.info(`Sign in to Elite 2 for [${username}] successful`);
             resolve({
               forename: res2.body.firstName,
               surname: res2.body.lastName,
               eliteAuthorisationToken });
           });
         } catch (exception) {
+          log.error(`Sign in to Elite 2 failed for [${username}] with exception:`);
           log.error(exception);
           reject(exception);
         }
