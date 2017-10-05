@@ -7,10 +7,10 @@ function errorResponse(res, nomisId, cause) {
   res.json({ messasge: `Error retrieving viper rating for nomisId: ${nomisId}. The cause was: ${cause}` });
 }
 
-module.exports = function createRouter(viperService) {
+module.exports = function createRouter(viperService, authenticationMiddleware) {
   const router = express.Router();
 
-  router.get('/:nomisId', (req, res) => {
+  router.get('/:nomisId', authenticationMiddleware(), (req, res) => {
     const nomisId = req.params.nomisId;
 
     viperService.rating(nomisId)

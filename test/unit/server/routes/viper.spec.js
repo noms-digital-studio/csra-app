@@ -2,6 +2,7 @@ import request from 'supertest';
 import sinon from 'sinon';
 import express from 'express';
 import createViperEndpoint from '../../../../server/routes/viper';
+import { authenticationMiddleware } from '../helpers/mockAuthentication';
 
 describe('GET /viper/:nomisId', () => {
   let app;
@@ -10,7 +11,7 @@ describe('GET /viper/:nomisId', () => {
   beforeEach(() => {
     app = express();
     fakeViperService = sinon.stub();
-    app.use('/:nomisId', createViperEndpoint(fakeViperService));
+    app.use('/:nomisId', createViperEndpoint(fakeViperService, authenticationMiddleware));
   });
 
   it('responds with status OK (200) and the payload when a rating is found', () => {

@@ -14,4 +14,8 @@ const setupMockAuthentication = (app, signInService) => {
   app.use(passport.session());
 };
 
+export function authenticationMiddleware() {
+  return (req, res, next) => next();
+}
+
 export default setupMockAuthentication;

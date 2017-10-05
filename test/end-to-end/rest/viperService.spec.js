@@ -17,13 +17,19 @@ function generateNomisId() {
   return nomisId;
 }
 
+const agent = request.agent(baseUrl);
+
 describe('/api/viper/:nomisId', () => {
   const nomisId = generateNomisId();
 
   before(function beforeTests() {
     this.timeout(timeoutDuration);
 
-    return primeMock({
+    return agent.post('/signin').send('username=officer&password=password')
+      .expect(302).expect((res) => {
+        expect(res.headers.location).to.eql('/');
+      })
+    .then(() => primeMock({
       request: {
         method: 'GET',
         urlPattern: `/analytics/viper/${nomisId}`,
@@ -40,12 +46,13 @@ describe('/api/viper/:nomisId', () => {
           'Content-Type': 'application/json',
         },
       },
-    });
+    }),
+    );
   });
 
   it('returns a viper rating for a known nomis id', function test() {
     this.timeout(timeoutDuration);
-    return request(baseUrl)
+    return agent
       .get(`/api/viper/${nomisId}`)
       .expect(200)
       .then((res) => {
@@ -74,7 +81,7 @@ describe('/api/viper/:nomisId', () => {
         },
       },
     }).then(() =>
-      request(baseUrl)
+      agent
         .get(`/api/viper/${newNomisId}`)
         .expect(200)
         .then((res) => {
@@ -100,7 +107,7 @@ describe('/api/viper/:nomisId', () => {
       },
     })
       .then(() =>
-        request(baseUrl)
+        agent
           .get('/api/viper/foo-401')
           .expect(404),
       )
@@ -127,7 +134,7 @@ describe('/api/viper/:nomisId', () => {
         },
       },
     }).then(() =>
-      request(baseUrl)
+      agent
         .get('/api/viper/foo-403')
         .expect(404)
         .then((res) => {
@@ -154,7 +161,7 @@ describe('/api/viper/:nomisId', () => {
         },
       },
     }).then(() =>
-      request(baseUrl)
+      agent
         .get('/api/viper/foo-400')
         .expect(404)
         .then((res) => {
@@ -181,7 +188,7 @@ describe('/api/viper/:nomisId', () => {
         },
       },
     }).then(() =>
-      request(baseUrl)
+      agent
         .get('/api/viper/foo-500')
         .expect(404)
         .then((res) => {
@@ -204,7 +211,7 @@ describe('/api/viper/:nomisId', () => {
         fault: 'EMPTY_RESPONSE',
       },
     }).then(() =>
-      request(baseUrl)
+      agent
         .get('/api/viper/foo-empty')
         .expect(404)
         .then((res) => {
@@ -227,7 +234,7 @@ describe('/api/viper/:nomisId', () => {
         fault: 'RANDOM_DATA_THEN_CLOSE',
       },
     }).then(() =>
-      request(baseUrl)
+      agent
         .get('/api/viper/foo-closed')
         .expect(404)
         .then((res) => {
@@ -250,14 +257,11 @@ describe('/api/viper/:nomisId', () => {
         fault: 'MALFORMED_RESPONSE_CHUNK',
       },
     }).then(() =>
-      request(baseUrl)
-        .get('/api/viper/foo-mal')
-        .expect(404)
-        .then((res) => {
-          expect(res.body.messasge).to.contain(
-            'Error retrieving viper rating for nomisId: foo-mal. The cause was: Invalid body:',
-          );
-        }),
+      agent.get('/api/viper/foo-mal').expect(404).then((res) => {
+        expect(res.body.messasge).to.contain(
+          'Error retrieving viper rating for nomisId: foo-mal. The cause was: Invalid body:',
+        );
+      }),
     );
   });
 
@@ -277,7 +281,7 @@ describe('/api/viper/:nomisId', () => {
       },
     })
       .then(() =>
-        request(baseUrl)
+        agent
           .get('/api/viper/foo-invalid')
           .expect(404),
       )
@@ -304,7 +308,7 @@ describe('/api/viper/:nomisId', () => {
         },
       },
     }).then(() =>
-      request(baseUrl)
+      agent
         .get('/api/viper/foo-wrong')
         .expect(404)
         .then((res) => {
@@ -332,7 +336,7 @@ describe('/api/viper/:nomisId', () => {
         fixedDelayMilliseconds: 2100,
       },
     }).then(() =>
-      request(baseUrl)
+      agent
         .get('/api/viper/foo-timeout')
         .expect(404)
         .then((res) => {
@@ -347,7 +351,7 @@ describe('/api/viper/:nomisId', () => {
   it('returns a 404 (not found) for an unknown nomis id', function test() {
     this.timeout(timeoutDuration);
     const unknownNomisId = uuid().substring(0, 8);
-    return request(baseUrl)
+    return agent
       .get(`/api/viper/${unknownNomisId}`)
       .expect(404)
       .then((res) => {

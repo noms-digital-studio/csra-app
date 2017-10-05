@@ -18,6 +18,7 @@ const createViperRoute = require('./routes/viper');
 const createPrisonerAssessmentsRoute = require('./routes/assessments');
 const createSignInRoute = require('./routes/signIn');
 const index = require('./routes/index');
+const { authenticationMiddleware } = require('./authentication');
 
 module.exports = function createApp({ db, appInfo, viperService, prisonerAssessmentsService, signInService }) {
   const app = express();
@@ -52,9 +53,9 @@ module.exports = function createApp({ db, appInfo, viperService, prisonerAssessm
 
   app.use(express.static(path.join(__dirname, '..', 'public')));
 
+  app.use('/api/assessments', createPrisonerAssessmentsRoute(prisonerAssessmentsService, authenticationMiddleware));
+  app.use('/api/viper', createViperRoute(viperService, authenticationMiddleware));
   app.use('/health', createHealthRoute(db, appInfo));
-  app.use('/api/viper', createViperRoute(viperService));
-  app.use('/api/assessments', createPrisonerAssessmentsRoute(prisonerAssessmentsService));
   app.use('/signin', createSignInRoute(passport));
   app.use('/', index);
 
