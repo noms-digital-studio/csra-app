@@ -1,5 +1,3 @@
-import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task'
-
 describe('/ (homepage)', () => {
   before(() => {
     browser.url('/');

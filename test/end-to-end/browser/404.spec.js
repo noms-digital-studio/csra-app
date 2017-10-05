@@ -1,10 +1,10 @@
-import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task'
+import givenThatTheOfficerIsSignedIn from './tasks/officerSignsIn.task';
 import Page from './pages/BasePage';
 
 const Page404 = new Page();
 
 
-function whenINavigateToAKnownPage(){
+function whenINavigateToAKnownPage() {
   browser.url('/unknown');
 }
 
