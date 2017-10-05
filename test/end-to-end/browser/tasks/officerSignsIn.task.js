@@ -8,10 +8,11 @@ function givenThatTheOfficerIsSignedIn({ smokeTest } = {}) {
     clearPrisonerAssessmentsSync();
   }
 
-  expect(LoginPage.mainHeading).to.equal('Your full name');
-  LoginPage.enterUsername('officer1');
+  expect(LoginPage.mainHeading).to.equal('Sign in');
+  LoginPage.enterUsername('officer');
+  LoginPage.enterUserpassword('password');
   LoginPage.clickContinue();
-  expect(BeforeYouStartPage.headerUsername).to.equal('officer1');
+  expect(BeforeYouStartPage.headerUsername).to.equal('John Smith');
   expect(BeforeYouStartPage.mainHeading).to.equal('Cell sharing risk assessment');
   BeforeYouStartPage.clickContinue();
 
