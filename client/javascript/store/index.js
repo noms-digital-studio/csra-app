@@ -8,7 +8,6 @@ import persistState from 'redux-sessionstorage';
 
 import questionnaireReducer from '../reducers/questionnaire';
 import offenderReducer from '../reducers/offender';
-import loginReducer from '../reducers/login';
 import assessmentStatusReducer from '../reducers/assessmentStatus';
 import assessmentReducer from '../reducers/assessment';
 
@@ -31,7 +30,6 @@ const reducers = combineReducers({
   routing: routerReducer,
   questions: questionnaireReducer,
   offender: offenderReducer,
-  login: loginReducer,
   assessmentStatus: assessmentStatusReducer,
   assessments: assessmentReducer,
 });

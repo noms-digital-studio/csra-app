@@ -3,11 +3,14 @@ describe('/ (homepage)', () => {
     browser.url('/');
   });
 
-  it('display the correct page title', () => {
-    expect(browser.getTitle()).equal('Sign in');
-  });
+  context('Given that an officer is signed out', () => {
+    it('display the signin title', () => {
+      expect(browser.getText('h1')).equal('Sign in');
+    });
 
-  it('displays "Your full name" on the page', () => {
-    expect(browser.getText('main')).to.contain('Your full name');
+    it('displays the sign in page on the page', () => {
+      expect(browser.getText('main')).to.contain('Username');
+      expect(browser.getText('main')).to.contain('Password');
+    });
   });
 });

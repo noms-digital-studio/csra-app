@@ -21,11 +21,17 @@ const config = {
   dev: !production,
   port: process.env.PORT || '5000',
   appinsightsKey: process.env.APPINSIGHTS_INSTRUMENTATIONKEY || 'your-secret-key',
+  sessionSecret: process.env.SESSION_SECRET || 'your-secret-key',
   db: {},
   dbTestUser: {},
   viper: {
     url: null,
     apiKey: null,
+  },
+  elite2: {
+    url: null,
+    apiGatewayToken: null,
+    apiGatewayPrivateKey: null,
   },
 };
 
@@ -52,4 +58,7 @@ if (dbUriTests) {
 config.viper.url = neededInProd('VIPER_SERVICE_URL');
 config.viper.apiKey = neededInProd('VIPER_SERVICE_API_KEY');
 
+config.elite2.url = neededInProd('ELITE2_URL');
+config.elite2.apiGatewayToken = neededInProd('ELITE2_API_GATEWAY_TOKEN');
+config.elite2.apiGatewayPrivateKey = new Buffer(neededInProd('ELITE2_API_GATEWAY_PRIVATE_KEY'), 'base64').toString('ascii');
 module.exports = config;

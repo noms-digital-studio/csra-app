@@ -8,13 +8,14 @@ import { checkThatPrisonerAssessmentDataWasWrittenToDatabase,
 
 import db from '../../util/db';
 
-const baseUrl = process.env.APP_BASE_URL;
 const timeoutDuration = 25000;
 
 function generateNomisId() {
   const nomisId = uuid().substring(0, 8);
   return nomisId.toUpperCase();
 }
+
+const agent = request.agent(process.env.APP_BASE_URL);
 
 async function primeDatabase({
   nomisId, riskAssessment = null,
@@ -39,9 +40,14 @@ async function primeDatabase({
 describe('/api/assessments/', () => {
   const nomisId = generateNomisId();
 
+  before(async function beforeTests() {
+    const result = await agent.post('/signin').send('username=officer&password=password').expect(302);
+    expect(result.headers.location).to.eql('/');
+  });
+
   it('saves the prisoner data', async function test() {
     this.timeout(timeoutDuration);
-    const result = await request(baseUrl).post('/api/assessments/').send({
+    const result = await agent.post('/api/assessments/').send({
       nomisId,
       forename: 'assessmentService',
       surname: 'test',
@@ -62,7 +68,7 @@ describe('/api/assessments/', () => {
     this.timeout(timeoutDuration);
     await primeDatabase({ nomisId });
 
-    const result = await request(baseUrl).get('/api/assessments/').expect(200);
+    const result = await agent.get('/api/assessments/').expect(200);
 
     const prisonerAssessment = result.body[0];
     expect(prisonerAssessment.nomisId).to.equal(nomisId);
@@ -79,7 +85,7 @@ describe('/api/assessments/', () => {
     const result = await primeDatabase({ nomisId });
     const id = result.id;
 
-    await request(baseUrl).put(`/api/assessments/${id}/risk`).send(
+    await agent.put(`/api/assessments/${id}/risk`).send(
       {
         outcome: 'single cell',
         viperScore: 0.35,
@@ -104,7 +110,7 @@ describe('/api/assessments/', () => {
       riskAssessment: JSON.stringify({ outcome: 'single cell', viperScore: 0.35, questions: { Q1: { questionId: 'Q1', question: 'Example question text?', answer: 'Yes' } }, reasons: [{ questionId: 'Q1', reason: 'Example reason text' }] }) });
     const id = dbResult.id;
 
-    const result = await request(baseUrl).get(`/api/assessments/${id}/risk`).expect(200);
+    const result = await agent.get(`/api/assessments/${id}/risk`).expect(200);
 
     expect(result.body).to.equal('{"outcome":"single cell","viperScore":0.35,"questions":{"Q1":{"questionId":"Q1","question":"Example question text?","answer":"Yes"}},"reasons":[{"questionId":"Q1","reason":"Example reason text"}]}');
   });
@@ -114,7 +120,7 @@ describe('/api/assessments/', () => {
     const result = await primeDatabase({ nomisId });
     const id = result.id;
 
-    await request(baseUrl).put(`/api/assessments/${id}/health`).send(
+    await agent.put(`/api/assessments/${id}/health`).send(
       {
         outcome: 'single cell',
         viperScore: 0.35,
@@ -137,7 +143,7 @@ describe('/api/assessments/', () => {
       healthAssessment: JSON.stringify({ outcome: 'single cell', viperScore: 0.35, questions: { Q1: { questionId: 'Q1', question: 'Example question text?', answer: 'Yes' } }, reasons: [{ questionId: 'Q1', reason: 'Example reason text' }] }) });
     const id = dbResult.id;
 
-    const result = await request(baseUrl).get(`/api/assessments/${id}/health`).expect(200);
+    const result = await agent.get(`/api/assessments/${id}/health`).expect(200);
 
     expect(result.body).to.equal('{"outcome":"single cell","viperScore":0.35,"questions":{"Q1":{"questionId":"Q1","question":"Example question text?","answer":"Yes"}},"reasons":[{"questionId":"Q1","reason":"Example reason text"}]}');
   });
@@ -147,7 +153,7 @@ describe('/api/assessments/', () => {
     const result = await primeDatabase({ nomisId });
     const id = result.id;
 
-    await request(baseUrl).put(`/api/assessments/${id}/outcome`).send({ outcome: 'single cell' }).expect(200);
+    await agent.put(`/api/assessments/${id}/outcome`).send({ outcome: 'single cell' }).expect(200);
 
     await checkThatTheOutcomeDataWasWrittenToDatabase({ id, outcome: 'single cell' });
   });
@@ -157,7 +163,7 @@ describe('/api/assessments/', () => {
     const dbResult = await primeDatabase({ nomisId, outcome: 'shared cell' });
     const id = dbResult.id;
 
-    const result = await request(baseUrl).get(`/api/assessments/${id}`).expect(200);
+    const result = await agent.get(`/api/assessments/${id}`).expect(200);
 
     expect(result.body.outcome).to.equal('shared cell');
     expect(result.body.nomisId).to.equal(nomisId);

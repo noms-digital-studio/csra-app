@@ -1,0 +1,75 @@
+doctype html
+// <![endif]
+head
+  meta(charset='utf-8')
+  meta(content='IE=edge', http-equiv='X-UA-Compatible')
+  meta(content='width=device-width, initial-scale=1', name='viewport')
+  meta(property='og:image', content='/assets/images/opengraph-image.png')
+  meta(content='', name='description')
+  title Assess if a prisoner can share a cell safely
+  link(rel='shortcut icon', href='/assets/images/favicon.ico', type='image/x-icon')
+  link(rel='mask-icon', href='/assets/images/gov.uk_logotype_crown.svg', color='#0b0c0c')
+  link(rel='apple-touch-icon-precomposed', sizes='152x152', href='/assets/images/apple-touch-icon-152x152.png')
+  link(rel='apple-touch-icon-precomposed', sizes='120x120', href='/assets/images/apple-touch-icon-120x120.png')
+  link(rel='apple-touch-icon-precomposed', sizes='76x76', href='/assets/images/apple-touch-icon-76x76.png')
+  link(rel='apple-touch-icon-precomposed', href='/assets/images/apple-touch-icon-60x60.png')
+  link(href='/assets/stylesheets/application.css', media='screen', rel='stylesheet')
+
+body
+    div
+      header#global-header(role='banner', class='c-global-header with-proposition')
+        div(class='header-wrapper')
+          div(class='header-global c-header-global')
+            div(class='header-logo')
+              a#logo.content(href='/', title='Go to the GOV.UK homepage')
+                img(src='/assets/images/gov.uk_logotype_crown_invert_trans.png', width='36', height='32', alt='')
+                | HMPPS
+
+          .header-proposition.c-header-proposition
+            .content
+              nav#proposition-menu
+                a#proposition-name(href='/') Cell sharing risk assessment
+
+                if isLoggedIn
+                  div(class='c-global-header__wrapper')
+                    span(class='c-global-header__username', data-header-username='')
+                      | #{name}
+                    span(class='c-profile-holder c-profile-holder--global-header')
+                    a(href='/signout', data-element-id='sign-out', class='c-profile-logout') Sign out
+
+
+      #global-header-bar
+
+      main#content(role='main')
+        div(class='phase-banner')
+          p
+            strong(class='phase-tag phase-alpha') Private Alpha
+            span
+              | This is a new service – your&nbsp;
+              a(href='/feedback', class='link') feedback
+              |  will help us to improve it.
+
+        block content
+
+      footer#footer(class='group', role='contentinfo')
+        div(class='footer-wrapper')
+          div(class='footer-meta')
+            div(class='footer-meta-inner')
+              div(class='open-government-licence')
+                p(class='logo')
+                  a(href='https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/', rel='license') Open Government Licence
+                p
+                  | All content is available under the
+                  a(href='https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/', rel='license') Open Government Licence v3.0
+                  | , except where otherwise stated
+            div(class='copyright')
+              a(href='http://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/copyright-and-re-use/crown-copyright/') © Crown copyright
+
+
+      script(type='text/javascript').
+        var appInsights=window.appInsights||function(config){
+        function i(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s="AuthenticatedUserContext",h="start",c="stop",l="Track",a=l+"Event",v=l+"Page",y=u.createElement(o),r,f;y.src=config.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js";u.getElementsByTagName(o)[0].parentNode.appendChild(y);try{t.cookie=u.cookie}catch(p){}for(t.queue=[],t.version="1.0",r=["Event","Exception","Metric","PageView","Trace","Dependency"];r.length;)i("track"+r.pop());return i("set"+s),i("clear"+s),i(h+a),i(c+a),i(h+v),i(c+v),i("flush"),config.disableExceptionTracking||(r="onerror",i("_"+r),f=e[r],e[r]=function(config,i,u,e,o){var s=f&&f(config,i,u,e,o);return s!==!0&&t["_"+r](config,i,u,e,o),s}),t
+        }({
+        instrumentationKey: "#{appinsightsKey}"
+        });
+        window.appInsights = appInsights;

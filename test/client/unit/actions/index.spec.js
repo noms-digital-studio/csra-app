@@ -1,6 +1,4 @@
 import {
-  signIn,
-  signOut,
   getRiskAssessmentQuestions,
   getHealthAssessmentQuestions,
   getOffenderAssessments,
@@ -67,24 +65,6 @@ describe('Actions', () => {
       expect(selectOffender(offender)).to.eql({
         type: 'SELECT_OFFENDER',
         payload: offender,
-      });
-    });
-  });
-
-  describe('#signIn', () => {
-    it('returns a SIGN_IN action', () => {
-      const user = 'Foo bar';
-      expect(signIn(user)).to.eql({
-        type: 'SIGN_IN',
-        payload: user,
-      });
-    });
-  });
-
-  describe('#signOut', () => {
-    it('returns a SIGN_OUT action', () => {
-      expect(signOut()).to.eql({
-        type: 'SIGN_OUT',
       });
     });
   });

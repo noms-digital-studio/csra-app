@@ -2,11 +2,17 @@ import request from 'supertest';
 import sinon from 'sinon';
 import express from 'express';
 import createPrisonerAssessmentsEndpoint from '../../../../server/routes/assessments';
+import { authenticationMiddleware } from '../helpers/mockAuthentication';
 
 const app = express();
-
 const fakePrisonerAssessmentsService = sinon.stub();
-app.use(createPrisonerAssessmentsEndpoint(fakePrisonerAssessmentsService));
+
+app.use(
+  createPrisonerAssessmentsEndpoint(
+    fakePrisonerAssessmentsService,
+    authenticationMiddleware,
+  ),
+);
 
 describe('POST /assessements', () => {
   it('responds with status CREATED (201) when the prisoner assessment record was created', () => {

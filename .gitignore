@@ -34,8 +34,11 @@ node_modules/
 
 # dotenv environment variables file
 .env
+client.*
 
 reports
 test-results.xml
 build-info.json
 temp
+
+public/assets/stylesheets/*.css

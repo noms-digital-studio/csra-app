@@ -38,8 +38,9 @@ function handleErrors(err, res) {
   }
 }
 
-module.exports = function createRouter(prisonerAssessmentsService) {
+module.exports = function createRouter(prisonerAssessmentsService, authenticationMiddleware) {
   const router = express.Router();
+  router.use(authenticationMiddleware());
 
   router.post('/', (req, res) => {
     prisonerAssessmentsService.save(req.body)

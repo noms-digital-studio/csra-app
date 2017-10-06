@@ -10,6 +10,7 @@ describe('GET /health', () => {
   let fakeDB;
   let getBuildInfo;
   let fakeViperRestService;
+  let fakeElite2RestService;
 
   beforeEach(() => {
     app = express();
@@ -21,6 +22,7 @@ describe('GET /health', () => {
     const fakeAppInfo = { getBuildInfo };
     app.use('/health', createHealthEndpoint(fakeDB, fakeAppInfo));
     fakeViperRestService = nock(`${config.viper.url}`);
+    fakeElite2RestService = nock(`${config.elite2.url}`);
   });
 
   afterEach(() => {
@@ -32,6 +34,11 @@ describe('GET /health', () => {
       .get('/analytics/health')
       .reply(200, { healthy: true });
 
+    fakeElite2RestService
+      .matchHeader('Accept', 'application/json')
+      .get('/info/health')
+      .reply(200, { status: 'UP' });
+
     return request(app)
       .get('/health')
       .expect(200)
@@ -40,6 +47,7 @@ describe('GET /health', () => {
         expect(res.body).to.have.property('status', 'OK');
         expect(res.body).to.have.deep.property('checks.db', 'OK');
         expect(res.body).to.have.deep.property('checks.viperRestService', 'OK');
+        expect(res.body).to.have.deep.property('checks.elite2RestService', 'OK');
       });
   });
 
@@ -47,6 +55,10 @@ describe('GET /health', () => {
     fakeViperRestService
       .get('/health')
       .reply(500, { healthy: false });
+
+    fakeElite2RestService
+    .get('/info/health')
+    .reply(200, { status: 'UP' });
 
     return request(app)
       .get('/health')
@@ -56,12 +68,42 @@ describe('GET /health', () => {
         expect(res.body).to.have.property('status', 'ERROR');
         expect(res.body).to.have.deep.property('checks.db', 'OK');
         expect(res.body).to.have.deep.property('checks.viperRestService', 'ERROR');
+        expect(res.body).to.have.deep.property('checks.elite2RestService', 'OK');
+      });
+  });
+
+  it('responds with 500 {status: "ERROR" } when elite 2 rest service is unhealthy', () => {
+    fakeViperRestService
+    .get('/analytics/health')
+    .reply(200, { healthy: true });
+
+    fakeElite2RestService
+    .get('info/health')
+    .reply(500, { status: 'DOWN' });
+
+    return request(app)
+      .get('/health')
+      .expect(500)
+      .expect('Content-Type', /json/)
+      .expect((res) => {
+        expect(res.body).to.have.property('status', 'ERROR');
+        expect(res.body).to.have.deep.property('checks.db', 'OK');
+        expect(res.body).to.have.deep.property('checks.viperRestService', 'OK');
+        expect(res.body).to.have.deep.property('checks.elite2RestService', 'ERROR');
       });
   });
 
   context('when the DB isn\'t working', () => {
     beforeEach(() => {
       fakeDB.select.rejects(new Error('it cannae take it captain'));
+
+      fakeViperRestService
+      .get('/analytics/health')
+      .reply(200, { healthy: true });
+
+      fakeElite2RestService
+      .get('/info/health')
+      .reply(200, { status: 'UP' });
     });
 
     it('responds with 500 { status: "ERROR" } and check detail',
@@ -87,6 +129,10 @@ describe('GET /health', () => {
       fakeViperRestService
         .get('/analytics/health')
         .reply(200, { healthy: true });
+
+      fakeElite2RestService
+      .get('/info/health')
+      .reply(200, { status: 'UP' });
     });
 
     it('adds the build info into the status response',

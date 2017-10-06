@@ -3,8 +3,6 @@ import {
   GET_HEALTH_ASSESSMENT_QUESTIONS,
   GET_OFFENDER_ASSESSMENTS,
   SELECT_OFFENDER,
-  SIGN_IN,
-  SIGN_OUT,
   ADD_PRISONER,
   CONFIRM_PRISONER,
   HEALTHCARE_ANSWERS_COMPLETE,
@@ -41,10 +39,6 @@ export const selectOffender = offender => ({
   type: SELECT_OFFENDER,
   payload: offender,
 });
-
-export const signIn = user => ({ type: SIGN_IN, payload: user });
-
-export const signOut = () => ({ type: SIGN_OUT });
 
 export const addPrisoner = prisoner => ({
   type: ADD_PRISONER,
@@ -97,7 +91,6 @@ export const saveRiskAssessmentAnswer = ({ id, question, answer }) => ({
   type: STORE_ASSESSMENT_ANSWER,
   payload: { id, questionAnswer: buildQuestionAnswer(question, answer), assessmentType: 'risk' },
 });
-
 
 export const saveRiskAssessmentOutcome = ({ id, outcome }) => ({
   type: STORE_ASSESSMENT_OUTCOME,

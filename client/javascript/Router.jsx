@@ -7,7 +7,6 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import Layout from './containers/Main';
 
 // import Admin from './pages/Admin';
-import SignInHoc from './pages/SignIn';
 import DashboardHoC from './pages/Dashboard';
 import AddPrisonerHoc from './pages/AddPrisoner';
 import ConfirmOffenderHoc from './pages/ConfirmPrisoner';
@@ -39,8 +38,7 @@ export default (store) => {
         }}
       >
         <Route component={Layout}>
-          <Route path="/" name="home" component={SignInHoc} />
-          <Route path="/before-you-start" component={BeforeYouStart} />
+          <Route path="/" component={BeforeYouStart} />
           <Route path="/dashboard" name="dashboard" component={DashboardHoC} />
           <Route
             path="/add-offender"
@@ -57,8 +55,6 @@ export default (store) => {
             name="offender-profile"
             component={OffenderProfileHoc}
           />
-          {/* <Route path="/admin" name="admin" component={Admin} /> */}
-          <Route path="/sign-in" name="sign-in" component={SignInHoc} />
           <Route
             path="/healthcare-assessment/:section"
             component={HealthcareAssessment}

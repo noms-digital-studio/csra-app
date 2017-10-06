@@ -54,7 +54,7 @@ jobs:
               GIT_DATE=$(git log --format=%cd -n1 --date=iso $CIRCLE_SHA1) \
                 yarn run record-build-info
 
-              git add --force --verbose build-info.json public/dist
+              git add --force --verbose build-info.json public/dist public/assets/stylesheets/application.css
               git config user.name "Circle CI"
               git config user.email "circle@circleci.com"
               git commit \
