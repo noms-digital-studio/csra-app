@@ -40,10 +40,10 @@ async function primeDatabase({
 describe('/api/assessments/', () => {
   const nomisId = generateNomisId();
 
-  before(() => agent.post('/signin').send('username=officer&password=password')
-    .expect(302).expect((res) => {
-      expect(res.headers.location).to.eql('/');
-    }));
+  before(async function beforeTests() {
+    const result = await agent.post('/signin').send('username=officer&password=password').expect(302);
+    expect(result.headers.location).to.eql('/');
+  });
 
   it('saves the prisoner data', async function test() {
     this.timeout(timeoutDuration);
