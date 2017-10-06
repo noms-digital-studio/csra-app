@@ -8,7 +8,7 @@ import config from '../../../server/config';
 const baseUrl = process.env.APP_BASE_URL;
 const timeoutDuration = 25000;
 
-function primeMock(mapping) {
+async function primeMock(mapping) {
   return superagent.post(url.resolve(`${config.viper.url}`, '/__admin/mappings')).send(mapping);
 }
 
@@ -22,14 +22,13 @@ const agent = request.agent(baseUrl);
 describe('/api/viper/:nomisId', () => {
   const nomisId = generateNomisId();
 
-  before(function beforeTests() {
+  before(async function beforeTests() {
     this.timeout(timeoutDuration);
+    const result = await agent.post('/signin').send('username=officer&password=password').expect(302);
 
-    return agent.post('/signin').send('username=officer&password=password')
-      .expect(302).expect((res) => {
-        expect(res.headers.location).to.eql('/');
-      })
-    .then(() => primeMock({
+    expect(result.headers.location).to.eql('/');
+
+    await primeMock({
       request: {
         method: 'GET',
         urlPattern: `/analytics/viper/${nomisId}`,
@@ -46,24 +45,20 @@ describe('/api/viper/:nomisId', () => {
           'Content-Type': 'application/json',
         },
       },
-    }),
-    );
+    });
   });
 
-  it('returns a viper rating for a known nomis id', function test() {
+  it('returns a viper rating for a known nomis id', async function test() {
     this.timeout(timeoutDuration);
-    return agent
-      .get(`/api/viper/${nomisId}`)
-      .expect(200)
-      .then((res) => {
-        expect(res.body).to.eql({ nomisId, viperRating: 0.42 });
-      });
+    const result = await agent.get(`/api/viper/${nomisId}`).expect(200);
+
+    expect(result.body).to.eql({ nomisId, viperRating: 0.42 });
   });
 
-  it('returns a viper rating for a known nomis id when response contains extra fields', function test() {
+  it('returns a viper rating for a known nomis id when response contains extra fields', async function test() {
     const newNomisId = generateNomisId();
     this.timeout(timeoutDuration);
-    return primeMock({
+    await primeMock({
       request: {
         method: 'GET',
         urlPattern: `/analytics/viper/${newNomisId}`,
@@ -80,19 +75,16 @@ describe('/api/viper/:nomisId', () => {
           'Content-Type': 'application/json',
         },
       },
-    }).then(() =>
-      agent
-        .get(`/api/viper/${newNomisId}`)
-        .expect(200)
-        .then((res) => {
-          expect(res.body).to.eql({ nomisId: newNomisId, viperRating: 0.42 });
-        }),
-    );
+    });
+
+    const result = await agent.get(`/api/viper/${newNomisId}`).expect(200);
+
+    expect(result.body).to.eql({ nomisId: newNomisId, viperRating: 0.42 });
   });
 
-  it('returns a 404 (not found) when an unauthorised (401) response is received', function test() {
+  it('returns a 404 (not found) when an unauthorised (401) response is received', async function test() {
     this.timeout(timeoutDuration);
-    return primeMock({
+    await primeMock({
       request: {
         method: 'GET',
         urlPattern: '/analytics/viper/foo-401',
@@ -105,22 +97,18 @@ describe('/api/viper/:nomisId', () => {
           'Content-Type': 'application/json',
         },
       },
-    })
-      .then(() =>
-        agent
-          .get('/api/viper/foo-401')
-          .expect(404),
-      )
-      .then((res) => {
-        expect(res.body).to.eql({
-          messasge: 'Error retrieving viper rating for nomisId: foo-401. The cause was: Not found',
-        });
-      });
+    });
+
+    const result = await agent.get('/api/viper/foo-401').expect(404);
+
+    expect(result.body).to.eql({
+      messasge: 'Error retrieving viper rating for nomisId: foo-401. The cause was: Not found',
+    });
   });
 
-  it('returns a 404 (not found) when a forbidden (403) response is received', function test() {
+  it('returns a 404 (not found) when a forbidden (403) response is received', async function test() {
     this.timeout(timeoutDuration);
-    primeMock({
+    await primeMock({
       request: {
         method: 'GET',
         urlPattern: '/analytics/viper/foo-403',
@@ -133,22 +121,18 @@ describe('/api/viper/:nomisId', () => {
           'Content-Type': 'application/json',
         },
       },
-    }).then(() =>
-      agent
-        .get('/api/viper/foo-403')
-        .expect(404)
-        .then((res) => {
-          expect(res.body).to.eql({
-            messasge:
-              'Error retrieving viper rating for nomisId: foo-403. The cause was: Not found',
-          });
-        }),
-    );
+    });
+
+    const result = await agent.get('/api/viper/foo-403').expect(404);
+
+    expect(result.body).to.eql({
+      messasge: 'Error retrieving viper rating for nomisId: foo-403. The cause was: Not found',
+    });
   });
 
-  it('returns a 404 (not found) when a bad request (400) response is received', function test() {
+  it('returns a 404 (not found) when a bad request (400) response is received', async function test() {
     this.timeout(timeoutDuration);
-    return primeMock({
+    await primeMock({
       request: {
         method: 'GET',
         urlPattern: '/analytics/viper/foo-400',
@@ -160,22 +144,17 @@ describe('/api/viper/:nomisId', () => {
           'Content-Type': 'application/json',
         },
       },
-    }).then(() =>
-      agent
-        .get('/api/viper/foo-400')
-        .expect(404)
-        .then((res) => {
-          expect(res.body).to.eql({
-            messasge:
-              'Error retrieving viper rating for nomisId: foo-400. The cause was: Not found',
-          });
-        }),
-    );
+    });
+    const result = await agent.get('/api/viper/foo-400').expect(404);
+
+    expect(result.body).to.eql({
+      messasge: 'Error retrieving viper rating for nomisId: foo-400. The cause was: Not found',
+    });
   });
 
-  it('returns a 404 (not found) when an unexpected error (500) response is received', function test() {
+  it('returns a 404 (not found) when an unexpected error (500) response is received', async function test() {
     this.timeout(timeoutDuration);
-    return primeMock({
+    await primeMock({
       request: {
         method: 'GET',
         urlPattern: '/analytics/viper/foo-500',
@@ -187,22 +166,18 @@ describe('/api/viper/:nomisId', () => {
           'Content-Type': 'application/json',
         },
       },
-    }).then(() =>
-      agent
-        .get('/api/viper/foo-500')
-        .expect(404)
-        .then((res) => {
-          expect(res.body).to.eql({
-            messasge:
-              'Error retrieving viper rating for nomisId: foo-500. The cause was: Not found',
-          });
-        }),
-    );
+    });
+
+    const result = await agent.get('/api/viper/foo-500').expect(404);
+
+    expect(result.body).to.eql({
+      messasge: 'Error retrieving viper rating for nomisId: foo-500. The cause was: Not found',
+    });
   });
 
-  it('returns a 404 (not found) when an empty response is received', function test() {
+  it('returns a 404 (not found) when an empty response is received', async function test() {
     this.timeout(timeoutDuration);
-    return primeMock({
+    await primeMock({
       request: {
         method: 'GET',
         urlPattern: '/analytics/viper/foo-empty',
@@ -210,22 +185,18 @@ describe('/api/viper/:nomisId', () => {
       response: {
         fault: 'EMPTY_RESPONSE',
       },
-    }).then(() =>
-      agent
-        .get('/api/viper/foo-empty')
-        .expect(404)
-        .then((res) => {
-          expect(res.body).to.eql({
-            messasge:
-              'Error retrieving viper rating for nomisId: foo-empty. The cause was: Not found',
-          });
-        }),
-    );
+    });
+
+    const result = await agent.get('/api/viper/foo-empty').expect(404);
+
+    expect(result.body).to.eql({
+      messasge: 'Error retrieving viper rating for nomisId: foo-empty. The cause was: Not found',
+    });
   });
 
-  it('returns a 404 (not found) when connection is closed during response', function test() {
+  it('returns a 404 (not found) when connection is closed during response', async function test() {
     this.timeout(timeoutDuration);
-    return primeMock({
+    await primeMock({
       request: {
         method: 'GET',
         urlPattern: '/analytics/viper/foo-closed',
@@ -233,22 +204,18 @@ describe('/api/viper/:nomisId', () => {
       response: {
         fault: 'RANDOM_DATA_THEN_CLOSE',
       },
-    }).then(() =>
-      agent
-        .get('/api/viper/foo-closed')
-        .expect(404)
-        .then((res) => {
-          expect(res.body).to.eql({
-            messasge:
-              'Error retrieving viper rating for nomisId: foo-closed. The cause was: Not found',
-          });
-        }),
-    );
+    });
+
+    const result = await agent.get('/api/viper/foo-closed').expect(404);
+
+    expect(result.body).to.eql({
+      messasge: 'Error retrieving viper rating for nomisId: foo-closed. The cause was: Not found',
+    });
   });
 
-  it('returns a 404 (not found) when response is malformed', function test() {
+  it('returns a 404 (not found) when response is malformed', async function test() {
     this.timeout(timeoutDuration);
-    return primeMock({
+    await primeMock({
       request: {
         method: 'GET',
         urlPattern: '/analytics/viper/foo-mal',
@@ -256,18 +223,15 @@ describe('/api/viper/:nomisId', () => {
       response: {
         fault: 'MALFORMED_RESPONSE_CHUNK',
       },
-    }).then(() =>
-      agent.get('/api/viper/foo-mal').expect(404).then((res) => {
-        expect(res.body.messasge).to.contain(
-          'Error retrieving viper rating for nomisId: foo-mal. The cause was: Invalid body:',
-        );
-      }),
-    );
+    });
+
+    const result = await agent.get('/api/viper/foo-mal').expect(404);
+    expect(result.body.messasge).to.contain('Error retrieving viper rating for nomisId: foo-mal. The cause was: Invalid body:');
   });
 
-  it('returns a 404 (not found) when response body is invalid', function test() {
+  it('returns a 404 (not found) when response body is invalid', async function test() {
     this.timeout(timeoutDuration);
-    primeMock({
+    await primeMock({
       request: {
         method: 'GET',
         urlPattern: '/analytics/viper/foo-invalid',
@@ -279,23 +243,18 @@ describe('/api/viper/:nomisId', () => {
           'Content-Type': 'application/json',
         },
       },
-    })
-      .then(() =>
-        agent
-          .get('/api/viper/foo-invalid')
-          .expect(404),
-      )
-      .then((res) => {
-        expect(res.body).to.eql({
-          messasge:
-            'Error retrieving viper rating for nomisId: foo-invalid. The cause was: Invalid body: {"id": "1234", "value": 0.42}',
-        });
-      });
+    });
+
+    const result = await agent.get('/api/viper/foo-invalid').expect(404);
+
+    expect(result.body).to.eql({ messasge:
+      'Error retrieving viper rating for nomisId: foo-invalid. The cause was: Invalid body: {"id": "1234", "value": 0.42}',
+    });
   });
 
-  it('returns a 404 (not found) when response is the wrong format', function test() {
+  it('returns a 404 (not found) when response is the wrong format', async function test() {
     this.timeout(timeoutDuration);
-    return primeMock({
+    await primeMock({
       request: {
         method: 'GET',
         urlPattern: '/analytics/viper/foo-wrong',
@@ -307,22 +266,19 @@ describe('/api/viper/:nomisId', () => {
           'Content-Type': 'application/xml',
         },
       },
-    }).then(() =>
-      agent
-        .get('/api/viper/foo-wrong')
-        .expect(404)
-        .then((res) => {
-          expect(res.body).to.eql({
-            messasge:
-              'Error retrieving viper rating for nomisId: foo-wrong. The cause was: Invalid body: undefined',
-          });
-        }),
-    );
+    });
+
+    const result = await agent.get('/api/viper/foo-wrong').expect(404);
+
+    expect(result.body).to.eql({
+      messasge:
+            'Error retrieving viper rating for nomisId: foo-wrong. The cause was: Invalid body: undefined',
+    });
   });
 
-  it('returns a 404 (not found) when no response is receive within timeout limit', function test() {
+  it('returns a 404 (not found) when no response is receive within timeout limit', async function test() {
     this.timeout(timeoutDuration);
-    return primeMock({
+    await primeMock({
       request: {
         method: 'GET',
         urlPattern: '/analytics/viper/foo-timeout',
@@ -335,29 +291,23 @@ describe('/api/viper/:nomisId', () => {
         },
         fixedDelayMilliseconds: 2100,
       },
-    }).then(() =>
-      agent
-        .get('/api/viper/foo-timeout')
-        .expect(404)
-        .then((res) => {
-          expect(res.body).to.eql({
-            messasge:
-              'Error retrieving viper rating for nomisId: foo-timeout. The cause was: Not found',
-          });
-        }),
-    );
+    });
+
+    const result = await agent.get('/api/viper/foo-timeout').expect(404);
+
+    expect(result.body).to.eql({
+      messasge:
+        'Error retrieving viper rating for nomisId: foo-timeout. The cause was: Not found',
+    });
   });
 
-  it('returns a 404 (not found) for an unknown nomis id', function test() {
+  it('returns a 404 (not found) for an unknown nomis id', async function test() {
     this.timeout(timeoutDuration);
     const unknownNomisId = uuid().substring(0, 8);
-    return agent
-      .get(`/api/viper/${unknownNomisId}`)
-      .expect(404)
-      .then((res) => {
-        expect(res.body).to.eql({
-          messasge: `Error retrieving viper rating for nomisId: ${unknownNomisId}. The cause was: Not found`,
-        });
-      });
+    const result = await agent.get(`/api/viper/${unknownNomisId}`).expect(404);
+
+    expect(result.body).to.eql({
+      messasge: `Error retrieving viper rating for nomisId: ${unknownNomisId}. The cause was: Not found`,
+    });
   });
 });
