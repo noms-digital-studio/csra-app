@@ -335,7 +335,7 @@ Response:
 
 ### Sign In POST `/signin`
 
-Signs the user in via the NOMIS ELite 2 REST API. 
+Signs the user in via the NOMIS ELite 2 REST API.
 
 Returns 302 for successful sign in that takes the user to the first page in the service. The forename and surname
 returned from the Elite 2 API are stored in a session cookie.
@@ -373,8 +373,8 @@ yarn run knex -- <other args>
 
 To run the database locally, use the [docker image](https://hub.docker.com/r/microsoft/mssql-server-linux/).
 ```
-docker pull microsoft/mssql-server-linux
-docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=<password>' -p 1433:1433 -d microsoft/mssql-server-linux
+docker pull microsoft/mssql-server-linux:2017-latest
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=<password>' -p 1433:1433 -d microsoft/mssql-server-linux:2017-latest
 ```
 
 After you have a database, you'll need to create the database and application user. On real environments this is handled by the terraform code.
