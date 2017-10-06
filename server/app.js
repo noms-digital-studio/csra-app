@@ -9,7 +9,7 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 
-
+const config = require('./config');
 const { logger } = require('./services/logger');
 const authentication = require('./authentication');
 
@@ -41,7 +41,7 @@ module.exports = function createApp({ db, appInfo, viperService, prisonerAssessm
   app.use(json());
 
   app.use(session({
-    secret: 'PUT ME IN AN ENVIRONMENT VARIABLE',
+    secret: config.sessionSecret,
     resave: false,
     saveUninitialized: true,
   }));

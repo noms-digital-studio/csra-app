@@ -21,6 +21,7 @@ const config = {
   dev: !production,
   port: process.env.PORT || '5000',
   appinsightsKey: process.env.APPINSIGHTS_INSTRUMENTATIONKEY || 'your-secret-key',
+  sessionSecret: process.env.SESSION_SECRET || 'your-secret-key',
   db: {},
   dbTestUser: {},
   viper: {
