@@ -12,23 +12,9 @@ table.c-table-vam td {
 /**************************
 * Govuk stuff
 ***************************/
-// .govuk-related-items {
-//     margin-top: $gutter;
-//     border-top: 8px solid $govuk-blue;
-//     padding-top: 5px;
-//     .heading-medium {
-//         margin-top: 0.3em;
-//         margin-bottom: 0.5em;
-//     }
-//     li {
-//         margin-bottom: 10px;
-//         list-style-type: none;
-//     }
-// }
-
-// .change-answer {
-//   text-align: right;
-// }
+.multiple-choice label {
+  padding-top: 0;
+}
 
 
 // /**************************
@@ -42,17 +28,6 @@ table.c-table-vam td {
 // /**************************
 // * Components
 // ***************************/
-
-// .c-header-proposition__name {
-//     font-family: "nta", Arial, sans-serif;
-//     font-weight: 400;
-//     text-transform: none;
-//     font-size: 24px;
-//     line-height: 1.25;
-//     font-weight: bold;
-//     color: white !important;
-//     text-decoration: none;
-// }
 
 .c-global-header__wrapper {
     color: #FFF;
