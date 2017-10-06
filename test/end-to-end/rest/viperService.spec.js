@@ -5,7 +5,6 @@ import uuid from 'uuid/v4';
 import url from 'url';
 import config from '../../../server/config';
 
-const baseUrl = process.env.APP_BASE_URL;
 const timeoutDuration = 25000;
 
 async function primeMock(mapping) {
@@ -17,7 +16,7 @@ function generateNomisId() {
   return nomisId;
 }
 
-const agent = request.agent(baseUrl);
+const agent = request.agent(process.env.APP_BASE_URL);
 
 describe('/api/viper/:nomisId', () => {
   const nomisId = generateNomisId();

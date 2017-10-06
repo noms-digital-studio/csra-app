@@ -8,7 +8,6 @@ import { checkThatPrisonerAssessmentDataWasWrittenToDatabase,
 
 import db from '../../util/db';
 
-const baseUrl = process.env.APP_BASE_URL;
 const timeoutDuration = 25000;
 
 function generateNomisId() {
@@ -16,7 +15,7 @@ function generateNomisId() {
   return nomisId.toUpperCase();
 }
 
-const agent = request.agent(baseUrl);
+const agent = request.agent(process.env.APP_BASE_URL);
 
 async function primeDatabase({
   nomisId, riskAssessment = null,
