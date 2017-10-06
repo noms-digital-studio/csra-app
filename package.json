@@ -19,7 +19,7 @@
   },
   "scripts": {
     "start": "node ./bin/www",
-    "start:dev": "rimraf public/dist && DEBUG=csra* nodemon ./bin/www | bunyan -j",
+    "start:dev": "rimraf public/dist && ./bin/build-css && DEBUG=csra* nodemon ./bin/www | bunyan -j",
     "lint": "eslint . --cache --max-warnings 0",
     "test": "mocha test/*.spec.js test/**/*.spec.js test/unit/**/*.spec.js test/unit/**/**/*.spec.js test/client/**/*.spec.js test/client/**/**/*.spec.js",
     "verify": "snyk test && yarn lint && yarn test",
@@ -30,7 +30,7 @@
     "test:db": "mocha test/end-to-end/db/*.spec.js",
     "test:e2e": "wdio wdio.conf.js",
     "test:smoke": "SMOKE_TEST_PATH='./test/end-to-end/smoke/*.spec.js' wdio wdio.conf.js",
-    "build": "webpack",
+    "build": "./bin/build-css && webpack",
     "record-build-info": "node ./bin/record-build-info",
     "wait-for-deploy": "node ./bin/wait-for-deploy",
     "knex": "knex",
