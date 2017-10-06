@@ -23,6 +23,12 @@ const { authenticationMiddleware } = require('./authentication');
 module.exports = function createApp({ db, appInfo, viperService, prisonerAssessmentsService, signInService }) {
   const app = express();
   const sixtyDaysInSeconds = 5184000;
+  const sessionConfig = {
+    secret: config.sessionSecret,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {},
+  };
 
   // view engine setup
   app.set('views', path.join(__dirname, 'views'));
@@ -40,11 +46,12 @@ module.exports = function createApp({ db, appInfo, viperService, prisonerAssessm
   app.use(cookieParser());
   app.use(json());
 
-  app.use(session({
-    secret: config.sessionSecret,
-    resave: false,
-    saveUninitialized: true,
-  }));
+  if (app.get('env') === 'production') {
+    app.set('trust proxy', 1); // trust first proxy
+    session.cookie.secure = true; // serve secure cookies
+  }
+
+  app.use(session(sessionConfig));
 
   app.use(passport.initialize());
   app.use(passport.session());
