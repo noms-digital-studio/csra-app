@@ -2,19 +2,14 @@ import request from 'supertest';
 import { expect } from 'chai';
 
 describe('Security headers', () => {
-  it('returns a response with security headers present', function test(done) {
+  it('returns a response with security headers present', async function test() {
     this.timeout(25000);
-    const baseUrl = process.env.APP_BASE_URL;
-    request(baseUrl)
-      .get('/')
-      .end((err, res) => {
-        expect(res.headers).to.have.property('x-dns-prefetch-control');
-        expect(res.headers).to.have.property('x-frame-options');
-        expect(res.headers).to.have.property('x-download-options');
-        expect(res.headers).to.have.property('x-content-type-options');
-        expect(res.headers).to.have.property('x-xss-protection');
+    const result = await request(process.env.APP_BASE_URL).get('/');
 
-        done();
-      });
+    expect(result.headers).to.have.property('x-dns-prefetch-control');
+    expect(result.headers).to.have.property('x-frame-options');
+    expect(result.headers).to.have.property('x-download-options');
+    expect(result.headers).to.have.property('x-content-type-options');
+    expect(result.headers).to.have.property('x-xss-protection');
   });
 });
