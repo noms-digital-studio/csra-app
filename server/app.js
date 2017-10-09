@@ -5,7 +5,7 @@ const { json } = require('body-parser');
 const helmet = require('helmet');
 const hsts = require('hsts');
 const bunyanMiddleware = require('bunyan-middleware');
-const session = require('express-session');
+const session = require('cookie-session');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 
