@@ -2,8 +2,7 @@ import request from 'supertest';
 import { expect } from 'chai';
 
 describe('/health', () => {
-  it('displays the health status of the app', async function test() {
-    this.timeout(25000);
+  it('displays the health status of the app', async () => {
     const result = await request(process.env.APP_BASE_URL).get('/health').expect(200);
 
     expect(result.body).to.have.property('status').which.equals('OK');

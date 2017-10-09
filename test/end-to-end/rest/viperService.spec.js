@@ -5,8 +5,6 @@ import uuid from 'uuid/v4';
 import url from 'url';
 import config from '../../../server/config';
 
-const timeoutDuration = 25000;
-
 async function primeMock(mapping) {
   return superagent.post(url.resolve(`${config.viper.url}`, '/__admin/mappings')).send(mapping);
 }
@@ -21,8 +19,7 @@ const agent = request.agent(process.env.APP_BASE_URL);
 describe('/api/viper/:nomisId', () => {
   const nomisId = generateNomisId();
 
-  before(async function beforeTests() {
-    this.timeout(timeoutDuration);
+  before(async () => {
     const result = await agent.post('/signin').send('username=officer&password=password').expect(302);
 
     expect(result.headers.location).to.eql('/');
@@ -47,16 +44,15 @@ describe('/api/viper/:nomisId', () => {
     });
   });
 
-  it('returns a viper rating for a known nomis id', async function test() {
-    this.timeout(timeoutDuration);
+  it('returns a viper rating for a known nomis id', async () => {
     const result = await agent.get(`/api/viper/${nomisId}`).expect(200);
 
     expect(result.body).to.eql({ nomisId, viperRating: 0.42 });
   });
 
-  it('returns a viper rating for a known nomis id when response contains extra fields', async function test() {
+  it('returns a viper rating for a known nomis id when response contains extra fields', async () => {
     const newNomisId = generateNomisId();
-    this.timeout(timeoutDuration);
+
     await primeMock({
       request: {
         method: 'GET',
@@ -81,8 +77,7 @@ describe('/api/viper/:nomisId', () => {
     expect(result.body).to.eql({ nomisId: newNomisId, viperRating: 0.42 });
   });
 
-  it('returns a 404 (not found) when an unauthorised (401) response is received', async function test() {
-    this.timeout(timeoutDuration);
+  it('returns a 404 (not found) when an unauthorised (401) response is received', async () => {
     await primeMock({
       request: {
         method: 'GET',
@@ -105,8 +100,7 @@ describe('/api/viper/:nomisId', () => {
     });
   });
 
-  it('returns a 404 (not found) when a forbidden (403) response is received', async function test() {
-    this.timeout(timeoutDuration);
+  it('returns a 404 (not found) when a forbidden (403) response is received', async () => {
     await primeMock({
       request: {
         method: 'GET',
@@ -129,8 +123,7 @@ describe('/api/viper/:nomisId', () => {
     });
   });
 
-  it('returns a 404 (not found) when a bad request (400) response is received', async function test() {
-    this.timeout(timeoutDuration);
+  it('returns a 404 (not found) when a bad request (400) response is received', async () => {
     await primeMock({
       request: {
         method: 'GET',
@@ -151,8 +144,7 @@ describe('/api/viper/:nomisId', () => {
     });
   });
 
-  it('returns a 404 (not found) when an unexpected error (500) response is received', async function test() {
-    this.timeout(timeoutDuration);
+  it('returns a 404 (not found) when an unexpected error (500) response is received', async () => {
     await primeMock({
       request: {
         method: 'GET',
@@ -174,8 +166,7 @@ describe('/api/viper/:nomisId', () => {
     });
   });
 
-  it('returns a 404 (not found) when an empty response is received', async function test() {
-    this.timeout(timeoutDuration);
+  it('returns a 404 (not found) when an empty response is received', async () => {
     await primeMock({
       request: {
         method: 'GET',
@@ -193,8 +184,7 @@ describe('/api/viper/:nomisId', () => {
     });
   });
 
-  it('returns a 404 (not found) when connection is closed during response', async function test() {
-    this.timeout(timeoutDuration);
+  it('returns a 404 (not found) when connection is closed during response', async () => {
     await primeMock({
       request: {
         method: 'GET',
@@ -212,8 +202,7 @@ describe('/api/viper/:nomisId', () => {
     });
   });
 
-  it('returns a 404 (not found) when response is malformed', async function test() {
-    this.timeout(timeoutDuration);
+  it('returns a 404 (not found) when response is malformed', async () => {
     await primeMock({
       request: {
         method: 'GET',
@@ -228,8 +217,7 @@ describe('/api/viper/:nomisId', () => {
     expect(result.body.messasge).to.contain('Error retrieving viper rating for nomisId: foo-mal. The cause was: Invalid body:');
   });
 
-  it('returns a 404 (not found) when response body is invalid', async function test() {
-    this.timeout(timeoutDuration);
+  it('returns a 404 (not found) when response body is invalid', async () => {
     await primeMock({
       request: {
         method: 'GET',
@@ -251,8 +239,7 @@ describe('/api/viper/:nomisId', () => {
     });
   });
 
-  it('returns a 404 (not found) when response is the wrong format', async function test() {
-    this.timeout(timeoutDuration);
+  it('returns a 404 (not found) when response is the wrong format', async () => {
     await primeMock({
       request: {
         method: 'GET',
@@ -275,8 +262,7 @@ describe('/api/viper/:nomisId', () => {
     });
   });
 
-  it('returns a 404 (not found) when no response is receive within timeout limit', async function test() {
-    this.timeout(timeoutDuration);
+  it('returns a 404 (not found) when no response is receive within timeout limit', async () => {
     await primeMock({
       request: {
         method: 'GET',
@@ -300,8 +286,7 @@ describe('/api/viper/:nomisId', () => {
     });
   });
 
-  it('returns a 404 (not found) for an unknown nomis id', async function test() {
-    this.timeout(timeoutDuration);
+  it('returns a 404 (not found) for an unknown nomis id', async () => {
     const unknownNomisId = uuid().substring(0, 8);
     const result = await agent.get(`/api/viper/${unknownNomisId}`).expect(404);
 

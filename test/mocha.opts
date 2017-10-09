@@ -2,3 +2,4 @@
 --reporter spec
 --colors
 --bail
+--timeout 25000
