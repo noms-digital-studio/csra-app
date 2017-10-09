@@ -27,8 +27,12 @@ module.exports = function createApp({ db, appInfo, viperService, prisonerAssessm
     secret: config.sessionSecret,
     resave: false,
     saveUninitialized: true,
-    cookie: {},
+    cookie: {
+      maxAge: 60000,
+    },
   };
+
+  app.set('trust proxy', 1); // trust first proxy
 
   // view engine setup
   app.set('views', path.join(__dirname, 'views'));
@@ -47,8 +51,7 @@ module.exports = function createApp({ db, appInfo, viperService, prisonerAssessm
   app.use(json());
 
   if (app.get('env') === 'production') {
-    app.set('trust proxy', 1); // trust first proxy
-    session.cookie.secure = true; // serve secure cookies
+    sessionConfig.cookie.secure = true; // serve secure cookies
   }
 
   app.use(session(sessionConfig));
