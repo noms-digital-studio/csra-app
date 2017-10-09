@@ -26,7 +26,7 @@ if (config.dev) {
 }
 
 router.get('*', authenticationMiddleware(), (req, res) => {
-  res.render('index', { appinsightsKey: config.appinsightsKey, isLoggedIn: true, name: req.user && `${req.user.forename} ${req.user.surname}` });
+  res.render('index', { isLoggedIn: true, name: req.user && `${req.user.forename} ${req.user.surname}` });
 });
 
 module.exports = router;

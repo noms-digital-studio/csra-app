@@ -50,9 +50,15 @@ module.exports = function createApp({ db, appInfo, viperService, prisonerAssessm
   app.use(cookieParser());
   app.use(json());
 
-  if (app.get('env') === 'production') {
+  if (process.env.NODE_ENV === 'production') {
     sessionConfig.cookie.secure = true; // serve secure cookies
   }
+
+  // set locals
+  app.use((req, res, next) => {
+    res.locals.appinsightsKey = config.appinsightsKey;
+    next();
+  });
 
   app.use(session(sessionConfig));
 
