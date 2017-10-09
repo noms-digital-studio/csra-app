@@ -6,7 +6,6 @@ import { syncHistoryWithStore } from 'react-router-redux';
 
 import Layout from './containers/Main';
 
-// import Admin from './pages/Admin';
 import DashboardHoC from './pages/Dashboard';
 import AddPrisonerHoc from './pages/AddPrisoner';
 import ConfirmOffenderHoc from './pages/ConfirmPrisoner';
@@ -14,7 +13,7 @@ import OffenderProfileHoc from './pages/OffenderProfile';
 import HealthcareAssessment from './pages/HealthcareAssessment';
 import RiskAssessment from './pages/RiskAssessment';
 import RiskAssessmentSummary from './pages/RiskAssessmentSummary';
-import BeforeYouStart from './pages/BeforeYouStart';
+// import BeforeYouStart from './pages/BeforeYouStart';
 import Feedback from './pages/Feedback';
 import FeedbackConfirmation from './pages/FeedbackThankyou';
 import HealthcareSummary from './pages/HealthcareSummary';
@@ -38,7 +37,7 @@ export default (store) => {
         }}
       >
         <Route component={Layout}>
-          <Route path="/" component={BeforeYouStart} />
+          <Route path="/" component={DashboardHoC} />
           <Route path="/dashboard" name="dashboard" component={DashboardHoC} />
           <Route
             path="/add-offender"
