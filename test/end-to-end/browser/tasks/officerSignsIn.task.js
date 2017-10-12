@@ -9,7 +9,7 @@ function givenThatTheOfficerIsSignedIn({ smokeTest } = {}) {
 
   expect(LoginPage.mainHeading).to.equal('Sign in');
   LoginPage.enterUsername('officer');
-  LoginPage.enterUserpassword('password');
+  LoginPage.enterUserPassword('password');
   LoginPage.clickContinue();
   expect(DashboardPage.headerUsername).to.equal('John Smith');
 
