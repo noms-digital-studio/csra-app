@@ -41,4 +41,60 @@ describe('signIn service', () => {
       });
     });
   });
+
+  describe('unsuccessful sign in', () => {
+    it('fails when credentials are deemed incorrect', () => {
+      fakeElite2RestService
+      .post('/users/login')
+      .reply(401, {
+        status: 401,
+        userMessage: 'Invalid user credentials.',
+        developerMessage: 'Authentication credentials provided are not valid.',
+      });
+
+      return signInService.signIn('myUsername', 'myPassword')
+      .then((result) => {
+        expect(result).to.eql({
+          status: 'UNAUTHORISED ERROR',
+          message: 'Invalid user credentials',
+        });
+      });
+    });
+
+    it('fails when elite 2 is broken', () => {
+      fakeElite2RestService
+      .post('/users/login')
+      .reply(500, {
+        status: 500,
+        userMessage: 'Expensive database has failed',
+        developerMessage: 'Column not found but I won`t tell you which one',
+      });
+
+      return signInService.signIn('myUsername', 'myPassword')
+      .then((result) => {
+        expect(result).to.eql({
+          status: 'ELITE2 ERROR',
+          message: 'Elite 2 API is not working',
+        });
+      });
+    });
+
+    it('fails when the MoJ API gateway reject the reuqest', () => {
+      fakeElite2RestService
+      .post('/users/login')
+      .reply(403, {
+        status: 403,
+        userMessage: 'Expensive database has failed',
+        developerMessage: 'Column not found but I won`t tell you which one',
+      });
+
+      return signInService.signIn('myUsername', 'myPassword')
+      .then((result) => {
+        expect(result).to.eql({
+          status: 'MOJ API GATEWAY ERROR',
+          message: 'MoJ API gateway reject the request to the Elite 2 API',
+        });
+      });
+    });
+  });
 });
