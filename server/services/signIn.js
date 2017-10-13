@@ -29,20 +29,23 @@ async function signIn(username, password) {
     log.error(`Sign in to Elite 2 failed for [${username}] with exception:`);
     log.error(exception);
     switch (exception.status) {
-      case 401: return {
-        status: 'UNAUTHORISED ERROR',
-        message: 'Invalid user credentials',
-      };
+      case 401: {
+        const err = new Error('Invalid user credentials');
+        err.type = 'unauthorised';
+        throw err;
+      }
 
-      case 403: return {
-        status: 'MOJ API GATEWAY ERROR',
-        message: 'MoJ API gateway reject the request to the Elite 2 API',
-      };
+      case 403: {
+        const err = new Error('MoJ API gateway rejected the request to the Elite 2 API');
+        err.type = 'forbidden';
+        throw err;
+      }
 
-      default: return {
-        status: 'ELITE2 ERROR',
-        message: 'Elite 2 API is not working',
-      };
+      default: {
+        const err = new Error('Elite 2 API failure');
+        err.type = 'server-error';
+        throw err;
+      }
     }
   }
 }
