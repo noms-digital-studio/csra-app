@@ -17,6 +17,8 @@ const createHealthRoute = require('./routes/health');
 const createViperRoute = require('./routes/viper');
 const createPrisonerAssessmentsRoute = require('./routes/assessments');
 const createSignInRoute = require('./routes/signIn');
+const createSignOutRoute = require('./routes/signOut');
+
 const index = require('./routes/index');
 const { authenticationMiddleware } = require('./authentication');
 
@@ -73,6 +75,8 @@ module.exports = function createApp({ db, appInfo, viperService, prisonerAssessm
   app.use('/api/viper', createViperRoute(viperService, authenticationMiddleware));
   app.use('/health', createHealthRoute(db, appInfo));
   app.use('/signin', createSignInRoute(passport));
+  app.use('/signout', createSignOutRoute());
+
   app.use('/', index);
 
   // catch 404 and forward to error handler
