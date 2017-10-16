@@ -2,6 +2,7 @@ import { urlencoded } from 'body-parser';
 import request from 'supertest';
 import sinon from 'sinon';
 import express from 'express';
+import flash from 'connect-flash';
 
 import createSignInEndpoint from '../../../../server/routes/signIn';
 import mockAuthentication from '../helpers/mockAuthentication';
@@ -11,7 +12,7 @@ describe('POST /signin', () => {
   const fakeSignInService = sinon.stub();
 
   mockAuthentication(app, fakeSignInService);
-
+  app.use(flash());
   app.use(urlencoded({ extended: true }));
   app.use(createSignInEndpoint());
 
@@ -25,6 +26,23 @@ describe('POST /signin', () => {
         .expect(302)
         .expect((res) => {
           expect(res.headers.location).to.eql('/');
+        });
+    });
+  });
+
+  context('Unsuccessful sign in', () => {
+    it('redirects back to the "/signin" path when the sign in fails', () => {
+      const error = new Error('Foo error');
+      error.type = 'foo-error';
+
+      fakeSignInService.signIn = sinon.stub().rejects(error);
+
+      return request(app)
+        .post('/')
+        .send('username=officer&password=password')
+        .expect(302)
+        .expect((res) => {
+          expect(res.headers.location).to.eql('/signin');
         });
     });
   });

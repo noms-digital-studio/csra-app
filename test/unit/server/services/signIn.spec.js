@@ -41,4 +41,39 @@ describe('signIn service', () => {
       });
     });
   });
+
+  describe('unsuccessful sign in', () => {
+    it('fails when credentials are deemed incorrect', () => {
+      fakeElite2RestService
+      .post('/users/login')
+      .reply(401, {
+        status: 401,
+        userMessage: 'Invalid user credentials.',
+        developerMessage: 'Authentication credentials provided are not valid.',
+      });
+
+      return expect(signInService.signIn('myUsername', 'myPassword')).to.be.rejectedWith(Error, 'Invalid user credentials');
+    });
+
+    it('fails when elite 2 is broken', () => {
+      fakeElite2RestService
+      .post('/users/login')
+      .reply(500, {
+        status: 500,
+        userMessage: 'Expensive database has failed',
+        developerMessage: 'Column not found but I won`t tell you which one',
+      });
+
+      return expect(signInService.signIn('myUsername', 'myPassword')).to.be.rejectedWith(Error, 'Elite 2 API failure');
+    });
+
+    it('fails when the MoJ API gateway reject the reuqest', () => {
+      fakeElite2RestService
+      .post('/users/login')
+      .reply(403, 'Authorization header missing');
+
+      return expect(signInService.signIn('myUsername', 'myPassword'))
+        .to.be.rejectedWith(Error, 'MoJ API gateway rejected the request to the Elite 2 API');
+    });
+  });
 });

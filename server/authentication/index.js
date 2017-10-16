@@ -20,11 +20,24 @@ passport.deserializeUser((username, done) => {
 });
 
 function init(signInService) {
-  const strategy = new LocalStrategy((username, password, done) => {
+  const strategy = new LocalStrategy({
+    usernameField: 'username',
+    passwordField: 'password',
+    passReqToCallback: true,
+  }, (req, username, password, done) => {
     signInService
       .signIn(username, password)
       .then(user => done(null, user))
-      .catch(done);
+      .catch((error) => {
+        switch (error.type) {
+          case 'unauthorised':
+            return done(null, false, req.flash('signInWarning', error.message));
+          case 'server-error':
+          case 'forbidden':
+          default:
+            return done(null, false, req.flash('signInError', error.message));
+        }
+      });
   });
 
   passport.use(strategy);
