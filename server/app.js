@@ -8,6 +8,7 @@ const bunyanMiddleware = require('bunyan-middleware');
 const session = require('cookie-session');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
+const flash = require('connect-flash');
 
 const config = require('./config');
 const { logger } = require('./services/logger');
@@ -64,6 +65,8 @@ module.exports = function createApp({ db, appInfo, viperService, prisonerAssessm
 
   app.use(passport.initialize());
   app.use(passport.session());
+
+  app.use(flash());
 
   app.use(bunyanMiddleware({ logger }));
 
