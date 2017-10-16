@@ -4,6 +4,12 @@ const config = require('../config');
 const generateApiGatewayToken = require('../apiGateway');
 const { logger: log } = require('./logger');
 
+const anError = (message, type) => {
+  const err = new Error(message);
+  err.type = type;
+  throw err;
+};
+
 async function signIn(username, password) {
   log.info(`Signing in user: [${username}]`);
   try {
@@ -29,23 +35,9 @@ async function signIn(username, password) {
     log.error(`Sign in to Elite 2 failed for [${username}] with exception:`);
     log.error(exception);
     switch (exception.status) {
-      case 401: {
-        const err = new Error('Invalid user credentials');
-        err.type = 'unauthorised';
-        throw err;
-      }
-
-      case 403: {
-        const err = new Error('MoJ API gateway rejected the request to the Elite 2 API');
-        err.type = 'forbidden';
-        throw err;
-      }
-
-      default: {
-        const err = new Error('Elite 2 API failure');
-        err.type = 'server-error';
-        throw err;
-      }
+      case 401: throw anError('Invalid user credentials', 'unauthorised');
+      case 403: throw anError('MoJ API gateway rejected the request to the Elite 2 API', 'forbidden');
+      default: throw anError('Elite 2 API failure', 'server-error');
     }
   }
 }
