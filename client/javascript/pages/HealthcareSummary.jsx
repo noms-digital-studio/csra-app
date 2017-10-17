@@ -6,7 +6,7 @@ import { replace } from 'react-router-redux';
 import path from 'ramda/src/path';
 import not from 'ramda/src/not';
 
-import { capitalize } from '../utils';
+import { capitalize, getUsernameFromDocument } from '../utils';
 import postAssessmentToBackend from '../services/postAssessmentToBackend';
 import getAssessmentsById from '../services/getAssessmentsById';
 import { completeHealthAnswersFor, saveHealthcareAssessmentOutcome } from '../actions';
@@ -140,13 +140,15 @@ const mapStateToProps = (state, ownProps) => {
 const mapActionsToProps = dispatch => ({
   saveOutcome: ({ id, outcome }) => dispatch(saveHealthcareAssessmentOutcome({ id, outcome })),
   onSubmit: ({ assessmentId, assessment }) => {
+    const assessmentWithUsername = { ...assessment, username: getUsernameFromDocument() };
+
     getAssessmentsById(assessmentId, (response) => {
       if (not(response)) {
         return dispatch(replace(routes.ERROR_PAGE));
       }
 
       return postAssessmentToBackend(
-        { assessmentId, assessmentType: 'health', assessment },
+        { assessmentId, assessmentType: 'health', assessment: assessmentWithUsername },
         (_response) => {
           if (not(_response)) {
             return dispatch(replace(routes.ERROR_PAGE));

@@ -3,6 +3,7 @@ import xhr from 'xhr';
 import postAssessmentToBackend from '../../../../client/javascript/services/postAssessmentToBackend';
 
 const postParams = {
+  username: 'foo-username',
   assessmentType: 'risk',
   assessmentId: 1,
   assessment: {

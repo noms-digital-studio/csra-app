@@ -1,4 +1,5 @@
 import deepEqual from 'deep-equal';
+import not from 'ramda/src/not';
 
 const monthNames = [
   'January',
@@ -68,4 +69,15 @@ export const getTimeStamp = (date) => {
   );
 
   return utcDateTimeStamp;
+};
+
+
+export const getUsernameFromDocument = () => {
+  if (not(document) && not(document.body)) return '';
+
+  const usernameElement = document.querySelector('[data-header-username]');
+
+  if (not(usernameElement)) return '';
+
+  return usernameElement.getAttribute('data-header-username');
 };
