@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-if [ $# -eq 0 ]
+if [ $# -lt 3 ]
   then
-    echo "usage: promote-from-mock-to-stage.sh <stage db password>"
+    echo "usage: promote-from-mock-to-stage.sh <stage db password> <DEV Nomis username> <DEV Nomis password>"
     exit
 fi
 
@@ -19,8 +19,10 @@ GIT_REF=`cat build-info.json | python -c 'import json,sys;print json.load(sys.st
  WAIT_DURATION=45000 APP_BASE_URL=http://csra-stage.hmpps.dsd.io/health yarn wait-for-deploy
 
 # Run the E2E tests against STAGE
-DB_URI_TESTS=mssql://csra:$1@csra-stage.database.windows.net:1433/csra-stage\
- APP_BASE_URL=https://csra-stage.hmpps.dsd.io yarn test:e2e
+TEST_USER_NAME=$2 \
+TEST_USER_PASSWORD=$3 \
+DB_URI_TESTS=mssql://csra:$1@csra-stage.database.windows.net:1433/csra-stage \
+APP_BASE_URL=https://csra-stage.hmpps.dsd.io yarn test:e2e
 
 # Switch back to master branch
 git checkout master
