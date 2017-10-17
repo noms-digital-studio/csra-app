@@ -12,11 +12,20 @@ function authenticationMiddleware() {
   };
 }
 
-passport.serializeUser(({ forename, surname }, done) => done(null, `${forename} ${surname}`));
+passport.serializeUser(({ forename, surname, username, email }, done) => done(null, {
+  forename,
+  surname,
+  username,
+  email,
+}));
 
-passport.deserializeUser((username, done) => {
-  const name = username.split(' ');
-  done(null, { forename: name[0], surname: name[1] });
+passport.deserializeUser((userDetails, done) => {
+  done(null, {
+    forename: userDetails.forename,
+    surname: userDetails.surname,
+    username: userDetails.username,
+    email: userDetails.email,
+  });
 });
 
 function init(signInService) {

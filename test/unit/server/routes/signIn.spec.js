@@ -3,9 +3,11 @@ import request from 'supertest';
 import sinon from 'sinon';
 import express from 'express';
 import flash from 'connect-flash';
+import parsePassportSessionCookie from '../../../util/cookies';
 
 import createSignInEndpoint from '../../../../server/routes/signIn';
 import mockAuthentication from '../helpers/mockAuthentication';
+
 
 describe('POST /signin', () => {
   const app = express();
@@ -18,13 +20,22 @@ describe('POST /signin', () => {
 
   context('Successful sign in', () => {
     it('redirects to "/" path', () => {
-      fakeSignInService.signIn = sinon.stub().resolves({ forename: 'John', surname: 'Doe', eliteAuthorisationToken: 'token' });
+      fakeSignInService.signIn = sinon.stub().resolves({
+        forename: 'John',
+        surname: 'Doe',
+        eliteAuthorisationToken: 'token',
+        username: 'username',
+        email: 'email',
+      });
 
       return request(app)
         .post('/')
         .send('username=officer&password=password')
         .expect(302)
         .expect((res) => {
+          const userDetails = { forename: 'John', surname: 'Doe', username: 'username', email: 'email' };
+          const userDetailsString = JSON.stringify({ passport: { user: userDetails } });
+          expect(parsePassportSessionCookie(res)).to.equal(userDetailsString);
           expect(res.headers.location).to.eql('/');
         });
     });

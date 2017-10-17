@@ -1,20 +1,17 @@
 /* eslint-disable no-console */
 import request from 'supertest';
-import cookie from 'cookie';
+import parsePassportSessionCookie from '../../util/cookies';
 
 const agent = request.agent(process.env.APP_BASE_URL);
-
-const parsePassportSessionCookie = (result) => {
-  const cookies = cookie.parse(result.headers['set-cookie'][0]);
-  return atob(cookies['express:sess']);
-};
 
 describe('/signin', () => {
   it('signs on correctly', async () => {
     const result = await agent.post('/signin').send('username=officer&password=password').expect(302);
     expect(result.headers.location).to.eql('/');
     expect(result.headers['set-cookie'][0]).to.include('express:sess=');
-    expect(parsePassportSessionCookie(result)).to.equal('{"passport":{"user":"John Smith"}}');
+    const userDetails = { forename: 'John', surname: 'Smith', username: 'officer', email: 'officer@hmpps.org' };
+    const userDetailsString = JSON.stringify({ passport: { user: userDetails } });
+    expect(parsePassportSessionCookie(result)).to.equal(userDetailsString);
   });
 
   it('returns unauthorised when user creds are wrong', async () => {

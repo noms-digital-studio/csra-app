@@ -30,14 +30,20 @@ describe('signIn service', () => {
         username: 'username',
         firstName: 'firstname',
         lastName: 'lastname',
-        email: 'email',
+        email: 'email@hmpps',
         thumbnailId: 0,
         activeCaseLoadId: 'activeCaseLoadId',
       });
 
       return signInService.signIn('myUsername', 'myPassword')
       .then((result) => {
-        expect(result).to.eql({ forename: 'firstname', surname: 'lastname', eliteAuthorisationToken: 'Bearer XXX.YYY.ZZZ' });
+        expect(result).to.eql({
+          forename: 'firstname',
+          surname: 'lastname',
+          eliteAuthorisationToken: 'Bearer XXX.YYY.ZZZ',
+          username: 'username',
+          email: 'email@hmpps',
+        });
       });
     });
   });

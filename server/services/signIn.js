@@ -29,6 +29,8 @@ async function signIn(username, password) {
     return {
       forename: userDetailsResult.body.firstName,
       surname: userDetailsResult.body.lastName,
+      username: userDetailsResult.body.username,
+      email: userDetailsResult.body.email,
       eliteAuthorisationToken,
     };
   } catch (exception) {
