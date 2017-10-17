@@ -23,7 +23,7 @@ function givenThatTheOfficerIsSignedIn(opts) {
   LoginPage.enterUserPassword(config.userCredentials.password);
   LoginPage.clickContinue();
 
-  expect(DashboardPage.headerUsername).to.equal('John Smith');
+  expect(DashboardPage.headerUsername.length > 0).to.equal(true);
 
   if (!config.smokeTest) {
     expect(DashboardPage.mainHeading).to.equal('There is no one to assess.');
