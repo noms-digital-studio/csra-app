@@ -14,7 +14,7 @@ const prisonerConfig = {
       month: 10,
       year: 1970,
     },
-    nomisId: 'J0000BL',
+    nomisId: 'O0000OO',
     dateOfBirth: '1 October 1970',
     databaseDoB: 'Oct 01 1970',
   },
@@ -22,7 +22,7 @@ const prisonerConfig = {
 
 const assessmentConfig = {
   prisoner: {
-    nomisId: 'J0000BL',
+    nomisId: 'O0000OO',
     name: 'Joe Bloggs',
     dateOfBirth: '01 October 1970',
   },
