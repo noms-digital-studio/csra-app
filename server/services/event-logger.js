@@ -5,10 +5,7 @@ try {
   // eslint-disable-next-line
   const appInsights = require('../../utils/applicationinsights');
   trackEvent = (name, properties = {}) => {
-    appInsights.client.trackEvent({
-      name,
-      properties,
-    });
+    appInsights.client.trackEvent(name, properties);
   };
 } catch (exception) {
   // eslint-disable-next-line
