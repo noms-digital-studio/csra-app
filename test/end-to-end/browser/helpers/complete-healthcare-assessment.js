@@ -92,6 +92,7 @@ const thenTheHealthcareAssessmentIsComplete = (config = defaultAssessmentConfig)
   DashboardPage.waitForMainHeadingWithDataId('dashboard');
 
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
+  const username = browser.getAttribute('[data-header-username]', 'data-header-username');
 
   browser.waitUntil(() => (
     row.getText().toLowerCase() === (`${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Start Complete`).toLowerCase()
@@ -102,6 +103,7 @@ const thenTheHealthcareAssessmentIsComplete = (config = defaultAssessmentConfig)
   checkThatHealthAssessmentDataWasWrittenToDatabase({
     id: assessmentId,
     healthAssessment: {
+      username,
       viperScore: null,
       questions: {
         outcome: {

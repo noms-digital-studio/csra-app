@@ -27,6 +27,7 @@ export function checkThatRiskAssessmentDataWasWrittenToDatabase({
     );
 
     const actualRiskAssessment = JSON.parse(result[0].risk_assessment);
+    expect(actualRiskAssessment.username).to.eql(riskAssessment.username);
     expect(actualRiskAssessment.viperScore).to.eql(riskAssessment.viperScore);
     expect(actualRiskAssessment.outcome).to.eql(riskAssessment.outcome);
     expect(actualRiskAssessment.reasons).to.eql(riskAssessment.reasons);

@@ -147,6 +147,7 @@ export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) =
 
   browser.waitForVisible(`tr[data-element-id="profile-row-${config.prisoner.nomisId}"]`, ELEMENT_SEARCH_TIMEOUT);
 
+  const username = browser.getAttribute('[data-header-username]', 'data-header-username');
   const row = browser.element('tbody tr');
   const assessmentId = row.getAttribute('data-assessment-id');
 
@@ -163,6 +164,7 @@ export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) =
     checkThatRiskAssessmentDataWasWrittenToDatabase({
       id: assessmentId,
       riskAssessment: {
+        username,
         outcome: config.finalRecommendation,
         viperScore: config.viperScore,
         questions: {
