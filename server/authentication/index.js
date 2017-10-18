@@ -1,4 +1,6 @@
 const passport = require('passport');
+const trackEvent = require('../services/event-logger');
+const { SIGN_IN } = require('../constants');
 
 const LocalStrategy = require('passport-local').Strategy;
 
@@ -36,7 +38,10 @@ function init(signInService) {
   }, (req, username, password, done) => {
     signInService
       .signIn(username, password)
-      .then(user => done(null, user))
+      .then((user) => {
+        trackEvent(SIGN_IN, { username });
+        return done(null, user);
+      })
       .catch((error) => {
         switch (error.type) {
           case 'unauthorised':
