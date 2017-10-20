@@ -1,7 +1,7 @@
 const superagent = require('superagent');
 const url = require('url');
 const config = require('../config');
-const generateApiGatewayToken = require('../apiGateway');
+const { generateApiGatewayToken, extractAuthoritiesFrom } = require('../jwtUtils');
 const { logger: log } = require('./logger');
 
 const anError = (message, type) => {
@@ -23,7 +23,6 @@ async function signIn(username, password) {
 
     const eliteAuthorisationToken = result.body.token;
     const userDetailsResult = await superagent.get(url.resolve(`${config.elite2.url}`, 'users/me')).set('Authorization', `Bearer ${generateApiGatewayToken()}`).set('Elite-Authorization', eliteAuthorisationToken);
-
     log.info(`Sign in to Elite 2 for [${username}] successful`);
 
     return {
@@ -31,6 +30,7 @@ async function signIn(username, password) {
       surname: userDetailsResult.body.lastName,
       username: userDetailsResult.body.username,
       email: userDetailsResult.body.email,
+      authorities: extractAuthoritiesFrom(eliteAuthorisationToken),
       eliteAuthorisationToken,
     };
   } catch (exception) {

@@ -2,7 +2,7 @@ const express = require('express');
 const superagent = require('superagent');
 const url = require('url');
 const config = require('../config');
-const generateApiGatewayToken = require('../apiGateway');
+const { generateApiGatewayToken } = require('../jwtUtils');
 const { logger: log } = require('../services/logger');
 
 module.exports = function createRouter(db, appInfo) {
