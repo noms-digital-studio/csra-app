@@ -17,9 +17,12 @@ module.exports = {
   },
 
   extractAuthoritiesFrom: (jwtToken) => {
-    const token = jwtToken.split(' ')[1];
-    const decodedToken = jwt.decode(token);
-    return decodedToken.userPrincipal.authorities;
+    if (jwtToken.startsWith('Bearer ')) {
+      const token = jwtToken.split(' ')[1];
+      return jwt.decode(token).userPrincipal.authorities;
+    }
+
+    return jwt.decode(jwtToken).userPrincipal.authorities;
   },
 };
 
