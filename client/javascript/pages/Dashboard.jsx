@@ -11,7 +11,11 @@ import not from 'ramda/src/not';
 import path from 'ramda/src/path';
 
 import { getTimeStamp } from '../utils';
-import { selectOffender, getOffenderAssessments, startHealthcareAssessmentFor } from '../actions';
+import {
+  selectOffender,
+  getOffenderAssessments,
+  startHealthcareAssessmentFor,
+} from '../actions';
 import getAssessments from '../services/getAssessments';
 import getAssessmentsById from '../services/getAssessmentsById';
 
@@ -77,6 +81,7 @@ class Dashboard extends Component {
       onViewOutcomeClick,
       onOffenderHealthcareSelect,
       onOffenderSelect,
+      onRiskAssessmentSelect,
       location,
     } = this.props;
 
@@ -87,6 +92,7 @@ class Dashboard extends Component {
       onViewOutcomeClick,
       onOffenderHealthcareSelect,
       onOffenderSelect,
+      onRiskAssessmentSelect,
     }));
     const excludeTestAssessments = filter(
       assessment => not(assessment.nomisId.startsWith('TEST')) || displayTestAssessments === 'true',
@@ -198,6 +204,10 @@ const mapActionsToProps = dispatch => ({
       return true;
     });
   },
+  onRiskAssessmentSelect: (prisoner) => {
+    dispatch(selectOffender(prisoner));
+    dispatch(push(`${routes.RISK_ASSESSMENT_SUMMARY}`));
+  },
   onOffenderHealthcareSelect: (prisoner) => {
     getAssessmentsById(prisoner.id, (response) => {
       if (response && response.healthAssessment) {
@@ -235,6 +245,7 @@ Dashboard.propTypes = {
     }),
   ),
   location: PropTypes.object,
+  onRiskAssessmentSelect: PropTypes.func,
   getOffenderAssessments: PropTypes.func,
   onOffenderHealthcareSelect: PropTypes.func,
   onOffenderSelect: PropTypes.func,

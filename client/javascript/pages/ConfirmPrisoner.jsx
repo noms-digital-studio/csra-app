@@ -37,7 +37,7 @@ const ConfirmOffender = ({ prisonerDetails: prisoner, onClick, title }) =>
           </p>
 
           <p>
-            <span className="heading-small">DOB:&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span className="heading-small">DOB:&nbsp;</span>
             <span data-element-id="prisoner-dob">
               {extractDateFromString(
                 `${prisoner['dob-day']}-${prisoner['dob-month']}-${prisoner['dob-year']}`,

@@ -3,6 +3,7 @@ import whenTheOfficerAddsThePrisonersDetails from './tasks/theOfficerAddsThePris
 import {
   whenPrisonerIsAssessed,
   thenTheAssessmentIsCompleted,
+  andICanViewTheAssessmentAgain,
 } from './helpers/complete-risk-assessment';
 
 const prisonerConfig = {
@@ -47,5 +48,6 @@ describe('Risk assessment (shared cell outcome with conditions)', () => {
     whenTheOfficerAddsThePrisonersDetails(prisonerConfig);
     whenPrisonerIsAssessed(assessmentConfig);
     thenTheAssessmentIsCompleted(assessmentConfig);
+    andICanViewTheAssessmentAgain(assessmentConfig);
   });
 });

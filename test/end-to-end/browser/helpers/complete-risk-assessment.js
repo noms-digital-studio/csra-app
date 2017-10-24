@@ -195,3 +195,38 @@ export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) =
     });
   }
 };
+
+
+export const andICanViewTheAssessmentAgain = (config = defaultAssessmentConfig) => {
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
+
+  DashboardPage.viewCompletedRiskAssessmentFor(config.prisoner.nomisId);
+
+  expect(RiskAssessmentSummaryPage.waitForMainHeadingWithDataId('risk-summary')).to.equal(
+    'Risk assessment summary',
+  );
+
+  if (config.reasons) {
+    config.reasons.forEach((reasonObj) => {
+      expect(RiskAssessmentSummaryPage.reasons).to.match(caseInSensitive(reasonObj.reason));
+    });
+  }
+
+  expect(RiskAssessmentSummaryPage.prisonerName).to.equalIgnoreCase(config.prisoner.name);
+  expect(RiskAssessmentSummaryPage.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);
+  expect(RiskAssessmentSummaryPage.prisonerNomisId).to.equalIgnoreCase(config.prisoner.nomisId);
+  expect(RiskAssessmentSummaryPage.outcome).to.match(caseInSensitive(config.finalRecommendation));
+  expect(RiskAssessmentSummaryPage.initialFeelings).to.equalIgnoreCase('foo comment');
+  expect(RiskAssessmentSummaryPage.harm).to.equalIgnoreCase(config.answers.harmCellMate);
+  expect(RiskAssessmentSummaryPage.vulnerability).to.equalIgnoreCase(config.answers.vulnerability);
+  expect(RiskAssessmentSummaryPage.gang).to.equalIgnoreCase(config.answers.gangAffiliation);
+  expect(RiskAssessmentSummaryPage.narcotics).to.equalIgnoreCase(config.answers.drugMisuse);
+  expect(RiskAssessmentSummaryPage.prejudice).to.equalIgnoreCase(config.answers.prejudice);
+  expect(RiskAssessmentSummaryPage.officerComments).to.equalIgnoreCase(
+    config.answers.officersAssessment,
+  );
+
+  RiskAssessmentSummaryPage.clickContinue();
+
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
+};

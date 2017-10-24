@@ -19,7 +19,11 @@ const AssessmentRow = props => (
     <td>{extractDateFromUTCString(props.dateOfBirth)}</td>
     <td data-risk-assessment-complete={props.riskAssessmentCompleted}>
       {props.riskAssessmentCompleted ? (
-        <span>Complete</span>
+        <button
+          onClick={() => props.onRiskAssessmentSelect(props)}
+          type="button"
+          data-element-id={`completed-csra-link-${props.nomisId}`}
+          className="link u-link">Complete</button>
         ) : (
           <button
             type="button"
@@ -86,6 +90,7 @@ AssessmentRow.propTypes = {
   riskAssessmentCompleted: PropTypes.bool,
   onOffenderSelect: PropTypes.func,
   onOffenderHealthcareSelect: PropTypes.func,
+  onRiskAssessmentSelect: PropTypes.func,
   onViewOutcomeClick: PropTypes.func,
 };
 

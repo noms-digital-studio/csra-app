@@ -3,6 +3,7 @@ import whenTheOfficerAddsThePrisonersDetails from './tasks/theOfficerAddsThePris
 import {
   whenPrisonerIsAssessed as whenAPrisonerWithNoViperIsAssessed,
   thenTheAssessmentIsCompleted,
+  andICanViewTheAssessmentAgain,
 } from './helpers/complete-risk-assessment';
 
 const assessmentConfig = {
@@ -42,5 +43,6 @@ describe('Risk assessment for a prisoner with no VIPER score (shared cell outcom
     });
     whenAPrisonerWithNoViperIsAssessed(assessmentConfig);
     thenTheAssessmentIsCompleted(assessmentConfig);
+    andICanViewTheAssessmentAgain(assessmentConfig);
   });
 });

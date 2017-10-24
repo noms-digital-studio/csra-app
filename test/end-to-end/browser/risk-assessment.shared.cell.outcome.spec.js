@@ -3,6 +3,7 @@ import whenTheOfficerAddsThePrisonersDetails from './tasks/theOfficerAddsThePris
 import {
   whenPrisonerIsAssessed as whenALowRiskPrisonerIsAssessed,
   thenTheAssessmentIsCompleted,
+  andICanViewTheAssessmentAgain,
 } from './helpers/complete-risk-assessment';
 
 describe('Risk assessment (shared cell outcome)', () => {
@@ -11,5 +12,6 @@ describe('Risk assessment (shared cell outcome)', () => {
     whenTheOfficerAddsThePrisonersDetails();
     whenALowRiskPrisonerIsAssessed();
     thenTheAssessmentIsCompleted();
+    andICanViewTheAssessmentAgain();
   });
 });

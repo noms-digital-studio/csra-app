@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
-import { replace } from 'react-router-redux';
+import { replace, push } from 'react-router-redux';
 import path from 'ramda/src/path';
 import not from 'ramda/src/not';
 import isEmpty from 'ramda/src/isEmpty';
@@ -10,6 +10,7 @@ import {
   saveRiskAssessmentOutcome,
   saveRiskAssessmentReasons,
   completeRiskAnswersFor,
+  storeRiskAssessmentFor,
 } from '../actions';
 import { capitalize, getUsernameFromDocument } from '../utils';
 import { extractDecision } from '../services';
@@ -32,16 +33,33 @@ class RiskAssessmentSummary extends Component {
       saveOutcome,
       saveReasons,
       markAnswersAsCompleteFor,
+      gotToErrorPage,
+      storeRiskAssessment,
     } = this.props;
-    const decision = extractDecision({
-      questions,
-      answers,
-      viperScore,
-    });
 
-    markAnswersAsCompleteFor({ assessmentId: prisoner.id });
-    saveOutcome({ id: prisoner.id, outcome: decision.recommendation });
-    saveReasons({ id: prisoner.id, reasons: decision.reasons });
+    getAssessmentsById(prisoner.id, (response) => {
+      if (not(response)) {
+        return gotToErrorPage();
+      }
+
+      const riskAssessment = response.riskAssessment;
+
+      if (riskAssessment) {
+        return storeRiskAssessment({ id: prisoner.id, assessment: riskAssessment });
+      }
+
+      const decision = extractDecision({
+        questions,
+        answers,
+        viperScore,
+      });
+
+      markAnswersAsCompleteFor({ assessmentId: prisoner.id });
+      saveOutcome({ id: prisoner.id, outcome: decision.recommendation });
+      saveReasons({ id: prisoner.id, reasons: decision.reasons });
+
+      return true;
+    });
   }
 
   render() {
@@ -54,7 +72,10 @@ class RiskAssessmentSummary extends Component {
       healthcareAssessmentComplete,
       riskAssessmentComplete,
       assessment,
+      goToDashboardPage,
     } = this.props;
+
+    const riskAssessmentIsAvailable = Boolean(assessment);
 
     const rating = { 'single cell': 'high' }[outcome] || 'standard';
 
@@ -126,14 +147,16 @@ class RiskAssessmentSummary extends Component {
           </div>
 
           <div className="u-margin-bottom-bravo">
-            <RiskAssessmentSummaryTable
-              assessmentComplete={riskAssessmentComplete}
-              title="Assessment answers"
-            />
+            {riskAssessmentIsAvailable && (
+              <RiskAssessmentSummaryTable
+                assessmentComplete={riskAssessmentComplete}
+                title="Assessment answers"
+              />
+            )}
           </div>
 
           <div className="form-group" data-summary-next-steps>
-            {healthcareAssessmentComplete ? null : (
+            {((riskAssessmentComplete && healthcareAssessmentComplete) || healthcareAssessmentComplete) ? null : (
               <div className="u-margin-bottom-charlie">
                 <h3 className="heading-medium">What happens next?</h3>
                 <p className="u-margin-bottom-charlie">
@@ -149,24 +172,38 @@ class RiskAssessmentSummary extends Component {
                 </p>
               </div>
             )}
+            { not(riskAssessmentComplete) && (
+              <div>
+                <div className="notice c-notice u-clear-fix">
+                  <i className="icon icon-important">
+                    <span className="visually-hidden">Warning</span>
+                  </i>
+                  <strong className="bold-small">Once submitted you cannot change these answers</strong>
+                </div>
 
-            <div className="notice c-notice u-clear-fix">
-              <i className="icon icon-important">
-                <span className="visually-hidden">Warning</span>
-              </i>
-              <strong className="bold-small">Once submitted you cannot change these answers</strong>
-            </div>
+                <button
+                  type="submit"
+                  className="button"
+                  data-element-id="continue-button"
+                  ref={(el) => {
+                    this.submitBtn = el;
+                  }}
+                >
+                  Finish assessment
+                </button>
+              </div>
+            )}
 
-            <button
-              type="submit"
-              className="button"
-              data-element-id="continue-button"
-              ref={(el) => {
-                this.submitBtn = el;
-              }}
-            >
-              Finish assessment
-            </button>
+            {riskAssessmentComplete && (
+              <button
+                type="button"
+                className="button"
+                data-element-id="continue-button"
+                onClick={goToDashboardPage}
+              >
+                Return to Dashboard
+              </button>
+            )}
           </div>
         </form>
       </DocumentTitle>
@@ -180,6 +217,8 @@ RiskAssessmentSummary.propTypes = {
   onSubmit: PropTypes.func,
   saveOutcome: PropTypes.func,
   saveReasons: PropTypes.func,
+  gotToErrorPage: PropTypes.func,
+  storeRiskAssessment: PropTypes.func,
   markAnswersAsCompleteFor: PropTypes.func,
   prisoner: PropTypes.shape({
     id: PropTypes.number,
@@ -225,6 +264,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapActionsToProps = dispatch => ({
+  goToDashboardPage: () => dispatch(push(routes.DASHBOARD)),
+  gotToErrorPage: () => dispatch(replace(routes.ERROR_PAGE)),
+  storeRiskAssessment: ({ id, assessment }) => dispatch(storeRiskAssessmentFor({ id, assessment })),
   markAnswersAsCompleteFor: profile => dispatch(completeRiskAnswersFor(profile)),
   saveOutcome: ({ id, outcome }) => dispatch(saveRiskAssessmentOutcome({ id, outcome })),
   saveReasons: ({ id, reasons }) => dispatch(saveRiskAssessmentReasons({ id, reasons })),

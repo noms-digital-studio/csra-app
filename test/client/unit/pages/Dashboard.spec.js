@@ -249,6 +249,31 @@ describe('<Dashboard />', () => {
       expect(column.text()).to.equal('Complete');
     });
 
+    it('navigates to the risk assessment summary on a completed risk assessment', () => {
+      const store = fakeStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <ConnectedDashboard />
+        </Provider>,
+      );
+
+      wrapper.find('[data-element-id="completed-csra-link-foo-id"]').simulate('click');
+
+      expect(
+        store.dispatch.calledWithMatch({
+          type: 'SELECT_OFFENDER',
+          payload: assessments[0],
+        }),
+      ).to.equal(true, 'did not call SELECT_OFFENDER action');
+
+      expect(
+        store.dispatch.calledWithMatch({
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: { method: 'push', args: ['/risk-assessment-summary'] },
+        }),
+      ).to.equal(true, 'did not navigate to /risk-assessment-summary');
+    });
+
     it('displays a completed health assessments', () => {
       const store = fakeStore(state);
       const wrapper = mount(
