@@ -33,7 +33,8 @@ describe('signIn service', () => {
           exp: 1508509084,
         }));
 
-      const aToken = `Bearer eyJhbGciOiJIUzUxMiJ9.${payload}.zzz`;
+      const algorithm = btoa(JSON.stringify({ alg: 'HS512' }));
+      const aToken = `Bearer ${algorithm}.${payload}.zzz`;
 
       fakeElite2RestService
       .post('/users/login')
