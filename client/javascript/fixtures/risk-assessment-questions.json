@@ -60,27 +60,6 @@
     "answerRequired": true
   },
   {
-    "section": "vulnerability",
-    "title": "Do you think they're likely to lash out because they're scared or feeling vulnerable?",
-    "template": "default_with_comment",
-    "formFields": {
-      "input": {
-        "yes": { "text": "Yes" },
-        "no": { "text": "No" }
-      }
-    },
-    "description": "<p class='lede text c-lede-text'>Examples of evidence to look for:</p> <ul class='list list-bullet text'><li>they've previously been a victim of prison violence</li><li>they are in debt to another prisoner</li><li>there's reasons why someone in this prison might want to hurt them</li></ul>",
-    "sharedCellPredicate": {
-      "type": "QUESTION",
-      "value": "no",
-      "dependents": [
-        "vulnerability"
-      ],
-      "reasons": ["Officer thinks they're scared or vulnerable"]
-    },
-    "answerRequired": true
-  },
-  {
     "section": "gang-affiliation",
     "title": "Are they in a gang?",
     "template": "default_with_comment",

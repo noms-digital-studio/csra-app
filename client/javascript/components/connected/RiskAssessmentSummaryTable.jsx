@@ -36,13 +36,6 @@ const mapStateToProps = (state, props) => {
         withChangeAnswer: withChangeOption,
       },
       {
-        question: questionsAnswers.vulnerability.question,
-        answer: questionsAnswers.vulnerability,
-        dataTags: { 'data-element-id': 'risk-assessment-vulnerability' },
-        changeAnswerLink: `${routes.RISK_ASSESSMENT}/${questionsAnswers.vulnerability.questionId}`,
-        withChangeAnswer: withChangeOption,
-      },
-      {
         question: questionsAnswers['gang-affiliation'].question,
         answer: questionsAnswers['gang-affiliation'],
         dataTags: { 'data-element-id': 'risk-assessment-gang' },

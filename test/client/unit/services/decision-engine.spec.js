@@ -24,11 +24,11 @@ describe('Decision Engine', () => {
 
     it('continues when the answer does not satisfy the sharedCellPredicate', () => {
       const question = {
-        section: 'vulnerability',
-        sharedCellPredicate: { type: 'QUESTION', value: 'no', dependents: ['vulnerability'] },
+        section: 'foosection',
+        sharedCellPredicate: { type: 'QUESTION', value: 'no', dependents: ['foosection'] },
       };
       const answers = {
-        vulnerability: 'no',
+        foosection: 'no',
       };
 
       expect(isSharedCellOutcome({ question, answers })).to.equal(true);
@@ -36,11 +36,11 @@ describe('Decision Engine', () => {
 
     it('does not continues when the answer satisfies the sharedCellPredicate', () => {
       const question = {
-        section: 'vulnerability',
-        sharedCellPredicate: { type: 'QUESTION', value: 'no', dependents: ['vulnerability'] },
+        section: 'fooSection',
+        sharedCellPredicate: { type: 'QUESTION', value: 'no', dependents: ['fooSection'] },
       };
       const answers = {
-        vulnerability: { answer: 'yes' },
+        fooSection: { answer: 'yes' },
       };
 
       expect(isSharedCellOutcome({ question, answers })).to.equal(false);

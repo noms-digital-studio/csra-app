@@ -22,17 +22,6 @@
     }
   },
   {
-    "section": "vulnerability",
-    "sharedCellPredicate": {
-      "type": "QUESTION",
-      "value": "no",
-      "dependents": [
-        "vulnerability"
-      ],
-      "reasons": ["Officer thinks they're scared or vulnerable"]
-    }
-  },
-  {
     "section": "gang-affiliation",
     "sharedCellPredicate": {
       "type": "QUESTION",

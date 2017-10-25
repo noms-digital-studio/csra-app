@@ -16,7 +16,6 @@ const defaultAssessmentConfig = {
   initialRecommendation: 'The predictor has found this person in its records',
   answers: {
     harmCellMate: 'no',
-    vulnerability: 'no',
     gangAffiliation: 'no',
     drugMisuse: 'no',
     prejudice: 'no',
@@ -70,11 +69,6 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
   );
   selectYesNoAnswer(config.answers.harmCellMate);
 
-  expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('vulnerability')).to.equal(
-    "Do you think they're likely to lash out because they're scared or feeling vulnerable?",
-  );
-  selectYesNoAnswer(config.answers.vulnerability);
-
   expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('gang-affiliation')).to.equal(
     'Are they in a gang?',
   );
@@ -111,7 +105,6 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
   expect(RiskAssessmentSummaryPage.outcome).to.match(caseInSensitive(config.finalRecommendation));
   expect(RiskAssessmentSummaryPage.initialFeelings).to.equalIgnoreCase('foo comment');
   expect(RiskAssessmentSummaryPage.harm).to.equalIgnoreCase(config.answers.harmCellMate);
-  expect(RiskAssessmentSummaryPage.vulnerability).to.equalIgnoreCase(config.answers.vulnerability);
   expect(RiskAssessmentSummaryPage.gang).to.equalIgnoreCase(config.answers.gangAffiliation);
   expect(RiskAssessmentSummaryPage.narcotics).to.equalIgnoreCase(config.answers.drugMisuse);
   expect(RiskAssessmentSummaryPage.prejudice).to.equalIgnoreCase(config.answers.prejudice);
@@ -187,12 +180,6 @@ export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) =
             questionId: 'harm-cell-mate',
             question: 'Is there any genuine indication they might seriously hurt a cellmate?',
             answer: config.answers.harmCellMate,
-          },
-          vulnerability: {
-            questionId: 'vulnerability',
-            question:
-              "Do you think they're likely to lash out because they're scared or feeling vulnerable?",
-            answer: config.answers.vulnerability,
           },
           'gang-affiliation': {
             questionId: 'gang-affiliation',

@@ -18,10 +18,6 @@ class RiskAssessmentSummary extends BasePage {
     return browser.getText('[data-element-id="risk-assessment-harm"] [data-element-id="row-answer"]');
   }
 
-  get vulnerability() {
-    return browser.getText('[data-element-id="risk-assessment-vulnerability"] [data-element-id="row-answer"]');
-  }
-
   get gang() {
     return browser.getText('[data-element-id="risk-assessment-gang"] [data-element-id="row-answer"]');
   }
