@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import QuestionAnswerRow from './QuestionAnswerRow';
 
-const QuestionAndAnswerSummaryTable = ({ title, questionsAnswers, withChangeAnswerOption }) => (
+const QuestionAndAnswerSummaryTable = ({ title, questionsAnswers, withChangeAnswerOption, completedBy }) => (
   <table className="check-your-answers c-answers-table">
     <thead>
       <tr>
@@ -14,6 +14,14 @@ const QuestionAndAnswerSummaryTable = ({ title, questionsAnswers, withChangeAnsw
     </thead>
 
     <tbody className="c-answers-table-vat">
+      <tr>
+        <td>Completed by:</td>
+        <td data-element-id="completed-by">
+          {completedBy.name} <br />
+          {completedBy.date}
+        </td>
+        {withChangeAnswerOption && (<td />) }
+      </tr>
       {questionsAnswers.map((qna, index) => (
         <QuestionAnswerRow tableHasChangeAnswers={withChangeAnswerOption} {...qna} key={index} />
       ))}
@@ -34,11 +42,16 @@ QuestionAndAnswerSummaryTable.propTypes = {
       dataTags: PropTypes.object,
     }),
   ),
+  completedBy: PropTypes.shape({
+    name: PropTypes.string,
+    date: PropTypes.date,
+  }),
 };
 
 QuestionAndAnswerSummaryTable.defaultProps = {
   questionsAnswers: [],
   withChangeAnswerOption: false,
+  completedBy: {},
 };
 
 export default QuestionAndAnswerSummaryTable;

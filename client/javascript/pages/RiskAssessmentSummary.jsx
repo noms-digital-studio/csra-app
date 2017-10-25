@@ -12,7 +12,7 @@ import {
   completeRiskAnswersFor,
   storeRiskAssessmentFor,
 } from '../actions';
-import { capitalize, getUsernameFromDocument } from '../utils';
+import { capitalize, getUserDetailsFromDocument } from '../utils';
 import { extractDecision } from '../services';
 
 import postAssessmentToBackend from '../services/postAssessmentToBackend';
@@ -271,7 +271,8 @@ const mapActionsToProps = dispatch => ({
   saveOutcome: ({ id, outcome }) => dispatch(saveRiskAssessmentOutcome({ id, outcome })),
   saveReasons: ({ id, reasons }) => dispatch(saveRiskAssessmentReasons({ id, reasons })),
   onSubmit: ({ assessment, assessmentId }) => {
-    const assessmentWithUsername = { ...assessment, username: getUsernameFromDocument() };
+    const { name, username } = getUserDetailsFromDocument();
+    const assessmentWithUsername = { ...assessment, username, name };
 
     getAssessmentsById(assessmentId, (response) => {
       if (not(response)) {

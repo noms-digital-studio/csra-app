@@ -37,7 +37,7 @@ class SelectableInputWithComments extends Component {
 
     return (
       <div className="c-radio-comment u-clear-fix">
-        <span className="multiple-choice">
+        <div className="multiple-choice">
           <input
             checked={isSelected}
             data-input={value}
@@ -49,7 +49,7 @@ class SelectableInputWithComments extends Component {
             onChange={onChangeFnc}
           />
           <label data-label={value} htmlFor={id}>{text}</label>
-        </span>
+        </div>
         {isSelected &&
           <div className="panel panel-border-narrow">
             <div className="c-radio-comment__comment-box u-clear-fix">

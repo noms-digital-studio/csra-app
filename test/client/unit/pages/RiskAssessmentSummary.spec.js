@@ -20,6 +20,8 @@ const prisoner = {
 };
 
 const riskAssessment = {
+  name: "foo-officer-name",
+  username: "foo-officer-user-name",
   viperScore: 0.1,
   outcome: 'shared cell',
   questions: {
@@ -437,6 +439,18 @@ describe('<RiskAssessmentSummary />', () => {
               assessment: riskAssessment,
             },
           }));
+        });
+
+        it('render the officer who completed the assessment', () => {
+          getStub.yields(null, { status: 200 }, { riskAssessment });
+
+          const wrapper = mount(
+            <Provider store={store}>
+              <RiskAssessmentSummary />
+            </Provider>,
+          );
+
+          expect(wrapper.text()).to.contain('foo-officer-name');
         });
 
         it('does not display the `what happens next section`', () => {
