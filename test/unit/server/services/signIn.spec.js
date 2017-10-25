@@ -13,10 +13,33 @@ describe('signIn service', () => {
 
   describe('successful sign in', () => {
     it('signs in when Elite 2 returns a JWT bearer token', () => {
+      const payload = btoa(JSON.stringify(
+        {
+          sub: 'AUSER',
+          deviceFingerprintHashCode: -656086319,
+          allowRefreshToken: false,
+          userPrincipal: {
+            username: 'AUSER',
+            password: null,
+            authorities: [{ authority: 'ROLE_A' }, { authority: 'ROLE_B' }],
+            additionalProperties: {},
+            enabled: true,
+            accountNonExpired: true,
+            accountNonLocked: true,
+            credentialsNonExpired: true,
+          },
+          iss: 'http://www.foobar.net',
+          iat: 1508507284,
+          exp: 1508509084,
+        }));
+
+      const algorithm = btoa(JSON.stringify({ alg: 'HS512' }));
+      const aToken = `Bearer ${algorithm}.${payload}.zzz`;
+
       fakeElite2RestService
       .post('/users/login')
       .reply(200, {
-        token: 'Bearer XXX.YYY.ZZZ',
+        token: aToken,
         issuedAt: 1506093099586,
         expiration: 1506094899586,
         refreshToken: 'Bearer AAA.BBB.CCC',
@@ -40,9 +63,10 @@ describe('signIn service', () => {
         expect(result).to.eql({
           forename: 'firstname',
           surname: 'lastname',
-          eliteAuthorisationToken: 'Bearer XXX.YYY.ZZZ',
+          eliteAuthorisationToken: aToken,
           username: 'username',
           email: 'email@hmpps',
+          authorities: [{ authority: 'ROLE_A' }, { authority: 'ROLE_B' }],
         });
       });
     });
