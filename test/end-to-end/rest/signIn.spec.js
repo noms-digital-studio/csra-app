@@ -5,11 +5,11 @@ import parsePassportSessionCookie from '../../util/cookies';
 const agent = request.agent(process.env.APP_BASE_URL);
 
 describe('/signin', () => {
-  it('signs on correctly', async () => {
+  it('signs in correctly', async () => {
     const result = await agent.post('/signin').send('username=officer&password=password').expect(302);
     expect(result.headers.location).to.eql('/');
     expect(result.headers['set-cookie'][0]).to.include('express:sess=');
-    const userDetails = { forename: 'John', surname: 'Smith', username: 'officer', email: 'officer@hmpps.org' };
+    const userDetails = { forename: 'John', surname: 'Smith', username: 'officer', email: 'officer@hmpps.org', authorities: [{ authority: 'ROLE_666' }] };
     const userDetailsString = JSON.stringify({ passport: { user: userDetails } });
     expect(parsePassportSessionCookie(result)).to.equal(userDetailsString);
   });
