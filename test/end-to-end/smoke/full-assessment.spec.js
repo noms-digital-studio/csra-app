@@ -49,15 +49,14 @@ const assessmentConfig = {
   initialRecommendation: 'No predictor data available',
   finalRecommendation: 'single cell',
   answers: {
-    harmCellMate: 'no',
-    vulnerability: 'yes',
+    harmCellMate: 'yes',
     gangAffiliation: 'no',
     drugMisuse: 'no',
     prejudice: 'no',
     officersAssessment: 'no',
   },
   reasons: [
-    { questionId: 'vulnerability', reason: "Officer thinks they're scared or vulnerable" },
+    { questionId: 'harmCellMate', reason: 'Officer thinks they might seriously hurt cellmate' },
   ],
 };
 

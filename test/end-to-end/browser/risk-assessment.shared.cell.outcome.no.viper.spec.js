@@ -16,7 +16,6 @@ const assessmentConfig = {
   finalRecommendation: 'shared cell',
   answers: {
     harmCellMate: 'no',
-    vulnerability: 'no',
     gangAffiliation: 'no',
     drugMisuse: 'no',
     prejudice: 'no',

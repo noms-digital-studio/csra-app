@@ -41,12 +41,6 @@ const riskAssessment = {
       question: 'Is there any genuine indication they might seriously hurt a cellmate?',
       answer: 'no',
     },
-    vulnerability: {
-      questionId: 'vulnerability',
-      question:
-        "Do you think they're likely to lash out because they're scared or feeling vulnerable?",
-      answer: 'no',
-    },
     'gang-affiliation': {
       questionId: 'gang-affiliation',
       question: 'Are they in a gang?',

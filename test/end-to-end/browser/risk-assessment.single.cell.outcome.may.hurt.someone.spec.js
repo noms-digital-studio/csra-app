@@ -17,7 +17,6 @@ const assessmentConfig = {
   finalRecommendation: 'single cell',
   answers: {
     harmCellMate: 'yes',
-    vulnerability: 'no',
     gangAffiliation: 'no',
     drugMisuse: 'no',
     prejudice: 'no',
