@@ -368,6 +368,14 @@ table.c-table-vam td {
   color: $text-colour !important;
 }
 
+.u-text {
+  border: none;
+  text-decoration: none;
+  color: $text-colour !important;
+  background: none;
+  font-size: inherit;
+}
+
 .u-text-capitalize {
   text-transform: capitalize;
 }
