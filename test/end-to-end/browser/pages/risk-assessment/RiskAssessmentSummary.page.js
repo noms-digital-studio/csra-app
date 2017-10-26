@@ -10,10 +10,6 @@ class RiskAssessmentSummary extends BasePage {
     return browser.getText('[data-element-id="assessment-results"]');
   }
 
-  get initialFeelings() {
-    return browser.getText('[data-element-id="risk-assessment-feeling"] [data-element-id="row-answer"]');
-  }
-
   get harm() {
     return browser.getText('[data-element-id="risk-assessment-harm"] [data-element-id="row-answer"]');
   }

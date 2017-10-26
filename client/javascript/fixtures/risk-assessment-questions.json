@@ -33,12 +33,6 @@
     }
   },
   {
-    "section": "how-do-you-feel",
-    "title": "How do you think they feel about sharing a cell at this moment?",
-    "description": "Record anything you feel is relevant.",
-    "template": "comments"
-  },
-  {
     "section": "harm-cell-mate",
     "title": "Is there any genuine indication they might seriously hurt a cellmate?",
     "description": "",

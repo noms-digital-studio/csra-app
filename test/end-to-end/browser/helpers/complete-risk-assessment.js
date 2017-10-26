@@ -2,7 +2,6 @@ import { ELEMENT_SEARCH_TIMEOUT } from '../../constants';
 import DashboardPage from '../pages/Dashboard.page';
 import RiskAssessmentPrisonerProfilePage from '../pages/risk-assessment/RiskAssessmentPrisonerProfile.page';
 import RiskAssessmentExplanationPage from '../pages/risk-assessment/RiskAssessmentExplanation.page';
-import RiskAssessmentCommentsPage from '../pages/risk-assessment/RiskAssessmentComments.page';
 import RiskAssessmentYesNoPage from '../pages/risk-assessment/RiskAssessmentYesNo.page';
 import RiskAssessmentSummaryPage from '../pages/risk-assessment/RiskAssessmentSummary.page';
 import { checkThatRiskAssessmentDataWasWrittenToDatabase } from '../../utils/dbAssertions';
@@ -59,11 +58,6 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
   expect(RiskAssessmentExplanationPage.viperHeading).to.equal(config.initialRecommendation);
   RiskAssessmentExplanationPage.clickContinue();
 
-  expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('how-do-you-feel')).to.equal(
-    'How do you think they feel about sharing a cell at this moment?',
-  );
-  RiskAssessmentCommentsPage.commentAndContinue('foo comment');
-
   expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('harm-cell-mate')).to.equal(
     'Is there any genuine indication they might seriously hurt a cellmate?',
   );
@@ -103,7 +97,6 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
   expect(RiskAssessmentSummaryPage.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);
   expect(RiskAssessmentSummaryPage.prisonerNomisId).to.equalIgnoreCase(config.prisoner.nomisId);
   expect(RiskAssessmentSummaryPage.outcome).to.match(caseInSensitive(config.finalRecommendation));
-  expect(RiskAssessmentSummaryPage.initialFeelings).to.equalIgnoreCase('foo comment');
   expect(RiskAssessmentSummaryPage.harm).to.equalIgnoreCase(config.answers.harmCellMate);
   expect(RiskAssessmentSummaryPage.gang).to.equalIgnoreCase(config.answers.gangAffiliation);
   expect(RiskAssessmentSummaryPage.narcotics).to.equalIgnoreCase(config.answers.drugMisuse);
@@ -170,11 +163,6 @@ export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) =
             questionId: 'risk-of-violence',
             question: 'Viper result',
             answer: '',
-          },
-          'how-do-you-feel': {
-            questionId: 'how-do-you-feel',
-            question: 'How do you think they feel about sharing a cell at this moment?',
-            answer: 'foo comment',
           },
           'harm-cell-mate': {
             questionId: 'harm-cell-mate',

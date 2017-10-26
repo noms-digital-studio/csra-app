@@ -8,9 +8,6 @@
     }
   },
   {
-    "section": "how-do-you-feel"
-  },
-  {
     "section": "harm-cell-mate",
     "sharedCellPredicate": {
       "type": "QUESTION",
