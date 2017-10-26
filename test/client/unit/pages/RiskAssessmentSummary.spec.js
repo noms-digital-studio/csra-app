@@ -20,8 +20,8 @@ const prisoner = {
 };
 
 const riskAssessment = {
-  name: "foo-officer-name",
-  username: "foo-officer-user-name",
+  name: 'foo-officer-name',
+  username: 'foo-officer-user-name',
   viperScore: 0.1,
   outcome: 'shared cell',
   questions: {
