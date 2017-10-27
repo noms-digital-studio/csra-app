@@ -21,17 +21,14 @@ export function checkThatRiskAssessmentDataWasWrittenToDatabase({
   riskAssessment,
 }) {
   return db.select().table('prisoner_assessments').where('id', Number(id)).then((result) => {
-    expect(result[0]).to.not.equal(
+    const assessment = result[0];
+
+    expect(assessment).to.not.equal(
       undefined,
       `Did not get a result from database for id: ${id}`,
     );
 
-    const actualRiskAssessment = JSON.parse(result[0].risk_assessment);
-    expect(actualRiskAssessment.username).to.eql(riskAssessment.username);
-    expect(actualRiskAssessment.viperScore).to.eql(riskAssessment.viperScore);
-    expect(actualRiskAssessment.outcome).to.eql(riskAssessment.outcome);
-    expect(actualRiskAssessment.reasons).to.eql(riskAssessment.reasons);
-    expect(actualRiskAssessment.questions).to.eql(riskAssessment.questions);
+    expect(JSON.parse(assessment.risk_assessment)).to.eql(riskAssessment);
   });
 }
 
@@ -41,6 +38,7 @@ export function checkThatHealthAssessmentDataWasWrittenToDatabase({
 }) {
   return db.select().table('prisoner_assessments').where('id', Number(id)).then((result) => {
     const assessment = result[0];
+
     expect(assessment).to.not.equal(
       undefined,
       `Did not get a result from database for id: ${id}`,

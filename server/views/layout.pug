@@ -32,7 +32,7 @@ body
 
                 if isLoggedIn
                   div(class='c-global-header__wrapper')
-                    span(class='c-global-header__username', data-header-username=username)
+                    span(class='c-global-header__username', data-element-id="user-details" data-header-username=username data-header-name=name)
                       | #{name}
                     span(class='c-profile-holder c-profile-holder--global-header')
                     a(href='/signout', data-element-id='sign-out', class='c-profile-logout') Sign out

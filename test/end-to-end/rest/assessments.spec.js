@@ -82,6 +82,7 @@ describe('/api/assessments/', () => {
 
     await agent.put(`/api/assessments/${id}/risk`).send(
       {
+        name: 'foo-name',
         username: 'foo-user',
         outcome: 'single cell',
         viperScore: 0.35,
@@ -92,6 +93,7 @@ describe('/api/assessments/', () => {
     await checkThatRiskAssessmentDataWasWrittenToDatabase({
       id,
       riskAssessment: {
+        name: 'foo-name',
         username: 'foo-user',
         outcome: 'single cell',
         viperScore: 0.35,
@@ -117,6 +119,7 @@ describe('/api/assessments/', () => {
 
     await agent.put(`/api/assessments/${id}/health`).send(
       {
+        name: 'foo-name',
         username: 'foo-user',
         outcome: 'single cell',
         viperScore: 0.35,
@@ -126,6 +129,7 @@ describe('/api/assessments/', () => {
     await checkThatHealthAssessmentDataWasWrittenToDatabase({
       id,
       healthAssessment: {
+        name: 'foo-name',
         username: 'foo-user',
         outcome: 'single cell',
         viperScore: 0.35,

@@ -20,6 +20,8 @@ const prisoner = {
 };
 
 const riskAssessment = {
+  name: 'foo-officer-name',
+  username: 'foo-officer-user-name',
   viperScore: 0.1,
   outcome: 'shared cell',
   questions: {
@@ -76,10 +78,26 @@ const state = {
 };
 
 describe('<RiskAssessmentSummary />', () => {
+  let putStub;
+  let getStub;
+
+  beforeEach(() => {
+    putStub = sinon.stub(xhr, 'put');
+    getStub = sinon.stub(xhr, 'get');
+  });
+
+  afterEach(() => {
+    getStub.restore();
+    putStub.restore();
+  });
+
   context('Connected RiskAssessmentSummary', () => {
     context('when the assessment outcome is low', () => {
       it('renders the prisoners profile details', () => {
         const store = fakeStore(state);
+
+        getStub.yields(null, { status: 200 }, { riskAssessment: null });
+
         const wrapper = mount(
           <Provider store={store}>
             <RiskAssessmentSummary />
@@ -97,6 +115,8 @@ describe('<RiskAssessmentSummary />', () => {
       context('When the component mounts', () => {
         it('marks questions as complete on mount', () => {
           const store = fakeStore(state);
+
+          getStub.yields(null, { status: 200 }, { riskAssessment: null });
 
           mount(
             <Provider store={store}>
@@ -116,6 +136,8 @@ describe('<RiskAssessmentSummary />', () => {
       context('When answers are already complete', () => {
         it('displays change answer options for each question', () => {
           const store = fakeStore(state);
+
+          getStub.yields(null, { status: 200 }, { riskAssessment: null });
 
           const wrapper = mount(
             <Provider store={store}>
@@ -141,6 +163,8 @@ describe('<RiskAssessmentSummary />', () => {
             },
           });
 
+          getStub.yields(null, { status: 200 }, { riskAssessment: null });
+
           const wrapper = mount(
             <Provider store={store}>
               <RiskAssessmentSummary />
@@ -155,11 +179,15 @@ describe('<RiskAssessmentSummary />', () => {
 
       it('renders a "shared cell" outcome', () => {
         const store = fakeStore(state);
+
+        getStub.yields(null, { status: 200 }, { riskAssessment: null });
+
         const wrapper = mount(
           <Provider store={store}>
             <RiskAssessmentSummary />
           </Provider>,
         );
+
         const outcomeText = wrapper.find('[data-element-id="risk-assessment-outcome"]').text();
         const riskText = wrapper.find('[data-element-id="risk-assessment-risk"]').text();
         const reasonsText = wrapper.find('[data-element-id="risk-assessment-reasons"]');
@@ -212,6 +240,9 @@ describe('<RiskAssessmentSummary />', () => {
           },
         };
         const store = fakeStore(sharedCellOutcomeState);
+
+        getStub.yields(null, { status: 200 }, { riskAssessment: null });
+
         const wrapper = mount(
           <Provider store={store}>
             <RiskAssessmentSummary />
@@ -285,6 +316,9 @@ describe('<RiskAssessmentSummary />', () => {
         };
 
         const store = fakeStore(singleCellOutcomeState);
+
+        getStub.yields(null, { status: 200 }, { riskAssessment: null });
+
         const wrapper = mount(
           <Provider store={store}>
             <RiskAssessmentSummary />
@@ -339,6 +373,9 @@ describe('<RiskAssessmentSummary />', () => {
             },
           },
         });
+
+        getStub.yields(null, { status: 200 }, { riskAssessment: null });
+
         const wrapper = mount(
           <Provider store={store}>
             <RiskAssessmentSummary />
@@ -370,25 +407,88 @@ describe('<RiskAssessmentSummary />', () => {
         expect(riskText).to.contain('High');
         expect(reasonsText).to.equal('has a high viper score');
       });
+
+
+      context('when the assessment is already been complete and is returned from the server', () => {
+        const store = fakeStore({
+          ...state,
+          offender: {
+            selected: {
+              ...prisoner,
+              riskAssessmentCompleted: true,
+              healthAssessmentCompleted: true,
+            },
+          },
+        });
+
+        it('only stores the assessment', () => {
+          getStub.yields(null, { status: 200 }, { riskAssessment });
+
+          mount(
+            <Provider store={store}>
+              <RiskAssessmentSummary />
+            </Provider>,
+          );
+
+          expect(store.dispatch.callCount).to.equal(1);
+
+          expect(store.dispatch.calledWithMatch({
+            type: 'STORE_ASSESSMENT',
+            payload: {
+              id: 1,
+              assessment: riskAssessment,
+            },
+          }));
+        });
+
+        it('render the officer who completed the assessment', () => {
+          getStub.yields(null, { status: 200 }, { riskAssessment });
+
+          const wrapper = mount(
+            <Provider store={store}>
+              <RiskAssessmentSummary />
+            </Provider>,
+          );
+
+          expect(wrapper.text()).to.contain('foo-officer-name');
+        });
+
+        it('does not display the `what happens next section`', () => {
+          getStub.yields(null, { status: 200 }, { riskAssessment });
+
+          const wrapper = mount(
+            <Provider store={store}>
+              <RiskAssessmentSummary />
+            </Provider>,
+          );
+
+          expect(wrapper.text()).to.not.include('What happens next?');
+        });
+
+        it('navigates to the dashboard on submition', () => {
+          getStub.yields(null, { status: 200 }, { riskAssessment });
+
+          const wrapper = mount(
+            <Provider store={store}>
+              <RiskAssessmentSummary />
+            </Provider>,
+          );
+
+          wrapper.find('[data-element-id="continue-button"]').simulate('click');
+
+          expect(
+            store.dispatch.calledWithMatch({
+              type: '@@router/CALL_HISTORY_METHOD',
+              payload: { method: 'push', args: ['/dashboard'] },
+            }),
+          ).to.equal(true, 'Changed path to /dashboard');
+        });
+      });
     });
 
     context('when the healthcare assessment is incomplete', () => {
-      let store;
-      let putStub;
-      let getStub;
-
-      beforeEach(() => {
-        store = fakeStore(state);
-        putStub = sinon.stub(xhr, 'put');
-        getStub = sinon.stub(xhr, 'get');
-      });
-
-      afterEach(() => {
-        getStub.restore();
-        putStub.restore();
-      });
-
       it('displays a message informing the user that they need to complete the healthcare assessment', () => {
+        const store = fakeStore(state);
         const wrapper = mount(
           <Provider store={store}>
             <RiskAssessmentSummary />
@@ -409,6 +509,8 @@ describe('<RiskAssessmentSummary />', () => {
       });
 
       it('on submission it navigates to the prisoner list', () => {
+        const store = fakeStore(state);
+
         const wrapper = mount(
           <Provider store={store}>
             <RiskAssessmentSummary />
@@ -443,6 +545,8 @@ describe('<RiskAssessmentSummary />', () => {
       });
 
       it('navigates to the error page on form submission when it fails to PUT the assessment', () => {
+        const store = fakeStore(state);
+
         const wrapper = mount(
           <Provider store={store}>
             <RiskAssessmentSummary />
@@ -463,6 +567,8 @@ describe('<RiskAssessmentSummary />', () => {
       });
 
       it('navigates to the error page on form submission when it fails to GET the latests assessment', () => {
+        const store = fakeStore(state);
+
         const wrapper = mount(
           <Provider store={store}>
             <RiskAssessmentSummary />
@@ -483,9 +589,6 @@ describe('<RiskAssessmentSummary />', () => {
     });
 
     context('when the healthcare assessment is complete', () => {
-      let store;
-      let putStub;
-      let getStub;
       const stateWithCompletedHealthcare = {
         ...state,
         offender: {
@@ -493,18 +596,9 @@ describe('<RiskAssessmentSummary />', () => {
         },
       };
 
-      beforeEach(() => {
-        store = fakeStore(stateWithCompletedHealthcare);
-        putStub = sinon.stub(xhr, 'put');
-        getStub = sinon.stub(xhr, 'get');
-      });
-
-      afterEach(() => {
-        getStub.restore();
-        putStub.restore();
-      });
 
       it('displays a message informing the user that they can see their assessment outcome', () => {
+        const store = fakeStore(stateWithCompletedHealthcare);
         const wrapper = mount(
           <Provider store={store}>
             <RiskAssessmentSummary />
@@ -521,6 +615,7 @@ describe('<RiskAssessmentSummary />', () => {
       });
 
       it('on submission it navigates to the full assessment page', () => {
+        const store = fakeStore(stateWithCompletedHealthcare);
         const wrapper = mount(
           <Provider store={store}>
             <RiskAssessmentSummary />

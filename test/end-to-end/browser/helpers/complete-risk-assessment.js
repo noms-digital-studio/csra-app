@@ -4,7 +4,9 @@ import RiskAssessmentPrisonerProfilePage from '../pages/risk-assessment/RiskAsse
 import RiskAssessmentExplanationPage from '../pages/risk-assessment/RiskAssessmentExplanation.page';
 import RiskAssessmentYesNoPage from '../pages/risk-assessment/RiskAssessmentYesNo.page';
 import RiskAssessmentSummaryPage from '../pages/risk-assessment/RiskAssessmentSummary.page';
-import { checkThatRiskAssessmentDataWasWrittenToDatabase } from '../../utils/dbAssertions';
+import { checkThatRiskAssessmentDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
+import { parseDate } from '../../../../client/javascript/utils';
+
 
 const defaultAssessmentConfig = {
   prisoner: {
@@ -39,6 +41,9 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
   if (config.smokeTest) {
     browser.url('/dashboard?displayTestAssessments=true');
   }
+
+  const officerName = browser.getAttribute('[data-header-name]', 'data-header-name');
+  const assessmentDate = parseDate(new Date());
 
   expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
 
@@ -93,6 +98,8 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
     });
   }
 
+  expect(RiskAssessmentSummaryPage.completedBy).to.include(officerName);
+  expect(RiskAssessmentSummaryPage.completedBy).to.include(assessmentDate);
   expect(RiskAssessmentSummaryPage.prisonerName).to.equalIgnoreCase(config.prisoner.name);
   expect(RiskAssessmentSummaryPage.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);
   expect(RiskAssessmentSummaryPage.prisonerNomisId).to.equalIgnoreCase(config.prisoner.nomisId);
@@ -134,6 +141,7 @@ export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) =
   browser.waitForVisible(`tr[data-element-id="profile-row-${config.prisoner.nomisId}"]`, ELEMENT_SEARCH_TIMEOUT);
 
   const username = browser.getAttribute('[data-header-username]', 'data-header-username');
+  const name = browser.getAttribute('[data-header-name]', 'data-header-name');
   const row = browser.element('tbody tr');
   const assessmentId = row.getAttribute('data-assessment-id');
 
@@ -147,10 +155,11 @@ export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) =
   );
 
   if (!config.smokeTest) {
-    checkThatRiskAssessmentDataWasWrittenToDatabase({
+    checkThatRiskAssessmentDataWasWrittenToDatabaseSync({
       id: assessmentId,
       riskAssessment: {
         username,
+        name,
         outcome: config.finalRecommendation,
         viperScore: config.viperScore,
         questions: {
@@ -194,4 +203,37 @@ export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) =
       },
     });
   }
+};
+
+
+export const andICanViewTheAssessmentAgain = (config = defaultAssessmentConfig) => {
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
+
+  DashboardPage.viewCompletedRiskAssessmentFor(config.prisoner.nomisId);
+
+  expect(RiskAssessmentSummaryPage.waitForMainHeadingWithDataId('risk-summary')).to.equal(
+    'Risk assessment summary',
+  );
+
+  if (config.reasons) {
+    config.reasons.forEach((reasonObj) => {
+      expect(RiskAssessmentSummaryPage.reasons).to.match(caseInSensitive(reasonObj.reason));
+    });
+  }
+
+  expect(RiskAssessmentSummaryPage.prisonerName).to.equalIgnoreCase(config.prisoner.name);
+  expect(RiskAssessmentSummaryPage.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);
+  expect(RiskAssessmentSummaryPage.prisonerNomisId).to.equalIgnoreCase(config.prisoner.nomisId);
+  expect(RiskAssessmentSummaryPage.outcome).to.match(caseInSensitive(config.finalRecommendation));
+  expect(RiskAssessmentSummaryPage.harm).to.equalIgnoreCase(config.answers.harmCellMate);
+  expect(RiskAssessmentSummaryPage.gang).to.equalIgnoreCase(config.answers.gangAffiliation);
+  expect(RiskAssessmentSummaryPage.narcotics).to.equalIgnoreCase(config.answers.drugMisuse);
+  expect(RiskAssessmentSummaryPage.prejudice).to.equalIgnoreCase(config.answers.prejudice);
+  expect(RiskAssessmentSummaryPage.officerComments).to.equalIgnoreCase(
+    config.answers.officersAssessment,
+  );
+
+  RiskAssessmentSummaryPage.clickContinue();
+
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
 };

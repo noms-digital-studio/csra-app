@@ -72,12 +72,15 @@ export const getTimeStamp = (date) => {
 };
 
 
-export const getUsernameFromDocument = () => {
+export const getUserDetailsFromDocument = () => {
   if (not(document) && not(document.body)) return '';
 
-  const usernameElement = document.querySelector('[data-header-username]');
+  const userDetailsElement = document.querySelector('[data-element-id="user-details"]');
 
-  if (not(usernameElement)) return '';
+  if (not(userDetailsElement)) return { username: '', name: '' };
 
-  return usernameElement.getAttribute('data-header-username');
+  return {
+    username: userDetailsElement.getAttribute('data-header-username'),
+    name: userDetailsElement.getAttribute('data-header-name'),
+  };
 };

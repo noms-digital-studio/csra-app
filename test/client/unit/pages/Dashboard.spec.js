@@ -23,10 +23,21 @@ const filteredAssessments = [
   {
     id: 2,
     nomisId: 'bar-id',
-    surname: 'foo-surname',
-    forename: 'foo-forename',
+    surname: 'bar-surname',
+    forename: 'bar-forename',
     dateOfBirth: '2001-03-04T00:00:00.000Z',
     riskAssessmentCompleted: false,
+    healthAssessmentCompleted: false,
+    outcome: null,
+    createdAt: '2017-01-02T00:00:00.000Z',
+  },
+  {
+    id: 3,
+    nomisId: 'baz-id',
+    surname: 'baz-surname',
+    forename: 'baz-forename',
+    dateOfBirth: '2001-03-04T00:00:00.000Z',
+    riskAssessmentCompleted: true,
     healthAssessmentCompleted: false,
     outcome: null,
     createdAt: '2017-01-02T00:00:00.000Z',
@@ -35,7 +46,7 @@ const filteredAssessments = [
 
 const assessments = filteredAssessments.concat([
   {
-    id: 3,
+    id: 4,
     nomisId: 'TEST1-ID',
     surname: 'test1-surname',
     forename: 'test1-forename',
@@ -46,7 +57,7 @@ const assessments = filteredAssessments.concat([
     createdAt: '2017-01-02T00:00:00.000Z',
   },
   {
-    id: 4,
+    id: 5,
     nomisId: 'TEST2-ID',
     surname: 'test2-surname',
     forename: 'test2-forename',
@@ -104,7 +115,7 @@ describe('<Dashboard />', () => {
     context('when there are people to assess', () => {
       it('renders the correct number of assessments rows', () => {
         const wrapper = mount(<Dashboard assessments={assessments} />);
-        expect(wrapper.find('tr[data-element-id]').length).to.equal(2);
+        expect(wrapper.find('tr[data-element-id]').length).to.equal(3);
       });
 
       it('renders the correct profile information per row', () => {
@@ -117,8 +128,8 @@ describe('<Dashboard />', () => {
       it('displays a completed risk assessments', () => {
         const wrapper = mount(<Dashboard assessments={assessments} />);
         const row = wrapper.find('[data-risk-assessment-complete=true]');
-        expect(row.length).to.equal(1);
-        expect(row.text()).to.equal('Complete');
+        expect(row.length).to.equal(2);
+        expect(row.first().text()).to.equal('Complete');
       });
 
       it('displays a completed health assessments', () => {
@@ -167,10 +178,10 @@ describe('<Dashboard />', () => {
         expect(callback.lastCall.args[0]).to.deep.include(assessments[1]);
       });
 
-      it('does not display any nomis ids that start with the word `TEST`', () => {
+      it('does not display any nomis ids that start with the word `TEST-`', () => {
         const wrapper = mount(<Dashboard assessments={assessments} />);
         const table = wrapper.find('table');
-        expect(table.text().toUpperCase()).to.not.contain('TEST');
+        expect(table.text().toUpperCase()).to.not.match(/test.+-/ig);
       });
     });
   });
@@ -194,7 +205,7 @@ describe('<Dashboard />', () => {
           <ConnectedDashboard location={{ query: { displayTestAssessments: 'true' } }} />
         </Provider>,
       );
-      expect(wrapper.find('tr[data-element-id]').length).to.equal(4);
+      expect(wrapper.find('tr[data-element-id]').length).to.equal(5);
     });
 
     it('calls the getOffenderProfiles on component mount', () => {
@@ -222,7 +233,7 @@ describe('<Dashboard />', () => {
         </Provider>,
       );
 
-      expect(wrapper.find('tr[data-element-id]').length).to.equal(2);
+      expect(wrapper.find('tr[data-element-id]').length).to.equal(3);
     });
 
     it('renders the correct profile information per row', () => {
@@ -245,8 +256,33 @@ describe('<Dashboard />', () => {
         </Provider>,
       );
       const column = wrapper.find('[data-risk-assessment-complete=true]');
-      expect(column.length).to.equal(1);
-      expect(column.text()).to.equal('Complete');
+      expect(column.length).to.equal(2);
+      expect(column.first().text()).to.equal('Complete');
+    });
+
+    it('navigates to the risk assessment summary on a completed risk assessment', () => {
+      const store = fakeStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <ConnectedDashboard />
+        </Provider>,
+      );
+
+      wrapper.find('[data-element-id="completed-csra-link-baz-id"]').simulate('click');
+
+      expect(
+        store.dispatch.calledWithMatch({
+          type: 'SELECT_OFFENDER',
+          payload: assessments[2],
+        }),
+      ).to.equal(true, 'did not call SELECT_OFFENDER action');
+
+      expect(
+        store.dispatch.calledWithMatch({
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: { method: 'push', args: ['/risk-assessment-summary'] },
+        }),
+      ).to.equal(true, 'did not navigate to /risk-assessment-summary');
     });
 
     it('displays a completed health assessments', () => {
@@ -336,7 +372,7 @@ describe('<Dashboard />', () => {
         );
         const profileBtn = wrapper.find('[data-health-assessment-complete=false] > button');
 
-        profileBtn.simulate('click');
+        profileBtn.first().simulate('click');
 
         expect(
           store.dispatch.calledWithMatch({
@@ -371,7 +407,7 @@ describe('<Dashboard />', () => {
               </Provider>,
             );
 
-            wrapper.find('[data-health-assessment-complete=false] > button').simulate('click');
+            wrapper.find('[data-health-assessment-complete=false] > button').first().simulate('click');
 
             expect(
               newStore.dispatch.calledWithMatch({
@@ -397,7 +433,7 @@ describe('<Dashboard />', () => {
               <ConnectedDashboard />
             </Provider>,
           );
-          const profileBtn = wrapper.find('[data-risk-assessment-complete=false] > button');
+          const profileBtn = wrapper.first().find('[data-risk-assessment-complete=false] > button');
 
           getStub
             .onSecondCall()
@@ -428,7 +464,7 @@ describe('<Dashboard />', () => {
             .onSecondCall()
             .yields(null, { statusCode: 200 }, { healthAssessment: { foo: 'bar' } });
 
-          profileBtn.simulate('click');
+          profileBtn.first().simulate('click');
 
           expect(getStub.callCount).to.equal(2);
 

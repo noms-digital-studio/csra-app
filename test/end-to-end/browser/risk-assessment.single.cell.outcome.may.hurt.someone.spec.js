@@ -4,6 +4,7 @@ import whenTheOfficerAddsThePrisonersDetails from './tasks/theOfficerAddsThePris
 import {
   whenPrisonerIsAssessed as whenAPrisonerWhoMayHurtSomeoneIsAssessed,
   thenTheAssessmentIsCompleted,
+  andICanViewTheAssessmentAgain,
 } from './helpers/complete-risk-assessment';
 
 const assessmentConfig = {
@@ -34,5 +35,6 @@ describe('Risk assessment for a prisoner who may hurt someone (single cell outco
     whenTheOfficerAddsThePrisonersDetails();
     whenAPrisonerWhoMayHurtSomeoneIsAssessed(assessmentConfig);
     thenTheAssessmentIsCompleted(assessmentConfig);
+    andICanViewTheAssessmentAgain(assessmentConfig);
   });
 });

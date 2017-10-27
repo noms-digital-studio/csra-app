@@ -3,6 +3,7 @@ import whenTheOfficerAddsThePrisonerDetails from './tasks/theOfficerAddsThePriso
 import {
   whenPrisonerIsAssessed as whenAViolentPrisonerIsAssessed,
   thenTheAssessmentIsCompleted,
+  andICanViewTheAssessmentAgain,
 } from './helpers/complete-risk-assessment';
 
 const assessmentConfig = {
@@ -46,5 +47,6 @@ describe('Risk assessment for a prisoner with a high VIPER score', () => {
     });
     whenAViolentPrisonerIsAssessed(assessmentConfig);
     thenTheAssessmentIsCompleted(assessmentConfig);
+    andICanViewTheAssessmentAgain(assessmentConfig);
   });
 });

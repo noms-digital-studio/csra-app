@@ -1,15 +1,26 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
-import QuestionAndAnswerSummaryTable
-  from '../../../../client/javascript/components/QuestionAndAnswerSummaryTable';
-import QuestionAnswerRow
-  from '../../../../client/javascript/components/QuestionAnswerRow';
+import QuestionAndAnswerSummaryTable from '../../../../client/javascript/components/QuestionAndAnswerSummaryTable';
+import QuestionAnswerRow from '../../../../client/javascript/components/QuestionAnswerRow';
 
 describe('<QuestionAndAnswerSummaryTable/>', () => {
   it('renders a title', () => {
     const wrapper = shallow(<QuestionAndAnswerSummaryTable title="foo-title" />);
     expect(wrapper.text()).to.contain('foo-title');
+  });
+
+  it('renders the name and date', () => {
+    const wrapper = shallow(
+      <QuestionAndAnswerSummaryTable
+        completedBy={{
+          name: 'foo-name',
+          date: 'foo-date',
+        }}
+      />,
+    );
+    expect(wrapper.text()).to.contain('foo-name');
+    expect(wrapper.text()).to.contain('foo-date');
   });
 
   it('renders a list of question answers', () => {
@@ -25,9 +36,7 @@ describe('<QuestionAndAnswerSummaryTable/>', () => {
         dataTags: { 'data-bar': 'string', 'data-foo-bar': 'string' },
       },
     ];
-    const wrapper = mount(
-      <QuestionAndAnswerSummaryTable questionsAnswers={questionAnswers} />,
-    );
+    const wrapper = mount(<QuestionAndAnswerSummaryTable questionsAnswers={questionAnswers} />);
 
     const rows = wrapper.find(QuestionAnswerRow);
 

@@ -6,15 +6,12 @@ table td {
 }
 
 table.c-table-vam td {
-  vertical-align: middle
+  vertical-align: middle;
 }
 
 /**************************
 * Govuk stuff
 ***************************/
-.multiple-choice label {
-  padding-top: 0;
-}
 
 .error-summary-list,
 .error-summary-list li {
@@ -26,7 +23,7 @@ table.c-table-vam td {
 // ***************************/
 
 .o-question {
-    padding-top: $gutter;
+  padding-top: $gutter;
 }
 
 // /**************************
@@ -34,10 +31,10 @@ table.c-table-vam td {
 // ***************************/
 
 .c-global-header__wrapper {
-    color: #FFF;
-    font-weight: bold;
-    float: right;
-    margin-top: -3px;
+  color: #FFFFFF;
+  font-weight: bold;
+  float: right;
+  margin-top: -3px;
 }
 
 .c-global-header__username {
@@ -47,7 +44,7 @@ table.c-table-vam td {
 .c-profile-logout {
   display: inline-block;
   background: none;
-  color: #FFF !important;
+  color: #FFFFFF !important;
   text-decoration: underline;
   border: none;
   font-size: 16px;
@@ -66,103 +63,103 @@ table.c-table-vam td {
 }
 
 .c-dashboard-header {
-    border-bottom: solid 1px $grey-2;
-    padding-top: $gutter;
-    padding-bottom: $gutter;
+  border-bottom: solid 1px $grey-2;
+  padding-top: $gutter;
+  padding-bottom: $gutter;
 }
 
 .c-offender-count {
-    display: block;
-    font-size: 24px;
-    line-height: 1.25;
-    font-weight: bold;
-    padding-top: 8px;
+  display: block;
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: bold;
+  padding-top: 8px;
 }
 
 .c-profile-holder {
-    width: 35px;
-    height: 35px;
-    display: inline-block;
-    vertical-align: middle;
-    background-image: url("/assets/images/profile-placeholder.gif");
-    background-size: contain;
-    background-repeat: no-repeat;
-    margin: 0 10px;
+  width: 35px;
+  height: 35px;
+  display: inline-block;
+  vertical-align: middle;
+  background-image: url("/assets/images/profile-placeholder.gif");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 0 10px;
 }
 
 .c-date-title {
-    margin-bottom: 3em;
+  margin-bottom: 3em;
 }
 
 .c-risk-threat {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 .c-risk-threat--low {
-    color: $turquoise;
+  color: $turquoise;
 }
 
 .c-risk-threat--medium {
-    color: $orange;
+  color: $orange;
 }
 
 .c-risk-threat--high {
-    color: $red;
+  color: $red;
 }
 
 .c-risk-threat--unknown {
-    color: $mauve;
+  color: $mauve;
 }
 
 .c-form-label-container {
-    margin-top: $gutter;
-    margin-bottom: $gutter;
+  margin-top: $gutter;
+  margin-bottom: $gutter;
 }
 
 .c-message-text {
-    font-weight: bold;
-    margin-top: 15px;
+  font-weight: bold;
+  margin-top: 15px;
 }
 
 .c-messgae-text--success {
-    color: $turquoise;
+  color: $turquoise;
 }
 
 .c-btn-right--xcustom {
-    margin-top: 100px;
-    float: right;
+  margin-top: 100px;
+  float: right;
 }
 
 .c-table-start-btn {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .c-status-indicator {
-    padding: 0.3em 0.8em;
-    border: solid 1px $grey-2;
-    display: inline-block;
-    background-color: $grey-3;
-    text-transform: uppercase;
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: left;
+  padding: 0.3em 0.8em;
+  border: solid 1px $grey-2;
+  display: inline-block;
+  background-color: $grey-3;
+  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: left;
 }
 
 .c-offender-details-container {
-    width: 100%;
-    margin-top: $gutter;
-    padding-top: $gutter;
-    padding-bottom: $gutter;
-    margin-bottom: 70px;
-    border-top: 1px solid $grey-2;
-    border-bottom: 1px solid $grey-2;
+  width: 100%;
+  margin-top: $gutter;
+  padding-top: $gutter;
+  padding-bottom: $gutter;
+  margin-bottom: 70px;
+  border-top: 1px solid $grey-2;
+  border-bottom: 1px solid $grey-2;
 }
 
 .c-offender-profile-image {
-    float: left;
-    max-width: 150px;
-    height: auto;
-    margin-right: 40px;
+  float: left;
+  max-width: 150px;
+  height: auto;
+  margin-right: 40px;
 }
 
 .c-offender-image {
@@ -186,28 +183,28 @@ table.c-table-vam td {
 }
 
 .c-offender-profile-image img {
-    max-width: 100%;
-    height: auto;
+  max-width: 100%;
+  height: auto;
 }
 
 .c-offender-profile-details {
-    float: left;
-    padding-top: 15px;
+  float: left;
+  padding-top: 15px;
 }
 
 .c-offender-profile-item {
-    display: block;
-    text-transform: capitalize;
+  display: block;
+  text-transform: capitalize;
 }
 
 .c-row-title {
-    font-size: 24px;
+  font-size: 24px;
 }
 
 .c-print-link {
-    text-align: left;
-    margin: 2em 0 0 0;
-    padding: 1em;
+  text-align: left;
+  margin: 2em 0 0 0;
+  padding: 1em;
 }
 
 .c-print-link--small-mt {
@@ -221,17 +218,17 @@ table.c-table-vam td {
 }
 
 .c-icon-button {
-    cursor: pointer;
-    background-color: transparent;
-    border: none;
-    display: inline-block;
-    background-image: url('/assets/images/icon-print.png');
-    background-position: 0% 50%;
-    background-repeat: no-repeat;
-    background-size: 16px 18px;
-    padding: .5em 0 .5em 28px;
-    zoom: 1;
-    font-size: 1.8rem;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  display: inline-block;
+  background-image: url("/assets/images/icon-print.png");
+  background-position: 0 50%;
+  background-repeat: no-repeat;
+  background-size: 16px 18px;
+  padding: 0.5em 0 0.5em 28px;
+  zoom: 1;
+  font-size: 1.8rem;
 }
 
 .c-text-hint {
@@ -289,7 +286,7 @@ table.c-table-vam td {
 
 
 .c-lede-text {
-  margin-top: .26316em;
+  margin-top: 0.26316em;
   margin-bottom: 0.6em;
 }
 
@@ -298,9 +295,9 @@ table.c-table-vam td {
 // *******************/
 
 .u-clear-fix {
-    content: "";
-    display: table;
-    clear: both;
+  content: "";
+  display: table;
+  clear: both;
 }
 
 .u-no-borders {
@@ -308,15 +305,15 @@ table.c-table-vam td {
 }
 
 .u-text-align-center {
-    text-align: center;
+  text-align: center;
 }
 
 .u-text-align-right {
-    text-align: right;
+  text-align: right;
 }
 
 .u-margin-top-default {
-    margin-top: $gutter;
+  margin-top: $gutter;
 }
 
 .u-margin-top-charlie {
@@ -324,7 +321,7 @@ table.c-table-vam td {
 }
 
 .u-margin-bottom-default {
-    margin-bottom: $gutter;
+  margin-bottom: $gutter;
 }
 
 .u-margin-bottom-alpha {
@@ -332,31 +329,31 @@ table.c-table-vam td {
 }
 
 .u-margin-bottom-bravo {
-    margin-bottom: 3em;
+  margin-bottom: 3em;
 }
 
 .u-margin-bottom-charlie {
-    margin-bottom: 2em;
+  margin-bottom: 2em;
 }
 
 .u-margin-bottom-small {
-    margin-bottom: 1em;
+  margin-bottom: 1em;
 }
 
 .u-no-margin-top {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 .u-no-margin-bottom {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .u-no-margin {
-    margin: 0;
+  margin: 0;
 }
 
 .u-d-block {
-    display: block;
+  display: block;
 }
 
 .u-link {
@@ -367,12 +364,20 @@ table.c-table-vam td {
 }
 
 .u-no-link {
-    text-decoration: none;
-    color: $text-colour !important;
+  text-decoration: none;
+  color: $text-colour !important;
+}
+
+.u-text {
+  border: none;
+  text-decoration: none;
+  color: $text-colour !important;
+  background: none;
+  font-size: inherit;
 }
 
 .u-text-capitalize {
-    text-transform: capitalize;
+  text-transform: capitalize;
 }
 
 .u-font-weight-normal {
@@ -392,4 +397,3 @@ table.c-table-vam td {
     display: none;
   }
 }
-

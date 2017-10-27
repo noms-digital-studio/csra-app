@@ -9,6 +9,7 @@ describe('prisoner assessment service', () => {
   };
 
   const validRiskAssessment = {
+    name: 'Foo Bar',
     username: 'foo-username',
     outcome: 'shared cell',
     viperScore: 0.35,
@@ -28,6 +29,7 @@ describe('prisoner assessment service', () => {
   };
 
   const validHealthAssessment = {
+    name: 'Foo Bar',
     username: 'bar-username',
     outcome: 'single cell',
     viperScore: null,

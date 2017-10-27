@@ -6,7 +6,7 @@ import HealthcareNursePage from '../pages/healthcare/HealthcareNurse.page';
 import DashboardPage from '../pages/Dashboard.page';
 import HealthcareSummary from '../pages/healthcare/HealthcareSummary.page';
 
-import { checkThatHealthAssessmentDataWasWrittenToDatabase } from '../../utils/dbAssertions';
+import { checkThatHealthAssessmentDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
 
 const defaultAssessmentConfig = {
   prisoner: {
@@ -93,6 +93,8 @@ const thenTheHealthcareAssessmentIsComplete = (config = defaultAssessmentConfig)
 
   const row = browser.element(`[data-element-id="profile-row-${config.prisoner.nomisId}"]`);
   const username = browser.getAttribute('[data-header-username]', 'data-header-username');
+  const name = browser.getAttribute('[data-header-name]', 'data-header-name');
+
 
   browser.waitUntil(() => (
     row.getText().toLowerCase() === (`${config.prisoner.name} ${config.prisoner.nomisId} ${config.prisoner.dateOfBirth} Start Complete`).toLowerCase()
@@ -100,10 +102,11 @@ const thenTheHealthcareAssessmentIsComplete = (config = defaultAssessmentConfig)
 
   const assessmentId = row.getAttribute('data-assessment-id');
 
-  checkThatHealthAssessmentDataWasWrittenToDatabase({
+  checkThatHealthAssessmentDataWasWrittenToDatabaseSync({
     id: assessmentId,
     healthAssessment: {
       username,
+      name,
       viperScore: null,
       questions: {
         outcome: {

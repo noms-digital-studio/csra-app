@@ -2,7 +2,7 @@ import { ELEMENT_SEARCH_TIMEOUT } from '../../constants';
 import DashboardPage from '../pages/Dashboard.page';
 import HealthcareSummary from '../pages/healthcare/HealthcareSummary.page';
 import FullAssessmentOutcomePage from '../pages/FullAssessmentOutcome.page';
-import { checkThatTheOutcomeDataWasWrittenToDatabase } from '../../utils/dbAssertions';
+import { checkThatTheOutcomeDataWasWrittenToDatabaseSync } from '../../utils/dbAssertions';
 
 const caseInSensitive = text => new RegExp(text, 'i');
 
@@ -52,7 +52,7 @@ function thenTheFullAssessmentIsCompleted(config = defaultFullAssessmentConfig) 
   );
 
   if (!config.smokeTest) {
-    checkThatTheOutcomeDataWasWrittenToDatabase({
+    checkThatTheOutcomeDataWasWrittenToDatabaseSync({
       id: assessmentId,
       outcome: config.finalOutcome,
     });

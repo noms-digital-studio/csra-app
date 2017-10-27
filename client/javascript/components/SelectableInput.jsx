@@ -33,7 +33,7 @@ class SelectableInput extends Component {
     const onChangeFnc = onChange || (e => this.handleChange(e));
 
     return (
-      <span className="multiple-choice">
+      <div className="multiple-choice">
         <input
           checked={isSelected}
           data-input={value}
@@ -46,7 +46,7 @@ class SelectableInput extends Component {
           data-element-id="confirm-checkbox"
         />
         <label data-label={value} htmlFor={id}>{text}</label>
-      </span>
+      </div>
     );
   }
 }

@@ -10,6 +10,10 @@ class DashboardPage extends BasePage {
     browser.click(`[data-element-id="start-csra-link-${nomisId}"]`);
   }
 
+  viewCompletedRiskAssessmentFor(nomisId) {
+    browser.click(`[data-element-id="completed-csra-link-${nomisId}"]`);
+  }
+
   startHealthcareAssessmentFor(nomisId) {
     browser.click(`[data-element-id="start-healthcare-link-${nomisId}"]`);
   }
