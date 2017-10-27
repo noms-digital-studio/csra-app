@@ -33,11 +33,6 @@ const riskAssessment = {
       question: 'Viper result',
       answer: '',
     },
-    'how-do-you-feel': {
-      questionId: 'how-do-you-feel',
-      question: 'How do you think they feel about sharing a cell at this moment?',
-      answer: 'foo comment',
-    },
     'harm-cell-mate': {
       questionId: 'harm-cell-mate',
       question: 'Is there any genuine indication they might seriously hurt a cellmate?',
@@ -130,7 +125,7 @@ describe('<RiskAssessmentSummary />', () => {
 
           const changeLinks = wrapper.find('[data-element-id="change-answer-link"]');
 
-          expect(changeLinks.length).to.be.equal(6);
+          expect(changeLinks.length).to.be.equal(5);
         });
       });
 

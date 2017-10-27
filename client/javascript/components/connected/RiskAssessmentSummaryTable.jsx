@@ -22,13 +22,6 @@ const mapStateToProps = (state, props) => {
     withChangeAnswerOption: withChangeOption,
     questionsAnswers: [
       {
-        question: questionsAnswers['how-do-you-feel'].question,
-        answer: questionsAnswers['how-do-you-feel'] ? { answer: questionsAnswers['how-do-you-feel'].answer || 'No comments' } : undefined,
-        dataTags: { 'data-element-id': 'risk-assessment-feeling' },
-        changeAnswerLink: `${routes.RISK_ASSESSMENT}/${questionsAnswers['how-do-you-feel'].questionId}`,
-        withChangeAnswer: withChangeOption,
-      },
-      {
         question: questionsAnswers['harm-cell-mate'].question,
         answer: questionsAnswers['harm-cell-mate'],
         dataTags: { 'data-element-id': 'risk-assessment-harm' },
