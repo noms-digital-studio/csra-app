@@ -63,32 +63,32 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
   expect(RiskAssessmentExplanationPage.viperHeading).to.equal(config.initialRecommendation);
   RiskAssessmentExplanationPage.clickContinue();
 
-  expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('harm-cell-mate')).to.equal(
+  expect(RiskAssessmentYesNoPage.waitForMainHeadingWithDataId('harm-cell-mate')).to.equal(
     'Is there any genuine indication they might seriously hurt a cellmate?',
   );
   selectYesNoAnswer(config.answers.harmCellMate);
 
-  expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('gang-affiliation')).to.equal(
+  expect(RiskAssessmentYesNoPage.waitForMainHeadingWithDataId('gang-affiliation')).to.equal(
     'Are they in a gang?',
   );
   selectYesNoAnswer(config.answers.gangAffiliation);
 
-  expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('drug-misuse')).to.equal(
+  expect(RiskAssessmentYesNoPage.waitForMainHeadingWithDataId('drug-misuse')).to.equal(
     'Have they taken illicit drugs in the last month?',
   );
   selectYesNoAnswer(config.answers.drugMisuse);
 
-  expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('prejudice')).to.equal(
+  expect(RiskAssessmentYesNoPage.waitForMainHeadingWithDataId('prejudice')).to.equal(
     'Do they have any hostile views or prejudices?',
   );
   selectYesNoAnswer(config.answers.prejudice);
 
   expect(
-    RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('officers-assessment'),
+    RiskAssessmentYesNoPage.waitForMainHeadingWithDataId('officers-assessment'),
   ).to.equal('Are there any other reasons why you would recommend they have a single cell?');
   selectYesNoAnswer(config.answers.officersAssessment);
 
-  expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('risk-summary')).to.equal(
+  expect(RiskAssessmentSummaryPage.waitForMainHeadingWithDataId('risk-summary')).to.equal(
     'Risk assessment summary',
   );
 

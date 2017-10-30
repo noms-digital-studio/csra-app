@@ -5,6 +5,7 @@ import { replace, push } from 'react-router-redux';
 import path from 'ramda/src/path';
 import not from 'ramda/src/not';
 import isEmpty from 'ramda/src/isEmpty';
+import isNil from 'ramda/src/isNil';
 
 import {
   saveRiskAssessmentOutcome,
@@ -22,6 +23,9 @@ import PrisonerProfile from '../components/PrisonerProfile';
 import RiskAssessmentSummaryTable from '../components/connected/RiskAssessmentSummaryTable';
 
 import routes from '../constants/routes';
+
+
+const rating = outcome => ({ 'single cell': 'high' }[outcome] || 'standard');
 
 class RiskAssessmentSummary extends Component {
   componentDidMount() {
@@ -63,12 +67,7 @@ class RiskAssessmentSummary extends Component {
   }
 
   renderAssessment() {
-    return
-  }
-
-  render() {
     const {
-      title,
       prisoner,
       onSubmit,
       outcome,
@@ -79,13 +78,8 @@ class RiskAssessmentSummary extends Component {
       goToDashboardPage,
     } = this.props;
 
-    const riskAssessmentIsAvailable = Boolean(assessment);
-
-    const rating = { 'single cell': 'high' }[outcome] || 'standard';
-
     return (
-      <DocumentTitle title={title}>
-        { riskAssessmentIsAvailable && (
+      <div>
         <form
           id="rsa-form"
           onSubmit={(e) => {
@@ -118,7 +112,7 @@ class RiskAssessmentSummary extends Component {
 
           <div data-element-id="assessment-results" className="panel panel-border-wide">
             <h2 className="heading-large" data-element-id="risk-assessment-risk">
-              Cell violence risk: {capitalize(rating)}
+              Cell violence risk: {capitalize(rating(outcome))}
             </h2>
             <h3 className="heading-medium" data-element-id="risk-assessment-outcome">
               Allocation recommendation: {capitalize(outcome)}
@@ -143,6 +137,7 @@ class RiskAssessmentSummary extends Component {
                 </ul>
               </div>
             )}
+
             {not(healthcareAssessmentComplete) && (
               <p className="u-margin-top-charlie">
                 Both the risk and allocation recommendation could change after the healthcare
@@ -152,12 +147,10 @@ class RiskAssessmentSummary extends Component {
           </div>
 
           <div className="u-margin-bottom-bravo">
-            {riskAssessmentIsAvailable && (
-              <RiskAssessmentSummaryTable
-                assessmentComplete={riskAssessmentComplete}
-                title="Assessment answers"
-              />
-            )}
+            <RiskAssessmentSummaryTable
+              assessmentComplete={riskAssessmentComplete}
+              title="Assessment answers"
+            />
           </div>
 
           <div className="form-group" data-summary-next-steps>
@@ -210,7 +203,23 @@ class RiskAssessmentSummary extends Component {
               </button>
             )}
           </div>
-        </form>)}
+        </form>
+      </div>
+    );
+  }
+
+  render() {
+    const {
+      title,
+      outcome,
+      assessment,
+    } = this.props;
+
+    const riskAssessmentIsAvailable = not(isNil(assessment)) && not(isEmpty(outcome));
+
+    return (
+      <DocumentTitle title={title}>
+        <div>{ riskAssessmentIsAvailable && this.renderAssessment() }</div>
       </DocumentTitle>
     );
   }
