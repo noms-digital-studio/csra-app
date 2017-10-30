@@ -62,6 +62,10 @@ class RiskAssessmentSummary extends Component {
     });
   }
 
+  renderAssessment() {
+    return
+  }
+
   render() {
     const {
       title,
@@ -81,6 +85,7 @@ class RiskAssessmentSummary extends Component {
 
     return (
       <DocumentTitle title={title}>
+        { riskAssessmentIsAvailable && (
         <form
           id="rsa-form"
           onSubmit={(e) => {
@@ -205,7 +210,7 @@ class RiskAssessmentSummary extends Component {
               </button>
             )}
           </div>
-        </form>
+        </form>)}
       </DocumentTitle>
     );
   }
