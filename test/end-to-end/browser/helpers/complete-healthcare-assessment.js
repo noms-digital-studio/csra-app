@@ -135,4 +135,36 @@ const thenTheHealthcareAssessmentIsComplete = (config = defaultAssessmentConfig)
   });
 };
 
-export { whenAPrisonersHealthcareResultsAreEntered, thenTheHealthcareAssessmentIsComplete };
+const andICanViewTheAssessmentAgain = (config = defaultAssessmentConfig) => {
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
+
+  DashboardPage.viewCompletedHealthcareAssessmentFor(config.prisoner.nomisId);
+
+  expect(HealthcareSummary.waitForMainHeadingWithDataId('healthcare-summary')).to.equal(
+    'Healthcare assessment summary',
+  );
+  expect(HealthcareSummary.prisonerName).to.equalIgnoreCase(config.prisoner.name);
+  expect(HealthcareSummary.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);
+  expect(HealthcareSummary.prisonerNomisId).to.equalIgnoreCase(config.prisoner.nomisId);
+
+  expect(HealthcareSummary.outcome).to.match(caseInSensitive(config.recommendation));
+
+  expect(HealthcareSummary.assessor).to.equalIgnoreCase('Jane Doe');
+  expect(HealthcareSummary.role).to.equalIgnoreCase('nurse');
+  expect(HealthcareSummary.date).to.equalIgnoreCase('21 July 2017');
+  expect(HealthcareSummary.recommendation).to.equalIgnoreCase(
+    config.answers.singleCellRecommendation,
+  );
+  expect(HealthcareSummary.comments).to.equalIgnoreCase('a healthcare comment');
+  expect(HealthcareSummary.consent).to.equalIgnoreCase('yes');
+
+  HealthcareSummary.clickContinue();
+
+  expect(DashboardPage.waitForMainHeadingWithDataId('dashboard')).to.contain('All assessments');
+};
+
+export {
+  whenAPrisonersHealthcareResultsAreEntered,
+  thenTheHealthcareAssessmentIsComplete,
+  andICanViewTheAssessmentAgain,
+};

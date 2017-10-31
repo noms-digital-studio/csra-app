@@ -47,7 +47,11 @@ const AssessmentRow = (props) => {
       </td>
       <td data-health-assessment-complete={props.healthAssessmentCompleted}>
         {props.healthAssessmentCompleted ? (
-          <span>Complete</span>
+          <button
+            onClick={() => not(bothAssessmentsComplete) && props.onHealthcareSelect(props)}
+            type="button"
+            data-element-id={`completed-healthcare-link-${props.nomisId}`}
+            className={completedLinkCSS}>Complete</button>
           ) : (
             <button
               type="button"
@@ -102,6 +106,7 @@ AssessmentRow.propTypes = {
   onOffenderSelect: PropTypes.func,
   onOffenderHealthcareSelect: PropTypes.func,
   onRiskAssessmentSelect: PropTypes.func,
+  onHealthcareSelect: PropTypes.func,
   onViewOutcomeClick: PropTypes.func,
 };
 

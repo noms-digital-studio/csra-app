@@ -82,6 +82,7 @@ class Dashboard extends Component {
       onOffenderHealthcareSelect,
       onOffenderSelect,
       onRiskAssessmentSelect,
+      onHealthcareSelect,
       location,
     } = this.props;
 
@@ -93,6 +94,7 @@ class Dashboard extends Component {
       onOffenderHealthcareSelect,
       onOffenderSelect,
       onRiskAssessmentSelect,
+      onHealthcareSelect,
     }));
     const excludeTestAssessments = filter(
       assessment => not(assessment.nomisId.startsWith('TEST')) || displayTestAssessments === 'true',
@@ -207,6 +209,10 @@ const mapActionsToProps = dispatch => ({
   onRiskAssessmentSelect: (prisoner) => {
     dispatch(selectOffender(prisoner));
     dispatch(push(`${routes.RISK_ASSESSMENT_SUMMARY}`));
+  },
+  onHealthcareSelect: (prisoner) => {
+    dispatch(selectOffender(prisoner));
+    dispatch(push(`${routes.HEALTHCARE_SUMMARY}`));
   },
   onOffenderHealthcareSelect: (prisoner) => {
     getAssessmentsById(prisoner.id, (response) => {

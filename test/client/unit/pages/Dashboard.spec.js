@@ -27,7 +27,7 @@ const filteredAssessments = [
     forename: 'bar-forename',
     dateOfBirth: '2001-03-04T00:00:00.000Z',
     riskAssessmentCompleted: false,
-    healthAssessmentCompleted: false,
+    healthAssessmentCompleted: true,
     outcome: null,
     createdAt: '2017-01-02T00:00:00.000Z',
   },
@@ -135,8 +135,8 @@ describe('<Dashboard />', () => {
       it('displays a completed health assessments', () => {
         const wrapper = mount(<Dashboard assessments={assessments} />);
         const column = wrapper.find('[data-health-assessment-complete=true]');
-        expect(column.length).to.equal(1);
-        expect(column.text()).to.equal('Complete');
+        expect(column.length).to.equal(2);
+        expect(column.first().text()).to.equal('Complete');
       });
 
       it('displays the cell sharing assessment for a completed prisoner assessment', () => {
@@ -260,7 +260,7 @@ describe('<Dashboard />', () => {
       expect(column.first().text()).to.equal('Complete');
     });
 
-    it('navigates to the risk assessment summary on a completed risk assessment', () => {
+    it('navigates to the risk assessment summary for a completed risk assessment', () => {
       const store = fakeStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -285,6 +285,31 @@ describe('<Dashboard />', () => {
       ).to.equal(true, 'did not navigate to /risk-assessment-summary');
     });
 
+    it('navigates to the healthcare assessment summary for a completed health assessment', () => {
+      const store = fakeStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <ConnectedDashboard />
+        </Provider>,
+      );
+
+      wrapper.find('[data-element-id="completed-healthcare-link-bar-id"]').simulate('click');
+
+      expect(
+        store.dispatch.calledWithMatch({
+          type: 'SELECT_OFFENDER',
+          payload: assessments[1],
+        }),
+      ).to.equal(true, 'did not call SELECT_OFFENDER action');
+
+      expect(
+        store.dispatch.calledWithMatch({
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: { method: 'push', args: ['/healthcare-summary'] },
+        }),
+      ).to.equal(true, 'did not navigate to /healthcare-summary');
+    });
+
     it('displays a completed health assessments', () => {
       const store = fakeStore(state);
       const wrapper = mount(
@@ -293,8 +318,8 @@ describe('<Dashboard />', () => {
         </Provider>,
       );
       const column = wrapper.find('[data-health-assessment-complete=true]');
-      expect(column.length).to.equal(1);
-      expect(column.text()).to.equal('Complete');
+      expect(column.length).to.equal(2);
+      expect(column.first().text()).to.equal('Complete');
     });
 
     it('displays the cell sharing assessment for a completed prisoner assessment', () => {
@@ -372,12 +397,12 @@ describe('<Dashboard />', () => {
         );
         const profileBtn = wrapper.find('[data-health-assessment-complete=false] > button');
 
-        profileBtn.first().simulate('click');
+        profileBtn.simulate('click');
 
         expect(
           store.dispatch.calledWithMatch({
             type: 'SELECT_OFFENDER',
-            payload: assessments[1],
+            payload: assessments[2],
           }),
         ).to.equal(true, 'SELECT_OFFENDER dispatch');
 
@@ -397,7 +422,7 @@ describe('<Dashboard />', () => {
               ...state,
               assessmentStatus: {
                 awaitingSubmission: {
-                  healthcare: [{ assessmentId: 2 }],
+                  healthcare: [{ assessmentId: 3 }],
                 },
               },
             });

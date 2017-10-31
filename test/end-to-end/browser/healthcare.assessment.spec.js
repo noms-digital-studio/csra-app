@@ -3,6 +3,7 @@ import whenTheOfficerAddsThePrisonersDetails from './tasks/theOfficerAddsThePris
 import {
   whenAPrisonersHealthcareResultsAreEntered,
   thenTheHealthcareAssessmentIsComplete,
+  andICanViewTheAssessmentAgain,
 } from './helpers/complete-healthcare-assessment';
 
 
@@ -12,5 +13,6 @@ describe('Healthcare assessment', () => {
     whenTheOfficerAddsThePrisonersDetails();
     whenAPrisonersHealthcareResultsAreEntered();
     thenTheHealthcareAssessmentIsComplete();
+    andICanViewTheAssessmentAgain();
   });
 });

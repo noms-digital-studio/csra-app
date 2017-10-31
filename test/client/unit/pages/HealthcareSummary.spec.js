@@ -61,6 +61,19 @@ const state = {
 };
 
 describe('<HealthcareSummary />', () => {
+  let putStub;
+  let getStub;
+
+  beforeEach(() => {
+    putStub = sinon.stub(xhr, 'put');
+    getStub = sinon.stub(xhr, 'get');
+  });
+
+  afterEach(() => {
+    getStub.restore();
+    putStub.restore();
+  });
+
   context('Connected HealthcareSummary', () => {
     it('accepts and correctly renders a prisoner`s details', () => {
       const store = fakeStore(state);
@@ -81,6 +94,8 @@ describe('<HealthcareSummary />', () => {
       it('marks questions as complete on mount', () => {
         const store = fakeStore(state);
 
+        getStub.yields(null, { status: 200 }, { healthAssessment: null });
+
         mount(
           <Provider store={store}>
             <HealthcareSummary />
@@ -99,6 +114,8 @@ describe('<HealthcareSummary />', () => {
     context('When answers are already complete', () => {
       it('displays change answer options for each question', () => {
         const store = fakeStore(state);
+
+        getStub.yields(null, { status: 200 }, { healthAssessment: null });
 
         const wrapper = mount(
           <Provider store={store}>
@@ -124,6 +141,8 @@ describe('<HealthcareSummary />', () => {
           },
         });
 
+        getStub.yields(null, { status: 200 }, { healthAssessment: null });
+
         const wrapper = mount(
           <Provider store={store}>
             <HealthcareSummary />
@@ -139,6 +158,9 @@ describe('<HealthcareSummary />', () => {
     context('Healthcare outcome', () => {
       it('correctly renders a high risk outcome', () => {
         const store = fakeStore(state);
+
+        getStub.yields(null, { status: 200 }, { healthAssessment: null });
+
         const wrapper = mount(
           <Provider store={store}>
             <HealthcareSummary />
@@ -177,6 +199,9 @@ describe('<HealthcareSummary />', () => {
           },
         };
         const store = fakeStore(lowRiskState);
+
+        getStub.yields(null, { status: 200 }, { healthAssessment: null });
+
         const wrapper = mount(
           <Provider store={store}>
             <HealthcareSummary />
@@ -198,6 +223,9 @@ describe('<HealthcareSummary />', () => {
     context('Healthcare comments', () => {
       it('correctly renders no comments', () => {
         const store = fakeStore(state);
+
+        getStub.yields(null, { status: 200 }, { healthAssessment: null });
+
         const wrapper = mount(
           <Provider store={store}>
             <HealthcareSummary />
@@ -228,6 +256,9 @@ describe('<HealthcareSummary />', () => {
           },
         };
         const store = fakeStore(stateWithHealthcareComments);
+
+        getStub.yields(null, { status: 200 }, { healthAssessment: null });
+
         const wrapper = mount(
           <Provider store={store}>
             <HealthcareSummary />
@@ -240,6 +271,9 @@ describe('<HealthcareSummary />', () => {
 
     it('correctly renders consent', () => {
       const store = fakeStore(state);
+
+      getStub.yields(null, { status: 200 }, { healthAssessment: null });
+
       const wrapper = mount(
         <Provider store={store}>
           <HealthcareSummary />
@@ -265,18 +299,9 @@ describe('<HealthcareSummary />', () => {
 
   context('when the risk assessment is incomplete', () => {
     let store;
-    let putStub;
-    let getStub;
 
     beforeEach(() => {
       store = fakeStore(state);
-      putStub = sinon.stub(xhr, 'put');
-      getStub = sinon.stub(xhr, 'get');
-    });
-
-    afterEach(() => {
-      getStub.restore();
-      putStub.restore();
     });
 
     it('displays a message informing the user that they have to complete the risk assessment', () => {
@@ -362,8 +387,6 @@ describe('<HealthcareSummary />', () => {
 
   context('when the risk assessment is complete', () => {
     let store;
-    let putStub;
-    let getStub;
 
     const stateCompleted = {
       ...state,
@@ -374,14 +397,8 @@ describe('<HealthcareSummary />', () => {
 
     beforeEach(() => {
       store = fakeStore(stateCompleted);
-      putStub = sinon.stub(xhr, 'put');
-      getStub = sinon.stub(xhr, 'get');
     });
 
-    afterEach(() => {
-      getStub.restore();
-      putStub.restore();
-    });
 
     it('displays a message informing the user that they can see their assessment outcome', () => {
       const wrapper = mount(
@@ -413,6 +430,70 @@ describe('<HealthcareSummary />', () => {
           payload: { method: 'replace', args: ['/full-assessment-outcome'] },
         }),
       ).to.equal(true, 'Changed path to /full-assessment-outcome');
+    });
+  });
+
+  context('when the assessment is already been complete and is returned from the server', () => {
+    const store = fakeStore({
+      ...state,
+      offender: {
+        selected: {
+          ...prisoner,
+          riskAssessmentCompleted: true,
+          healthAssessmentCompleted: true,
+        },
+      },
+    });
+
+    it('only stores the assessment', () => {
+      getStub.yields(null, { status: 200 }, { healthAssessment: healthcareAssessment });
+
+      mount(
+        <Provider store={store}>
+          <HealthcareSummary />
+        </Provider>,
+      );
+
+      expect(store.dispatch.callCount).to.equal(1);
+
+      expect(store.dispatch.calledWithMatch({
+        type: 'STORE_ASSESSMENT',
+        payload: {
+          id: 1,
+          assessment: healthcareAssessment,
+        },
+      }));
+    });
+
+    it('does not display the `what happens next section`', () => {
+      getStub.yields(null, { status: 200 }, { healthAssessment: healthcareAssessment });
+
+      const wrapper = mount(
+        <Provider store={store}>
+          <HealthcareSummary />
+        </Provider>,
+      );
+
+      expect(wrapper.text()).to.not.include('What happens next?');
+    });
+
+    it('navigates to the dashboard upon submission', () => {
+      getStub.yields(null, { status: 200 }, { healthAssessment: healthcareAssessment });
+
+      const wrapper = mount(
+        <Provider store={store}>
+          <HealthcareSummary />
+        </Provider>,
+      );
+
+      wrapper.find('[data-element-id="continue-button"]').simulate('click');
+
+      expect(
+        store.dispatch.calledWithMatch({
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: { method: 'push', args: ['/dashboard'] },
+        }),
+      ).to.equal(true, 'Changed path to /dashboard');
     });
   });
 });
