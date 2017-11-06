@@ -129,6 +129,8 @@ class RiskAssessmentSummary extends Component {
                     <li key={item.questionId}>
                       <span className="u-d-block">{item.reason}</span>
                       <span className="u-d-block">
+                        {assessment.questions[item.questionId]['reasons-for-answer'] &&
+                          `“${assessment.questions[item.questionId]['reasons-for-answer']}”`}
                         {assessment.questions[item.questionId]['reasons-yes'] &&
                           `“${assessment.questions[item.questionId]['reasons-yes']}”`}
                       </span>

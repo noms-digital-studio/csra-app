@@ -66,7 +66,9 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
   expect(RiskAssessmentYesNoPage.waitForMainHeadingWithDataId('harm-cell-mate')).to.equal(
     'Is there any genuine indication they might seriously hurt a cellmate?',
   );
+  RiskAssessmentYesNoPage.enterComment('A harmCellMate generic comment');
   selectYesNoAnswer(config.answers.harmCellMate);
+
 
   expect(RiskAssessmentYesNoPage.waitForMainHeadingWithDataId('gang-affiliation')).to.equal(
     'Are they in a gang?',
@@ -177,6 +179,7 @@ export const thenTheAssessmentIsCompleted = (config = defaultAssessmentConfig) =
             questionId: 'harm-cell-mate',
             question: 'Is there any genuine indication they might seriously hurt a cellmate?',
             answer: config.answers.harmCellMate,
+            'reasons-for-answer': 'A harmCellMate generic comment',
           },
           'gang-affiliation': {
             questionId: 'gang-affiliation',

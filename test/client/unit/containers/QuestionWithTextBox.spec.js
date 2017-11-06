@@ -2,7 +2,6 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import QuestionWithComments from '../../../../client/javascript/containers/QuestionWithTextBox';
-import Aside from '../../../../client/javascript/components/asides/Index';
 
 describe('<QuestionWithComments />', () => {
   it('renders the title', () => {
@@ -15,14 +14,6 @@ describe('<QuestionWithComments />', () => {
     expect(wrapper.text()).to.contain('foo-description');
   });
 
-  it('renders the an aside', () => {
-    const props = {
-      template: 'template',
-    };
-    const wrapper = mount(<QuestionWithComments aside={props} />);
-    expect(wrapper.find(Aside).length).be.equal(1);
-  });
-
   it('handles form submission', () => {
     const callback = sinon.spy();
     const wrapper = mount(<QuestionWithComments onSubmit={callback} />);
@@ -33,7 +24,7 @@ describe('<QuestionWithComments />', () => {
   });
 
   it('pre-populates the forms if data is available', () => {
-    const wrapper = mount(<QuestionWithComments formDefaults={{ answer: 'yes', comments: 'foo-comment' }} />);
+    const wrapper = mount(<QuestionWithComments formDefaults={{ answer: 'yes', 'reasons-for-answer': 'foo-comment' }} />);
 
     expect(wrapper.find('[data-input="yes"]').node.checked).to.equal(true, 'radio button selected');
 
@@ -57,14 +48,14 @@ describe('<QuestionWithComments />', () => {
     it('display "Save" on the submission button', () => {
       const wrapper = mount(<QuestionWithComments isComplete />);
 
-      expect(wrapper.find('input[type="submit"]').node.value).to.equal('Save');
+      expect(wrapper.find('button[type="submit"]').text()).to.equal('Save');
     });
   });
 
   context('when the isComplete prop is not present', () => {
     it('display "Save and continue" on the submission button', () => {
       const wrapper = mount(<QuestionWithComments />);
-      expect(wrapper.find('input[type="submit"]').node.value).to.equal('Save and continue');
+      expect(wrapper.find('button[type="submit"]').text()).to.equal('Save and continue');
     });
   });
 });

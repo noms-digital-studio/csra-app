@@ -43,10 +43,11 @@ const QuestionAnswerRow = ({
     <td>
       <p data-element-id="row-answer">{capitalize(answer.answer)}</p>
       {answer[`reasons-${answer.answer}`] && (
-      <p data-element-id="row-comments">
-        <span>“{capitalize(answer[`reasons-${answer.answer}`])}”</span>
-      </p>
-        )}
+        <p data-element-id="row-comments"><span>“{capitalize(answer[`reasons-${answer.answer}`])}”</span></p>
+      )}
+      {answer['reasons-for-answer'] && (
+        <p><span>“{capitalize(answer['reasons-for-answer'])}”</span></p>
+      )}
     </td>
 
     <ChangeAnswerColumn

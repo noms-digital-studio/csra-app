@@ -6,30 +6,20 @@ import not from 'ramda/src/not';
 
 import Comments from '../containers/Comments';
 import ConfirmationTemplate from '../containers/Confirmation';
-import ConfirmationWithAsideTemplate from '../containers/ConfirmationWithAside';
 import HealthcareAssessor from '../containers/HealthcareAssessor';
-import QuestionWithAsideTemplate from '../containers/QuestionWithAside';
-import QuestionWithCommentAndAsideTemplate
-  from '../containers/QuestionWithCommentAndAside';
-import QuestionWithCommentTemplate from '../containers/QuestionWithComment';
 import QuestionWithComments from '../containers/QuestionWithTextBox';
+import QuestionWithAsideTemplate from '../containers/QuestionWithAside';
 import Viper from '../containers/Viper';
 
 function templateSelector(data) {
   switch (data.template) {
     case 'confirmation':
       return <ConfirmationTemplate {...data} />;
-    case 'confirmation_with_aside':
-      return <ConfirmationWithAsideTemplate {...data} />;
     case 'viper':
       return <Viper {...data} />;
     case 'default_with_aside':
       return <QuestionWithAsideTemplate {...data} />;
     case 'default_with_comment':
-      return <QuestionWithCommentTemplate {...data} />;
-    case 'default_with_comment_aside':
-      return <QuestionWithCommentAndAsideTemplate {...data} />;
-    case 'question_with_comments':
       return <QuestionWithComments {...data} />;
     case 'comments':
       return <Comments {...data} />;

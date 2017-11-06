@@ -2,7 +2,6 @@
 import BasePage from '../BasePage';
 
 class HealthcareNursePage extends BasePage {
-
   enterRole(role) {
     browser.setValue('[data-element-id="role"]', role);
   }
@@ -16,7 +15,6 @@ class HealthcareNursePage extends BasePage {
     browser.setValue('[data-element-id="month"]', month);
     browser.setValue('[data-element-id="year"]', year);
   }
-
 }
 
 export default new HealthcareNursePage();

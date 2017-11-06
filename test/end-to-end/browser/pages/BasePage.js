@@ -1,6 +1,5 @@
 /* eslint-disable class-methods-use-this */
 class BasePage {
-
   get mainHeading() {
     browser.waitForVisible('h1', 10000);
     return browser.getText('h1');

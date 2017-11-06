@@ -14,6 +14,10 @@ class YesNoPage extends BasePage {
     this.selectYesRadioButton();
     this.clickContinue();
   }
+
+  enterComment(comment) {
+    browser.setValue('[data-element="reason-for-answer"]', comment);
+  }
 }
 
 export default YesNoPage;

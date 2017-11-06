@@ -30,7 +30,6 @@ const mapStateToProps = (state, props) => {
     withChangeOption = not(props.assessmentComplete);
   }
 
-
   return {
     withChangeAnswerOption: withChangeOption,
     completedBy: {

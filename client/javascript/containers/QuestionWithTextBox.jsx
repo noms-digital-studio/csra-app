@@ -1,17 +1,15 @@
 import React, { PropTypes } from 'react';
 import uuid from 'uuid/v4';
 
-import Aside from '../components/asides/Index';
 import SelectableInputGroup from '../components/SelectableInputGroup';
+import CommentBox from '../components/CommentBox';
 
 const QuestionWithComments = ({
   title,
   section,
   description,
-  aside,
   onSubmit,
-  formDefaults: { answer, comments },
-  commentLabel,
+  formDefaults,
   answerRequired,
   formFields: { input: { yes, no } },
   isComplete,
@@ -31,7 +29,7 @@ const QuestionWithComments = ({
         <div className="form-group">
           <fieldset>
             <SelectableInputGroup
-              default={answer}
+              default={formDefaults.answer}
               type="radio"
               fields={[
                 {
@@ -50,32 +48,33 @@ const QuestionWithComments = ({
             />
           </fieldset>
         </div>
-        <p>
-          <label className="form-label" htmlFor="comments">
-            {commentLabel}
+        <div>
+          <label
+            className="c-radio-comment__label"
+            htmlFor="reason-for-answer"
+          >
+            Explain the reasons for your answer.
           </label>
-          <textarea
-            id="comments"
-            defaultValue={comments}
-            name="comments"
-            placeholder="Comments"
-            rows="5"
-            cols="20"
-            className="form-control form-control-3-4"
-          />
-        </p>
 
-        <p>
-          <input
+          <CommentBox
+            limit={300}
+            id="reason-for-answer"
+            name="reasons-for-answer"
+            text={formDefaults['reasons-for-answer'] || formDefaults['reasons-yes'] || formDefaults['reasons-no']}
+            cssClassName="form-control form-control-3-4"
+          />
+        </div>
+
+        <div>
+          <button
             type="submit"
             className="button"
-            value={isComplete ? 'Save' : 'Save and continue'}
-          />
-        </p>
+            data-element-id="continue-button"
+          >
+            {isComplete ? 'Save' : 'Save and continue'}
+          </button>
+        </div>
       </form>
-    </div>
-    <div className="column-third">
-      <Aside {...aside} />
     </div>
   </div>
 );
@@ -114,7 +113,7 @@ QuestionWithComments.defaultProps = {
   },
   formDefaults: {
     answer: '',
-    comments: '',
+    'reasons-for-answer': '',
   },
   onSubmit: () => {},
   aside: {},
