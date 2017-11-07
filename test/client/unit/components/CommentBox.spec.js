@@ -49,7 +49,7 @@ describe('<CommentBox />', () => {
   });
 
   it('focus on the element on component mount', () => {
-    const wrapper = mount(<CommentBox id="foo" limit={30} />);
+    const wrapper = mount(<CommentBox id="foo" limit={30} autofocus />);
     const commentInput = wrapper.find('[data-element="foo"]');
     const focusedElement = document.activeElement;
 

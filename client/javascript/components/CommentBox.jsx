@@ -10,7 +10,7 @@ class CommentBox extends Component {
   }
 
   componentDidMount() {
-    this.commentBox.focus();
+    if (this.props.autofocus) this.commentBox.focus();
   }
 
   handleChange(e) {
@@ -58,6 +58,7 @@ CommentBox.propTypes = {
   text: PropTypes.string,
   name: PropTypes.string,
   cssClassName: PropTypes.string,
+  autofocus: PropTypes.bool,
 };
 
 export default CommentBox;
