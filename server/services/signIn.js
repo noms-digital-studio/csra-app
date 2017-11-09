@@ -13,16 +13,20 @@ const anError = (message, type) => {
 async function signIn(username, password) {
   log.info(`Signing in user: [${username}]`);
   try {
-    const result = await superagent.post(url.resolve(`${config.elite2.url}`, 'users/login')).set('Authorization', `Bearer ${generateApiGatewayToken()}`).send({
-      username,
-      password,
-    }).timeout({
-      response: 2000,
-      deadline: 2500,
-    });
+    const result = await superagent.post(url.resolve(`${config.elite2.url}`, 'users/login'))
+      .set('Authorization', `Bearer ${generateApiGatewayToken()}`)
+      .send({
+        username,
+        password,
+      }).timeout({
+        response: 11000,
+        deadline: 11000,
+      });
 
     const eliteAuthorisationToken = result.body.token;
-    const userDetailsResult = await superagent.get(url.resolve(`${config.elite2.url}`, 'users/me')).set('Authorization', `Bearer ${generateApiGatewayToken()}`).set('Elite-Authorization', eliteAuthorisationToken);
+    const userDetailsResult = await superagent.get(url.resolve(`${config.elite2.url}`, 'users/me'))
+      .set('Authorization', `Bearer ${generateApiGatewayToken()}`)
+      .set('Elite-Authorization', eliteAuthorisationToken);
     log.info(`Sign in to Elite 2 for [${username}] successful`);
 
     return {
