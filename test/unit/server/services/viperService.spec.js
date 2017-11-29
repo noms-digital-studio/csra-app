@@ -3,13 +3,16 @@ import createViperService from '../../../../server/services/viper';
 import config from '../../../../server/config';
 
 describe('viper service', () => {
-  let fakeDB;
   let viperService;
   let fakeViperRestService;
 
   beforeEach(() => {
     fakeViperRestService = nock(`${config.viper.url}`);
-    viperService = createViperService(fakeDB);
+    viperService = createViperService();
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
   });
 
 
