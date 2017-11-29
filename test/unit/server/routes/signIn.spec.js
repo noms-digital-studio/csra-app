@@ -8,7 +8,6 @@ import parsePassportSessionCookie from '../../../util/cookies';
 import createSignInEndpoint from '../../../../server/routes/signIn';
 import mockAuthentication from '../helpers/mockAuthentication';
 
-
 describe('POST /signin', () => {
   const app = express();
   const fakeSignInService = sinon.stub();
@@ -23,9 +22,9 @@ describe('POST /signin', () => {
       fakeSignInService.signIn = sinon.stub().resolves({
         forename: 'John',
         surname: 'Doe',
-        eliteAuthorisationToken: 'token',
         username: 'username',
         email: 'email',
+        eliteAuthorisationToken: 'token',
         authorities: [{ authority: 'ROLE_A' }, { authority: 'ROLE_B' }],
       });
 
@@ -34,7 +33,14 @@ describe('POST /signin', () => {
         .send('username=officer&password=password')
         .expect(302)
         .expect((res) => {
-          const userDetails = { forename: 'John', surname: 'Doe', username: 'username', email: 'email', authorities: [{ authority: 'ROLE_A' }, { authority: 'ROLE_B' }] };
+          const userDetails = {
+            forename: 'John',
+            surname: 'Doe',
+            username: 'username',
+            email: 'email',
+            eliteAuthorisationToken: 'token',
+            authorities: [{ authority: 'ROLE_A' }, { authority: 'ROLE_B' }],
+          };
           const userDetailsString = JSON.stringify({ passport: { user: userDetails } });
           expect(parsePassportSessionCookie(res)).to.equal(userDetailsString);
           expect(res.headers.location).to.eql('/');
