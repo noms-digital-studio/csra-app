@@ -19,11 +19,12 @@ const createViperRoute = require('./routes/viper');
 const createPrisonerAssessmentsRoute = require('./routes/assessments');
 const createSignInRoute = require('./routes/signIn');
 const createSignOutRoute = require('./routes/signOut');
+const createSearchOffenderRoute = require('./routes/searchOffender');
 
 const index = require('./routes/index');
 const { authenticationMiddleware } = require('./authentication');
 
-module.exports = function createApp({ db, appInfo, viperService, prisonerAssessmentsService, signInService }) {
+module.exports = function createApp({ db, appInfo, viperService, prisonerAssessmentsService, signInService, searchOffenderService }) {
   const app = express();
   const sixtyDaysInSeconds = 5184000;
   const sessionConfig = {
@@ -76,6 +77,7 @@ module.exports = function createApp({ db, appInfo, viperService, prisonerAssessm
 
   app.use('/api/assessments', createPrisonerAssessmentsRoute(prisonerAssessmentsService, authenticationMiddleware));
   app.use('/api/viper', createViperRoute(viperService, authenticationMiddleware));
+  app.use('/api/search-offender', createSearchOffenderRoute(searchOffenderService, authenticationMiddleware));
   app.use('/health', createHealthRoute(db, appInfo));
   app.use('/signin', createSignInRoute(passport));
   app.use('/signout', createSignOutRoute());
