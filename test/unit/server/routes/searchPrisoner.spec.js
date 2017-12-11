@@ -2,7 +2,7 @@ import request from 'supertest';
 import sinon from 'sinon';
 import express from 'express';
 
-import createSearchOffenderEndpoint from '../../../../server/routes/searchOffender';
+import createSearchPrisonerEndpoint from '../../../../server/routes/searchPrisoner';
 import { authenticationMiddleware } from '../helpers/mockAuthentication';
 
 const response = [
@@ -25,8 +25,8 @@ describe('GET /bookings?query', () => {
   });
 
   it('returns a offenders for a given search query', () => {
-    const fakeSearchOffenderService = () => ({
-      findOffendersMatching() {
+    const fakeSearchPrisonerService = () => ({
+      findPrisonersMatching() {
         return sinon.stub().resolves(response)();
       },
     });
@@ -43,7 +43,7 @@ describe('GET /bookings?query', () => {
       },
     ];
 
-    app.use('/', createSearchOffenderEndpoint(fakeSearchOffenderService, authenticationMiddleware));
+    app.use('/', createSearchPrisonerEndpoint(fakeSearchPrisonerService, authenticationMiddleware));
 
     return request(app)
       .get('/')
@@ -57,15 +57,15 @@ describe('GET /bookings?query', () => {
   });
 
   it('returns an empty array if a given search query is invalid', () => {
-    const fakeSearchOffenderService = () => ({
-      findOffendersMatching() {
+    const fakeSearchPrisonerService = () => ({
+      findPrisonersMatching() {
         return sinon.stub().resolves([])();
       },
     });
 
     const expected = [];
 
-    app.use('/', createSearchOffenderEndpoint(fakeSearchOffenderService, authenticationMiddleware));
+    app.use('/', createSearchPrisonerEndpoint(fakeSearchPrisonerService, authenticationMiddleware));
 
     return request(app)
       .get('/')
@@ -79,13 +79,13 @@ describe('GET /bookings?query', () => {
   });
 
   it('returns an empty array if the service errors out', () => {
-    const fakeSearchOffenderService = () => ({
-      findOffendersMatching() {
+    const fakeSearchPrisonerService = () => ({
+      findPrisonersMatching() {
         return sinon.stub().rejects()();
       },
     });
 
-    app.use('/', createSearchOffenderEndpoint(fakeSearchOffenderService, authenticationMiddleware));
+    app.use('/', createSearchPrisonerEndpoint(fakeSearchPrisonerService, authenticationMiddleware));
 
     return request(app)
       .get('/')

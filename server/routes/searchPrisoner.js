@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-module.exports = function createRouter(searchOffenderService, authenticationMiddleware) {
+module.exports = function createRouter(searchPrisonerService, authenticationMiddleware) {
   const router = express.Router();
 
   router.use(bodyParser.urlencoded({ extended: true }));
@@ -9,10 +9,10 @@ module.exports = function createRouter(searchOffenderService, authenticationMidd
 
   router.get('/', async (req, res) => {
     const authToken = req.user.eliteAuthorisationToken;
-    const service = searchOffenderService(authToken);
+    const service = searchPrisonerService(authToken);
 
     try {
-      const offenders = await service.findOffendersMatching(req.query.query);
+      const offenders = await service.findPrisonersMatching(req.query.query);
 
       res.json(offenders);
     } catch (exception) {

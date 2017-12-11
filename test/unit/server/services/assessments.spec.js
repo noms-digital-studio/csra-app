@@ -2,6 +2,7 @@ import createPrisonerAssessmentService from '../../../../server/services/assessm
 
 describe('prisoner assessment service', () => {
   const validPrisonerAssessment = {
+    bookingId: 121,
     nomisId: ' j1234LO ',
     forename: 'John',
     surname: 'Lowe',
@@ -88,6 +89,7 @@ describe('prisoner assessment service', () => {
       before(() => {
         row = fakeDB.insert.lastCall.args[0];
       });
+      it('sets bookingId from request', () => expect(row.booking_id).to.equal(121));
       it('sets nomisId from request', () => expect(row.nomis_id).to.equal('J1234LO'));
       it('sets forename from request', () => expect(row.forename).to.equal('John'));
       it('sets suname from request', () => expect(row.surname).to.equal('Lowe'));
@@ -159,6 +161,7 @@ describe('prisoner assessment service', () => {
     it('returns the prisoner assessment summaries', () => {
       fakeDB.table = sinon.stub().resolves(
         [{
+          booking_id: 12,
           id: 123,
           nomis_id: 'J1234LO',
           forename: 'John',
@@ -171,6 +174,7 @@ describe('prisoner assessment service', () => {
           updated_at: '2017-08-15T10:14:35.006Z',
         },
         {
+          booking_id: 14,
           id: 567,
           nomis_id: 'R1234MO',
           forename: 'Richard',
@@ -187,6 +191,7 @@ describe('prisoner assessment service', () => {
       .then((listResult) => {
         expect(fakeDB.table.lastCall.args[0]).to.eql('prisoner_assessments');
         expect(listResult).to.eql([{
+          bookingId: 12,
           id: 123,
           nomisId: 'J1234LO',
           forename: 'John',
@@ -199,6 +204,7 @@ describe('prisoner assessment service', () => {
           updatedAt: '2017-08-15T10:14:35.006Z',
         },
         {
+          bookingId: 14,
           id: 567,
           nomisId: 'R1234MO',
           forename: 'Richard',
@@ -665,6 +671,7 @@ describe('prisoner assessment service', () => {
 
     it('returns the assessment', () => {
       fakeDB.where = sinon.stub().resolves([{
+        booking_id: 12,
         id: 123,
         created_at: '2017-07-28T11:54:23.576Z',
         updated_at: '2017-07-30T09:00:00.106Z',
@@ -686,6 +693,7 @@ describe('prisoner assessment service', () => {
         expect(fakeDB.where.lastCall.args[1]).to.eql('=');
         expect(fakeDB.where.lastCall.args[2]).to.eql(123);
         expect(riskResult).to.eql({
+          bookingId: 12,
           id: 123,
           createdAt: '2017-07-28T11:54:23.576Z',
           updatedAt: '2017-07-30T09:00:00.106Z',

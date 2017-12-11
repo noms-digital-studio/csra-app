@@ -4,7 +4,7 @@ describe('#offenderReducer', () => {
   const defaultState = {
     selected: {},
     assessments: [],
-    prisonerFormData: {},
+    searchResults: [],
   };
 
   it('returns a default state', () => {
@@ -15,6 +15,7 @@ describe('#offenderReducer', () => {
   it('returns the state with offenders assessments included', () => {
     const assessments = [
       {
+        bookingId: 123,
         nomisId: 'foo',
         surname: 'foobar',
         forename: 'foobaz',
@@ -29,6 +30,7 @@ describe('#offenderReducer', () => {
 
   it('returns the state with the selected offender', () => {
     const profile = {
+      bookingId: 123,
       nomisId: 'foo',
       surname: 'foobar',
       forename: 'foobaz',
@@ -40,39 +42,19 @@ describe('#offenderReducer', () => {
     expect(offenderReducer(undefined, action)).to.eql(expectedState);
   });
 
-  it('returns the state with the temporary created prisoner', () => {
-    const prisonerData = {
-      forename: 'foo',
-      surname: 'bar',
-      'dob-day': '01',
-      'dob-month': '10',
-      'dob-year': '1997',
-      nomisId: 'AA12345',
-    };
-
-    const action = { type: 'ADD_PRISONER', payload: prisonerData };
-    const expectedState = { ...defaultState, prisonerFormData: prisonerData };
+  it('returns the state with the search results', () => {
+    const results = [{
+      bookingId: 123,
+      offenderNo: 'foo-nomis-id',
+      firstName: 'foo',
+      middleName: 'bar',
+      lastName: 'baz',
+      dateOfBirth: '09-12-1921',
+      facialImageId: null,
+    }];
+    const action = { type: 'STORE_PRISONER_SEARCH_RESULTS', payload: results };
+    const expectedState = { ...defaultState, searchResults: results };
 
     expect(offenderReducer(undefined, action)).to.eql(expectedState);
-  });
-
-  it('returns the state with the prisoner added to the assessments', () => {
-    const prisonerFormData = {
-      forename: 'foo',
-      surname: 'bar',
-      'dob-day': '01',
-      'dob-month': '10',
-      'dob-year': '1997',
-      nomisId: 'AA12345',
-    };
-
-    const state = { ...defaultState, prisonerFormData };
-    const action = { type: 'CONFIRM_PRISONER' };
-    const expectedState = {
-      ...defaultState,
-      prisonerFormData: {},
-    };
-
-    expect(offenderReducer(state, action)).to.eql(expectedState);
   });
 });

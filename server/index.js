@@ -6,7 +6,7 @@ const createPrisonerAssessmentService = require('../server/services/assessments'
 const createViperService = require('./services/viper');
 const createApp = require('../server/app');
 const createSignInService = require('./services/signIn');
-const searchOffenderService = require('./services/searchOffender');
+const searchPrisonerService = require('./services/searchPrisoner');
 
 // eslint-disable-next-line import/no-unresolved
 const buildInfo = config.dev ? null : require('../build-info.json');
@@ -22,7 +22,7 @@ const app = createApp({
   viperService,
   prisonerAssessmentsService,
   signInService,
-  searchOffenderService,
+  searchPrisonerService,
 });
 
 module.exports = app;

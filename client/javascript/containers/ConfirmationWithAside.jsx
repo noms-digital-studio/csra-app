@@ -23,7 +23,7 @@ const ConfirmationWithAside = ({
         <div dangerouslySetInnerHTML={{ __html: description }} />
 
         <form className="c-confirmation-form" onSubmit={onSubmit} key={uuid()}>
-          <p className="c-form-label-container u-clear-fix bold">
+          <div className="c-form-label-container u-clear-fix bold">
             <SelectableInput
               required
               type="checkbox"
@@ -33,7 +33,7 @@ const ConfirmationWithAside = ({
               name="confirmation"
               selected={confirmation === 'accepted'}
             />
-          </p>
+          </div>
           <p>
             <input
               type="submit"

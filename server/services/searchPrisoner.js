@@ -2,6 +2,8 @@ const superagent = require('superagent');
 const url = require('url');
 const config = require('../config');
 const { logger: log } = require('./logger');
+const { generateApiGatewayToken } = require('../jwtUtils');
+
 
 const valueOrNull = value => value || null;
 
@@ -16,14 +18,15 @@ const parseSearchRequest = bookings =>
     facialImageId: valueOrNull(booking.facialImageId),
   }));
 
-const findOffenders =
+const findPrisoners =
   authToken =>
     async (searchQuery) => {
       try {
         const result =
           await superagent
             .get(url.resolve(`${config.elite2.url}`, `search-offenders/_/${searchQuery}`))
-            .set('Authorization', authToken);
+            .set('Authorization', `Bearer ${generateApiGatewayToken()}`)
+            .set('Elite-Authorization', authToken);
 
         return parseSearchRequest(result.body);
       } catch (exception) {
@@ -35,7 +38,7 @@ const findOffenders =
     };
 
 const createOffenderSearchService = authToken => ({
-  findOffendersMatching: findOffenders(authToken),
+  findPrisonersMatching: findPrisoners(authToken),
 });
 
 module.exports = createOffenderSearchService;

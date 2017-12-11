@@ -1,5 +1,5 @@
 import nock from 'nock';
-import createSearchOffenderService from '../../../../server/services/searchOffender';
+import createSearchPrisonerService from '../../../../server/services/searchPrisoner';
 import config from '../../../../server/config';
 
 describe('Prisoner Booking Service', () => {
@@ -8,7 +8,7 @@ describe('Prisoner Booking Service', () => {
 
   beforeEach(() => {
     fakeElite2RestService = nock(config.elite2.url);
-    offenderSearchService = createSearchOffenderService('Bearer AAA.BBB.CCC');
+    offenderSearchService = createSearchPrisonerService('Bearer AAA.BBB.CCC');
   });
 
   afterEach(() => {
@@ -47,7 +47,7 @@ describe('Prisoner Booking Service', () => {
         },
       ]);
 
-      return offenderSearchService.findOffendersMatching('J1234LO').then((response) => {
+      return offenderSearchService.findPrisonersMatching('J1234LO').then((response) => {
         expect(response).to.eql(expected);
       });
     });
@@ -57,7 +57,7 @@ describe('Prisoner Booking Service', () => {
     it('returns an empty list', () => {
       fakeElite2RestService.get('/search-offenders/_/A1464AE').reply(500);
 
-      return offenderSearchService.findOffendersMatching('J1234LO').then((response) => {
+      return offenderSearchService.findPrisonersMatching('J1234LO').then((response) => {
         expect(response).to.eql([]);
       });
     });

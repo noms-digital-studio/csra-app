@@ -13,6 +13,7 @@ function save(db, appInfo, rawAssessment) {
   }
 
   const schema = Joi.object({
+    bookingId: Joi.number(),
     nomisId: Joi.string().max(10).optional(),
     forename: Joi.string().max(100),
     surname: Joi.string().max(100),
@@ -36,6 +37,7 @@ function save(db, appInfo, rawAssessment) {
   databaseLogger.info(`Inserting prisoner assessment data into database for NomisId: ${assessment.nomisId}`);
   return db
   .insert({
+    booking_id: assessment.bookingId,
     nomis_id: assessment.nomisId,
     forename: assessment.forename,
     surname: assessment.surname,
@@ -59,6 +61,7 @@ function list(db) {
       if (result && result.length > 0) {
         databaseLogger.info(`Found ${result.length} rows of prisoner assessment data`);
         return result.map(row => ({
+          bookingId: row.booking_id,
           id: row.id,
           nomisId: row.nomis_id,
           forename: row.forename,
@@ -262,20 +265,21 @@ function assessmentFor(db, id) {
   .select()
   .table('prisoner_assessments')
   .where('id', '=', id)
-  .then((_result) => {
-    if (_result && _result[0]) {
+  .then((results) => {
+    if (results && results[0]) {
       databaseLogger.info(`Found assessment for id: ${id}`);
       return {
-        id: _result[0].id,
-        createdAt: _result[0].created_at,
-        updatedAt: _result[0].updated_at,
-        nomisId: _result[0].nomis_id,
-        forename: _result[0].forename,
-        surname: _result[0].surname,
-        dateOfBirth: _result[0].date_of_birth,
-        outcome: _result[0].outcome,
-        riskAssessment: JSON.parse(_result[0].risk_assessment),
-        healthAssessment: JSON.parse(_result[0].health_assessment),
+        id: results[0].id,
+        bookingId: results[0].booking_id,
+        createdAt: results[0].created_at,
+        updatedAt: results[0].updated_at,
+        nomisId: results[0].nomis_id,
+        forename: results[0].forename,
+        surname: results[0].surname,
+        dateOfBirth: results[0].date_of_birth,
+        outcome: results[0].outcome,
+        riskAssessment: JSON.parse(results[0].risk_assessment),
+        healthAssessment: JSON.parse(results[0].health_assessment),
       };
     }
     const err = new Error(`No assessment found for id: ${id}`);
