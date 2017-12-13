@@ -255,7 +255,7 @@ describe('<FullAssessmentOutcome', () => {
     const prisonerProfile = wrapper.find('[data-element-id="prisoner-profile"]').text();
 
     expect(prisonerProfile).to.contain('Foo-name');
-    expect(prisonerProfile).to.contain('foo-surname');
+    expect(prisonerProfile).to.contain('Foo-surname');
     expect(prisonerProfile).to.contain('11 December 1990');
     expect(prisonerProfile).to.contain('foo-nomis-id');
   });
@@ -330,8 +330,8 @@ describe('<FullAssessmentOutcome', () => {
       const regex = new RegExp(answer, 'i');
 
       if (key === 'assessor') {
-        expect(healthcareSummaryText).to.include('Nurse');
-        expect(healthcareSummaryText).to.include('Foo Bar');
+        expect(healthcareSummaryText).to.include('nurse');
+        expect(healthcareSummaryText).to.include('Foo bar');
         expect(healthcareSummaryText).to.include('4 August 2017');
         return;
       }

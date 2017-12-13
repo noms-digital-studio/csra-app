@@ -8,9 +8,9 @@ const caseInSensitive = text => new RegExp(text, 'i');
 
 const defaultFullAssessmentConfig = {
   prisoner: {
-    nomisId: 'J1234LO',
-    name: 'John Lowe',
-    dateOfBirth: '01 October 1970',
+    nomisId: 'A1401AE',
+    name: 'Jenifer Hallibut',
+    dateOfBirth: '1 January 1970',
   },
   finalOutcome: 'shared cell',
 };

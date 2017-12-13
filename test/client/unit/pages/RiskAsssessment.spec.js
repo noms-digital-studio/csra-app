@@ -103,8 +103,8 @@ describe('<RiskAssessment />', () => {
       </Provider>,
     );
 
-    expect(wrapper.text()).to.contain('foo-surname');
-    expect(wrapper.text()).to.contain('foo-forename');
+    expect(wrapper.text()).to.contain('Foo-surname');
+    expect(wrapper.text()).to.contain('Foo-forename');
   });
 
   it('calls the onSubmit action with the answer and section', () => {

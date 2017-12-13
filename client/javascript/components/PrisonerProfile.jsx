@@ -19,7 +19,7 @@ const PrisonerProfile = ({ forename, surname, dateOfBirth, nomisId }) => (
           <tr>
             <td>Full name</td>
             <td data-element-id="prisoner-name">
-              <strong className="heading-small">{capitalize(`${forename} ${surname}`)}</strong>
+              <strong className="heading-small">{capitalize(forename)} {capitalize(surname)}</strong>
             </td>
           </tr>
           <tr>

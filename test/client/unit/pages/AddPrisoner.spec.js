@@ -79,10 +79,9 @@ describe('<AddPrisoner />', () => {
         const tableRow = resultsTable.find('tbody > tr');
         const tableRowText = tableRow.text();
 
+        expect(tableRowText).to.include('Foo Bar Baz');
         expect(tableRowText).to.include('foo-nomis-id');
-        expect(tableRowText).to.include('foo bar baz');
-        expect(tableRowText).to.include('foo-nomis-id');
-        expect(tableRowText).to.include('09-12-1921');
+        expect(tableRowText).to.include('12 September 1921');
       });
 
       context('and a result is selected', () => {

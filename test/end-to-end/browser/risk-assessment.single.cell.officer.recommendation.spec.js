@@ -8,9 +8,9 @@ import {
 
 const assessmentConfig = {
   prisoner: {
-    nomisId: 'J1234LO',
-    name: 'John Lowe',
-    dateOfBirth: '01 October 1970',
+    nomisId: 'A1401AE',
+    name: 'Jenifer Hallibut',
+    dateOfBirth: '1 January 1970',
   },
   viperScore: 0.35,
   initialRecommendation: 'The predictor has found this person in its records',

@@ -23,7 +23,7 @@ const AssessmentRow = (props) => {
         <span className="c-profile-holder" />
       </td>
       <td>
-        {props.forename} {props.surname}
+        {capitalize(props.forename)} {capitalize(props.surname)}
       </td>
       <td>{props.nomisId}</td>
       <td>{extractDateFromUTCString(props.dateOfBirth)}</td>

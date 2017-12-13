@@ -20,6 +20,7 @@ async function primeDatabase({
   healthAssessment = null, outcome = null,
 }) {
   const result = await db.insert({
+    booking_id: 123,
     nomis_id: nomisId,
     forename: 'assessmentService',
     surname: 'test',
@@ -45,6 +46,7 @@ describe('/api/assessments/', () => {
 
   it('saves the prisoner data', async function test() {
     const result = await agent.post('/api/assessments/').send({
+      bookingId: 123,
       nomisId,
       forename: 'assessmentService',
       surname: 'test',
@@ -53,6 +55,7 @@ describe('/api/assessments/', () => {
     expect(result.body).to.have.property('id');
 
     await checkThatPrisonerAssessmentDataWasWrittenToDatabase({
+      bookingId: 123,
       id: result.body.id,
       nomisId,
       forename: 'assessmentService',

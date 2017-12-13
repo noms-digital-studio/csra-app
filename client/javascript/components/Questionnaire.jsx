@@ -11,6 +11,9 @@ import QuestionWithComments from '../containers/QuestionWithTextBox';
 import QuestionWithAsideTemplate from '../containers/QuestionWithAside';
 import Viper from '../containers/Viper';
 
+import { capitalize } from '../utils';
+
+
 function templateSelector(data) {
   switch (data.template) {
     case 'confirmation':
@@ -109,7 +112,7 @@ class Questionnaire extends Component {
       <div className="o-question">
         <div className="">
           <h3 className="bold-medium" id="subsection-title">
-            <span className="u-font-weight-normal">Assessment for:</span> {forename} {surname}
+            <span className="u-font-weight-normal">Assessment for:</span> {capitalize(forename)} {capitalize(surname)}
           </h3>
         </div>
 

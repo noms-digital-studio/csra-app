@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import moment from 'moment';
 import DocumentTitle from 'react-document-title';
 import serialize from 'form-serialize';
 import classnames from 'classnames';
@@ -16,20 +17,20 @@ import routes from '../constants/routes';
 
 import { storePrisonerSearchResults } from '../actions';
 
+import { capitalize, extractDateFromUTCString } from '../utils';
 
-const generateUTCDate = date =>
-  Date.UTC(date.getFullYear(), date.getMonth() - 1, date.getDate()) / 1000;
+const generateUTCDate = date => moment.utc(date).unix();
 
 const standardizePrisoner = prisoner => ({
   bookingId: prisoner.bookingId,
   nomisId: prisoner.offenderNo,
   surname: prisoner.lastName,
   forename: prisoner.firstName,
-  dateOfBirth: generateUTCDate(new Date(prisoner.dateOfBirth)),
+  dateOfBirth: generateUTCDate(prisoner.dateOfBirth),
 });
 
 const offenderTable = ({ searchResults, addPrisoner }) => (
-  <table className="c-results-table">
+  <table data-element-id="search-results" className="c-results-table">
     <thead>
       <tr>
         <th scope="col" />
@@ -47,13 +48,13 @@ const offenderTable = ({ searchResults, addPrisoner }) => (
     </thead>
     <tbody>
       {searchResults.map(prisoner => (
-        <tr key={prisoner.offenderNo}>
+        <tr data-element-id={prisoner.offenderNo} key={prisoner.offenderNo}>
           <td>
             <span className="c-profile-holder" />
           </td>
-          <td>{prisoner.firstName} {prisoner.middleName} {prisoner.lastName}</td>
+          <td>{capitalize(prisoner.firstName)} {capitalize(prisoner.middleName)} {capitalize(prisoner.lastName)}</td>
           <td>{prisoner.offenderNo}</td>
-          <td>{prisoner.dateOfBirth}</td>
+          <td>{extractDateFromUTCString(prisoner.dateOfBirth)}</td>
           <td className="numeric">
             <button data-element-id={prisoner.offenderNo} onClick={() => { addPrisoner(prisoner); }} className="button">Add prisoner</button>
           </td>

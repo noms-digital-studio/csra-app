@@ -5,9 +5,10 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import path from 'ramda/src/path';
 
-import { extractDateFromUTCString } from '../utils';
 import { startRiskAssessmentFor } from '../actions';
 import { retrieveViperScoreFor } from '../services';
+import { capitalize, extractDateFromUTCString } from '../utils';
+
 
 import routes from '../constants/routes';
 
@@ -35,7 +36,7 @@ const OffenderProfile = ({ details, title, onSubmit, isAlreadyComplete }) => (
                 <p className="c-offender-profile-item">
                   <span className="heading-small">Name:&nbsp;</span>
                   <span data-element-id="prisoner-name">
-                    {details.forename} {details.surname}
+                    {capitalize(details.forename)} {capitalize(details.surname)}
                   </span>
                 </p>
               </div>
