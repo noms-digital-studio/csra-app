@@ -26,6 +26,7 @@ describe('Prisoner Booking Service', () => {
           lastName: 'VIGO',
           dateOfBirth: '1974-05-01',
           facialImageId: null,
+          image: null,
         },
       ];
 

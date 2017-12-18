@@ -3,7 +3,7 @@ const url = require('url');
 const config = require('../config');
 const { logger: log } = require('./logger');
 const { generateApiGatewayToken } = require('../jwtUtils');
-
+const { decoratePrisonersWithImages } = require('../utils');
 
 const valueOrNull = value => value || null;
 
@@ -28,7 +28,7 @@ const findPrisoners =
             .set('Authorization', `Bearer ${generateApiGatewayToken()}`)
             .set('Elite-Authorization', authToken);
 
-        return parseSearchRequest(result.body);
+        return await decoratePrisonersWithImages(authToken, parseSearchRequest(result.body));
       } catch (exception) {
         log.error(`Search failed on Elite 2 failed for [${searchQuery}] with exception:`);
         log.error(exception);

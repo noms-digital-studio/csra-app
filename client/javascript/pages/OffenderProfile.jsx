@@ -29,7 +29,10 @@ const OffenderProfile = ({ details, title, onSubmit, isAlreadyComplete }) => (
         <div className="grid-row">
           <div className="column-one-half">
             <div className="c-offender-profile-image">
-              <img src="/assets/images/profile-placeholder.gif" />
+              {(details.image)
+                ? <img src={details.image} alt={details.forename} />
+                : <img src="/assets/images/profile-placeholder.gif" />
+              }
             </div>
             <div data-offender-profile-details className="c-offender-profile-details">
               <div>

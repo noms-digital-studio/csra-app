@@ -22,6 +22,7 @@ import { capitalize, extractDateFromUTCString } from '../utils';
 const generateUTCDate = date => moment.utc(date).unix();
 
 const standardizePrisoner = prisoner => ({
+  facialImageId: prisoner.facialImageId,
   bookingId: prisoner.bookingId,
   nomisId: prisoner.offenderNo,
   surname: prisoner.lastName,
@@ -50,7 +51,10 @@ const offenderTable = ({ searchResults, addPrisoner }) => (
       {searchResults.map(prisoner => (
         <tr data-element-id={prisoner.offenderNo} key={prisoner.offenderNo}>
           <td>
-            <span className="c-profile-holder" />
+            {(prisoner.image)
+              ? <img height="80" width="70" className="c-profile-holder" src={prisoner.image} alt={prisoner.name} />
+              : <span className="c-profile-holder" />
+            }
           </td>
           <td>{capitalize(prisoner.firstName)} {capitalize(prisoner.middleName)} {capitalize(prisoner.lastName)}</td>
           <td>{prisoner.offenderNo}</td>

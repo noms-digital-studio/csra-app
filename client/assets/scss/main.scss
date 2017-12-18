@@ -77,14 +77,19 @@ table.c-table-vam td {
 }
 
 .c-profile-holder {
-  width: 35px;
-  height: 35px;
+  width: 70px;
+  height: 80px;
   display: inline-block;
   vertical-align: middle;
   background-image: url("/assets/images/profile-placeholder.gif");
   background-size: contain;
   background-repeat: no-repeat;
   margin: 0 10px;
+}
+
+.c-profile-holder--global-header {
+  width: 35px;
+  height: 40px;
 }
 
 .c-date-title {
@@ -402,12 +407,6 @@ table.c-table-vam td {
 table.c-results-table td {
   vertical-align: middle;
 }
-
-.c-results-table .c-profile-holder {
-  width: 60px;
-  height: 60px;
-}
-
 
 .loader {
   font-size: 10px;
