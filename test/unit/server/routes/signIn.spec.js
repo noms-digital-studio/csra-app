@@ -41,8 +41,8 @@ describe('POST /signin', () => {
             eliteAuthorisationToken: 'token',
             authorities: [{ authority: 'ROLE_A' }, { authority: 'ROLE_B' }],
           };
-          const userDetailsString = JSON.stringify({ passport: { user: userDetails } });
-          expect(parsePassportSessionCookie(res)).to.equal(userDetailsString);
+          const passportSession = { passport: { user: userDetails } };
+          expect(JSON.parse(parsePassportSessionCookie(res))).to.eql(passportSession);
           expect(res.headers.location).to.eql('/');
         });
     });

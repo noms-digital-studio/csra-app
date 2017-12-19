@@ -14,7 +14,14 @@ function authenticationMiddleware() {
   };
 }
 
-passport.serializeUser((user, done) => done(null, user));
+passport.serializeUser((user, done) => done(null, {
+  forename: user.forename,
+  surname: user.surname,
+  username: user.username,
+  email: user.email,
+  authorities: user.authorities,
+  eliteAuthorisationToken: user.eliteAuthorisationToken,
+}));
 
 passport.deserializeUser((userDetails, done) => {
   done(null, {
