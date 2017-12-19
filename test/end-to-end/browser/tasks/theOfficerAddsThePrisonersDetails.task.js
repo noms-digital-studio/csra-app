@@ -5,8 +5,8 @@ import { checkThatPrisonerAssessmentDataWasWrittenToDatabase } from '../../utils
 const defaultConfig = {
   smokeTest: false,
   prisoner: {
-    forename: 'Jenifer',
-    surname: 'Hallibut',
+    forename: 'Jilly',
+    surname: 'Hall',
     nomisId: 'A1401AE',
     dateOfBirth: '1 January 1970',
     databaseDoB: 'Jan 01 1970',

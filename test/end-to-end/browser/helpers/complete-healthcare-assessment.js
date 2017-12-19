@@ -11,7 +11,7 @@ import { checkThatHealthAssessmentDataWasWrittenToDatabaseSync } from '../../uti
 const defaultAssessmentConfig = {
   prisoner: {
     nomisId: 'A1401AE',
-    name: 'Jenifer Hallibut',
+    name: 'Jilly Hall',
     dateOfBirth: '1 January 1970',
   },
   answers: {
