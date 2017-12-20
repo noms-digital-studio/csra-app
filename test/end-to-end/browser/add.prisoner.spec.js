@@ -6,7 +6,7 @@ import whenTheOfficerAddsAPrisonerToAssess from './tasks/theOfficerAddsThePrison
 function thenThePrisonerIsAvailableToAssess() {
   expect(DashboardPage.mainHeading).to.contain('All assessments');
   const row = browser.element('[data-element-id="profile-row-A1401AE"]');
-  expect(row.getText()).to.equal('Jenifer Hallibut A1401AE 1 January 1970 Start Start');
+  expect(row.getText()).to.equal('Jilly Hall A1401AE 1 January 1970 Start Start');
 }
 
 describe('add prisoner', () => {

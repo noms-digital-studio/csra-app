@@ -17,7 +17,7 @@ import {
 
 const prisoner = {
   nomisId: 'A1401AE',
-  name: 'Jenifer Hallibut',
+  name: 'Jilly Hall',
   dateOfBirth: '1 January 1970',
 };
 

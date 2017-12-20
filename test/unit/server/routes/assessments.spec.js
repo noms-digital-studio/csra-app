@@ -369,6 +369,7 @@ describe('GET /assessements/:id/health', () => {
         outcome: 'Shared Cell',
         riskAssessment: { someKey: 'some valid data' },
         healthAssessment: { someKey: 'some valid data' },
+        image: 'some-base64-string',
       };
 
       fakePrisonerAssessmentsService.assessmentFor = sinon.stub().resolves(assessment);

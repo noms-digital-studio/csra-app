@@ -67,7 +67,9 @@ module.exports = function createRouter(prisonerAssessmentsService, authenticatio
   });
 
   router.get('/', (req, res) => {
-    prisonerAssessmentsService.list()
+    const authToken = req.user.eliteAuthorisationToken;
+
+    prisonerAssessmentsService.list(authToken)
       .then((result) => {
         res.status(200);
         res.json(result);
@@ -129,8 +131,9 @@ module.exports = function createRouter(prisonerAssessmentsService, authenticatio
 
   router.get('/:id', (req, res) => {
     const id = req.params.id;
+    const authToken = req.user.eliteAuthorisationToken;
 
-    prisonerAssessmentsService.assessmentFor(id)
+    prisonerAssessmentsService.assessmentFor(id, authToken)
     .then((result) => {
       res.status(200);
       res.json(result);
