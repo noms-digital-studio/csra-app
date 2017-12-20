@@ -14,7 +14,7 @@ function save(db, appInfo, rawAssessment) {
   }
 
   const schema = Joi.object({
-    facialImageId: Joi.number().optional(),
+    facialImageId: Joi.number().allow(null).optional(),
     bookingId: Joi.number(),
     nomisId: Joi.string().max(10),
     forename: Joi.string().max(100),
