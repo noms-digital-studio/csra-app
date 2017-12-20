@@ -136,7 +136,7 @@ module.exports = function createRouter(prisonerAssessmentsService, authenticatio
     prisonerAssessmentsService.assessmentFor(id, authToken)
     .then((result) => {
       res.status(200);
-      res.json(result[0]);
+      res.json(result);
     }).catch((err) => {
       handleErrors(err, res);
     });

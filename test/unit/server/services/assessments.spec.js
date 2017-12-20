@@ -700,7 +700,7 @@ describe('prisoner assessment service', () => {
         expect(fakeDB.where.lastCall.args[1]).to.eql('=');
         expect(fakeDB.where.lastCall.args[2]).to.eql(123);
 
-        expect(riskResult).to.eql([{
+        expect(riskResult).to.eql({
           bookingId: 12,
           id: 123,
           facialImageId: null,
@@ -714,7 +714,7 @@ describe('prisoner assessment service', () => {
           outcome: 'Shared Cell',
           riskAssessment: { someKey: 'some valid data' },
           healthAssessment: { someKey: 'some valid data' },
-        }]);
+        });
       });
     });
 

@@ -1,11 +1,11 @@
 const superagent = require('superagent');
 const url = require('url');
-const config = require('./config');
-const { generateApiGatewayToken } = require('./jwtUtils');
-const { logger: log } = require('./services/logger');
+const config = require('../config');
+const { generateApiGatewayToken } = require('../jwtUtils');
+const { logger: log } = require('./logger');
 
 
-const decoratePrisonersWithImages = async (authToken, prisoners) => {
+const decoratePrisonersWithImages = async (authToken, prisoners = []) => {
   const promiseList = prisoners.map(async (prisoner) => {
     if (!prisoner.facialImageId) return { ...prisoner, image: null };
     log.info(`Retrieving image for prisoner ${prisoner.nomisId}`);

@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 const { databaseLogger, prisonerAssessmentsServiceLogger: log } = require('./logger');
-const { decoratePrisonersWithImages } = require('../utils');
+const { decoratePrisonersWithImages } = require('./prisoner-images');
 
 function save(db, appInfo, rawAssessment) {
   log.info(`Saving prisoner assessment for nomisId: ${rawAssessment.nomisId}`);
@@ -271,7 +271,7 @@ function assessmentFor(db, id, authToken) {
   .select()
   .table('prisoner_assessments')
   .where('id', '=', id)
-  .then((results) => {
+  .then(async (results) => {
     if (results && results[0]) {
       databaseLogger.info(`Found assessment for id: ${id}`);
       const prisoner = [{
@@ -289,7 +289,9 @@ function assessmentFor(db, id, authToken) {
         healthAssessment: JSON.parse(results[0].health_assessment),
       }];
 
-      return decoratePrisonersWithImages(authToken, prisoner);
+      const prisonersWithImages = await decoratePrisonersWithImages(authToken, prisoner);
+
+      return prisonersWithImages[0];
     }
     const err = new Error(`No assessment found for id: ${id}`);
     err.type = 'not-found';

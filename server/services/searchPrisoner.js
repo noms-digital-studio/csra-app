@@ -3,7 +3,7 @@ const url = require('url');
 const config = require('../config');
 const { logger: log } = require('./logger');
 const { generateApiGatewayToken } = require('../jwtUtils');
-const { decoratePrisonersWithImages } = require('../utils');
+const { decoratePrisonersWithImages } = require('./prisoner-images');
 
 const valueOrNull = value => value || null;
 

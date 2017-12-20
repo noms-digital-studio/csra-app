@@ -358,7 +358,7 @@ describe('GET /assessements/:id/health', () => {
 
   describe('GET /assessements/:id', () => {
     it('responds with status OK (200) and the assessment', () => {
-      const assessment = [{
+      const assessment = {
         id: 123,
         createdAt: '2017-07-28T11:54:23.576Z',
         updatedAt: '2017-07-28T11:54:23.576Z',
@@ -370,7 +370,7 @@ describe('GET /assessements/:id/health', () => {
         riskAssessment: { someKey: 'some valid data' },
         healthAssessment: { someKey: 'some valid data' },
         image: 'some-base64-string',
-      }];
+      };
 
       fakePrisonerAssessmentsService.assessmentFor = sinon.stub().resolves(assessment);
 
@@ -379,7 +379,7 @@ describe('GET /assessements/:id/health', () => {
       .expect(200)
       .expect('Content-Type', /json/)
       .expect((res) => {
-        expect(res.body).to.eql(assessment[0]);
+        expect(res.body).to.eql(assessment);
       });
     });
 
