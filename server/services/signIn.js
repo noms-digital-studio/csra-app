@@ -48,10 +48,6 @@ async function signIn(username, password) {
   }
 }
 
-function signInFor(username, password) {
-  return signIn(username, password);
-}
-
 module.exports = function createSignInService() {
-  return { signIn: (username, password) => signInFor(username, password) };
+  return { signIn };
 };

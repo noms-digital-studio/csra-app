@@ -38,10 +38,6 @@ function viperRatingFromApi(nomisId) {
   });
 }
 
-function ratingFor(db, nomisId) {
-  return viperRatingFromApi(nomisId);
-}
-
-module.exports = function createViperService(db) {
-  return { rating: nomisId => ratingFor(db, nomisId) };
+module.exports = function createViperService() {
+  return { rating: viperRatingFromApi };
 };

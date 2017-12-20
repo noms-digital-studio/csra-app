@@ -1,6 +1,7 @@
 const Joi = require('joi');
 
 const { databaseLogger, prisonerAssessmentsServiceLogger: log } = require('./logger');
+const { decoratePrisonersWithImages } = require('./prisoner-images');
 
 function save(db, appInfo, rawAssessment) {
   log.info(`Saving prisoner assessment for nomisId: ${rawAssessment.nomisId}`);
@@ -13,7 +14,9 @@ function save(db, appInfo, rawAssessment) {
   }
 
   const schema = Joi.object({
-    nomisId: Joi.string().max(10).optional(),
+    facialImageId: Joi.number().allow(null).optional(),
+    bookingId: Joi.number(),
+    nomisId: Joi.string().max(10),
     forename: Joi.string().max(100),
     surname: Joi.string().max(100),
     dateOfBirth: Joi.date().timestamp('unix'),
@@ -36,6 +39,8 @@ function save(db, appInfo, rawAssessment) {
   databaseLogger.info(`Inserting prisoner assessment data into database for NomisId: ${assessment.nomisId}`);
   return db
   .insert({
+    facial_image_id: assessment.facialImageId,
+    booking_id: assessment.bookingId,
     nomis_id: assessment.nomisId,
     forename: assessment.forename,
     surname: assessment.surname,
@@ -49,7 +54,7 @@ function save(db, appInfo, rawAssessment) {
   .then(result => ({ id: result[0] }));
 }
 
-function list(db) {
+function list(db, authToken) {
   log.info('Retrieving prisoner assessment summaries from the database');
   return db
     .select()
@@ -58,7 +63,9 @@ function list(db) {
     .then((result) => {
       if (result && result.length > 0) {
         databaseLogger.info(`Found ${result.length} rows of prisoner assessment data`);
-        return result.map(row => ({
+        const prisoners = result.map(row => ({
+          facialImageId: row.facial_image_id,
+          bookingId: row.booking_id,
           id: row.id,
           nomisId: row.nomis_id,
           forename: row.forename,
@@ -70,6 +77,8 @@ function list(db) {
           createdAt: row.created_at,
           updatedAt: row.updated_at,
         }));
+
+        return decoratePrisonersWithImages(authToken, prisoners);
       }
       databaseLogger.info('No prisoner assessment data found in database.');
       return [];
@@ -256,27 +265,33 @@ function healthAssessmentFor(db, id) {
   });
 }
 
-function assessmentFor(db, id) {
+function assessmentFor(db, id, authToken) {
   log.info(`Retrieving assessment from the database for id: ${id}`);
   return db
   .select()
   .table('prisoner_assessments')
   .where('id', '=', id)
-  .then((_result) => {
-    if (_result && _result[0]) {
+  .then(async (results) => {
+    if (results && results[0]) {
       databaseLogger.info(`Found assessment for id: ${id}`);
-      return {
-        id: _result[0].id,
-        createdAt: _result[0].created_at,
-        updatedAt: _result[0].updated_at,
-        nomisId: _result[0].nomis_id,
-        forename: _result[0].forename,
-        surname: _result[0].surname,
-        dateOfBirth: _result[0].date_of_birth,
-        outcome: _result[0].outcome,
-        riskAssessment: JSON.parse(_result[0].risk_assessment),
-        healthAssessment: JSON.parse(_result[0].health_assessment),
-      };
+      const prisoner = [{
+        id: results[0].id,
+        bookingId: results[0].booking_id,
+        createdAt: results[0].created_at,
+        updatedAt: results[0].updated_at,
+        nomisId: results[0].nomis_id,
+        forename: results[0].forename,
+        surname: results[0].surname,
+        dateOfBirth: results[0].date_of_birth,
+        outcome: results[0].outcome,
+        facialImageId: results[0].facial_image_id,
+        riskAssessment: JSON.parse(results[0].risk_assessment),
+        healthAssessment: JSON.parse(results[0].health_assessment),
+      }];
+
+      const prisonersWithImages = await decoratePrisonersWithImages(authToken, prisoner);
+
+      return prisonersWithImages[0];
     }
     const err = new Error(`No assessment found for id: ${id}`);
     err.type = 'not-found';
@@ -328,12 +343,12 @@ function saveOutcome(db, id, rawRequest) {
 module.exports = function createPrisonerAssessmentService(db, appInfo) {
   return {
     save: assessment => save(db, appInfo, assessment),
-    list: () => list(db),
+    list: authToken => list(db, authToken),
     saveRiskAssessment: (id, riskAssessment) => saveRiskAssessment(db, id, riskAssessment),
     riskAssessmentFor: id => riskAssessmentFor(db, id),
     saveHealthAssessment: (id, healthAssessment) => saveHealthAssessment(db, id, healthAssessment),
     healthAssessmentFor: id => healthAssessmentFor(db, id),
-    assessmentFor: id => assessmentFor(db, id),
+    assessmentFor: (id, authToken) => assessmentFor(db, id, authToken),
     saveOutcome: (id, outcome) => saveOutcome(db, id, outcome),
   };
 };

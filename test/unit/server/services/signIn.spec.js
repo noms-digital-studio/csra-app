@@ -11,6 +11,10 @@ describe('signIn service', () => {
     signInService = createSignInService();
   });
 
+  afterEach(() => {
+    nock.cleanAll();
+  });
+
   describe('successful sign in', () => {
     it('signs in when Elite 2 returns a JWT bearer token', () => {
       const payload = btoa(JSON.stringify(

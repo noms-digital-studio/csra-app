@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import xhr from 'xhr';
 
 import { fakeStore } from '../test-helpers';
-import { parseDate } from '../../../../client/javascript/utils';
+import { extractDateFromUTCString } from '../../../../client/javascript/utils';
 
 import ConnectedDashboard, { Dashboard } from '../../../../client/javascript/pages/Dashboard';
 
@@ -12,8 +12,8 @@ const filteredAssessments = [
   {
     id: 1,
     nomisId: 'foo-id',
-    surname: 'foo-surname',
-    forename: 'foo-forename',
+    surname: 'Foo-surname',
+    forename: 'Foo-forename',
     dateOfBirth: '1970-10-15T00:00:00.000Z',
     riskAssessmentCompleted: true,
     healthAssessmentCompleted: true,
@@ -23,8 +23,8 @@ const filteredAssessments = [
   {
     id: 2,
     nomisId: 'bar-id',
-    surname: 'bar-surname',
-    forename: 'bar-forename',
+    surname: 'Bar-surname',
+    forename: 'Bar-forename',
     dateOfBirth: '2001-03-04T00:00:00.000Z',
     riskAssessmentCompleted: false,
     healthAssessmentCompleted: true,
@@ -34,8 +34,8 @@ const filteredAssessments = [
   {
     id: 3,
     nomisId: 'baz-id',
-    surname: 'baz-surname',
-    forename: 'baz-forename',
+    surname: 'Baz-surname',
+    forename: 'Baz-forename',
     dateOfBirth: '2001-03-04T00:00:00.000Z',
     riskAssessmentCompleted: true,
     healthAssessmentCompleted: false,
@@ -48,8 +48,8 @@ const assessments = filteredAssessments.concat([
   {
     id: 4,
     nomisId: 'TEST1-ID',
-    surname: 'test1-surname',
-    forename: 'test1-forename',
+    surname: 'Test1-surname',
+    forename: 'Test1-forename',
     dateOfBirth: '2001-03-04T00:00:00.000Z',
     riskAssessmentCompleted: false,
     healthAssessmentCompleted: false,
@@ -59,12 +59,12 @@ const assessments = filteredAssessments.concat([
   {
     id: 5,
     nomisId: 'TEST2-ID',
-    surname: 'test2-surname',
-    forename: 'test2-forename',
+    surname: 'Test2-surname',
+    forename: 'Test2-forename',
     dateOfBirth: '2001-03-04T00:00:00.000Z',
     riskAssessmentCompleted: true,
     healthAssessmentCompleted: true,
-    outcome: 'test outcome',
+    outcome: 'Test outcome',
     createdAt: '2017-01-02T00:00:00.000Z',
   },
 ]);
@@ -88,7 +88,7 @@ const assertGivenValuesInWhiteListAreInPage = (list, whiteList, component) => {
     keys.forEach((key) => {
       if (whiteList.includes(key)) {
         if (key === 'dateOfBirth') {
-          expect(componentText).to.include(parseDate(new Date(item[key])));
+          expect(componentText).to.include(extractDateFromUTCString(new Date(item[key])));
           return;
         }
         expect(componentText).to.include(item[key]);

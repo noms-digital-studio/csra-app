@@ -3,8 +3,6 @@ import {
   getHealthAssessmentQuestions,
   getOffenderAssessments,
   selectOffender,
-  addPrisoner,
-  confirmPrisoner,
   completeHealthAnswersFor,
 } from '../../../../client/javascript/actions';
 
@@ -66,30 +64,6 @@ describe('Actions', () => {
         type: 'SELECT_OFFENDER',
         payload: offender,
       });
-    });
-  });
-
-  describe('#addPrisoner', () => {
-    it('returns a ADD_PRISONER action', () => {
-      const prisoner = {
-        forename: 'foo',
-        surname: 'bar',
-        'dob-day': '01',
-        'dob-month': '10',
-        'dob-year': '1997',
-        nomisId: 'AA12345',
-      };
-
-      expect(addPrisoner(prisoner)).to.eql({
-        type: 'ADD_PRISONER',
-        payload: prisoner,
-      });
-    });
-  });
-
-  describe('#confirmPrisoner', () => {
-    it('returns a CONFIRM_PRISONER action', () => {
-      expect(confirmPrisoner()).to.eql({ type: 'CONFIRM_PRISONER' });
     });
   });
 

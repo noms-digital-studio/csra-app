@@ -85,8 +85,8 @@ describe('<HealthcareSummary />', () => {
       const prisonerProfile = wrapper.find('[data-element-id="prisoner-profile"]').text();
 
       expect(prisonerProfile).to.contain('Foo-name');
-      expect(prisonerProfile).to.contain('foo-surname');
-      expect(prisonerProfile).to.contain('01 January 2010');
+      expect(prisonerProfile).to.contain('Foo-surname');
+      expect(prisonerProfile).to.contain('1 January 2010');
       expect(prisonerProfile).to.contain('foo-nomis-id');
     });
 

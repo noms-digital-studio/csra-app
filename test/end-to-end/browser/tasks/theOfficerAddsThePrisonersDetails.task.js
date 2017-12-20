@@ -1,44 +1,38 @@
 import AddPrisonerPage from '../pages/add-prisoner/AddPrisoner.page';
-import PrisonerAddedPage from '../pages/add-prisoner/PrisonerAdded.page';
 import DashboardPage from '../pages/Dashboard.page';
 import { checkThatPrisonerAssessmentDataWasWrittenToDatabase } from '../../utils/dbAssertions';
 
 const defaultConfig = {
   smokeTest: false,
   prisoner: {
-    forename: 'John',
-    surname: 'Lowe',
-    dob: {
-      day: 1,
-      month: 10,
-      year: 1970,
-    },
-    nomisId: 'J1234LO',
-    dateOfBirth: '1 October 1970',
-    databaseDoB: 'Oct 01 1970',
+    forename: 'Jilly',
+    surname: 'Hall',
+    nomisId: 'A1401AE',
+    dateOfBirth: '1 January 1970',
+    databaseDoB: 'Jan 01 1970',
   },
 };
 
 function whenTheOfficerAddsThePrisonersDetails(config = defaultConfig) {
   DashboardPage.clickAddPrisoner();
 
-  expect(AddPrisonerPage.mainHeading).to.equal('Add Prisoner');
+  expect(AddPrisonerPage.mainHeading).to.equal('Search for a prisoner');
 
-  AddPrisonerPage.enterName(config.prisoner.forename, config.prisoner.surname);
-  AddPrisonerPage.enterDoB(
-    config.prisoner.dob.day,
-    config.prisoner.dob.month,
-    config.prisoner.dob.year,
-  );
-  AddPrisonerPage.enterNomisId(config.prisoner.nomisId);
+  AddPrisonerPage.search(config.prisoner.forename.toLowerCase());
+
   AddPrisonerPage.clickContinue();
 
-  expect(PrisonerAddedPage.mainHeading).to.equal('Prisoner Added');
-  expect(PrisonerAddedPage.name).to.equal(`${config.prisoner.forename} ${config.prisoner.surname}`);
-  expect(PrisonerAddedPage.dateOfBirth).to.equal(config.prisoner.dateOfBirth);
-  expect(PrisonerAddedPage.nomisId).to.equal(config.prisoner.nomisId);
+  browser.waitForVisible('[data-element-id="search-results"]', 10000);
+  const prisonerRow = browser.element(`[data-element-id="${config.prisoner.nomisId}"]`);
+  const prisonerRowText = prisonerRow.getText();
 
-  PrisonerAddedPage.clickContinue();
+  expect(prisonerRowText).to.contain(config.prisoner.forename);
+  expect(prisonerRowText).to.contain(config.prisoner.surname);
+  expect(prisonerRowText).to.contain(config.prisoner.nomisId);
+  expect(prisonerRowText).to.contain(config.prisoner.dateOfBirth);
+
+  prisonerRow.element('button').click();
+
   DashboardPage.waitForMainHeadingWithDataId('dashboard');
 
   if (!config.smokeTest) {

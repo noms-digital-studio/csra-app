@@ -17,8 +17,8 @@ describe('<PrisonerProfile />', () => {
 
     const profileText = wrapper.find('[data-element-id="prisoner-profile"]').text();
     expect(profileText).to.contain('Foo-name');
-    expect(profileText).to.contain('foo-surname');
-    expect(profileText).to.contain('01 January 2010');
+    expect(profileText).to.contain('Foo-surname');
+    expect(profileText).to.contain('1 January 2010');
     expect(profileText).to.contain('foo-nomis-id');
   });
 });

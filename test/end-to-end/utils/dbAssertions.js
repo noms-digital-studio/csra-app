@@ -61,8 +61,8 @@ export function checkThatPrisonerAssessmentDataWasWrittenToDatabase({
       `Did not get a result from database for id: ${id}`,
     );
     expect(assessment.nomis_id).to.equalIgnoreCase(nomisId);
-    expect(assessment.forename).to.equal(forename);
-    expect(assessment.surname).to.equal(surname);
+    expect(assessment.forename).to.equalIgnoreCase(forename);
+    expect(assessment.surname).to.equalIgnoreCase(surname);
     expect(assessment.date_of_birth.toString()).to.contain(dateOfBirth);
     expect(assessment.questions_hash).to.not.equal(undefined, 'expected a questions_hash');
     expect(assessment.created_at).to.not.equal(undefined, 'expected a created_at');
@@ -77,7 +77,7 @@ export const checkThatRiskAssessmentDataWasWrittenToDatabaseSync = (args) => {
 
   Future.wait(future);
 
-  future.get();
+  return future.get();
 };
 
 export const checkThatTheOutcomeDataWasWrittenToDatabaseSync = (args) => {
@@ -85,7 +85,7 @@ export const checkThatTheOutcomeDataWasWrittenToDatabaseSync = (args) => {
 
   Future.wait(future);
 
-  future.get();
+  return future.get();
 };
 
 export const checkThatHealthAssessmentDataWasWrittenToDatabaseSync = (args) => {
@@ -93,7 +93,7 @@ export const checkThatHealthAssessmentDataWasWrittenToDatabaseSync = (args) => {
 
   Future.wait(future);
 
-  future.get();
+  return future.get();
 };
 
 export const checkThatPrisonerAssessmentDataWasWrittenToDatabaseSync = (args) => {
@@ -101,5 +101,5 @@ export const checkThatPrisonerAssessmentDataWasWrittenToDatabaseSync = (args) =>
 
   Future.wait(future);
 
-  future.get();
+  return future.get();
 };

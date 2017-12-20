@@ -3,8 +3,7 @@ import {
   GET_HEALTH_ASSESSMENT_QUESTIONS,
   GET_OFFENDER_ASSESSMENTS,
   SELECT_OFFENDER,
-  ADD_PRISONER,
-  CONFIRM_PRISONER,
+  STORE_PRISONER_SEARCH_RESULTS,
   HEALTHCARE_ANSWERS_COMPLETE,
   RISK_ANSWERS_COMPLETE,
   STORE_ASSESSMENT,
@@ -34,18 +33,15 @@ export const getOffenderAssessments = assessments => ({
   payload: assessments,
 });
 
+export const storePrisonerSearchResults = prisoners => ({
+  type: STORE_PRISONER_SEARCH_RESULTS,
+  payload: prisoners,
+});
 
 export const selectOffender = offender => ({
   type: SELECT_OFFENDER,
   payload: offender,
 });
-
-export const addPrisoner = prisoner => ({
-  type: ADD_PRISONER,
-  payload: prisoner,
-});
-
-export const confirmPrisoner = () => ({ type: CONFIRM_PRISONER });
 
 export const storeRiskAssessmentFor = ({ id, assessment }) => ({
   type: STORE_ASSESSMENT,

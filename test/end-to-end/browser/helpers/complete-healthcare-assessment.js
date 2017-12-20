@@ -10,9 +10,9 @@ import { checkThatHealthAssessmentDataWasWrittenToDatabaseSync } from '../../uti
 
 const defaultAssessmentConfig = {
   prisoner: {
-    nomisId: 'J1234LO',
-    name: 'John Lowe',
-    dateOfBirth: '01 October 1970',
+    nomisId: 'A1401AE',
+    name: 'Jilly Hall',
+    dateOfBirth: '1 January 1970',
   },
   answers: {
     singleCellRecommendation: 'no',
@@ -20,6 +20,7 @@ const defaultAssessmentConfig = {
   recommendation: 'shared cell',
   viperScore: 0.35,
 };
+
 
 const selectYesNoAnswer = (answer) => {
   if (answer === 'yes') {

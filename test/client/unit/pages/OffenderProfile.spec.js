@@ -39,8 +39,8 @@ describe('<OffenderProfile />', () => {
         </Provider>,
       );
       const pageText = wrapper.find('[data-offender-profile-details]').first().text();
-      expect(pageText).to.contain('forename');
-      expect(pageText).to.contain('surname');
+      expect(pageText).to.contain('Forename');
+      expect(pageText).to.contain('Surname');
       expect(pageText).to.contain('17 November 1999');
       expect(pageText).to.contain('foo-nomis-id');
     });

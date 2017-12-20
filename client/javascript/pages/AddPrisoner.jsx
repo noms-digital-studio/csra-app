@@ -1,130 +1,136 @@
 import React, { Component, PropTypes } from 'react';
+import moment from 'moment';
 import DocumentTitle from 'react-document-title';
-import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
 import serialize from 'form-serialize';
-
+import classnames from 'classnames';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { replace } from 'react-router-redux';
 
-import { allFormFieldsComplete } from '../utils';
+import isEmpty from 'ramda/src/isEmpty';
+import isNil from 'ramda/src/isNil';
+import not from 'ramda/src/not';
 
-import { addPrisoner } from '../actions';
-
+import searchPrisoner from '../services/searchPrisoner';
+import startAssessment from '../services/startAssessment';
 import routes from '../constants/routes';
 
+import { storePrisonerSearchResults } from '../actions';
+
+import { capitalize, extractDateFromUTCString } from '../utils';
+
+const generateUTCDate = date => moment.utc(date).unix();
+
+const standardizePrisoner = prisoner => ({
+  facialImageId: prisoner.facialImageId,
+  bookingId: prisoner.bookingId,
+  nomisId: prisoner.offenderNo,
+  surname: prisoner.lastName,
+  forename: prisoner.firstName,
+  dateOfBirth: generateUTCDate(prisoner.dateOfBirth),
+});
+
+const offenderTable = ({ searchResults, addPrisoner }) => (
+  <table data-element-id="search-results" className="c-results-table">
+    <thead>
+      <tr>
+        <th scope="col" />
+        <th scope="col">
+          Name
+        </th>
+        <th scope="col">
+          Prisoner Number
+        </th>
+        <th scope="col">
+          DOB
+        </th>
+        <th scope="col" />
+      </tr>
+    </thead>
+    <tbody>
+      {searchResults.map(prisoner => (
+        <tr data-element-id={prisoner.offenderNo} key={prisoner.offenderNo}>
+          <td>
+            {(prisoner.image)
+              ? <img height="80" width="70" className="c-profile-holder" src={prisoner.image} alt={prisoner.name} />
+              : <span className="c-profile-holder" />
+            }
+          </td>
+          <td>{capitalize(prisoner.firstName)} {capitalize(prisoner.middleName)} {capitalize(prisoner.lastName)}</td>
+          <td>{prisoner.offenderNo}</td>
+          <td>{extractDateFromUTCString(prisoner.dateOfBirth)}</td>
+          <td className="numeric">
+            <button data-element-id={prisoner.offenderNo} onClick={() => { addPrisoner(prisoner); }} className="button">Add prisoner</button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+);
+
 class AddPrisoner extends Component {
-  componentDidMount() {
-    this.fNameInput.focus();
+  constructor() {
+    super();
+    this.state = {
+      loading: false,
+    };
   }
+  componentDidMount() {
+    this.searchInput.focus();
+  }
+
   handleSubmit(event) {
     event.preventDefault();
 
-    const formData = serialize(event.target, { hash: true });
-    const FormInputNames = Array.from(event.target.elements)
-      .filter(element => element.name !== '')
-      .map(element => element.name);
+    this.setState({ loading: true });
 
-    if (allFormFieldsComplete(formData, FormInputNames)) {
-      this.props.onSubmit(formData);
-    }
+    const query = serialize(event.target);
+    searchPrisoner(query, (response) => {
+      this.props.storeSearchResults(response);
+      this.setState({ loading: false });
+    });
   }
 
   render() {
-    const { prisonerDetails, title } = this.props;
+    const loaderClasses = classnames({ loader: this.state.loading });
+    const { searchResults, addPrisoner } = this.props;
 
     return (
-      <DocumentTitle title={title}>
-        <div className="form-section">
-          <p><Link className="link-back" to={routes.DASHBOARD}>Back to dashboard</Link></p>
-          <header>
-            <h1 className="heading-xlarge">
-              Add Prisoner
-            </h1>
-          </header>
-          <form action="/" method="POST" onSubmit={e => this.handleSubmit(e)}>
-            <div className="form-group">
-              <label className="form-label-bold" htmlFor="forename">First name</label>
-              <input
-                className="form-control"
-                name="forename"
-                type="text"
-                id="forename"
-                defaultValue={prisonerDetails.forename}
-                data-element-id="forename"
-                ref={(el) => { this.fNameInput = el; }}
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label-bold" htmlFor="surname">Last name</label>
-              <input className="form-control" name="surname" type="text" id="surname" defaultValue={prisonerDetails.surname} data-element-id="surname" />
-            </div>
-            <div className="form-group">
-              <fieldset>
-                <legend>
-                  <span className="form-label-bold">Date of birth</span>
-                  <span className="form-hint" id="dob-hint">For example, 31 3 1980</span>
-                </legend>
-                <div className="form-date">
-                  <div className="form-group form-group-day">
-                    <label className="form-label" htmlFor="dob-day">Day</label>
-                    <input
-                      className="form-control"
-                      id="dob-day"
-                      name="dob-day"
-                      type="number"
-                      pattern="[0-9]*"
-                      min="0"
-                      max="31"
-                      aria-describedby="dob-hint"
-                      defaultValue={prisonerDetails['dob-day']}
-                      data-element-id="dob-day"
-                    />
-                  </div>
-                  <div className="form-group form-group-month">
-                    <label className="form-label" htmlFor="dob-month">Month</label>
-                    <input
-                      className="form-control"
-                      id="dob-month"
-                      name="dob-month"
-                      type="number"
-                      pattern="[0-9]*"
-                      min="0"
-                      max="12"
-                      defaultValue={prisonerDetails['dob-month']}
-                      data-element-id="dob-month"
-                    />
-                  </div>
-                  <div className="form-group form-group-year">
-                    <label className="form-label" htmlFor="dob-year">Year</label>
-                    <input
-                      className="form-control"
-                      id="dob-year"
-                      name="dob-year"
-                      type="number"
-                      pattern="[0-9]*"
-                      min="0"
-                      max="2016"
-                      defaultValue={prisonerDetails['dob-year']}
-                      data-element-id="dob-year"
-                    />
-                  </div>
-                </div>
-              </fieldset>
-            </div>
-            <div className="form-group">
-              <label className="form-label-bold" htmlFor="nomisId">Nomis ID</label>
-              <span className="form-hint" id="nomisId-hint">For example, A5558ZO</span>
-              <input
-                className="form-control"
-                name="nomisId"
-                type="text"
-                id="nomisId"
-                defaultValue={prisonerDetails.nomisId}
-                data-element-id="nomisId"
-              />
-            </div>
-            <input type="submit" className="button" value="Add prisoner" data-element-id="continue-button" />
-          </form>
+      <DocumentTitle title={this.props.title}>
+        <div>
+          <div className="form-section">
+            <p>
+              <Link className="link-back" to={routes.DASHBOARD}>
+                Back to dashboard
+              </Link>
+            </p>
+            <header>
+              <h1 className="heading-xlarge">Search for a prisoner</h1>
+            </header>
+            <form action="/" method="POST" onSubmit={e => this.handleSubmit(e)}>
+              <div className="form-group">
+                <label className="form-label" htmlFor="query">
+                  Enter a prisoner name or number
+                </label>
+                <input
+                  ref={(el) => {
+                    this.searchInput = el;
+                  }}
+                  className="form-control"
+                  name="query"
+                  type="text"
+                  id="query"
+                  placeholder="Last Name, First Name or ID"
+                  data-element-id="query"
+                />
+              </div>
+              <button type="submit" className="button button-start" data-element-id="continue-button">
+                Search
+              </button>
+            </form>
+          </div>
+          {(not(isEmpty(searchResults)) && not(isNil(searchResults))) && offenderTable({ searchResults, addPrisoner })}
+          <div className={loaderClasses} />
         </div>
       </DocumentTitle>
     );
@@ -133,25 +139,35 @@ class AddPrisoner extends Component {
 
 AddPrisoner.propTypes = {
   title: PropTypes.string,
-  onSubmit: PropTypes.func,
-  prisonerDetails: PropTypes.object,
+  storeSearchResults: PropTypes.func,
+  searchResults: PropTypes.array,
+  addPrisoner: PropTypes.func,
 };
 
 AddPrisoner.defaultProps = {
   prisonerDetails: {},
-  title: 'Add Prisoner',
+  title: 'Search for a prisoner',
 };
 
 const mapStateToProps = state => ({
-  prisonerDetails: state.offender.prisonerFormData,
+  searchResults: state.offender.searchResults,
 });
 
 const mapActionsToProps = dispatch => ({
-  onSubmit: (prisoner) => {
-    dispatch(addPrisoner(prisoner));
-    dispatch(push(routes.CONFIRM_OFFENDER));
+  storeSearchResults: (results) => {
+    dispatch(storePrisonerSearchResults(results));
+  },
+  addPrisoner: (prisoner) => {
+    startAssessment(standardizePrisoner(prisoner), (response) => {
+      if (not(response)) {
+        return dispatch(replace(routes.ERROR_PAGE));
+      }
+
+      dispatch(replace(routes.DASHBOARD));
+
+      return true;
+    });
   },
 });
 
-export { AddPrisoner };
 export default connect(mapStateToProps, mapActionsToProps)(AddPrisoner);

@@ -16,10 +16,11 @@ import {
 } from './helpers/complete-full-assessment';
 
 const prisoner = {
-  nomisId: 'J1234LO',
-  name: 'John Lowe',
-  dateOfBirth: '01 October 1970',
+  nomisId: 'A1401AE',
+  name: 'Jilly Hall',
+  dateOfBirth: '1 January 1970',
 };
+
 
 const healthcareAssessmentConfig = {
   prisoner,

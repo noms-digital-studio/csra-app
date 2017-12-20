@@ -8,9 +8,9 @@ import {
 
 const assessmentConfig = {
   prisoner: {
-    nomisId: 'J6285NE',
-    name: 'James Neo',
-    dateOfBirth: '03 December 1958',
+    nomisId: 'A1464AE',
+    name: 'Julian Vigo',
+    dateOfBirth: '1 May 1974',
   },
   viperScore: null,
   initialRecommendation: 'No predictor data available',
@@ -27,18 +27,14 @@ const assessmentConfig = {
 describe('Risk assessment for a prisoner with no VIPER score (shared cell outcome)', () => {
   it('Assesses a prisoner with no viper score', () => {
     givenThatTheOfficerIsSignedIn();
+
     whenTheOfficerAddsThePrisonersDetails({
       prisoner: {
-        forename: 'James',
-        surname: 'Neo',
-        dob: {
-          day: 3,
-          month: 12,
-          year: 1958,
-        },
-        nomisId: 'J6285NE',
-        dateOfBirth: '3 December 1958',
-        databaseDoB: 'Dec 03 1958',
+        forename: 'Julian',
+        surname: 'Vigo',
+        nomisId: 'A1464AE',
+        dateOfBirth: '1 May 1974',
+        databaseDoB: 'May 01 1974',
       },
     });
     whenAPrisonerWithNoViperIsAssessed(assessmentConfig);

@@ -8,12 +8,10 @@ import Layout from './containers/Main';
 
 import DashboardHoC from './pages/Dashboard';
 import AddPrisonerHoc from './pages/AddPrisoner';
-import ConfirmOffenderHoc from './pages/ConfirmPrisoner';
 import OffenderProfileHoc from './pages/OffenderProfile';
 import HealthcareAssessment from './pages/HealthcareAssessment';
 import RiskAssessment from './pages/RiskAssessment';
 import RiskAssessmentSummary from './pages/RiskAssessmentSummary';
-// import BeforeYouStart from './pages/BeforeYouStart';
 import Feedback from './pages/Feedback';
 import FeedbackConfirmation from './pages/FeedbackThankyou';
 import HealthcareSummary from './pages/HealthcareSummary';
@@ -43,11 +41,6 @@ export default (store) => {
             path="/add-offender"
             name="add-offender"
             component={AddPrisonerHoc}
-          />
-          <Route
-            path="/confirm-offender"
-            name="confirm-offender"
-            component={ConfirmOffenderHoc}
           />
           <Route
             path="/offender-profile"

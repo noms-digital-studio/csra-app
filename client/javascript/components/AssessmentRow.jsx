@@ -20,10 +20,13 @@ const AssessmentRow = (props) => {
       data-assessments-complete={bothAssessmentsComplete}
     >
       <td>
-        <span className="c-profile-holder" />
+        {(props.image)
+          ? <img height="80" width="70" className="c-profile-holder" src={props.image} alt={props.forename} />
+          : <span className="c-profile-holder" />
+        }
       </td>
       <td>
-        {props.forename} {props.surname}
+        {capitalize(props.forename)} {capitalize(props.surname)}
       </td>
       <td>{props.nomisId}</td>
       <td>{extractDateFromUTCString(props.dateOfBirth)}</td>
@@ -100,6 +103,10 @@ AssessmentRow.propTypes = {
   surname: PropTypes.string,
   dateOfBirth: PropTypes.string,
   outcome: PropTypes.string,
+  image: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   isAwaitingSubmission: PropTypes.func,
   healthAssessmentCompleted: PropTypes.bool,
   riskAssessmentCompleted: PropTypes.bool,

@@ -1,5 +1,10 @@
 import deepEqual from 'deep-equal';
 import not from 'ramda/src/not';
+import tail from 'ramda/src/tail';
+import head from 'ramda/src/head';
+import toUpper from 'ramda/src/toUpper';
+import toLower from 'ramda/src/toLower';
+import moment from 'moment';
 
 const monthNames = [
   'January',
@@ -32,8 +37,12 @@ export const addUniqElementToList = (item, list) => {
   return list.concat([item]);
 };
 
-export const capitalize = (str = '') =>
-  str.replace(/^./, match => match.toUpperCase());
+export const capitalize = (str = '') => {
+  if (!str) return '';
+  if (str.length < 2) return str;
+
+  return `${toUpper(head(str))}${toLower(tail(str))}`;
+};
 
 export const extractDateFromString = (dateString) => {
   const dateArray = dateString.split('-');
@@ -44,17 +53,7 @@ export const extractDateFromString = (dateString) => {
   return parseDate(new Date(year, month, date));
 };
 
-export const extractDateFromUTCString = (dateString) => {
-  if (dateString) {
-    const dateArray = dateString.split('-');
-    const year = dateArray[0];
-    const month = monthNames[dateArray[1] - 1];
-    const date = dateArray[2].substring(0, 2);
-
-    return `${date} ${month} ${year}`;
-  }
-  return '';
-};
+export const extractDateFromUTCString = dateString => moment(dateString).format('D MMMM YYYY');
 
 
 export const getTimeStamp = (date) => {

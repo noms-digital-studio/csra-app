@@ -15,7 +15,17 @@ const setupMockAuthentication = (app, signInService) => {
 };
 
 export function authenticationMiddleware() {
-  return (req, res, next) => next();
+  return (req, res, next) => {
+    req.user = {
+      forename: 'John',
+      surname: 'Doe',
+      eliteAuthorisationToken: 'xxx.yyy.zzz',
+      username: 'username',
+      email: 'email',
+      authorities: [{ authority: 'ROLE_A' }, { authority: 'ROLE_B' }],
+    };
+    next();
+  };
 }
 
 export default setupMockAuthentication;

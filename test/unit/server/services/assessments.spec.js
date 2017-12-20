@@ -2,6 +2,7 @@ import createPrisonerAssessmentService from '../../../../server/services/assessm
 
 describe('prisoner assessment service', () => {
   const validPrisonerAssessment = {
+    bookingId: 121,
     nomisId: ' j1234LO ',
     forename: 'John',
     surname: 'Lowe',
@@ -88,6 +89,7 @@ describe('prisoner assessment service', () => {
       before(() => {
         row = fakeDB.insert.lastCall.args[0];
       });
+      it('sets bookingId from request', () => expect(row.booking_id).to.equal(121));
       it('sets nomisId from request', () => expect(row.nomis_id).to.equal('J1234LO'));
       it('sets forename from request', () => expect(row.forename).to.equal('John'));
       it('sets suname from request', () => expect(row.surname).to.equal('Lowe'));
@@ -131,7 +133,7 @@ describe('prisoner assessment service', () => {
 
       allows({ nomisId: 'J1234LO' });
       allows({ nomisId: '1234567890' });
-      allows({ nomisId: undefined }, 'missing "nomisId"');
+      doesNotAllow({ nomisId: undefined }, 'missing "nomisId"');
       doesNotAllow({ nomisId: '12434thisisclearlytoolong' });
 
       allows({ forename: 'John' });
@@ -159,11 +161,13 @@ describe('prisoner assessment service', () => {
     it('returns the prisoner assessment summaries', () => {
       fakeDB.table = sinon.stub().resolves(
         [{
+          booking_id: 12,
           id: 123,
           nomis_id: 'J1234LO',
           forename: 'John',
           surname: 'Lowe',
           date_of_birth: -77932800,
+          facial_image_id: null,
           outcome: null,
           risk_assessment: '{"data": "value"}',
           health_assessment: null,
@@ -171,11 +175,13 @@ describe('prisoner assessment service', () => {
           updated_at: '2017-08-15T10:14:35.006Z',
         },
         {
+          booking_id: 14,
           id: 567,
           nomis_id: 'R1234MO',
           forename: 'Richard',
           surname: 'Moyen',
           date_of_birth: 599529600,
+          facial_image_id: 12,
           outcome: 'Shared Cell',
           risk_assessment: '{"data": "value"}',
           health_assessment: '{"data": "value"}',
@@ -187,28 +193,34 @@ describe('prisoner assessment service', () => {
       .then((listResult) => {
         expect(fakeDB.table.lastCall.args[0]).to.eql('prisoner_assessments');
         expect(listResult).to.eql([{
+          bookingId: 12,
           id: 123,
           nomisId: 'J1234LO',
           forename: 'John',
           surname: 'Lowe',
           dateOfBirth: -77932800,
+          facialImageId: null,
           outcome: null,
           riskAssessmentCompleted: true,
           healthAssessmentCompleted: false,
           createdAt: '2017-08-15T10:13:35.006Z',
           updatedAt: '2017-08-15T10:14:35.006Z',
+          image: null,
         },
         {
+          bookingId: 14,
           id: 567,
           nomisId: 'R1234MO',
           forename: 'Richard',
           surname: 'Moyen',
           dateOfBirth: 599529600,
           outcome: 'Shared Cell',
+          facialImageId: 12,
           riskAssessmentCompleted: true,
           healthAssessmentCompleted: true,
           createdAt: '2017-08-14T10:13:35.006Z',
           updatedAt: '2017-08-14T10:14:35.006Z',
+          image: null,
         }]);
       });
     });
@@ -665,12 +677,14 @@ describe('prisoner assessment service', () => {
 
     it('returns the assessment', () => {
       fakeDB.where = sinon.stub().resolves([{
+        booking_id: 12,
         id: 123,
         created_at: '2017-07-28T11:54:23.576Z',
         updated_at: '2017-07-30T09:00:00.106Z',
         nomis_id: 'J1234LO',
         forename: 'John',
         surname: 'Lowe',
+        facial_image_id: null,
         date_of_birth: -77932800,
         outcome: 'Shared Cell',
         risk_assessment: JSON.stringify({ someKey: 'some valid data' }),
@@ -685,8 +699,12 @@ describe('prisoner assessment service', () => {
         expect(fakeDB.where.lastCall.args[0]).to.eql('id');
         expect(fakeDB.where.lastCall.args[1]).to.eql('=');
         expect(fakeDB.where.lastCall.args[2]).to.eql(123);
+
         expect(riskResult).to.eql({
+          bookingId: 12,
           id: 123,
+          facialImageId: null,
+          image: null,
           createdAt: '2017-07-28T11:54:23.576Z',
           updatedAt: '2017-07-30T09:00:00.106Z',
           nomisId: 'J1234LO',

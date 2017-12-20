@@ -8,7 +8,7 @@ describe('GET /viper/:nomisId', () => {
   let app;
   let fakeViperService;
 
-  beforeEach(() => {
+  before(() => {
     app = express();
     fakeViperService = sinon.stub();
     app.use('/:nomisId', createViperEndpoint(fakeViperService, authenticationMiddleware));

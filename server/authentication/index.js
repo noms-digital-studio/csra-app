@@ -14,12 +14,13 @@ function authenticationMiddleware() {
   };
 }
 
-passport.serializeUser(({ forename, surname, username, email, authorities }, done) => done(null, {
-  forename,
-  surname,
-  username,
-  email,
-  authorities,
+passport.serializeUser((user, done) => done(null, {
+  forename: user.forename,
+  surname: user.surname,
+  username: user.username,
+  email: user.email,
+  authorities: user.authorities,
+  eliteAuthorisationToken: user.eliteAuthorisationToken,
 }));
 
 passport.deserializeUser((userDetails, done) => {
@@ -29,6 +30,7 @@ passport.deserializeUser((userDetails, done) => {
     username: userDetails.username,
     email: userDetails.email,
     authorities: userDetails.authorities,
+    eliteAuthorisationToken: userDetails.eliteAuthorisationToken,
   });
 });
 

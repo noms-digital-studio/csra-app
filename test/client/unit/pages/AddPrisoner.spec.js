@@ -1,26 +1,12 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
+import xhr from 'xhr';
 
 import { fakeStore } from '../test-helpers';
 
-import ConnectedAddPrisoner, { AddPrisoner } from '../../../../client/javascript/pages/AddPrisoner';
+import ConnectedAddPrisoner from '../../../../client/javascript/pages/AddPrisoner';
 
-const prisoner = {
-  forename: 'foo-forename',
-  surname: 'foo-surname',
-  'dob-day': '01',
-  'dob-month': '11',
-  'dob-year': '1960',
-  nomisId: 'foo-nomisId',
-};
-
-const populateForm = (wrapper) => {
-  Object.keys(prisoner).forEach((key) => {
-    const node = wrapper.find(`input[name="${key}"]`).node;
-    node.value = prisoner[key];
-  });
-};
 
 const mountComponent = store => mount(
   <Provider store={store}>
@@ -28,77 +14,134 @@ const mountComponent = store => mount(
   </Provider>,
 );
 
-const assertFormFieldsArePopulated = (wrapper) => {
-  Object.keys(prisoner).forEach((key) => {
-    expect(wrapper.find(`input[name="${key}"]`).node.value).to.equal(prisoner[key]);
-  });
-};
+const bookings = [{
+  bookingId: 123,
+  offenderNo: 'foo-nomis-id',
+  firstName: 'foo',
+  middleName: 'bar',
+  lastName: 'baz',
+  dateOfBirth: '09-12-1921',
+  facialImageId: null,
+}];
 
 describe('<AddPrisoner />', () => {
-  context('Standalone AddPrisoner', () => {
-    it('fails to submit if fields are missing in the form', () => {
-      const callback = sinon.spy();
-      const wrapper = mount(<AddPrisoner onSubmit={callback} />);
-
-      wrapper.find('form').simulate('submit');
-
-      expect(callback.calledOnce).to.equal(false, 'onSubmit not called');
-    });
-
-    it('calls onSubmit callback when form submits successfully', () => {
-      const callback = sinon.spy();
-      const wrapper = mount(<AddPrisoner onSubmit={callback} />);
-
-      populateForm(wrapper);
-
-      wrapper.find('form').simulate('submit');
-
-      expect(callback.calledOnce).to.equal(true, 'onSubmit called');
-      expect(callback.calledWith(prisoner));
-    });
-
-    it('displays prisoner data in the form', () => {
-      const wrapper = mount(<AddPrisoner prisonerDetails={prisoner} />);
-      assertFormFieldsArePopulated(wrapper);
-    });
-  });
-
   context('Connected AddPrisoner', () => {
-    context('When form is empty', () => {
-      it('calls onSubmit callback when form submits successfully', () => {
+    context('When a search is performed', () => {
+      let getStub;
+
+      beforeEach(() => {
+        getStub = sinon.stub(xhr, 'get');
+        getStub.yields(
+          null,
+          { statusCode: 200 },
+          bookings,
+        );
+      });
+
+      afterEach(() => {
+        getStub.restore();
+      });
+
+      it('calls storeSearchResults callback when form submits successfully', () => {
         const store = fakeStore({
           offender: {
-            prisonerFormData: {},
+            searchResults: [],
           },
         });
 
         const wrapper = mountComponent(store);
 
-        populateForm(wrapper);
+        const node = wrapper.find('input[type="text"]').node;
+        node.value = 'SOME-NOMIS-ID';
+
         wrapper.find('form').simulate('submit');
 
         expect(
-          store.dispatch.calledWithMatch({ type: 'ADD_PRISONER', payload: prisoner }),
-        ).to.equal(true, 'Dispatched ADD_PRISONER');
-
-        expect(
-          store.dispatch.calledWithMatch({
-            type: '@@router/CALL_HISTORY_METHOD',
-            payload: { method: 'push', args: ['/confirm-offender'] },
-          }),
-        ).to.equal(true, 'Changed path to /confirm-offender');
+          store.dispatch.calledWithMatch({ type: 'STORE_PRISONER_SEARCH_RESULTS', payload: bookings }),
+        ).to.equal(true, 'Did not dispatch STORE_PRISONER_SEARCH_RESULTS');
       });
     });
 
-    context('When form is pre-populated', () => {
-      it('displays prisoner data in the form', () => {
+    context('When a search results are available', () => {
+      it('displays the search results', () => {
         const store = fakeStore({
           offender: {
-            prisonerFormData: prisoner,
+            searchResults: bookings,
           },
         });
 
-        assertFormFieldsArePopulated(mountComponent(store));
+        const wrapper = mountComponent(store);
+
+        const resultsTable = wrapper.find('table');
+
+        expect(resultsTable.length).equal(1);
+
+        const tableRow = resultsTable.find('tbody > tr');
+        const tableRowText = tableRow.text();
+
+        expect(tableRowText).to.include('Foo Bar Baz');
+        expect(tableRowText).to.include('foo-nomis-id');
+        expect(tableRowText).to.include('12 September 1921');
+      });
+
+      context('and a result is selected', () => {
+        let postStub;
+
+        beforeEach(() => {
+          postStub = sinon.stub(xhr, 'post');
+        });
+
+        afterEach(() => {
+          postStub.restore();
+        });
+
+        it('adds the prisoner for assessment', () => {
+          const store = fakeStore({
+            offender: {
+              searchResults: bookings,
+            },
+          });
+
+          const wrapper = mountComponent(store);
+
+          const button = wrapper.find('button[data-element-id="foo-nomis-id"]');
+
+          postStub.yields(null, { status: 200 }, { id: 1 });
+
+          button.simulate('click');
+
+          expect(
+            store.dispatch.calledWithMatch({
+              type: '@@router/CALL_HISTORY_METHOD',
+              payload: { method: 'replace', args: ['/dashboard'] },
+            }),
+          ).to.equal(true, 'did not navigate to /dashboard');
+        });
+
+        context('and an error occurs', () => {
+          it('navigates to an error page', () => {
+            const store = fakeStore({
+              offender: {
+                searchResults: bookings,
+              },
+            });
+
+            const wrapper = mountComponent(store);
+
+            const button = wrapper.find('button[data-element-id="foo-nomis-id"]');
+
+            postStub.yields(null, { status: 500 });
+
+            button.simulate('click');
+
+            expect(
+              store.dispatch.calledWithMatch({
+                type: '@@router/CALL_HISTORY_METHOD',
+                payload: { method: 'replace', args: ['/error'] },
+              }),
+            ).to.equal(true, 'did not navigate to /error');
+          });
+        });
       });
     });
   });

@@ -8,9 +8,9 @@ import {
 
 const assessmentConfig = {
   prisoner: {
-    nomisId: 'I9876RA',
-    name: 'Ian Rate',
-    dateOfBirth: '23 March 1988',
+    nomisId: 'A1421AE',
+    name: 'James Herbert',
+    dateOfBirth: '1 January 1996',
   },
   viperScore: 0.92,
   initialRecommendation: 'The predictor has found this person in its records',
@@ -33,16 +33,11 @@ describe('Risk assessment for a prisoner with a high VIPER score', () => {
     givenThatTheOfficerIsSignedIn();
     whenTheOfficerAddsThePrisonerDetails({
       prisoner: {
-        forename: 'Ian',
-        surname: 'Rate',
-        dob: {
-          day: 23,
-          month: 3,
-          year: 1988,
-        },
-        nomisId: 'I9876RA',
-        dateOfBirth: '23 March 1988',
-        databaseDoB: 'Mar 23 1988',
+        forename: 'James',
+        surname: 'Herbert',
+        nomisId: 'A1421AE',
+        dateOfBirth: '1 January 1996',
+        databaseDoB: 'Jan 01 1996',
       },
     });
     whenAViolentPrisonerIsAssessed(assessmentConfig);

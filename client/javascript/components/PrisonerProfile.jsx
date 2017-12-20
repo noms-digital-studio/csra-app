@@ -2,10 +2,13 @@ import React, { PropTypes } from 'react';
 import { capitalize, extractDateFromUTCString } from '../utils';
 
 
-const PrisonerProfile = ({ forename, surname, dateOfBirth, nomisId }) => (
+const PrisonerProfile = ({ forename, surname, dateOfBirth, nomisId, image }) => (
   <div className="o-offender-profile u-clear-fix">
     <div className="c-offender-image">
-      <img src="/assets/images/profile-placeholder.gif" />
+      {(image)
+        ? <img src={image} alt={forename} />
+        : <img src="/assets/images/profile-placeholder.gif" />
+      }
     </div>
     <div
       data-offender-profile-details
@@ -19,7 +22,7 @@ const PrisonerProfile = ({ forename, surname, dateOfBirth, nomisId }) => (
           <tr>
             <td>Full name</td>
             <td data-element-id="prisoner-name">
-              <strong className="heading-small">{capitalize(`${forename} ${surname}`)}</strong>
+              <strong className="heading-small">{capitalize(forename)} {capitalize(surname)}</strong>
             </td>
           </tr>
           <tr>
@@ -46,6 +49,10 @@ PrisonerProfile.propTypes = {
   surname: PropTypes.string,
   dateOfBirth: PropTypes.string,
   nomisId: PropTypes.string,
+  image: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
 };
 
 PrisonerProfile.defaultProps = {
