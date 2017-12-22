@@ -71,7 +71,9 @@ const whenAPrisonersHealthcareResultsAreEntered = (config = defaultAssessmentCon
   expect(HealthcareSummary.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);
   expect(HealthcareSummary.prisonerNomisId).to.equalIgnoreCase(config.prisoner.nomisId);
 
-  expect(HealthcareSummary.outcome).to.match(caseInSensitive(config.recommendation));
+  // expect(HealthcareSummary.outcome).to.match(caseInSensitive(config.recommendation));
+
+  browser.waitUntil(() => HealthcareSummary.outcome.toLowerCase().includes(config.recommendation), ELEMENT_SEARCH_TIMEOUT, 'expected text to be different after 5s');
 
   expect(HealthcareSummary.assessor).to.equalIgnoreCase('Jane Doe');
   expect(HealthcareSummary.role).to.equalIgnoreCase('nurse');
