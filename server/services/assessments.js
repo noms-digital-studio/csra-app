@@ -1,7 +1,9 @@
 const Joi = require('joi');
+const path = require('ramda/src/path');
 
 const { databaseLogger, prisonerAssessmentsServiceLogger: log } = require('./logger');
 const { decoratePrisonersWithImages } = require('./prisoner-images');
+const prisonerIntake = require('./prisoner-intake');
 
 function save(db, appInfo, rawAssessment) {
   log.info(`Saving prisoner assessment for nomisId: ${rawAssessment.nomisId}`);
@@ -54,35 +56,43 @@ function save(db, appInfo, rawAssessment) {
   .then(result => ({ id: result[0] }));
 }
 
-function list(db, authToken) {
+async function list(db, authToken) {
   log.info('Retrieving prisoner assessment summaries from the database');
-  return db
-    .select()
-    .orderBy('created_at', 'desc')
-    .table('prisoner_assessments')
-    .then((result) => {
-      if (result && result.length > 0) {
-        databaseLogger.info(`Found ${result.length} rows of prisoner assessment data`);
-        const prisoners = result.map(row => ({
-          facialImageId: row.facial_image_id,
-          bookingId: row.booking_id,
-          id: row.id,
-          nomisId: row.nomis_id,
-          forename: row.forename,
-          surname: row.surname,
-          dateOfBirth: row.date_of_birth,
-          outcome: row.outcome,
-          riskAssessmentCompleted: !!row.risk_assessment,
-          healthAssessmentCompleted: !!row.health_assessment,
-          createdAt: row.created_at,
-          updatedAt: row.updated_at,
-        }));
+  const result = await db.select()
+                        .orderBy('created_at', 'desc')
+                        .table('prisoner_assessments');
 
-        return decoratePrisonersWithImages(authToken, prisoners);
+  if (result && result.length > 0) {
+    databaseLogger.info(`Found ${result.length} rows of prisoner assessment data`);
+
+    const assessments = result.map(row => ({
+      bookingId: row.booking_id,
+      id: row.id,
+      nomisId: row.nomis_id,
+      forename: row.forename,
+      surname: row.surname,
+      dateOfBirth: row.date_of_birth,
+      outcome: row.outcome,
+      riskAssessmentOutcome: path(['outcome'], JSON.parse(row.risk_assessment)) || null,
+      healthAssessmentOutcome: path(['outcome'], JSON.parse(row.health_assessment)) || null,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+    }));
+
+    const prisonersArrivalList = await prisonerIntake({ authToken });
+
+    const mergeAssessmentsListWithPrisonerArrivalList = prisonersArrivalList.reduce((acc, value) => {
+      const isInList = acc.find(record => record.bookingId === value.bookingId);
+      if (isInList) {
+        return acc;
       }
-      databaseLogger.info('No prisoner assessment data found in database.');
-      return [];
-    });
+      return [...acc, value];
+    }, assessments);
+
+    return mergeAssessmentsListWithPrisonerArrivalList;
+  }
+  databaseLogger.info('No prisoner assessment data found in database.');
+  return [];
 }
 
 function updateAssessmentWithRiskAssessment(db, id, riskAssessment) {

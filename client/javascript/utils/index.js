@@ -45,12 +45,9 @@ export const capitalize = (str = '') => {
 };
 
 export const extractDateFromString = (dateString) => {
-  const dateArray = dateString.split('-');
-  const year = dateArray[2];
-  const month = dateArray[1] - 1;
-  const date = dateArray[0];
+  if (!dateString) return false;
 
-  return parseDate(new Date(year, month, date));
+  return moment(dateString).format('D MMM YYYY');
 };
 
 export const extractDateFromUTCString = dateString => moment(dateString).format('D MMMM YYYY');

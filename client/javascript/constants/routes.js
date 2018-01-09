@@ -14,4 +14,5 @@ export default {
   HEALTHCARE_SUMMARY: '/healthcare-summary',
   FULL_ASSESSMENT_OUTCOME: '/full-assessment-outcome',
   FULL_ASSESSMENT_COMPLETE: '/full-assessment-complete',
+  PRISONER_LIST: '/prisoner-list',
 };

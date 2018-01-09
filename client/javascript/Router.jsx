@@ -6,9 +6,9 @@ import { syncHistoryWithStore } from 'react-router-redux';
 
 import Layout from './containers/Main';
 
-import DashboardHoC from './pages/Dashboard';
+import Dashboard from './pages/Dashboard';
 import AddPrisonerHoc from './pages/AddPrisoner';
-import OffenderProfileHoc from './pages/OffenderProfile';
+import OffenderProfile from './pages/OffenderProfile';
 import HealthcareAssessment from './pages/HealthcareAssessment';
 import RiskAssessment from './pages/RiskAssessment';
 import RiskAssessmentSummary from './pages/RiskAssessmentSummary';
@@ -16,6 +16,7 @@ import Feedback from './pages/Feedback';
 import FeedbackConfirmation from './pages/FeedbackThankyou';
 import HealthcareSummary from './pages/HealthcareSummary';
 import FullAssessmentOutcome from './pages/FullAssessmentOutcome';
+import PrisonerList from './pages/PrisonerList';
 
 import Error404 from './pages/Error404';
 import ErrorPage from './pages/ErrorPage';
@@ -35,8 +36,9 @@ export default (store) => {
         }}
       >
         <Route component={Layout}>
-          <Route path="/" component={DashboardHoC} />
-          <Route path="/dashboard" name="dashboard" component={DashboardHoC} />
+          <Route path="/" component={Dashboard} />
+          <Route path="/dashboard" name="dashboard" component={Dashboard} />
+          <Route path="/prisoner-list" name="prisoner-list" component={PrisonerList} />
           <Route
             path="/add-offender"
             name="add-offender"
@@ -45,7 +47,7 @@ export default (store) => {
           <Route
             path="/offender-profile"
             name="offender-profile"
-            component={OffenderProfileHoc}
+            component={OffenderProfile}
           />
           <Route
             path="/healthcare-assessment/:section"

@@ -1,6 +1,14 @@
 /**************************
 * Gobal Overides
 ***************************/
+body {
+  font-family: "GDS Transport Website Bold", "GDS Transport Website";
+}
+
+table th, table td {
+  font-family: "GDS Transport Website Bold", "GDS Transport Website";
+}
+
 table td {
   vertical-align: top;
 }
@@ -10,8 +18,44 @@ table.c-table-vam td {
 }
 
 /**************************
-* Govuk stuff
+* Govuk overides
 ***************************/
+#global-header #logo {
+  background: none;
+  background-image: url("/assets/images/moj-logo.svg");
+  background-repeat: no-repeat;
+  background-size: 41px 35px;
+  background-position: 0 5px;
+  border-right: solid 1px #FFFFFF;
+  padding-right: 0.5em;
+}
+
+#global-header .header-proposition #proposition-name {
+  font-family: "GDS Transport Website Bold", "GDS Transport Website";
+}
+
+#global-header .header-proposition a#proposition-name:hover {
+  text-decoration: none;
+}
+
+#global-header.with-proposition .header-wrapper .header-global {
+  width: 20%;
+}
+
+#global-header.with-proposition .header-wrapper .header-proposition {
+  width: 80%;
+  font-family: "GDS Transport Website Bold", "GDS Transport Website";
+}
+
+#global-header.with-proposition .header-wrapper .header-proposition .content {
+  margin-left: 0;
+  font-family: "GDS Transport Website Bold", "GDS Transport Website";
+}
+
+.header-wrapper {
+  font-family: "GDS Transport Website Bold", "GDS Transport Website";
+  position: relative;
+}
 
 .error-summary-list,
 .error-summary-list li {
@@ -35,10 +79,24 @@ table.c-table-vam td {
   font-weight: bold;
   float: right;
   margin-top: -3px;
+  background-color: #265EA0;
+  position: absolute;
+  right: 30px;
+  top: 0;
+  height: calc(100% - 30px);
+  padding: 1em;
 }
+
 
 .c-global-header__username {
   display: inline-block;
+  border-right: solid 1px #FFFFFF;
+  padding-right: 0.5em;
+  margin-right: 0.5em;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 19px;
+  text-transform: capitalize;
 }
 
 .c-profile-logout {
@@ -47,8 +105,9 @@ table.c-table-vam td {
   color: #FFFFFF !important;
   text-decoration: underline;
   border: none;
-  font-size: 16px;
-  font-weight: bold;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 19px;
   cursor: pointer;
 }
 
@@ -295,6 +354,113 @@ table.c-table-vam td {
   margin-bottom: 0.6em;
 }
 
+
+
+.c-page-title {
+  font-family: "GDS Transport Website Bold", "GDS Transport Website";
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1;
+  font-size: 48px;
+  margin-top: 1em;
+  margin-bottom: 1.5em;
+}
+
+
+.c-cards {
+  background-color: #F8F8F8;
+  padding: 2em 1.5em 2em;
+  margin-bottom: 2em;
+}
+
+.c-cards--blue {
+  background-color: #D5E8F3;
+}
+
+.c-cards__title {
+  font-family: "GDS Transport Website Bold", "GDS Transport Website";
+  font-weight: 700;
+  font-size: 36px;
+  margin-bottom: 1em;
+}
+
+.c-card {
+  text-align: left;
+}
+
+.c-card__number {
+  font-family: "GDS Transport Website Bold", "GDS Transport Website";
+  display: block;
+  font-weight: 700;
+  font-size: 80px;
+  line-height: 0.8;
+}
+
+.c-card__text {
+  font-family: "GDS Transport Website Bold", "GDS Transport Website";
+  display: block;
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 24px;
+}
+
+.c-card__input {
+  width: 100%;
+}
+
+.c-card__button {
+  font-family: "GDS Transport Website Bold", "GDS Transport Website";
+  font-size: 22px;
+}
+
+.c-card__label {
+  font-family: "GDS Transport Website Bold", "GDS Transport Website";
+  font-weight: bold;
+}
+
+.c-cards .multiple-choice label {
+  font-size: 16px;
+}
+
+.c-cards--blue .multiple-choice [type="radio"] + label::before {
+  background-color: #FFFFFF;
+}
+
+
+.c-triangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-style: inset;
+  -webkit-transform: rotate(360deg);
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.5em;
+}
+
+.c-triangle--down {
+  border-width: 8px 5.5px 0 5.5px;
+  border-color: #000000 transparent transparent transparent;
+}
+
+.c-triangle--up {
+  border-width: 0 5.5px 8px 5.5px;
+  border-color: transparent transparent #000000 transparent;
+}
+
+.form-label--small {
+  font-family: "GDS Transport Website Bold", "GDS Transport Website";
+  font-size: 18px;
+  font-weight: bold;
+}
+
+
+
+.c-button-start {
+  font-family: "GDS Transport Website Bold", "GDS Transport Website";
+  font-size: 18px;
+}
+
 // /*******************
 // * Utilities
 // *******************/
@@ -341,7 +507,7 @@ table.c-table-vam td {
   margin-bottom: 2em;
 }
 
-.u-margin-bottom-small {
+.u-margin-bottom-delta {
   margin-bottom: 1em;
 }
 
@@ -389,6 +555,9 @@ table.c-table-vam td {
   font-weight: normal !important;
 }
 
+.u-float-right {
+  float: right;
+}
 
 .u-spacing-right {
   @media screen and (min-width: 641px) {

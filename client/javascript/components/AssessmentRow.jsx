@@ -1,16 +1,9 @@
 import React, { PropTypes } from 'react';
-import not from 'ramda/src/not';
-import classnames from 'classnames';
 
-import { capitalize, extractDateFromUTCString } from '../utils';
+import { capitalize, extractDateFromString } from '../utils';
 
 const AssessmentRow = (props) => {
-  const bothAssessmentsComplete = props.healthAssessmentCompleted && props.riskAssessmentCompleted;
-  const completedLinkCSS = classnames({
-    'link': not(bothAssessmentsComplete),
-    'u-link': not(bothAssessmentsComplete),
-    'u-text': bothAssessmentsComplete,
-  });
+  const bothAssessmentsComplete = props.healthAssessmentOutcome && props.riskAssessmentOutcome;
 
   return (
     <tr
@@ -20,62 +13,18 @@ const AssessmentRow = (props) => {
       data-assessments-complete={bothAssessmentsComplete}
     >
       <td>
-        {(props.image)
-          ? <img height="80" width="70" className="c-profile-holder" src={props.image} alt={props.forename} />
-          : <span className="c-profile-holder" />
-        }
+        <span className="u-d-block">{capitalize(props.forename)} {capitalize(props.surname)}</span>
+        <span className="u-d-block">{props.nomisId}</span>
       </td>
-      <td>
-        {capitalize(props.forename)} {capitalize(props.surname)}
+      <td>{extractDateFromString(props.receptionDate) || '_'}</td>
+      <td data-risk-assessment>
+        {props.riskAssessmentOutcome || '_' }
       </td>
-      <td>{props.nomisId}</td>
-      <td>{extractDateFromUTCString(props.dateOfBirth)}</td>
-      <td data-risk-assessment-complete={props.riskAssessmentCompleted}>
-        {props.riskAssessmentCompleted ? (
-          <button
-            onClick={() => not(bothAssessmentsComplete) && props.onRiskAssessmentSelect(props)}
-            type="button"
-            data-element-id={`completed-csra-link-${props.nomisId}`}
-            className={completedLinkCSS}>Complete</button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => props.onOffenderSelect(props)}
-              className="link u-link"
-              data-element-id={`start-csra-link-${props.nomisId}`}
-            >
-              Start
-            </button>
-          )}
-      </td>
-      <td data-health-assessment-complete={props.healthAssessmentCompleted}>
-        {props.healthAssessmentCompleted ? (
-          <button
-            onClick={() => not(bothAssessmentsComplete) && props.onHealthcareSelect(props)}
-            type="button"
-            data-element-id={`completed-healthcare-link-${props.nomisId}`}
-            className={completedLinkCSS}>Complete</button>
-          ) : (
-            <button
-              type="button"
-              onClick={() =>
-                props.onOffenderHealthcareSelect({
-                  ...props,
-                  isAwaitingSubmission: props.isAwaitingSubmission(props.id),
-                })}
-              className="link u-link"
-              data-element-id={`start-healthcare-link-${props.nomisId}`}
-            >
-              Start
-            </button>
-          )}
+      <td data-health-assessment>
+        {props.healthAssessmentOutcome || '_'}
       </td>
       <td className="u-text-align-center">
-        {props.outcome ? (
-          <span>{capitalize(props.outcome)}</span>
-          ) : (
-            <span className="c-status-indicator" />
-          )}
+        {props.outcome ? capitalize(props.outcome) : '_'}
       </td>
       <td data-element-id="view-outcome" className="u-text-align-center">
         {props.outcome ? (
@@ -86,10 +35,10 @@ const AssessmentRow = (props) => {
               data-element-id={`view-outcome-link-${props.nomisId}`}
             >
                 View
-              </button>
+            </button>
           </span>
           ) : (
-            <span />
+            <button className="button button-start c-button-start">Start</button>
           )}
       </td>
     </tr>
@@ -103,18 +52,18 @@ AssessmentRow.propTypes = {
   surname: PropTypes.string,
   dateOfBirth: PropTypes.string,
   outcome: PropTypes.string,
+  receptionDate: PropTypes.string,
   image: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
   ]),
   isAwaitingSubmission: PropTypes.func,
-  healthAssessmentCompleted: PropTypes.bool,
-  riskAssessmentCompleted: PropTypes.bool,
+  riskAssessmentOutcome: PropTypes.string,
+  healthAssessmentOutcome: PropTypes.string,
   onOffenderSelect: PropTypes.func,
   onOffenderHealthcareSelect: PropTypes.func,
   onRiskAssessmentSelect: PropTypes.func,
   onHealthcareSelect: PropTypes.func,
-  onViewOutcomeClick: PropTypes.func,
 };
 
 export default AssessmentRow;
