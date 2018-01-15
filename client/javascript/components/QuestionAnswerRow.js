@@ -1,5 +1,7 @@
-import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
+import React from 'react';
+import PropTypes from 'prop-types';
+
+import { Link } from 'react-router-dom';
 import isEmpty from 'ramda/src/isEmpty';
 import not from 'ramda/src/not';
 

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import uuid from 'uuid/v4';
 
 import Aside from '../components/asides/Index';

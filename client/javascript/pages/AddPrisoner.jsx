@@ -1,10 +1,11 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import DocumentTitle from 'react-document-title';
 import serialize from 'form-serialize';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { replace } from 'react-router-redux';
 
 import isEmpty from 'ramda/src/isEmpty';

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const Static = ({ title, description }) => (
   <aside className="govuk-related-items" role="complementary">

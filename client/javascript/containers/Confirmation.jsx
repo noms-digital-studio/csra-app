@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+
 import uuid from 'uuid/v4';
 
 import SelectableInput from '../components/SelectableInput';

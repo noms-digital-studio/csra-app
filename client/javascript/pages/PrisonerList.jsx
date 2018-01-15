@@ -1,8 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 import { push, replace } from 'react-router-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import isEmpty from 'ramda/src/isEmpty';
 import compose from 'ramda/src/compose';
 import map from 'ramda/src/map';

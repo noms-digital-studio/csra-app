@@ -1,8 +1,8 @@
 import React from 'react';
-import { Router, Route, browserHistory } from 'react-router';
+import { Route, Switch } from 'react-router-dom';
 
 import { Provider } from 'react-redux';
-import { syncHistoryWithStore } from 'react-router-redux';
+import { ConnectedRouter } from 'react-router-redux';
 
 import Layout from './containers/Main';
 
@@ -21,22 +21,20 @@ import PrisonerList from './pages/PrisonerList';
 import Error404 from './pages/Error404';
 import ErrorPage from './pages/ErrorPage';
 
-export default (store) => {
-  const history = syncHistoryWithStore(browserHistory, store);
-
-  return (
-    <Provider store={store}>
-      <Router
-        history={history}
-        onUpdate={() => {
-          window.scrollTo(0, 0);
-          if (window.appInsights) {
-            window.appInsights.trackPageView();
-          }
-        }}
-      >
-        <Route component={Layout}>
-          <Route path="/" component={Dashboard} />
+export default ({ store, history }) => (
+  <Provider store={store}>
+    <ConnectedRouter
+      history={history}
+      onUpdate={() => {
+        window.scrollTo(0, 0);
+        if (window.appInsights) {
+          window.appInsights.trackPageView();
+        }
+      }}
+    >
+      <Layout>
+        <Switch>
+          <Route exact path="/" component={Dashboard} />
           <Route path="/dashboard" name="dashboard" component={Dashboard} />
           <Route path="/prisoner-list" name="prisoner-list" component={PrisonerList} />
           <Route
@@ -73,9 +71,9 @@ export default (store) => {
             path="/error"
             component={ErrorPage}
           />
-          <Route path="*" name="404" component={Error404} />
-        </Route>
-      </Router>
-    </Provider>
-  );
-};
+          <Route name="404" component={Error404} />
+        </Switch>
+      </Layout>
+    </ConnectedRouter>
+  </Provider>
+);
