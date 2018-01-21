@@ -60,5 +60,5 @@ config.viper.apiKey = neededInProd('VIPER_SERVICE_API_KEY');
 
 config.elite2.url = neededInProd('ELITE2_URL');
 config.elite2.apiGatewayToken = neededInProd('ELITE2_API_GATEWAY_TOKEN');
-config.elite2.apiGatewayPrivateKey = new Buffer(neededInProd('ELITE2_API_GATEWAY_PRIVATE_KEY'), 'base64').toString('ascii');
+config.elite2.apiGatewayPrivateKey = Buffer.from(neededInProd('ELITE2_API_GATEWAY_PRIVATE_KEY'), 'base64').toString('ascii');
 module.exports = config;

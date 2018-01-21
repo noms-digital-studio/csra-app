@@ -24,7 +24,10 @@ const findPrisoners =
           authToken, requestPath: `search-offenders/_/${searchQuery}`,
         });
 
-        return await decoratePrisonersWithImages(authToken, parseSearchRequest(result.body));
+        return await decoratePrisonersWithImages({
+          authToken,
+          prisoners: parseSearchRequest(result.body),
+        });
       } catch (exception) {
         log.error(`Search failed on Elite 2 failed for [${searchQuery}] with exception:`);
         log.error(exception);

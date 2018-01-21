@@ -2,7 +2,7 @@ const { logger: log } = require('./logger');
 
 const { elite2GetRequest } = require('./elite2-api-request');
 
-const decoratePrisonerWithImage = async (authToken, prisoner) => {
+const decoratePrisonerWithImage = async ({ authToken, prisoner }) => {
   if (!prisoner.facialImageId) return { ...prisoner, image: null };
   log.info(`Retrieving image for prisoner ${prisoner.nomisId}`);
 
@@ -12,7 +12,7 @@ const decoratePrisonerWithImage = async (authToken, prisoner) => {
       requestPath: `images/${prisoner.facialImageId}/data`,
     }).responseType('blob');
 
-    const buffer = new Buffer(result.body);
+    const buffer = Buffer.from(result.body);
     const bufferBase64 = buffer.toString('base64');
     const base64Img = `data:image/jpeg;base64,${bufferBase64}`;
 
@@ -25,9 +25,8 @@ const decoratePrisonerWithImage = async (authToken, prisoner) => {
   }
 };
 
-const decoratePrisonersWithImages = async (authToken, prisoners = []) => {
-  const promiseList = prisoners
-                        .map(async prisoner => decoratePrisonerWithImage({ authToken, prisoner }));
+const decoratePrisonersWithImages = async ({ authToken, prisoners = [] }) => {
+  const promiseList = prisoners.map(async prisoner => decoratePrisonerWithImage({ authToken, prisoner }));
 
   return Promise.all(promiseList);
 };

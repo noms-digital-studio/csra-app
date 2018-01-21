@@ -69,7 +69,7 @@ describe('prisoner assessment service', () => {
       fakeAppInfo.getQuestionHash.withArgs('healthcare').returns('bar');
 
       return prisonerAssessmentService.save(validPrisonerAssessment)
-      .then((_result) => { result = _result; });
+        .then((_result) => { result = _result; });
     });
 
     it('inserts into the `prisoner_assessments` table in the DB', () => {
@@ -104,7 +104,7 @@ describe('prisoner assessment service', () => {
       before(() => {
         setup();
         return prisonerAssessmentService.save({ some: 'junk' })
-        .catch((err) => { error = err; });
+          .catch((err) => { error = err; });
       });
 
       it('returns validation error', () => {
@@ -128,7 +128,7 @@ describe('prisoner assessment service', () => {
         const payload = Object.assign({}, validPrisonerAssessment, data);
         it(`denies ${label || JSON.stringify(data)}`, () =>
           expect(prisonerAssessmentService.save(payload))
-          .to.be.rejectedWith(Error, /Validation failed/));
+            .to.be.rejectedWith(Error, /Validation failed/));
       }
 
       allows({ nomisId: 'J1234LO' });
@@ -159,79 +159,72 @@ describe('prisoner assessment service', () => {
     });
 
     it('returns the prisoner assessment summaries', () => {
-      fakeDB.table = sinon.stub().resolves(
-        [{
-          booking_id: 12,
-          id: 123,
-          nomis_id: 'J1234LO',
-          forename: 'John',
-          surname: 'Lowe',
-          date_of_birth: -77932800,
-          facial_image_id: null,
-          outcome: null,
-          risk_assessment: '{"data": "value"}',
-          health_assessment: null,
-          created_at: '2017-08-15T10:13:35.006Z',
-          updated_at: '2017-08-15T10:14:35.006Z',
-        },
-        {
-          booking_id: 14,
-          id: 567,
-          nomis_id: 'R1234MO',
-          forename: 'Richard',
-          surname: 'Moyen',
-          date_of_birth: 599529600,
-          facial_image_id: 12,
-          outcome: 'Shared Cell',
-          risk_assessment: '{"data": "value"}',
-          health_assessment: '{"data": "value"}',
-          created_at: '2017-08-14T10:13:35.006Z',
-          updated_at: '2017-08-14T10:14:35.006Z',
-        }],
-      );
+      fakeDB.table = sinon.stub().resolves([{
+        booking_id: 12,
+        id: 123,
+        nomis_id: 'J1234LO',
+        forename: 'John',
+        surname: 'Lowe',
+        date_of_birth: -77932800,
+        outcome: null,
+        risk_assessment: '{"outcome": "shared cell"}',
+        health_assessment: null,
+        created_at: '2017-08-15T10:13:35.006Z',
+        updated_at: '2017-08-15T10:14:35.006Z',
+      },
+      {
+        booking_id: 14,
+        id: 567,
+        nomis_id: 'R1234MO',
+        forename: 'Richard',
+        surname: 'Moyen',
+        date_of_birth: 599529600,
+        facial_image_id: 12,
+        outcome: 'shared Cell',
+        risk_assessment: '{"outcome": "shared cell"}',
+        health_assessment: '{"outcome": "shared cell"}',
+        created_at: '2017-08-14T10:13:35.006Z',
+        updated_at: '2017-08-14T10:14:35.006Z',
+      }]);
       return prisonerAssessmentService.list()
-      .then((listResult) => {
-        expect(fakeDB.table.lastCall.args[0]).to.eql('prisoner_assessments');
-        expect(listResult).to.eql([{
-          bookingId: 12,
-          id: 123,
-          nomisId: 'J1234LO',
-          forename: 'John',
-          surname: 'Lowe',
-          dateOfBirth: -77932800,
-          facialImageId: null,
-          outcome: null,
-          riskAssessmentCompleted: true,
-          healthAssessmentCompleted: false,
-          createdAt: '2017-08-15T10:13:35.006Z',
-          updatedAt: '2017-08-15T10:14:35.006Z',
-          image: null,
-        },
-        {
-          bookingId: 14,
-          id: 567,
-          nomisId: 'R1234MO',
-          forename: 'Richard',
-          surname: 'Moyen',
-          dateOfBirth: 599529600,
-          outcome: 'Shared Cell',
-          facialImageId: 12,
-          riskAssessmentCompleted: true,
-          healthAssessmentCompleted: true,
-          createdAt: '2017-08-14T10:13:35.006Z',
-          updatedAt: '2017-08-14T10:14:35.006Z',
-          image: null,
-        }]);
-      });
+        .then((listResult) => {
+          expect(fakeDB.table.lastCall.args[0]).to.eql('prisoner_assessments');
+          expect(listResult).to.eql([{
+            bookingId: 12,
+            id: 123,
+            nomisId: 'J1234LO',
+            forename: 'John',
+            surname: 'Lowe',
+            dateOfBirth: -77932800,
+            outcome: null,
+            riskAssessmentOutcome: 'shared cell',
+            healthAssessmentOutcome: null,
+            createdAt: '2017-08-15T10:13:35.006Z',
+            updatedAt: '2017-08-15T10:14:35.006Z',
+          },
+          {
+            bookingId: 14,
+            id: 567,
+            nomisId: 'R1234MO',
+            forename: 'Richard',
+            surname: 'Moyen',
+            dateOfBirth: 599529600,
+            outcome: 'shared Cell',
+            riskAssessmentOutcome: 'shared cell',
+            healthAssessmentOutcome: 'shared cell',
+            createdAt: '2017-08-14T10:13:35.006Z',
+            updatedAt: '2017-08-14T10:14:35.006Z',
+          }]);
+        });
     });
 
     it('returns an empty list when the Db is empty', () => {
       fakeDB.table = sinon.stub().resolves([]);
       return prisonerAssessmentService.list()
-      .then((listResult) => {
-        expect(fakeDB.table.lastCall.args[0]).to.eql('prisoner_assessments');
-        expect(listResult).to.eql([]);
-      });
+        .then((listResult) => {
+          expect(fakeDB.table.lastCall.args[0]).to.eql('prisoner_assessments');
+          expect(listResult).to.eql([]);
+        });
     });
   });
 
@@ -255,7 +248,7 @@ describe('prisoner assessment service', () => {
       before(() => {
         setup();
         prisonerAssessmentService.saveRiskAssessment(123, validRiskAssessment)
-        .then((_result) => { result = _result; });
+          .then((_result) => { result = _result; });
       });
 
       it('updates the prisoner assessments record with the risk assessment', () => {
@@ -280,9 +273,9 @@ describe('prisoner assessment service', () => {
         fakeDB.column = sinon.stub().returns(fakeDB);
         fakeDB.table = sinon.stub().returns(fakeDB);
         fakeDB.where = sinon.stub().onFirstCall()
-        .resolves([])
-        .onSecondCall()
-        .returns(fakeDB);
+          .resolves([])
+          .onSecondCall()
+          .returns(fakeDB);
 
         fakeDB.from = sinon.stub().returns(fakeDB);
         prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
@@ -292,14 +285,14 @@ describe('prisoner assessment service', () => {
         fakeDB.update = sinon.stub().resolves([0]);
 
         return expect(prisonerAssessmentService.saveRiskAssessment(999, validRiskAssessment))
-        .to.be.rejectedWith(Error, 'Assessment id: 999 was not found');
+          .to.be.rejectedWith(Error, 'Assessment id: 999 was not found');
       });
 
       it('passes on the db error', () => {
         fakeDB.update = sinon.stub().rejects(new Error('Connection failed or something'));
 
         return expect(prisonerAssessmentService.saveRiskAssessment(999, validRiskAssessment))
-        .to.be.rejectedWith(Error, 'Connection failed or something');
+          .to.be.rejectedWith(Error, 'Connection failed or something');
       });
     });
 
@@ -317,7 +310,7 @@ describe('prisoner assessment service', () => {
         fakeDB.update = sinon.stub().resolves([0]);
 
         return expect(prisonerAssessmentService.saveRiskAssessment(999, validRiskAssessment))
-        .to.be.rejectedWith(Error, 'A risk assessment already exists for assessment with id: 999');
+          .to.be.rejectedWith(Error, 'A risk assessment already exists for assessment with id: 999');
       });
     });
 
@@ -326,7 +319,7 @@ describe('prisoner assessment service', () => {
       before(() => {
         setup();
         return prisonerAssessmentService.saveRiskAssessment({ some: 'junk' })
-        .catch((err) => { error = err; });
+          .catch((err) => { error = err; });
       });
 
       it('returns validation error', () => {
@@ -354,7 +347,7 @@ describe('prisoner assessment service', () => {
         const payload = Object.assign({}, validRiskAssessment, data);
         it(`denies ${label || JSON.stringify(data)}`, () =>
           expect(prisonerAssessmentService.saveRiskAssessment(123, payload))
-          .to.be.rejectedWith(Error, /Validation failed/));
+            .to.be.rejectedWith(Error, /Validation failed/));
       }
 
       allows({ viperScore: 0 });
@@ -375,47 +368,73 @@ describe('prisoner assessment service', () => {
       doesNotAllow({ outcome: 'shoe' });
       doesNotAllow({ outcome: undefined }, 'missing "outcome"');
 
-      allows({ questions: {
-        Q1: { questionId: 'Q1', question: 'Whither?', answer: '42' },
-      } });
-      allows({ questions: {
-        Q1: { questionId: 'Q1', question: 'Whither?', answer: '42' },
-        Q2: { questionId: 'Q2', question: 'Up?', answer: 'no' },
-        Q7: { questionId: 'Q7', question: 'Down?', answer: 'yes' },
-      } });
-      allows({ questions: {
-        Q1: { questionId: 'Q1', question: '??', answer: '42', and: 'even' },
-      } }, 'extra data in questions');
+      allows({
+        questions: {
+          Q1: { questionId: 'Q1', question: 'Whither?', answer: '42' },
+        },
+      });
+      allows({
+        questions: {
+          Q1: { questionId: 'Q1', question: 'Whither?', answer: '42' },
+          Q2: { questionId: 'Q2', question: 'Up?', answer: 'no' },
+          Q7: { questionId: 'Q7', question: 'Down?', answer: 'yes' },
+        },
+      });
+      allows({
+        questions: {
+          Q1: {
+            questionId: 'Q1', question: '??', answer: '42', and: 'even',
+          },
+        },
+      }, 'extra data in questions');
       doesNotAllow({ questions: {} }, 'no "questions"');
       doesNotAllow({ questions: undefined }, 'missing "questions"');
-      doesNotAllow({ questions: { Q1: {
-        question_id: null, question: '??', answer: '42',
-      } } }, 'missing question_id in a question');
-      doesNotAllow({ questions: { Q1: {
-        question_id: 'Q1', question: '', answer: '42',
-      } } }, 'missing question in a question');
+      doesNotAllow({
+        questions: {
+          Q1: {
+            question_id: null, question: '??', answer: '42',
+          },
+        },
+      }, 'missing question_id in a question');
+      doesNotAllow({
+        questions: {
+          Q1: {
+            question_id: 'Q1', question: '', answer: '42',
+          },
+        },
+      }, 'missing question in a question');
 
       allows({ reasons: [] });
-      allows({ reasons: [
-        { questionId: 'Q1', reason: 'I felt like it' },
-      ] });
-      allows({ reasons: [
-        { questionId: 'Q1', reason: 'Looked shifty' },
-        { questionId: 'Q2', reason: 'I felt like it' },
-        { questionId: 'Q7', reason: 'Sounded rather unsure' },
-      ] });
-      allows({ reasons: [
-        { questionId: 'Q1', reason: 'Looked shifty', other: 'stuff' },
-      ] }, 'extra data in reasons');
+      allows({
+        reasons: [
+          { questionId: 'Q1', reason: 'I felt like it' },
+        ],
+      });
+      allows({
+        reasons: [
+          { questionId: 'Q1', reason: 'Looked shifty' },
+          { questionId: 'Q2', reason: 'I felt like it' },
+          { questionId: 'Q7', reason: 'Sounded rather unsure' },
+        ],
+      });
+      allows({
+        reasons: [
+          { questionId: 'Q1', reason: 'Looked shifty', other: 'stuff' },
+        ],
+      }, 'extra data in reasons');
       doesNotAllow({ reasons: undefined }, 'missing "reasons"');
-      doesNotAllow({ reasons: [
-        { questionId: 'Q1', reason: 'I felt like it' },
-        { reason: 'Looked shifty' },
-      ] }, 'missing "questionId" in reasons');
-      doesNotAllow({ reasons: [
-        { reason: 'I felt like it' },
-        { questionId: 'Q7', reason: 'Sounded rather unsure' },
-      ] }, 'missing "reason" in reasons');
+      doesNotAllow({
+        reasons: [
+          { questionId: 'Q1', reason: 'I felt like it' },
+          { reason: 'Looked shifty' },
+        ],
+      }, 'missing "questionId" in reasons');
+      doesNotAllow({
+        reasons: [
+          { reason: 'I felt like it' },
+          { questionId: 'Q7', reason: 'Sounded rather unsure' },
+        ],
+      }, 'missing "reason" in reasons');
     });
   });
 
@@ -432,17 +451,17 @@ describe('prisoner assessment service', () => {
       fakeDB.where = sinon.stub().resolves([{ risk_assessment: validRiskAssessment }]);
 
       return prisonerAssessmentService.riskAssessmentFor(123)
-      .then((riskResult) => {
-        expect(fakeDB.select.callCount).to.eql(1);
-        expect(fakeDB.column.callCount).to.eql(1);
-        expect(fakeDB.column.lastCall.args[0]).to.eql('risk_assessment');
-        expect(fakeDB.table.callCount).to.eql(1);
-        expect(fakeDB.table.lastCall.args[0]).to.eql('prisoner_assessments');
-        expect(fakeDB.where.lastCall.args[0]).to.eql('id');
-        expect(fakeDB.where.lastCall.args[1]).to.eql('=');
-        expect(fakeDB.where.lastCall.args[2]).to.eql(123);
-        expect(riskResult).to.eql(validRiskAssessment);
-      });
+        .then((riskResult) => {
+          expect(fakeDB.select.callCount).to.eql(1);
+          expect(fakeDB.column.callCount).to.eql(1);
+          expect(fakeDB.column.lastCall.args[0]).to.eql('risk_assessment');
+          expect(fakeDB.table.callCount).to.eql(1);
+          expect(fakeDB.table.lastCall.args[0]).to.eql('prisoner_assessments');
+          expect(fakeDB.where.lastCall.args[0]).to.eql('id');
+          expect(fakeDB.where.lastCall.args[1]).to.eql('=');
+          expect(fakeDB.where.lastCall.args[2]).to.eql(123);
+          expect(riskResult).to.eql(validRiskAssessment);
+        });
     });
 
     it('returns a `not-found` error when the prisoner assessment cannot be found', () => {
@@ -463,7 +482,7 @@ describe('prisoner assessment service', () => {
       fakeDB.where = sinon.stub().rejects(new Error('Connection failed or something'));
 
       return expect(prisonerAssessmentService.riskAssessmentFor(123))
-      .to.be.rejectedWith(Error, 'Connection failed or something');
+        .to.be.rejectedWith(Error, 'Connection failed or something');
     });
   });
 
@@ -474,9 +493,9 @@ describe('prisoner assessment service', () => {
       fakeDB.column = sinon.stub().returns(fakeDB);
       fakeDB.table = sinon.stub().returns(fakeDB);
       fakeDB.where = sinon.stub().onFirstCall()
-      .resolves([])
-      .onSecondCall()
-      .returns(fakeDB);
+        .resolves([])
+        .onSecondCall()
+        .returns(fakeDB);
 
       fakeDB.from = sinon.stub().returns(fakeDB);
       fakeDB.update = sinon.stub().resolves([1]);
@@ -487,7 +506,7 @@ describe('prisoner assessment service', () => {
       before(() => {
         setup();
         prisonerAssessmentService.saveHealthAssessment(123, validHealthAssessment)
-        .then((_result) => { result = _result; });
+          .then((_result) => { result = _result; });
       });
 
       it('updates the prisoner assessments record with the health assessment', () => {
@@ -499,7 +518,7 @@ describe('prisoner assessment service', () => {
         expect(fakeDB.where.lastCall.args[1]).to.eql('=');
         expect(fakeDB.where.lastCall.args[2]).to.eql(123);
         expect(fakeDB.update.lastCall.args[0].health_assessment).to
-        .eql(JSON.stringify(validHealthAssessment));
+          .eql(JSON.stringify(validHealthAssessment));
         expect(fakeDB.update.lastCall.args[0].updated_at).is.not.equal(undefined);
         expect(result).to.eql([1]);
       });
@@ -512,9 +531,9 @@ describe('prisoner assessment service', () => {
         fakeDB.column = sinon.stub().returns(fakeDB);
         fakeDB.table = sinon.stub().returns(fakeDB);
         fakeDB.where = sinon.stub().onFirstCall()
-        .resolves([])
-        .onSecondCall()
-        .returns(fakeDB);
+          .resolves([])
+          .onSecondCall()
+          .returns(fakeDB);
 
         fakeDB.from = sinon.stub().returns(fakeDB);
         prisonerAssessmentService = createPrisonerAssessmentService(fakeDB, fakeAppInfo);
@@ -524,14 +543,14 @@ describe('prisoner assessment service', () => {
         fakeDB.update = sinon.stub().resolves([0]);
 
         return expect(prisonerAssessmentService.saveHealthAssessment(999, validHealthAssessment))
-        .to.be.rejectedWith(Error, 'Assessment id: 999 was not found');
+          .to.be.rejectedWith(Error, 'Assessment id: 999 was not found');
       });
 
       it('passes on the db error', () => {
         fakeDB.update = sinon.stub().rejects(new Error('Connection failed or something'));
 
         return expect(prisonerAssessmentService.saveHealthAssessment(999, validHealthAssessment))
-        .to.be.rejectedWith(Error, 'Connection failed or something');
+          .to.be.rejectedWith(Error, 'Connection failed or something');
       });
     });
 
@@ -549,7 +568,7 @@ describe('prisoner assessment service', () => {
         fakeDB.update = sinon.stub().resolves([0]);
 
         return expect(prisonerAssessmentService.saveHealthAssessment(999, validHealthAssessment))
-        .to.be.rejectedWith(Error, 'A health assessment already exists for assessment with id: 999');
+          .to.be.rejectedWith(Error, 'A health assessment already exists for assessment with id: 999');
       });
     });
 
@@ -559,7 +578,7 @@ describe('prisoner assessment service', () => {
       before(() => {
         setup();
         return prisonerAssessmentService.saveHealthAssessment({ some: 'junk' })
-        .catch((err) => { error = err; });
+          .catch((err) => { error = err; });
       });
 
       it('returns validation error', () => {
@@ -586,7 +605,7 @@ describe('prisoner assessment service', () => {
         const payload = Object.assign({}, validHealthAssessment, data);
         it(`denies ${label || JSON.stringify(data)}`, () =>
           expect(prisonerAssessmentService.saveHealthAssessment(123, payload))
-          .to.be.rejectedWith(Error, /Validation failed/));
+            .to.be.rejectedWith(Error, /Validation failed/));
       }
 
       allows({ outcome: 'single cell' });
@@ -596,25 +615,41 @@ describe('prisoner assessment service', () => {
       doesNotAllow({ outcome: 'shoe' });
       doesNotAllow({ outcome: undefined }, 'missing "outcome"');
 
-      allows({ questions: {
-        Q1: { questionId: 'Q1', question: 'Whither?', answer: '42' },
-      } });
-      allows({ questions: {
-        Q1: { questionId: 'Q1', question: 'Whither?', answer: '42' },
-        Q2: { questionId: 'Q2', question: 'Up?', answer: 'no' },
-        Q7: { questionId: 'Q7', question: 'Down?', answer: 'yes' },
-      } });
-      allows({ questions: {
-        Q1: { questionId: 'Q1', question: '??', answer: '42', and: 'even' },
-      } }, 'extra data in questions');
+      allows({
+        questions: {
+          Q1: { questionId: 'Q1', question: 'Whither?', answer: '42' },
+        },
+      });
+      allows({
+        questions: {
+          Q1: { questionId: 'Q1', question: 'Whither?', answer: '42' },
+          Q2: { questionId: 'Q2', question: 'Up?', answer: 'no' },
+          Q7: { questionId: 'Q7', question: 'Down?', answer: 'yes' },
+        },
+      });
+      allows({
+        questions: {
+          Q1: {
+            questionId: 'Q1', question: '??', answer: '42', and: 'even',
+          },
+        },
+      }, 'extra data in questions');
       doesNotAllow({ questions: {} }, 'no "questions"');
       doesNotAllow({ questions: undefined }, 'missing "questions"');
-      doesNotAllow({ questions: { Q1: {
-        question_id: null, question: '??', answer: '42',
-      } } }, 'missing question_id in a question');
-      doesNotAllow({ questions: { Q1: {
-        question_id: 'Q1', question: '', answer: '42',
-      } } }, 'missing question in a question');
+      doesNotAllow({
+        questions: {
+          Q1: {
+            question_id: null, question: '??', answer: '42',
+          },
+        },
+      }, 'missing question_id in a question');
+      doesNotAllow({
+        questions: {
+          Q1: {
+            question_id: 'Q1', question: '', answer: '42',
+          },
+        },
+      }, 'missing question in a question');
     });
   });
 
@@ -631,38 +666,38 @@ describe('prisoner assessment service', () => {
       fakeDB.where = sinon.stub().resolves([{ health_assessment: validHealthAssessment }]);
 
       return prisonerAssessmentService.healthAssessmentFor(123)
-      .then((healthResult) => {
-        expect(fakeDB.select.callCount).to.eql(1);
-        expect(fakeDB.column.callCount).to.eql(1);
-        expect(fakeDB.column.lastCall.args[0]).to.eql('health_assessment');
-        expect(fakeDB.table.callCount).to.eql(1);
-        expect(fakeDB.table.lastCall.args[0]).to.eql('prisoner_assessments');
-        expect(fakeDB.where.lastCall.args[0]).to.eql('id');
-        expect(fakeDB.where.lastCall.args[1]).to.eql('=');
-        expect(fakeDB.where.lastCall.args[2]).to.eql(123);
-        expect(healthResult).to.eql(validHealthAssessment);
-      });
+        .then((healthResult) => {
+          expect(fakeDB.select.callCount).to.eql(1);
+          expect(fakeDB.column.callCount).to.eql(1);
+          expect(fakeDB.column.lastCall.args[0]).to.eql('health_assessment');
+          expect(fakeDB.table.callCount).to.eql(1);
+          expect(fakeDB.table.lastCall.args[0]).to.eql('prisoner_assessments');
+          expect(fakeDB.where.lastCall.args[0]).to.eql('id');
+          expect(fakeDB.where.lastCall.args[1]).to.eql('=');
+          expect(fakeDB.where.lastCall.args[2]).to.eql(123);
+          expect(healthResult).to.eql(validHealthAssessment);
+        });
     });
 
     it('returns a `not-found` error when the prisoner assessment cannot be found', () => {
       fakeDB.where = sinon.stub().resolves();
 
       return expect(prisonerAssessmentService.healthAssessmentFor(123))
-      .to.be.rejectedWith(Error, 'No health assessment found for id: 123');
+        .to.be.rejectedWith(Error, 'No health assessment found for id: 123');
     });
 
     it('returns a `not-found` error when the health assessment cannot be found', () => {
       fakeDB.where = sinon.stub().resolves([]);
 
       return expect(prisonerAssessmentService.healthAssessmentFor(123))
-      .to.be.rejectedWith(Error, 'No health assessment found for id: 123');
+        .to.be.rejectedWith(Error, 'No health assessment found for id: 123');
     });
 
     it('passes on the db error', () => {
       fakeDB.where = sinon.stub().rejects(new Error('Connection failed or something'));
 
       return expect(prisonerAssessmentService.healthAssessmentFor(123))
-      .to.be.rejectedWith(Error, 'Connection failed or something');
+        .to.be.rejectedWith(Error, 'Connection failed or something');
     });
   });
 
@@ -687,56 +722,56 @@ describe('prisoner assessment service', () => {
         facial_image_id: null,
         date_of_birth: -77932800,
         outcome: 'Shared Cell',
-        risk_assessment: JSON.stringify({ someKey: 'some valid data' }),
-        health_assessment: JSON.stringify({ someKey: 'some valid data' }),
+        risk_assessment: JSON.stringify({ outcome: 'shared cell' }),
+        health_assessment: JSON.stringify({ outcome: 'shared cell' }),
       }]);
 
       return prisonerAssessmentService.assessmentFor(123)
-      .then((riskResult) => {
-        expect(fakeDB.select.callCount).to.eql(1);
-        expect(fakeDB.table.callCount).to.eql(1);
-        expect(fakeDB.table.lastCall.args[0]).to.eql('prisoner_assessments');
-        expect(fakeDB.where.lastCall.args[0]).to.eql('id');
-        expect(fakeDB.where.lastCall.args[1]).to.eql('=');
-        expect(fakeDB.where.lastCall.args[2]).to.eql(123);
+        .then((riskResult) => {
+          expect(fakeDB.select.callCount).to.eql(1);
+          expect(fakeDB.table.callCount).to.eql(1);
+          expect(fakeDB.table.lastCall.args[0]).to.eql('prisoner_assessments');
+          expect(fakeDB.where.lastCall.args[0]).to.eql('id');
+          expect(fakeDB.where.lastCall.args[1]).to.eql('=');
+          expect(fakeDB.where.lastCall.args[2]).to.eql(123);
 
-        expect(riskResult).to.eql({
-          bookingId: 12,
-          id: 123,
-          facialImageId: null,
-          image: null,
-          createdAt: '2017-07-28T11:54:23.576Z',
-          updatedAt: '2017-07-30T09:00:00.106Z',
-          nomisId: 'J1234LO',
-          forename: 'John',
-          surname: 'Lowe',
-          dateOfBirth: -77932800,
-          outcome: 'Shared Cell',
-          riskAssessment: { someKey: 'some valid data' },
-          healthAssessment: { someKey: 'some valid data' },
+          expect(riskResult).to.eql({
+            bookingId: 12,
+            id: 123,
+            facialImageId: null,
+            image: null,
+            createdAt: '2017-07-28T11:54:23.576Z',
+            updatedAt: '2017-07-30T09:00:00.106Z',
+            nomisId: 'J1234LO',
+            forename: 'John',
+            surname: 'Lowe',
+            dateOfBirth: -77932800,
+            outcome: 'Shared Cell',
+            riskAssessment: { outcome: 'shared cell' },
+            healthAssessment: { outcome: 'shared cell' },
+          });
         });
-      });
     });
 
     it('returns a `not-found` error when the prisoner assessment cannot be found', () => {
       fakeDB.where = sinon.stub().resolves();
 
       return expect(prisonerAssessmentService.assessmentFor(123))
-      .to.be.rejectedWith(Error, 'No assessment found for id: 123');
+        .to.be.rejectedWith(Error, 'No assessment found for id: 123');
     });
 
     it('returns a `not-found` error when the assessment cannot be found', () => {
       fakeDB.where = sinon.stub().resolves([]);
 
       return expect(prisonerAssessmentService.assessmentFor(123))
-      .to.be.rejectedWith(Error, 'No assessment found for id: 123');
+        .to.be.rejectedWith(Error, 'No assessment found for id: 123');
     });
 
     it('passes on the db error', () => {
       fakeDB.where = sinon.stub().rejects(new Error('Connection failed or something'));
 
       return expect(prisonerAssessmentService.assessmentFor(123))
-      .to.be.rejectedWith(Error, 'Connection failed or something');
+        .to.be.rejectedWith(Error, 'Connection failed or something');
     });
   });
 
@@ -753,7 +788,7 @@ describe('prisoner assessment service', () => {
       before(() => {
         setup();
         prisonerAssessmentService.saveOutcome(123, { outcome: 'single cell' })
-        .then((_result) => { result = _result; });
+          .then((_result) => { result = _result; });
       });
 
       it('updates the prisoner assessments record with the health assessment', () => {
@@ -765,7 +800,7 @@ describe('prisoner assessment service', () => {
         expect(fakeDB.where.lastCall.args[1]).to.eql('=');
         expect(fakeDB.where.lastCall.args[2]).to.eql(123);
         expect(fakeDB.update.lastCall.args[0].outcome).to
-        .eql('single cell');
+          .eql('single cell');
         expect(fakeDB.update.lastCall.args[0].updated_at).is.not.equal(undefined);
         expect(result).to.eql([1]);
       });
@@ -783,14 +818,14 @@ describe('prisoner assessment service', () => {
         fakeDB.update = sinon.stub().resolves([0]);
 
         return expect(prisonerAssessmentService.saveOutcome(999, { outcome: 'single cell' }))
-        .to.be.rejectedWith(Error, 'Assessment id: 999 was not found');
+          .to.be.rejectedWith(Error, 'Assessment id: 999 was not found');
       });
 
       it('passes on the db error', () => {
         fakeDB.update = sinon.stub().rejects(new Error('Connection failed or something'));
 
         return expect(prisonerAssessmentService.saveOutcome(123, { outcome: 'single cell' }))
-        .to.be.rejectedWith(Error, 'Connection failed or something');
+          .to.be.rejectedWith(Error, 'Connection failed or something');
       });
     });
 
@@ -799,7 +834,7 @@ describe('prisoner assessment service', () => {
       before(() => {
         setup();
         return prisonerAssessmentService.saveOutcome(123, { outcome: 'junk' })
-        .catch((err) => { error = err; });
+          .catch((err) => { error = err; });
       });
 
       it('returns validation error', () => {
@@ -826,7 +861,7 @@ describe('prisoner assessment service', () => {
         const payload = Object.assign({}, { outcome: 'data' }, data);
         it(`denies ${label || JSON.stringify(data)}`, () =>
           expect(prisonerAssessmentService.saveOutcome(123, payload))
-          .to.be.rejectedWith(Error, /Validation failed/));
+            .to.be.rejectedWith(Error, /Validation failed/));
       }
 
       allows({ outcome: 'single cell' });

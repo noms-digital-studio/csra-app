@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { MemoryRouter as Router } from 'react-router-dom';
 import { mount } from 'enzyme';
 
 import { fakeStore } from '../test-helpers';
@@ -76,6 +77,14 @@ const storeData = {
   },
 };
 
+const mountApp = store => mount(
+  <Provider store={store}>
+    <Router>
+      <RiskAssessment params={{ section: 'foo-section' }} />
+    </Router>
+  </Provider>,
+);
+
 describe('<RiskAssessment />', () => {
   let store;
 
@@ -84,11 +93,7 @@ describe('<RiskAssessment />', () => {
   });
 
   it('calls actions when component mounts', () => {
-    mount(
-      <Provider store={store}>
-        <RiskAssessment params={{ section: 'foo-section' }} />
-      </Provider>,
-    );
+    mountApp(store);
 
     expect(store.dispatch.calledWithMatch({ type: 'GET_RISK_ASSESSMENT_QUESTIONS' })).to.equal(
       true,
@@ -97,11 +102,7 @@ describe('<RiskAssessment />', () => {
   });
 
   it('renders offender details', () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <RiskAssessment params={{ section: 'foo-section' }} />
-      </Provider>,
-    );
+    const wrapper = mountApp(store);
 
     expect(wrapper.text()).to.contain('Foo-surname');
     expect(wrapper.text()).to.contain('Foo-forename');
@@ -114,7 +115,7 @@ describe('<RiskAssessment />', () => {
       </Provider>,
     );
 
-    wrapper.find('#radio-yes').simulate('change', { target: { value: 'yes' } });
+    wrapper.find('[data-input="yes"]').simulate('change', { target: { value: 'yes' } });
     wrapper.find('form').simulate('submit');
 
     expect(

@@ -24,29 +24,23 @@ describe('<Comments />', () => {
   });
 
   it('pre-populates the forms if data is available', () => {
-    const wrapper = mount(
-      <Comments formDefaults={{ answer: 'foo-comment' }} />,
-    );
+    const wrapper = mount(<Comments formDefaults={{ answer: 'foo-comment' }} />);
 
-    expect(wrapper.find('[data-element="commentBox"]').node.value).to.equal(
-      'foo-comment',
-    );
+    expect(wrapper.find('[data-element="commentBox"]').getDOMNode().value).to.equal('foo-comment');
   });
 
   context('when the isComplete prop is present', () => {
     it('display "Save" on the submission button', () => {
       const wrapper = mount(<Comments isComplete />);
 
-      expect(wrapper.find('input[type="submit"]').node.value).to.equal('Save');
+      expect(wrapper.find('input[type="submit"]').getDOMNode().value).to.equal('Save');
     });
   });
 
   context('when the isComplete prop is not present', () => {
     it('display "Save and continue" on the submission button', () => {
       const wrapper = mount(<Comments />);
-      expect(wrapper.find('input[type="submit"]').node.value).to.equal(
-        'Save and continue',
-      );
+      expect(wrapper.find('input[type="submit"]').getDOMNode().value).to.equal('Save and continue');
     });
   });
 });

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { MemoryRouter as Router } from 'react-router-dom';
 import { mount } from 'enzyme';
 import xhr from 'xhr';
 
@@ -77,6 +78,14 @@ const state = {
   },
 };
 
+const mountApp = store => mount(
+  <Provider store={store}>
+    <Router>
+      <RiskAssessmentSummary />
+    </Router>
+  </Provider>,
+);
+
 describe('<RiskAssessmentSummary />', () => {
   let putStub;
   let getStub;
@@ -98,11 +107,7 @@ describe('<RiskAssessmentSummary />', () => {
 
         getStub.yields(null, { status: 200 }, { riskAssessment: null });
 
-        const wrapper = mount(
-          <Provider store={store}>
-            <RiskAssessmentSummary />
-          </Provider>,
-        );
+        const wrapper = mountApp(store);
 
         const prisonerProfile = wrapper.find('[data-element-id="prisoner-profile"]').text();
 
@@ -118,11 +123,7 @@ describe('<RiskAssessmentSummary />', () => {
 
           getStub.yields(null, { status: 200 }, { riskAssessment: null });
 
-          mount(
-            <Provider store={store}>
-              <RiskAssessmentSummary />
-            </Provider>,
-          );
+          mountApp(store);
 
           expect(
             store.dispatch.calledWithMatch({
@@ -139,13 +140,9 @@ describe('<RiskAssessmentSummary />', () => {
 
           getStub.yields(null, { status: 200 }, { riskAssessment: null });
 
-          const wrapper = mount(
-            <Provider store={store}>
-              <RiskAssessmentSummary />
-            </Provider>,
-          );
+          const wrapper = mountApp(store);
 
-          const changeLinks = wrapper.find('[data-element-id="change-answer-link"]');
+          const changeLinks = wrapper.find('a[data-element-id="change-answer-link"]');
 
           expect(changeLinks.length).to.be.equal(5);
         });
@@ -165,13 +162,9 @@ describe('<RiskAssessmentSummary />', () => {
 
           getStub.yields(null, { status: 200 }, { riskAssessment: null });
 
-          const wrapper = mount(
-            <Provider store={store}>
-              <RiskAssessmentSummary />
-            </Provider>,
-          );
+          const wrapper = mountApp(store);
 
-          const changeLinks = wrapper.find('[data-element-id="change-answer-link"]');
+          const changeLinks = wrapper.find('a[data-element-id="change-answer-link"]');
 
           expect(changeLinks.length).to.be.equal(0);
         });
@@ -182,11 +175,7 @@ describe('<RiskAssessmentSummary />', () => {
 
         getStub.yields(null, { status: 200 }, { riskAssessment: null });
 
-        const wrapper = mount(
-          <Provider store={store}>
-            <RiskAssessmentSummary />
-          </Provider>,
-        );
+        const wrapper = mountApp(store);
 
         const outcomeText = wrapper.find('[data-element-id="risk-assessment-outcome"]').text();
         const riskText = wrapper.find('[data-element-id="risk-assessment-risk"]').text();
@@ -243,11 +232,7 @@ describe('<RiskAssessmentSummary />', () => {
 
         getStub.yields(null, { status: 200 }, { riskAssessment: null });
 
-        const wrapper = mount(
-          <Provider store={store}>
-            <RiskAssessmentSummary />
-          </Provider>,
-        );
+        const wrapper = mountApp(store);
 
         const outcomeText = wrapper.find('[data-element-id="risk-assessment-outcome"]').text();
         const riskText = wrapper.find('[data-element-id="risk-assessment-risk"]').text();
@@ -319,11 +304,7 @@ describe('<RiskAssessmentSummary />', () => {
 
         getStub.yields(null, { status: 200 }, { riskAssessment: null });
 
-        const wrapper = mount(
-          <Provider store={store}>
-            <RiskAssessmentSummary />
-          </Provider>,
-        );
+        const wrapper = mountApp(store);
         const outcomeText = wrapper.find('[data-element-id="risk-assessment-outcome"]').text();
         const riskText = wrapper.find('[data-element-id="risk-assessment-risk"]').text();
         const reasonsText = wrapper.find('[data-element-id="risk-assessment-reasons"]').text();
@@ -376,11 +357,7 @@ describe('<RiskAssessmentSummary />', () => {
 
         getStub.yields(null, { status: 200 }, { riskAssessment: null });
 
-        const wrapper = mount(
-          <Provider store={store}>
-            <RiskAssessmentSummary />
-          </Provider>,
-        );
+        const wrapper = mountApp(store);
         const outcomeText = wrapper.find('[data-element-id="risk-assessment-outcome"]').text();
         const riskText = wrapper.find('[data-element-id="risk-assessment-risk"]').text();
         const reasonsText = wrapper.find('[data-element-id="risk-assessment-reasons"]').text();
@@ -424,11 +401,7 @@ describe('<RiskAssessmentSummary />', () => {
         it('only stores the assessment', () => {
           getStub.yields(null, { status: 200 }, { riskAssessment });
 
-          mount(
-            <Provider store={store}>
-              <RiskAssessmentSummary />
-            </Provider>,
-          );
+          mountApp(store);
 
           expect(store.dispatch.callCount).to.equal(1);
 
@@ -444,11 +417,7 @@ describe('<RiskAssessmentSummary />', () => {
         it('render the officer who completed the assessment', () => {
           getStub.yields(null, { status: 200 }, { riskAssessment });
 
-          const wrapper = mount(
-            <Provider store={store}>
-              <RiskAssessmentSummary />
-            </Provider>,
-          );
+          const wrapper = mountApp(store);
 
           expect(wrapper.text()).to.contain('foo-officer-name');
         });
@@ -468,11 +437,7 @@ describe('<RiskAssessmentSummary />', () => {
         it('navigates to the dashboard on submition', () => {
           getStub.yields(null, { status: 200 }, { riskAssessment });
 
-          const wrapper = mount(
-            <Provider store={store}>
-              <RiskAssessmentSummary />
-            </Provider>,
-          );
+          const wrapper = mountApp(store);
 
           wrapper.find('[data-element-id="continue-button"]').simulate('click');
 
@@ -489,11 +454,7 @@ describe('<RiskAssessmentSummary />', () => {
     context('when the healthcare assessment is incomplete', () => {
       it('displays a message informing the user that they need to complete the healthcare assessment', () => {
         const store = fakeStore(state);
-        const wrapper = mount(
-          <Provider store={store}>
-            <RiskAssessmentSummary />
-          </Provider>,
-        );
+        const wrapper = mountApp(store);
 
         expect(wrapper.find('[data-element-id="assessment-results"]').text()).to.contain(
           'Both the risk and allocation recommendation',
@@ -511,11 +472,7 @@ describe('<RiskAssessmentSummary />', () => {
       it('on submission it navigates to the prisoner list', () => {
         const store = fakeStore(state);
 
-        const wrapper = mount(
-          <Provider store={store}>
-            <RiskAssessmentSummary />
-          </Provider>,
-        );
+        const wrapper = mountApp(store);
 
         getStub.yields(null, { statusCode: 200 }, { healthAssessment: null });
         putStub.yields(null, { statusCode: 200 }, { foo: 'bar' });
@@ -523,8 +480,8 @@ describe('<RiskAssessmentSummary />', () => {
         expect(
           wrapper
             .find('button[type="submit"]')
-            .getNode()
-            .hasAttribute('disabled'),
+            .getDOMNode()
+            .disabled,
         ).to.equal(false);
 
         wrapper.find('form').simulate('submit');
@@ -532,8 +489,8 @@ describe('<RiskAssessmentSummary />', () => {
         expect(
           wrapper
             .find('button[type="submit"]')
-            .getNode()
-            .hasAttribute('disabled'),
+            .getDOMNode()
+            .disabled,
         ).to.equal(true);
 
         expect(
@@ -547,11 +504,7 @@ describe('<RiskAssessmentSummary />', () => {
       it('navigates to the error page on form submission when it fails to PUT the assessment', () => {
         const store = fakeStore(state);
 
-        const wrapper = mount(
-          <Provider store={store}>
-            <RiskAssessmentSummary />
-          </Provider>,
-        );
+        const wrapper = mountApp(store);
 
         getStub.yields(null, { statusCode: 200 }, { healthAssessment: null });
         putStub.yields(null, { statusCode: 500 });
@@ -569,11 +522,7 @@ describe('<RiskAssessmentSummary />', () => {
       it('navigates to the error page on form submission when it fails to GET the latests assessment', () => {
         const store = fakeStore(state);
 
-        const wrapper = mount(
-          <Provider store={store}>
-            <RiskAssessmentSummary />
-          </Provider>,
-        );
+        const wrapper = mountApp(store);
 
         getStub.yields(null, { statusCode: 500 });
 
@@ -599,11 +548,7 @@ describe('<RiskAssessmentSummary />', () => {
 
       it('displays a message informing the user that they can see their assessment outcome', () => {
         const store = fakeStore(stateWithCompletedHealthcare);
-        const wrapper = mount(
-          <Provider store={store}>
-            <RiskAssessmentSummary />
-          </Provider>,
-        );
+        const wrapper = mountApp(store);
 
         expect(wrapper.find('[data-element-id="assessment-results"]').text()).to.not.contain(
           'Both the risk and allocation recommendation',
@@ -616,11 +561,7 @@ describe('<RiskAssessmentSummary />', () => {
 
       it('on submission it navigates to the full assessment page', () => {
         const store = fakeStore(stateWithCompletedHealthcare);
-        const wrapper = mount(
-          <Provider store={store}>
-            <RiskAssessmentSummary />
-          </Provider>,
-        );
+        const wrapper = mountApp(store);
 
         getStub.yields(null, { statusCode: 200 }, { healthAssessment: { foo: 'bar' } });
         putStub.yields(null, { statusCode: 200 });

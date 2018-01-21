@@ -2,6 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 import xhr from 'xhr';
+import { MemoryRouter as Router } from 'react-router-dom';
 
 import { fakeStore } from '../test-helpers';
 
@@ -60,6 +61,14 @@ const state = {
   },
 };
 
+const mountApp = store => mount(
+  <Provider store={store}>
+    <Router>
+      <HealthcareSummary />
+    </Router>
+  </Provider>,
+);
+
 describe('<HealthcareSummary />', () => {
   let putStub;
   let getStub;
@@ -77,11 +86,7 @@ describe('<HealthcareSummary />', () => {
   context('Connected HealthcareSummary', () => {
     it('accepts and correctly renders a prisoner`s details', () => {
       const store = fakeStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <HealthcareSummary />
-        </Provider>,
-      );
+      const wrapper = mountApp(store);
       const prisonerProfile = wrapper.find('[data-element-id="prisoner-profile"]').text();
 
       expect(prisonerProfile).to.contain('Foo-name');
@@ -96,11 +101,7 @@ describe('<HealthcareSummary />', () => {
 
         getStub.yields(null, { status: 200 }, { healthAssessment: null });
 
-        mount(
-          <Provider store={store}>
-            <HealthcareSummary />
-          </Provider>,
-        );
+        mountApp(store);
 
         expect(
           store.dispatch.calledWithMatch({
@@ -117,13 +118,10 @@ describe('<HealthcareSummary />', () => {
 
         getStub.yields(null, { status: 200 }, { healthAssessment: null });
 
-        const wrapper = mount(
-          <Provider store={store}>
-            <HealthcareSummary />
-          </Provider>,
-        );
+        const wrapper = mountApp(store);
 
-        const changeLinks = wrapper.find('[data-element-id="change-answer-link"]');
+
+        const changeLinks = wrapper.find('a[data-element-id="change-answer-link"]');
 
         expect(changeLinks.length).to.be.equal(4);
       });
@@ -143,11 +141,7 @@ describe('<HealthcareSummary />', () => {
 
         getStub.yields(null, { status: 200 }, { healthAssessment: null });
 
-        const wrapper = mount(
-          <Provider store={store}>
-            <HealthcareSummary />
-          </Provider>,
-        );
+        const wrapper = mountApp(store);
 
         const changeLinks = wrapper.find('[data-element-id="change-answer-link"]');
 
@@ -161,11 +155,7 @@ describe('<HealthcareSummary />', () => {
 
         getStub.yields(null, { status: 200 }, { healthAssessment: null });
 
-        const wrapper = mount(
-          <Provider store={store}>
-            <HealthcareSummary />
-          </Provider>,
-        );
+        const wrapper = mountApp(store);
         const healthcareOutcome = wrapper.find('[data-element-id="healthcare-outcome"]').text();
 
         expect(
@@ -202,11 +192,7 @@ describe('<HealthcareSummary />', () => {
 
         getStub.yields(null, { status: 200 }, { healthAssessment: null });
 
-        const wrapper = mount(
-          <Provider store={store}>
-            <HealthcareSummary />
-          </Provider>,
-        );
+        const wrapper = mountApp(store);
         const healthcareOutcome = wrapper.find('[data-element-id="healthcare-outcome"]').text();
 
         expect(
@@ -226,11 +212,7 @@ describe('<HealthcareSummary />', () => {
 
         getStub.yields(null, { status: 200 }, { healthAssessment: null });
 
-        const wrapper = mount(
-          <Provider store={store}>
-            <HealthcareSummary />
-          </Provider>,
-        );
+        const wrapper = mountApp(store);
         const healthcareComments = wrapper.find('[data-element-id="healthcare-comments"]').text();
         expect(healthcareComments).to.contain('None');
       });
@@ -259,11 +241,7 @@ describe('<HealthcareSummary />', () => {
 
         getStub.yields(null, { status: 200 }, { healthAssessment: null });
 
-        const wrapper = mount(
-          <Provider store={store}>
-            <HealthcareSummary />
-          </Provider>,
-        );
+        const wrapper = mountApp(store);
         const healthcareComments = wrapper.find('[data-element-id="healthcare-comments"]').text();
         expect(healthcareComments).to.contain('Some foo comment');
       });
@@ -274,22 +252,14 @@ describe('<HealthcareSummary />', () => {
 
       getStub.yields(null, { status: 200 }, { healthAssessment: null });
 
-      const wrapper = mount(
-        <Provider store={store}>
-          <HealthcareSummary />
-        </Provider>,
-      );
+      const wrapper = mountApp(store);
       const healthcareComments = wrapper.find('[data-element-id="healthcare-consent"]').text();
       expect(healthcareComments).to.contain('No');
     });
 
     it('correctly renders assessor details', () => {
       const store = fakeStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <HealthcareSummary />
-        </Provider>,
-      );
+      const wrapper = mountApp(store);
       const healthcareAssessor = wrapper.find('[data-healthcare-assessor]').text();
       expect(healthcareAssessor).to.contain('Foo fullname');
       expect(healthcareAssessor).to.contain('Foo role');
@@ -305,11 +275,7 @@ describe('<HealthcareSummary />', () => {
     });
 
     it('displays a message informing the user that they have to complete the risk assessment', () => {
-      const wrapper = mount(
-        <Provider store={store}>
-          <HealthcareSummary />
-        </Provider>,
-      );
+      const wrapper = mountApp(store);
 
       expect(wrapper.find('[data-summary-next-steps]').text()).to.contain(
         'You must now complete the risk assessment questions to get a cell sharing outcome.',
@@ -321,35 +287,27 @@ describe('<HealthcareSummary />', () => {
     });
 
     it('on submission it navigates to the prisoner list', () => {
-      const wrapper = mount(
-        <Provider store={store}>
-          <HealthcareSummary />
-        </Provider>,
-      );
+      const wrapper = mountApp(store);
 
       getStub.yields(null, { statusCode: 200 }, { riskAssessment: null });
       putStub.yields(null, { statusCode: 200 });
 
-      expect(wrapper.find('button[type="submit"]').getNode().hasAttribute('disabled')).to.equal(false);
+      expect(wrapper.find('button[type="submit"]').getDOMNode().disabled).to.equal(false);
 
       wrapper.find('form').simulate('submit');
 
-      expect(wrapper.find('button[type="submit"]').getNode().hasAttribute('disabled')).to.equal(true);
+      expect(wrapper.find('button[type="submit"]').getDOMNode().disabled).to.equal(true);
 
       expect(
         store.dispatch.calledWithMatch({
           type: '@@router/CALL_HISTORY_METHOD',
-          payload: { method: 'replace', args: ['/dashboard'] },
+          payload: { method: 'replace', args: ['/prisoner-list'] },
         }),
-      ).to.equal(true, 'Changed path to /dashboard');
+      ).to.equal(true, 'Changed path to /prisoner-list');
     });
 
     it('on submission it navigates to the error page when it fails to PUT the assessment', () => {
-      const wrapper = mount(
-        <Provider store={store}>
-          <HealthcareSummary />
-        </Provider>,
-      );
+      const wrapper = mountApp(store);
 
       getStub.yields(null, { statusCode: 200 }, { riskAssessment: null });
       putStub.yields(null, { statusCode: 500 });
@@ -365,11 +323,7 @@ describe('<HealthcareSummary />', () => {
     });
 
     it('on submission it navigates to the error page when it fails to get an assessment', () => {
-      const wrapper = mount(
-        <Provider store={store}>
-          <HealthcareSummary />
-        </Provider>,
-      );
+      const wrapper = mountApp(store);
 
       getStub.yields(null, { statusCode: 500 });
       putStub.yields(null, { statusCode: 200 });
@@ -401,11 +355,7 @@ describe('<HealthcareSummary />', () => {
 
 
     it('displays a message informing the user that they can see their assessment outcome', () => {
-      const wrapper = mount(
-        <Provider store={store}>
-          <HealthcareSummary />
-        </Provider>,
-      );
+      const wrapper = mountApp(store);
 
       expect(wrapper.find('[data-summary-next-steps] button').text()).to.equal(
         'Finish assessment',
@@ -413,11 +363,7 @@ describe('<HealthcareSummary />', () => {
     });
 
     it('on submission it navigates to the full assessment page', () => {
-      const wrapper = mount(
-        <Provider store={store}>
-          <HealthcareSummary />
-        </Provider>,
-      );
+      const wrapper = mountApp(store);
 
       getStub.yields(null, { statusCode: 200 }, { riskAssessment: { foo: 'bar' } });
       putStub.yields(null, { statusCode: 200 });
@@ -448,11 +394,7 @@ describe('<HealthcareSummary />', () => {
     it('only stores the assessment', () => {
       getStub.yields(null, { status: 200 }, { healthAssessment: healthcareAssessment });
 
-      mount(
-        <Provider store={store}>
-          <HealthcareSummary />
-        </Provider>,
-      );
+      mountApp(store);
 
       expect(store.dispatch.callCount).to.equal(1);
 
@@ -468,11 +410,7 @@ describe('<HealthcareSummary />', () => {
     it('does not display the `what happens next section`', () => {
       getStub.yields(null, { status: 200 }, { healthAssessment: healthcareAssessment });
 
-      const wrapper = mount(
-        <Provider store={store}>
-          <HealthcareSummary />
-        </Provider>,
-      );
+      const wrapper = mountApp(store);
 
       expect(wrapper.text()).to.not.include('What happens next?');
     });
@@ -480,11 +418,7 @@ describe('<HealthcareSummary />', () => {
     it('navigates to the dashboard upon submission', () => {
       getStub.yields(null, { status: 200 }, { healthAssessment: healthcareAssessment });
 
-      const wrapper = mount(
-        <Provider store={store}>
-          <HealthcareSummary />
-        </Provider>,
-      );
+      const wrapper = mountApp(store);
 
       wrapper.find('[data-element-id="continue-button"]').simulate('click');
 

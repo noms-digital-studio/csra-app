@@ -61,6 +61,8 @@ global.document = document;
 global.window = document.defaultView;
 global.window.localStorage = global.window.sessionStorage = storageMock();
 
+global.window.printJSON = (obj) => console.log(JSON.stringify(obj, null, 2));
+
 global.window.scrollTo = () => {};
 
 Object.keys(document.defaultView).forEach((property) => {

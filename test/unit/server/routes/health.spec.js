@@ -45,9 +45,9 @@ describe('GET /health', () => {
       .expect('Content-Type', /json/)
       .expect((res) => {
         expect(res.body).to.have.property('status', 'OK');
-        expect(res.body).to.have.deep.property('checks.db', 'OK');
-        expect(res.body).to.have.deep.property('checks.viperRestService', 'OK');
-        expect(res.body).to.have.deep.property('checks.elite2RestService', 'OK');
+        expect(res.body).to.have.nested.property('checks.db', 'OK');
+        expect(res.body).to.have.nested.property('checks.viperRestService', 'OK');
+        expect(res.body).to.have.nested.property('checks.elite2RestService', 'OK');
       });
   });
 
@@ -57,8 +57,8 @@ describe('GET /health', () => {
       .reply(500, { healthy: false });
 
     fakeElite2RestService
-    .get('/info/health')
-    .reply(200, { status: 'UP' });
+      .get('/info/health')
+      .reply(200, { status: 'UP' });
 
     return request(app)
       .get('/health')
@@ -66,20 +66,20 @@ describe('GET /health', () => {
       .expect('Content-Type', /json/)
       .expect((res) => {
         expect(res.body).to.have.property('status', 'ERROR');
-        expect(res.body).to.have.deep.property('checks.db', 'OK');
-        expect(res.body).to.have.deep.property('checks.viperRestService', 'ERROR');
-        expect(res.body).to.have.deep.property('checks.elite2RestService', 'OK');
+        expect(res.body).to.have.nested.property('checks.db', 'OK');
+        expect(res.body).to.have.nested.property('checks.viperRestService', 'ERROR');
+        expect(res.body).to.have.nested.property('checks.elite2RestService', 'OK');
       });
   });
 
   it('responds with 500 {status: "ERROR" } when elite 2 rest service is unhealthy', () => {
     fakeViperRestService
-    .get('/analytics/health')
-    .reply(200, { healthy: true });
+      .get('/analytics/health')
+      .reply(200, { healthy: true });
 
     fakeElite2RestService
-    .get('info/health')
-    .reply(500, { status: 'DOWN' });
+      .get('info/health')
+      .reply(500, { status: 'DOWN' });
 
     return request(app)
       .get('/health')
@@ -87,9 +87,9 @@ describe('GET /health', () => {
       .expect('Content-Type', /json/)
       .expect((res) => {
         expect(res.body).to.have.property('status', 'ERROR');
-        expect(res.body).to.have.deep.property('checks.db', 'OK');
-        expect(res.body).to.have.deep.property('checks.viperRestService', 'OK');
-        expect(res.body).to.have.deep.property('checks.elite2RestService', 'ERROR');
+        expect(res.body).to.have.nested.property('checks.db', 'OK');
+        expect(res.body).to.have.nested.property('checks.viperRestService', 'OK');
+        expect(res.body).to.have.nested.property('checks.elite2RestService', 'ERROR');
       });
   });
 
@@ -98,12 +98,12 @@ describe('GET /health', () => {
       fakeDB.select.rejects(new Error('it cannae take it captain'));
 
       fakeViperRestService
-      .get('/analytics/health')
-      .reply(200, { healthy: true });
+        .get('/analytics/health')
+        .reply(200, { healthy: true });
 
       fakeElite2RestService
-      .get('/info/health')
-      .reply(200, { status: 'UP' });
+        .get('/info/health')
+        .reply(200, { status: 'UP' });
     });
 
     it('responds with 500 { status: "ERROR" } and check detail',
@@ -113,7 +113,7 @@ describe('GET /health', () => {
         .expect('Content-Type', /json/)
         .expect((res) => {
           expect(res.body).to.have.property('status', 'ERROR');
-          expect(res.body).to.have.deep.property('checks.db', 'it cannae take it captain');
+          expect(res.body).to.have.nested.property('checks.db', 'it cannae take it captain');
         }),
     );
   });
@@ -131,8 +131,8 @@ describe('GET /health', () => {
         .reply(200, { healthy: true });
 
       fakeElite2RestService
-      .get('/info/health')
-      .reply(200, { status: 'UP' });
+        .get('/info/health')
+        .reply(200, { status: 'UP' });
     });
 
     it('adds the build info into the status response',
@@ -143,7 +143,7 @@ describe('GET /health', () => {
         .expect((res) => {
           expect(res.body).to.have.property('buildNumber', '123');
           expect(res.body).to.have.property('gitRef', 'deadbeeffaceddeaffadeddad');
-          expect(res.body).to.have.deep.property('any.other', 'stuff');
+          expect(res.body).to.have.nested.property('any.other', 'stuff');
         }),
     );
   });

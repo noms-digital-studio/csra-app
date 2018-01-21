@@ -219,7 +219,7 @@ const mapActionsToProps = dispatch => ({
             return dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
           }
 
-          return dispatch(replace(routes.DASHBOARD));
+          return dispatch(replace(routes.PRISONER_LIST));
         },
       );
     });

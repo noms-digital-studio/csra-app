@@ -13,12 +13,13 @@ describe('<CommentBox />', () => {
 
   it('accepts default text for <textarea />', () => {
     const wrapper = mount(<CommentBox text="foo" />);
-    expect(wrapper.find('textarea').node.value).to.include('foo');
+
+    expect(wrapper.find('textarea').getDOMNode().value).to.include('foo');
   });
 
   it('accepts a name for <textarea />', () => {
     const wrapper = mount(<CommentBox name="foo" />);
-    expect(wrapper.find('textarea').node.name).to.include('foo');
+    expect(wrapper.find('textarea').getDOMNode().name).to.include('foo');
   });
 
   it('sets the characters left based on initial text', () => {

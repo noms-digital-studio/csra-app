@@ -9,8 +9,8 @@ const response = [
     surname: 'foo-surname',
     forename: 'foo-forename',
     dateOfBirth: '1-12-2010',
-    riskAssessmentCompleted: true,
-    healthAssessmentCompleted: true,
+    riskAssessmentOutcome: true,
+    healthAssessmentOutcome: true,
     outcome: 'Foo outcome',
   },
   {
@@ -19,8 +19,8 @@ const response = [
     surname: 'foo-surname',
     forename: 'foo-forename',
     dateOfBirth: '12-2-2010',
-    riskAssessmentCompleted: false,
-    healthAssessmentCompleted: false,
+    riskAssessmentOutcome: false,
+    healthAssessmentOutcome: false,
     outcome: null,
   },
 ];

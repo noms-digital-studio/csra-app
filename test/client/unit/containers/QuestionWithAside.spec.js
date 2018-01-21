@@ -38,7 +38,7 @@ describe('<QuestionWithAside />', () => {
       <QuestionWithAside formDefaults={{ answer: 'yes' }} />,
     );
 
-    expect(wrapper.find('[data-input="yes"]').node.checked).to.equal(
+    expect(wrapper.find('[data-input="yes"]').getDOMNode().checked).to.equal(
       true,
       'radio button selected',
     );
@@ -61,14 +61,14 @@ describe('<QuestionWithAside />', () => {
     it('display "Save" on the submission button', () => {
       const wrapper = mount(<QuestionWithAside isComplete />);
 
-      expect(wrapper.find('input[type="submit"]').node.value).to.equal('Save');
+      expect(wrapper.find('input[type="submit"]').getDOMNode().value).to.equal('Save');
     });
   });
 
   context('when the isComplete prop is not present', () => {
     it('display "Save and continue" on the submission button', () => {
       const wrapper = mount(<QuestionWithAside />);
-      expect(wrapper.find('input[type="submit"]').node.value).to.equal('Save and continue');
+      expect(wrapper.find('input[type="submit"]').getDOMNode().value).to.equal('Save and continue');
     });
   });
 });

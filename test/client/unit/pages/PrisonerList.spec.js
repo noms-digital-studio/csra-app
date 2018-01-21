@@ -1,12 +1,13 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { MemoryRouter as Router } from 'react-router-dom';
 import { mount } from 'enzyme';
 import xhr from 'xhr';
 
 import { fakeStore } from '../test-helpers';
 import { extractDateFromUTCString } from '../../../../client/javascript/utils';
 
-import ConnectedDashboard, { Dashboard } from '../../../../client/javascript/pages/Dashboard';
+import ConnectedPrisonerList from '../../../../client/javascript/pages/PrisonerList';
 
 const filteredAssessments = [
   {
@@ -97,96 +98,16 @@ const assertGivenValuesInWhiteListAreInPage = (list, whiteList, component) => {
   });
 };
 
-describe('<Dashboard />', () => {
-  describe('Standalone Dashboard', () => {
-    context('when there is no one assess', () => {
-      it('does not display a list of people to assess', () => {
-        const wrapper = mount(<Dashboard />);
-        expect(wrapper.text()).to.include('There is no one to assess.');
-        expect(wrapper.find('table').length).to.equal(0);
-      });
+const mountApp = store => mount(
+  <Provider store={store}>
+    <Router>
+      <ConnectedPrisonerList />
+    </Router>
+  </Provider>,
+);
 
-      it('provides a link to add a person to assess', () => {
-        const wrapper = mount(<Dashboard />);
-        expect(wrapper.find('[data-element-id="add-assessment"]').length).to.equal(1);
-      });
-    });
-
-    context('when there are people to assess', () => {
-      it('renders the correct number of assessments rows', () => {
-        const wrapper = mount(<Dashboard assessments={assessments} />);
-        expect(wrapper.find('tr[data-element-id]').length).to.equal(3);
-      });
-
-      it('renders the correct profile information per row', () => {
-        const wrapper = mount(<Dashboard assessments={assessments} />);
-        const whitelist = ['nomisId', 'surname', 'forename', 'dateOfBirth'];
-
-        assertGivenValuesInWhiteListAreInPage(filteredAssessments, whitelist, wrapper);
-      });
-
-      it('displays a completed risk assessments', () => {
-        const wrapper = mount(<Dashboard assessments={assessments} />);
-        const row = wrapper.find('[data-risk-assessment-complete=true]');
-        expect(row.length).to.equal(2);
-        expect(row.first().text()).to.equal('Complete');
-      });
-
-      it('displays a completed health assessments', () => {
-        const wrapper = mount(<Dashboard assessments={assessments} />);
-        const column = wrapper.find('[data-health-assessment-complete=true]');
-        expect(column.length).to.equal(2);
-        expect(column.first().text()).to.equal('Complete');
-      });
-
-      it('displays the cell sharing assessment for a completed prisoner assessment', () => {
-        const wrapper = mount(<Dashboard assessments={assessments} />);
-        const row = wrapper.find('[data-assessments-complete=true]');
-
-        expect(row.length).to.equal(1);
-        expect(row.text()).to.include('Foo outcome');
-      });
-
-      it('does not displays the link to view the full assessment when both assessments not complete', () => {
-        const wrapper = mount(<Dashboard assessments={assessments} />);
-        const viewOutcomeBtn = wrapper.find(
-          '[data-element-id="profile-row-bar-id"] > [data-element-id="view-outcome"] button',
-        );
-
-        expect(viewOutcomeBtn.length).to.equal(0);
-      });
-
-      it('displays the link to view the full assessment when both assessments are complete', () => {
-        const wrapper = mount(<Dashboard assessments={assessments} />);
-        const viewOutcomeBtn = wrapper.find(
-          '[data-element-id="profile-row-foo-id"] > [data-element-id="view-outcome"] button',
-        );
-
-        expect(viewOutcomeBtn.length).to.equal(1);
-      });
-
-      it('responds to the selection of an incomplete risk assessment', () => {
-        const callback = sinon.spy();
-        const wrapper = mount(<Dashboard assessments={assessments} onOffenderSelect={callback} />);
-
-        const profileBtn = wrapper.find('[data-risk-assessment-complete=false] > button');
-
-        profileBtn.simulate('click');
-
-        expect(callback.calledOnce).to.equal(true, 'callback called on click');
-
-        expect(callback.lastCall.args[0]).to.deep.include(assessments[1]);
-      });
-
-      it('does not display any nomis ids that start with the word `TEST-`', () => {
-        const wrapper = mount(<Dashboard assessments={assessments} />);
-        const table = wrapper.find('table');
-        expect(table.text().toUpperCase()).to.not.match(/test.+-/ig);
-      });
-    });
-  });
-
-  describe('Connected Dashboard', () => {
+xdescribe('<PrisonerList />', () => {
+  describe('Connected PrisonerList', () => {
     let getStub;
 
     beforeEach(() => {
@@ -198,23 +119,11 @@ describe('<Dashboard />', () => {
       getStub.restore();
     });
 
-    it('displays test assessments when the `displayTestAssessments` query param is present', () => {
-      const store = fakeStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <ConnectedDashboard location={{ query: { displayTestAssessments: 'true' } }} />
-        </Provider>,
-      );
-      expect(wrapper.find('tr[data-element-id]').length).to.equal(5);
-    });
 
     it('calls the getOffenderProfiles on component mount', () => {
       const store = fakeStore(state);
-      mount(
-        <Provider store={store}>
-          <ConnectedDashboard />
-        </Provider>,
-      );
+
+      mountApp(store);
 
       expect(
         store.dispatch.calledWithMatch({
@@ -227,11 +136,7 @@ describe('<Dashboard />', () => {
     it('renders the correct number of assessments rows', () => {
       const store = fakeStore(state);
 
-      const wrapper = mount(
-        <Provider store={store}>
-          <ConnectedDashboard />
-        </Provider>,
-      );
+      const wrapper = mountApp(store);
 
       expect(wrapper.find('tr[data-element-id]').length).to.equal(3);
     });
@@ -241,7 +146,7 @@ describe('<Dashboard />', () => {
       const store = fakeStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <ConnectedDashboard />
+          <ConnectedPrisonerList />
         </Provider>,
       );
 
@@ -250,71 +155,17 @@ describe('<Dashboard />', () => {
 
     it('displays a completed assessments', () => {
       const store = fakeStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <ConnectedDashboard />
-        </Provider>,
-      );
+      const wrapper = mountApp(store);
       const column = wrapper.find('[data-risk-assessment-complete=true]');
       expect(column.length).to.equal(2);
       expect(column.first().text()).to.equal('Complete');
-    });
-
-    it('navigates to the risk assessment summary for a completed risk assessment', () => {
-      const store = fakeStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <ConnectedDashboard />
-        </Provider>,
-      );
-
-      wrapper.find('[data-element-id="completed-csra-link-baz-id"]').simulate('click');
-
-      expect(
-        store.dispatch.calledWithMatch({
-          type: 'SELECT_OFFENDER',
-          payload: assessments[2],
-        }),
-      ).to.equal(true, 'did not call SELECT_OFFENDER action');
-
-      expect(
-        store.dispatch.calledWithMatch({
-          type: '@@router/CALL_HISTORY_METHOD',
-          payload: { method: 'push', args: ['/risk-assessment-summary'] },
-        }),
-      ).to.equal(true, 'did not navigate to /risk-assessment-summary');
-    });
-
-    it('navigates to the healthcare assessment summary for a completed health assessment', () => {
-      const store = fakeStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <ConnectedDashboard />
-        </Provider>,
-      );
-
-      wrapper.find('[data-element-id="completed-healthcare-link-bar-id"]').simulate('click');
-
-      expect(
-        store.dispatch.calledWithMatch({
-          type: 'SELECT_OFFENDER',
-          payload: assessments[1],
-        }),
-      ).to.equal(true, 'did not call SELECT_OFFENDER action');
-
-      expect(
-        store.dispatch.calledWithMatch({
-          type: '@@router/CALL_HISTORY_METHOD',
-          payload: { method: 'push', args: ['/healthcare-summary'] },
-        }),
-      ).to.equal(true, 'did not navigate to /healthcare-summary');
     });
 
     it('displays a completed health assessments', () => {
       const store = fakeStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <ConnectedDashboard />
+          <ConnectedPrisonerList />
         </Provider>,
       );
       const column = wrapper.find('[data-health-assessment-complete=true]');
@@ -326,7 +177,7 @@ describe('<Dashboard />', () => {
       const store = fakeStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <ConnectedDashboard />
+          <ConnectedPrisonerList />
         </Provider>,
       );
       const row = wrapper.find('[data-assessments-complete=true]');
@@ -335,64 +186,13 @@ describe('<Dashboard />', () => {
       expect(row.text()).to.include('Foo outcome');
     });
 
-    it('allows you the view the full outcome when both assessments are complete', () => {
-      const store = fakeStore(state);
-
-      const wrapper = mount(
-        <Provider store={store}>
-          <ConnectedDashboard />
-        </Provider>,
-      );
-
-      wrapper.find('[data-element-id="view-outcome-link-foo-id"]').simulate('click');
-
-      expect(
-        store.dispatch.calledWithMatch({
-          type: 'SELECT_OFFENDER',
-          payload: assessments[0],
-        }),
-      ).to.equal(true, 'did not call SELECT_OFFENDER action');
-
-      expect(
-        store.dispatch.calledWithMatch({
-          type: '@@router/CALL_HISTORY_METHOD',
-          payload: { method: 'push', args: ['/full-assessment-outcome'] },
-        }),
-      ).to.equal(true, 'did not navigate to /full-assessment-outcome');
-    });
-
-    it('responds to the selection of an incomplete risk assessment', () => {
-      const store = fakeStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <ConnectedDashboard />
-        </Provider>,
-      );
-      const profileBtn = wrapper.find('[data-risk-assessment-complete=false] > button');
-
-      profileBtn.simulate('click');
-
-      expect(
-        store.dispatch.calledWithMatch({
-          type: 'SELECT_OFFENDER',
-          payload: assessments[1],
-        }),
-      ).to.equal(true, 'SELECT_OFFENDER dispatch');
-
-      expect(
-        store.dispatch.calledWithMatch({
-          type: '@@router/CALL_HISTORY_METHOD',
-          payload: { method: 'push', args: ['/offender-profile'] },
-        }),
-      ).to.equal(true, 'dispatch /offender-profile');
-    });
 
     context('When a healthcare assessment is incomplete', () => {
       it('responds to the selection of an incomplete health assessment by navigation to the first question', () => {
         const store = fakeStore(state);
         const wrapper = mount(
           <Provider store={store}>
-            <ConnectedDashboard />
+            <ConnectedPrisonerList />
           </Provider>,
         );
         const profileBtn = wrapper.find('[data-health-assessment-complete=false] > button');
@@ -428,7 +228,7 @@ describe('<Dashboard />', () => {
             });
             const wrapper = mount(
               <Provider store={newStore}>
-                <ConnectedDashboard />
+                <ConnectedPrisonerList />
               </Provider>,
             );
 
@@ -455,7 +255,7 @@ describe('<Dashboard />', () => {
           const store = fakeStore(state);
           const wrapper = mount(
             <Provider store={store}>
-              <ConnectedDashboard />
+              <ConnectedPrisonerList />
             </Provider>,
           );
           const profileBtn = wrapper.first().find('[data-risk-assessment-complete=false] > button');
@@ -480,7 +280,7 @@ describe('<Dashboard />', () => {
           const store = fakeStore(state);
           const wrapper = mount(
             <Provider store={store}>
-              <ConnectedDashboard />
+              <ConnectedPrisonerList />
             </Provider>,
           );
           const profileBtn = wrapper.find('[data-health-assessment-complete=false] > button');

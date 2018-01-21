@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { MemoryRouter as Router } from 'react-router-dom';
 import { mount } from 'enzyme';
 import xhr from 'xhr';
 
@@ -8,9 +9,11 @@ import { fakeStore } from '../test-helpers';
 import ConnectedAddPrisoner from '../../../../client/javascript/pages/AddPrisoner';
 
 
-const mountComponent = store => mount(
+const mountApp = store => mount(
   <Provider store={store}>
-    <ConnectedAddPrisoner />
+    <Router>
+      <ConnectedAddPrisoner />
+    </Router>
   </Provider>,
 );
 
@@ -49,16 +52,14 @@ describe('<AddPrisoner />', () => {
           },
         });
 
-        const wrapper = mountComponent(store);
+        const wrapper = mountApp(store);
 
-        const node = wrapper.find('input[type="text"]').node;
+        const node = wrapper.find('input[type="text"]').getDOMNode();
         node.value = 'SOME-NOMIS-ID';
 
         wrapper.find('form').simulate('submit');
 
-        expect(
-          store.dispatch.calledWithMatch({ type: 'STORE_PRISONER_SEARCH_RESULTS', payload: bookings }),
-        ).to.equal(true, 'Did not dispatch STORE_PRISONER_SEARCH_RESULTS');
+        expect(store.dispatch.calledWithMatch({ type: 'STORE_PRISONER_SEARCH_RESULTS', payload: bookings })).to.equal(true, 'Did not dispatch STORE_PRISONER_SEARCH_RESULTS');
       });
     });
 
@@ -70,7 +71,7 @@ describe('<AddPrisoner />', () => {
           },
         });
 
-        const wrapper = mountComponent(store);
+        const wrapper = mountApp(store);
 
         const resultsTable = wrapper.find('table');
 
@@ -102,7 +103,7 @@ describe('<AddPrisoner />', () => {
             },
           });
 
-          const wrapper = mountComponent(store);
+          const wrapper = mountApp(store);
 
           const button = wrapper.find('button[data-element-id="foo-nomis-id"]');
 
@@ -113,9 +114,9 @@ describe('<AddPrisoner />', () => {
           expect(
             store.dispatch.calledWithMatch({
               type: '@@router/CALL_HISTORY_METHOD',
-              payload: { method: 'replace', args: ['/dashboard'] },
+              payload: { method: 'replace', args: ['/prisoner-list'] },
             }),
-          ).to.equal(true, 'did not navigate to /dashboard');
+          ).to.equal(true, 'did not navigate to /prisoner-list');
         });
 
         context('and an error occurs', () => {
@@ -126,7 +127,7 @@ describe('<AddPrisoner />', () => {
               },
             });
 
-            const wrapper = mountComponent(store);
+            const wrapper = mountApp(store);
 
             const button = wrapper.find('button[data-element-id="foo-nomis-id"]');
 
