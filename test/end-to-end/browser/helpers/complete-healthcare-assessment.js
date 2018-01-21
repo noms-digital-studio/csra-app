@@ -41,32 +41,22 @@ const whenAPrisonersHealthcareResultsAreEntered = (config = defaultAssessmentCon
 
   DashboardPage.startHealthcareAssessmentFor(config.prisoner.nomisId);
 
-  expect(HealthcareOutcomePage.waitForMainHeadingWithDataId('outcome')).to.contain(
-    'Does healthcare recommend a single cell?',
-  );
+  expect(HealthcareOutcomePage.waitForMainHeadingWithDataId('outcome')).to.contain('Does healthcare recommend a single cell?');
   selectYesNoAnswer(config.answers.singleCellRecommendation);
 
-  expect(HealthcareCommentsPage.waitForMainHeadingWithDataId('comments')).to.contain(
-    'Enter all the comments on the healthcare form',
-  );
+  expect(HealthcareCommentsPage.waitForMainHeadingWithDataId('comments')).to.contain('Enter all the comments on the healthcare form');
   HealthcareCommentsPage.commentAndContinue('a healthcare comment');
 
-  expect(HealthcareConsentPage.waitForMainHeadingWithDataId('consent')).to.contain(
-    'Have they given consent to share their medical information?',
-  );
+  expect(HealthcareConsentPage.waitForMainHeadingWithDataId('consent')).to.contain('Have they given consent to share their medical information?');
   HealthcareConsentPage.clickNoAndContinue();
 
-  expect(HealthcareNursePage.waitForMainHeadingWithDataId('assessor')).to.contain(
-    'Who completed the healthcare assessment?',
-  );
+  expect(HealthcareNursePage.waitForMainHeadingWithDataId('assessor')).to.contain('Who completed the healthcare assessment?');
   HealthcareNursePage.enterRole('Nurse');
   HealthcareNursePage.enterName('Jane Doe');
   HealthcareNursePage.enterDate('21', '07', '2017');
   HealthcareNursePage.clickContinue();
 
-  expect(HealthcareSummary.waitForMainHeadingWithDataId('healthcare-summary')).to.equal(
-    'Healthcare assessment summary',
-  );
+  expect(HealthcareSummary.waitForMainHeadingWithDataId('healthcare-summary')).to.equal('Healthcare assessment summary');
   expect(HealthcareSummary.prisonerName).to.equalIgnoreCase(config.prisoner.name);
   expect(HealthcareSummary.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);
   expect(HealthcareSummary.prisonerNomisId).to.equalIgnoreCase(config.prisoner.nomisId);
@@ -78,9 +68,7 @@ const whenAPrisonersHealthcareResultsAreEntered = (config = defaultAssessmentCon
   expect(HealthcareSummary.assessor).to.equalIgnoreCase('Jane Doe');
   expect(HealthcareSummary.role).to.equalIgnoreCase('nurse');
   expect(HealthcareSummary.date).to.equalIgnoreCase('21 July 2017');
-  expect(HealthcareSummary.recommendation).to.equalIgnoreCase(
-    config.answers.singleCellRecommendation,
-  );
+  expect(HealthcareSummary.recommendation).to.equalIgnoreCase(config.answers.singleCellRecommendation); // eslint-disable-line max-len
   expect(HealthcareSummary.comments).to.equalIgnoreCase('a healthcare comment');
   expect(HealthcareSummary.consent).to.equalIgnoreCase('no');
 
@@ -143,9 +131,7 @@ const andICanViewTheAssessmentAgain = (config = defaultAssessmentConfig) => {
 
   DashboardPage.viewCompletedHealthcareAssessmentFor(config.prisoner.nomisId);
 
-  expect(HealthcareSummary.waitForMainHeadingWithDataId('healthcare-summary')).to.equal(
-    'Healthcare assessment summary',
-  );
+  expect(HealthcareSummary.waitForMainHeadingWithDataId('healthcare-summary')).to.equal('Healthcare assessment summary');
   expect(HealthcareSummary.prisonerName).to.equalIgnoreCase(config.prisoner.name);
   expect(HealthcareSummary.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);
   expect(HealthcareSummary.prisonerNomisId).to.equalIgnoreCase(config.prisoner.nomisId);
@@ -155,9 +141,7 @@ const andICanViewTheAssessmentAgain = (config = defaultAssessmentConfig) => {
   expect(HealthcareSummary.assessor).to.equalIgnoreCase('Jane Doe');
   expect(HealthcareSummary.role).to.equalIgnoreCase('nurse');
   expect(HealthcareSummary.date).to.equalIgnoreCase('21 July 2017');
-  expect(HealthcareSummary.recommendation).to.equalIgnoreCase(
-    config.answers.singleCellRecommendation,
-  );
+  expect(HealthcareSummary.recommendation).to.equalIgnoreCase(config.answers.singleCellRecommendation); // eslint-disable-line max-len
   expect(HealthcareSummary.comments).to.equalIgnoreCase('a healthcare comment');
   expect(HealthcareSummary.consent).to.equalIgnoreCase('yes');
 

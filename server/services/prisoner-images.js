@@ -26,7 +26,8 @@ const decoratePrisonerWithImage = async ({ authToken, prisoner }) => {
 };
 
 const decoratePrisonersWithImages = async ({ authToken, prisoners = [] }) => {
-  const promiseList = prisoners.map(async prisoner => decoratePrisonerWithImage({ authToken, prisoner }));
+  const promiseList = prisoners
+    .map(async prisoner => decoratePrisonerWithImage({ authToken, prisoner }));
 
   return Promise.all(promiseList);
 };

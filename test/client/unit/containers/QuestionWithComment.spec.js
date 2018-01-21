@@ -37,43 +37,33 @@ describe('<QuestionWithComment />', () => {
   });
 
   it('pre-populates the forms if data is available for Yes answers', () => {
-    const wrapper = mount(
-      <QuestionWithComment formDefaults={{ answer: 'yes', 'reasons-yes': 'foobar-yes' }} />,
-    );
+    const wrapper = mount(<QuestionWithComment formDefaults={{ answer: 'yes', 'reasons-yes': 'foobar-yes' }} />);
 
     expect(wrapper.find('[data-input="yes"]').getDOMNode().checked).to.equal(
       true,
       'radio button selected',
     );
 
-    expect(wrapper.find('[data-element="reason-for-answer"]').getDOMNode().value).to.equal(
-      'foobar-yes',
-    );
+    expect(wrapper.find('[data-element="reason-for-answer"]').getDOMNode().value).to.equal('foobar-yes');
   });
 
   it('pre-populates the forms if data is available for No answers', () => {
-    const wrapper = mount(
-      <QuestionWithComment formDefaults={{ answer: 'no', 'reasons-no': 'foobar-no' }} />,
-    );
+    const wrapper = mount(<QuestionWithComment formDefaults={{ answer: 'no', 'reasons-no': 'foobar-no' }} />);
 
     expect(wrapper.find('[data-input="no"]').getDOMNode().checked).to.equal(
       true,
       'radio button selected',
     );
 
-    expect(wrapper.find('[data-element="reason-for-answer"]').getDOMNode().value).to.equal(
-      'foobar-no',
-    );
+    expect(wrapper.find('[data-element="reason-for-answer"]').getDOMNode().value).to.equal('foobar-no');
   });
 
   it('accepts radio button label text', () => {
-    const wrapper = mount(
-      <QuestionWithComment
-        formFields={{
+    const wrapper = mount(<QuestionWithComment
+      formFields={{
           input: { yes: { text: 'foo-text' }, no: { text: 'bar-text' } },
         }}
-      />,
-    );
+    />);
 
     expect(wrapper.find('[data-label="yes"]').text()).to.equal('foo-text');
     expect(wrapper.find('[data-label="no"]').text()).to.equal('bar-text');

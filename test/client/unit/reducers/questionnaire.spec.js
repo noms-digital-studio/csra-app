@@ -8,9 +8,7 @@ describe('questionnaireReducer', () => {
   };
 
   it('returns a default state', () => {
-    expect(questionnaireReducer(undefined, 'UNKNOWN_ACTION')).to.eql(
-      defaultState,
-    );
+    expect(questionnaireReducer(undefined, 'UNKNOWN_ACTION')).to.eql(defaultState);
   });
 
   it('returns the state with risk assessment questions included', () => {

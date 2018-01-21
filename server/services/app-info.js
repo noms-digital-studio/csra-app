@@ -57,7 +57,9 @@ function dynamicAppInfo() {
     return calculateHash(types[type]);
   }
 
-  return { getBuildInfo, getGitRef, getGitDate, getQuestionHash };
+  return {
+    getBuildInfo, getGitRef, getGitDate, getQuestionHash,
+  };
 }
 
 module.exports = function createAppInfoService(buildInfo) {

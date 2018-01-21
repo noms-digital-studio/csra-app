@@ -2,9 +2,7 @@ import not from 'ramda/src/not';
 import isEmpty from 'ramda/src/isEmpty';
 
 const extractReasons = (questions, answers) => {
-  const questionsWithPredicates = questions.filter(
-    question => !!question.sharedCellPredicate,
-  );
+  const questionsWithPredicates = questions.filter(question => !!question.sharedCellPredicate);
 
   const reasons = questionsWithPredicates.reduce((reasonsList, question) => {
     if (not(answers[question.section])) return reasonsList;
@@ -30,9 +28,7 @@ const extractReasons = (questions, answers) => {
 const buildQuestionAnswers = (questions, answers) =>
   Object.keys(answers).reduce((acc, sectionKey) => {
     const question = questions.find(q => q.section === sectionKey) || {};
-    const answer = Object.keys(
-      answers[sectionKey],
-    ).reduce((answerText, key) => {
+    const answer = Object.keys(answers[sectionKey]).reduce((answerText, key) => {
       if (key === 'answer') {
         return answers[sectionKey][key];
       }
@@ -44,9 +40,7 @@ const buildQuestionAnswers = (questions, answers) =>
       return answerText;
     }, '');
 
-    const comments = Object.keys(
-      answers[sectionKey],
-    ).reduce((answerText, key) => {
+    const comments = Object.keys(answers[sectionKey]).reduce((answerText, key) => {
       if (key.startsWith('reasons')) {
         return { comments: answers[sectionKey][key] };
       }
@@ -65,8 +59,9 @@ const buildQuestionAnswers = (questions, answers) =>
     };
   }, {});
 
-const buildAssessmentRequest = ({ outcome, viperScore, questions, answers },
-) => ({
+const buildAssessmentRequest = ({
+  outcome, viperScore, questions, answers,
+}) => ({
   outcome,
   viperScore,
   questions: buildQuestionAnswers(questions, answers),

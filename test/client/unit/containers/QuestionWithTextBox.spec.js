@@ -32,13 +32,11 @@ describe('<QuestionWithComments />', () => {
   });
 
   it('accepts radio button label text', () => {
-    const wrapper = mount(
-      <QuestionWithComments
-        formFields={{
+    const wrapper = mount(<QuestionWithComments
+      formFields={{
           input: { yes: { text: 'foo-text' }, no: { text: 'bar-text' } },
         }}
-      />,
-    );
+    />);
 
     expect(wrapper.find('[data-label="yes"]').text()).to.equal('foo-text');
     expect(wrapper.find('[data-label="no"]').text()).to.equal('bar-text');

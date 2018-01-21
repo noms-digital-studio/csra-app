@@ -18,9 +18,7 @@ describe('#assessmentStatusReducer', () => {
   };
 
   it('returns a default state', () => {
-    expect(assessmentStatusReducer(undefined, 'UNKNOWN_ACTION')).to.eql(
-      defaultState,
-    );
+    expect(assessmentStatusReducer(undefined, 'UNKNOWN_ACTION')).to.eql(defaultState);
   });
 
   it('adds a profile to the healthcare awaiting submission list', () => {

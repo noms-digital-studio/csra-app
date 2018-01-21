@@ -7,9 +7,9 @@ import {
 } from '../../../../client/javascript/actions';
 
 import riskAssessmentQuestions
-from '../../../../client/javascript/fixtures/risk-assessment-questions.json';
+  from '../../../../client/javascript/fixtures/risk-assessment-questions.json';
 import healthcareQuestions
-from '../../../../client/javascript/fixtures/healthcare-questions.json';
+  from '../../../../client/javascript/fixtures/healthcare-questions.json';
 
 describe('Actions', () => {
   describe('#getRiskAssessmentQuestions', () => {

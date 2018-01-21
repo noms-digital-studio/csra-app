@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const jwt = require('jsonwebtoken');
 const request = require('superagent');
 
@@ -18,49 +19,49 @@ function generateToken() {
   };
 
   // const privateKey = <Private key used to generate MoJ Token>;
-  const cert = new Buffer(privateKey);
+  const cert = Buffer.from(privateKey);
   return jwt.sign(payload, cert, { algorithm: 'ES256' });
 }
 
 
 const makeRequest = config => request
-          .post('https://noms-api-dev.dsd.io/elite2api-stage/users/login')
-          .set('Authorization', `Bearer ${generateToken()}`)
-          .send({ username: 'NREDSHAW', password: 'password123456' })
-          .then((result, error) => {
-            console.log('============================================');
-            console.log('POST -> https://noms-api-dev.dsd.io/elite2api-stage/users/login');
-            console.log(JSON.stringify(result.body, null, 2));
-            console.log('============================================');
-            console.log(' ');
+  .post('https://noms-api-dev.dsd.io/elite2api-stage/users/login')
+  .set('Authorization', `Bearer ${generateToken()}`)
+  .send({ username: 'NREDSHAW', password: 'password123456' })
+  .then((result, error) => {
+    console.log('============================================');
+    console.log('POST -> https://noms-api-dev.dsd.io/elite2api-stage/users/login');
+    console.log(JSON.stringify(result.body, null, 2));
+    console.log('============================================');
+    console.log(' ');
 
-            if (error) {
-              console.log('Error: ', error);
-            }
+    if (error) {
+      console.log('Error: ', error);
+    }
 
-            return request.get(config.url)
-            .set('Authorization', `Bearer ${generateToken()}`)
-            .set('Elite-Authorization', `${result.body.token}`)
-            // .responseType('blob')
-            .then((result2, error2) => {
-              console.log('============================================');
-              console.log('GET -> ', config.url);
-              // console.log(result2.body);
+    return request.get(config.url)
+      .set('Authorization', `Bearer ${generateToken()}`)
+      .set('Elite-Authorization', `${result.body.token}`)
+    // .responseType('blob')
+      .then((result2, error2) => {
+        console.log('============================================');
+        console.log('GET -> ', config.url);
+        // console.log(result2.body);
 
-              // const buffer = new Buffer(result2.body);
-              // const bufferBase64 = buffer.toString('base64');
+        // const buffer = new Buffer(result2.body);
+        // const bufferBase64 = buffer.toString('base64');
 
-              // console.log(bufferBase64);
+        // console.log(bufferBase64);
 
-              console.log(JSON.stringify(result2.body, null, 2));
-              console.log('============================================');
-              console.log(' ');
+        console.log(JSON.stringify(result2.body, null, 2));
+        console.log('============================================');
+        console.log(' ');
 
-              if (error) {
-                console.log('Error: ', error2);
-              }
-            });
-          });
+        if (error) {
+          console.log('Error: ', error2);
+        }
+      });
+  });
 
 
 console.log('Making request...');

@@ -34,9 +34,7 @@ describe('<QuestionWithAside />', () => {
   });
 
   it('pre-populates the forms if data is available', () => {
-    const wrapper = mount(
-      <QuestionWithAside formDefaults={{ answer: 'yes' }} />,
-    );
+    const wrapper = mount(<QuestionWithAside formDefaults={{ answer: 'yes' }} />);
 
     expect(wrapper.find('[data-input="yes"]').getDOMNode().checked).to.equal(
       true,
@@ -45,13 +43,11 @@ describe('<QuestionWithAside />', () => {
   });
 
   it('accepts radio button label text', () => {
-    const wrapper = mount(
-      <QuestionWithAside
-        formFields={{
+    const wrapper = mount(<QuestionWithAside
+      formFields={{
           input: { yes: { text: 'foo-text' }, no: { text: 'bar-text' } },
         }}
-      />,
-    );
+    />);
 
     expect(wrapper.find('[data-label="yes"]').text()).to.equal('foo-text');
     expect(wrapper.find('[data-label="no"]').text()).to.equal('bar-text');

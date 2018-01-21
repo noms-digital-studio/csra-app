@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
@@ -133,11 +134,9 @@ describe('<FullAssessmentOutcome', () => {
 
   it('renders the page without errors', () => {
     const store = fakeStore(state);
-    mount(
-      <Provider store={store}>
-        <FullAssessmentOutcome />
-      </Provider>,
-    );
+    mount(<Provider store={store}>
+      <FullAssessmentOutcome />
+    </Provider>);
   });
 
   it('stores the assessment outcome on mount', () => {
@@ -147,11 +146,9 @@ describe('<FullAssessmentOutcome', () => {
 
     putStub.onFirstCall().yields(null, { statusCode: 200 });
 
-    mount(
-      <Provider store={store}>
-        <FullAssessmentOutcome />
-      </Provider>,
-    );
+    mount(<Provider store={store}>
+      <FullAssessmentOutcome />
+    </Provider>);
 
     expect(putStub.lastCall.args[0]).to.equal('/api/assessments/1/outcome');
     expect(putStub.lastCall.args[1]).to.eql({
@@ -167,11 +164,9 @@ describe('<FullAssessmentOutcome', () => {
   it('stores the risk assessment on mount', () => {
     const store = fakeStore(state);
 
-    mount(
-      <Provider store={store}>
-        <FullAssessmentOutcome />
-      </Provider>,
-    );
+    mount(<Provider store={store}>
+      <FullAssessmentOutcome />
+    </Provider>);
 
     expect(store.dispatch.calledWithMatch({
       type: 'STORE_ASSESSMENT',
@@ -186,11 +181,9 @@ describe('<FullAssessmentOutcome', () => {
   it('stores the health assessment on mount', () => {
     const store = fakeStore(state);
 
-    mount(
-      <Provider store={store}>
-        <FullAssessmentOutcome />
-      </Provider>,
-    );
+    mount(<Provider store={store}>
+      <FullAssessmentOutcome />
+    </Provider>);
 
     expect(store.dispatch.calledWithMatch({
       type: 'STORE_ASSESSMENT',
@@ -207,18 +200,14 @@ describe('<FullAssessmentOutcome', () => {
 
     getStub.yields(null, { statusCode: 500 });
 
-    mount(
-      <Provider store={store}>
-        <FullAssessmentOutcome />
-      </Provider>,
-    );
+    mount(<Provider store={store}>
+      <FullAssessmentOutcome />
+    </Provider>);
 
-    expect(
-      store.dispatch.calledWithMatch({
-        type: '@@router/CALL_HISTORY_METHOD',
-        payload: { method: 'replace', args: ['/error'] },
-      }),
-    ).to.equal(true, 'Did not change path to /error');
+    expect(store.dispatch.calledWithMatch({
+      type: '@@router/CALL_HISTORY_METHOD',
+      payload: { method: 'replace', args: ['/error'] },
+    })).to.equal(true, 'Did not change path to /error');
   });
 
   it('navigates to an error page if it fails to store the assessment outcome', () => {
@@ -227,18 +216,14 @@ describe('<FullAssessmentOutcome', () => {
 
     putStub.onFirstCall().yields(null, { statusCode: 500 });
 
-    mount(
-      <Provider store={store}>
-        <FullAssessmentOutcome />
-      </Provider>,
-    );
+    mount(<Provider store={store}>
+      <FullAssessmentOutcome />
+    </Provider>);
 
-    expect(
-      store.dispatch.calledWithMatch({
-        type: '@@router/CALL_HISTORY_METHOD',
-        payload: { method: 'replace', args: ['/error'] },
-      }),
-    ).to.equal(true, 'Did not change path to /error');
+    expect(store.dispatch.calledWithMatch({
+      type: '@@router/CALL_HISTORY_METHOD',
+      payload: { method: 'replace', args: ['/error'] },
+    })).to.equal(true, 'Did not change path to /error');
 
     putStub.restore();
   });
@@ -246,11 +231,9 @@ describe('<FullAssessmentOutcome', () => {
 
   it('includes the prisoner profile', () => {
     const store = fakeStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <FullAssessmentOutcome />
-      </Provider>,
-    );
+    const wrapper = mount(<Provider store={store}>
+      <FullAssessmentOutcome />
+    </Provider>);
 
     const prisonerProfile = wrapper.find('[data-element-id="prisoner-profile"]').text();
 
@@ -263,11 +246,9 @@ describe('<FullAssessmentOutcome', () => {
   it('displays the reasons if outcome is shared with conditions', () => {
     const store = fakeStore(state);
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <FullAssessmentOutcome />
-      </Provider>,
-    );
+    const wrapper = mount(<Provider store={store}>
+      <FullAssessmentOutcome />
+    </Provider>);
 
     const rating = wrapper.find('[data-element-id="recommended-rating"]').text();
     const reasons = wrapper.find('[data-element-id="risk-assessment-reasons"]').text();
@@ -281,11 +262,9 @@ describe('<FullAssessmentOutcome', () => {
 
   it('renders the outcome of the assessment', () => {
     const store = fakeStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <FullAssessmentOutcome />
-      </Provider>,
-    );
+    const wrapper = mount(<Provider store={store}>
+      <FullAssessmentOutcome />
+    </Provider>);
     const outcome = wrapper.find('[data-element-id="recommended-outcome"]').text();
 
     expect(outcome).to.include('Shared cell');
@@ -293,12 +272,10 @@ describe('<FullAssessmentOutcome', () => {
 
   it('includes the risk assessment answers', () => {
     const store = fakeStore(state);
-    const questions = riskAssessment.questions;
-    const wrapper = mount(
-      <Provider store={store}>
-        <FullAssessmentOutcome />
-      </Provider>,
-    );
+    const { questions } = riskAssessment;
+    const wrapper = mount(<Provider store={store}>
+      <FullAssessmentOutcome />
+    </Provider>);
 
     const riskAssessmentSummaryText = wrapper
       .find('[data-element-id="risk-assessment-summary"]')
@@ -307,7 +284,7 @@ describe('<FullAssessmentOutcome', () => {
     Object.keys(questions).forEach((key) => {
       if (key === 'introduction') return;
 
-      const answer = questions[key].answer;
+      const { answer } = questions[key];
       const regex = new RegExp(answer, 'i');
 
       expect(riskAssessmentSummaryText).to.match(regex);
@@ -316,17 +293,15 @@ describe('<FullAssessmentOutcome', () => {
 
   it('includes the healthcare assessment answers', () => {
     const store = fakeStore(state);
-    const questions = healthcareAssessment.questions;
-    const wrapper = mount(
-      <Provider store={store}>
-        <FullAssessmentOutcome />
-      </Provider>,
-    );
+    const { questions } = healthcareAssessment;
+    const wrapper = mount(<Provider store={store}>
+      <FullAssessmentOutcome />
+    </Provider>);
 
     const healthcareSummaryText = wrapper.find('[data-element-id="health-summary"]').text();
 
     Object.keys(questions).forEach((key) => {
-      const answer = questions[key].answer;
+      const { answer } = questions[key];
       const regex = new RegExp(answer, 'i');
 
       if (key === 'assessor') {
@@ -342,11 +317,9 @@ describe('<FullAssessmentOutcome', () => {
 
   it('does not display change answer links for questions', () => {
     const store = fakeStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <FullAssessmentOutcome />
-      </Provider>,
-    );
+    const wrapper = mount(<Provider store={store}>
+      <FullAssessmentOutcome />
+    </Provider>);
 
     const changeLinks = wrapper.find('[data-element-id="change-answer-link"]');
 
@@ -356,20 +329,16 @@ describe('<FullAssessmentOutcome', () => {
   it('navigates to the full assessment complete page on form submission', () => {
     const store = fakeStore(state);
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <FullAssessmentOutcome />
-      </Provider>,
-    );
+    const wrapper = mount(<Provider store={store}>
+      <FullAssessmentOutcome />
+    </Provider>);
 
     wrapper.find('form').simulate('submit');
 
-    expect(
-      store.dispatch.calledWithMatch({
-        type: '@@router/CALL_HISTORY_METHOD',
-        payload: { method: 'replace', args: ['/dashboard'] },
-      }),
-    ).to.equal(true, 'Changed path to /dashboard');
+    expect(store.dispatch.calledWithMatch({
+      type: '@@router/CALL_HISTORY_METHOD',
+      payload: { method: 'replace', args: ['/dashboard'] },
+    })).to.equal(true, 'Changed path to /dashboard');
   });
 
   context('when the assessment has already been completed', () => {
@@ -383,11 +352,9 @@ describe('<FullAssessmentOutcome', () => {
     it('does not allow users to complete the assessment again', () => {
       const store = fakeStore(stateWithOutcomes);
 
-      const wrapper = mount(
-        <Provider store={store}>
-          <FullAssessmentOutcome />
-        </Provider>,
-      );
+      const wrapper = mount(<Provider store={store}>
+        <FullAssessmentOutcome />
+      </Provider>);
 
       expect(wrapper.find('form').length).to.equal(0);
     });
@@ -395,22 +362,18 @@ describe('<FullAssessmentOutcome', () => {
     it('allow the user to return to the dashboard', () => {
       const store = fakeStore(stateWithOutcomes);
 
-      const wrapper = mount(
-        <Provider store={store}>
-          <FullAssessmentOutcome />
-        </Provider>,
-      );
+      const wrapper = mount(<Provider store={store}>
+        <FullAssessmentOutcome />
+      </Provider>);
 
       expect(wrapper.find('[data-element-id="continue-button"]').length).to.eql(1);
 
       wrapper.find('[data-element-id="continue-button"]').simulate('click');
 
-      expect(
-        store.dispatch.calledWithMatch({
-          type: '@@router/CALL_HISTORY_METHOD',
-          payload: { method: 'replace', args: ['/dashboard'] },
-        }),
-      ).to.equal(true, 'Did not change path to /dashboard');
+      expect(store.dispatch.calledWithMatch({
+        type: '@@router/CALL_HISTORY_METHOD',
+        payload: { method: 'replace', args: ['/dashboard'] },
+      })).to.equal(true, 'Did not change path to /dashboard');
     });
   });
 });

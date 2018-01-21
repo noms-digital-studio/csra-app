@@ -106,7 +106,8 @@ describe('GET /health', () => {
         .reply(200, { status: 'UP' });
     });
 
-    it('responds with 500 { status: "ERROR" } and check detail',
+    it(
+      'responds with 500 { status: "ERROR" } and check detail',
       () => request(app)
         .get('/health')
         .expect(500)
@@ -135,7 +136,8 @@ describe('GET /health', () => {
         .reply(200, { status: 'UP' });
     });
 
-    it('adds the build info into the status response',
+    it(
+      'adds the build info into the status response',
       () => request(app)
         .get('/health')
         .expect(200)

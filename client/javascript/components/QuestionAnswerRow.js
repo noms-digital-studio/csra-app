@@ -17,7 +17,7 @@ const ChangeAnswerColumn = ({
   if (withChangeAnswer) {
     return (
       <td className="change-answer">
-        <Link to={changeAnswerLink} data-element-id="change-answer-link">
+        <Link href={false} to={changeAnswerLink} data-element-id="change-answer-link">
           Change <span className="visuallyhidden">{question}</span>
         </Link>
       </td>
@@ -53,15 +53,15 @@ const QuestionAnswerRow = ({
     </td>
 
     <ChangeAnswerColumn
-      {...{ withChangeAnswer, question, changeAnswerLink, tableHasChangeAnswers }}
+      {...{
+ withChangeAnswer, question, changeAnswerLink, tableHasChangeAnswers,
+}}
     />
   </tr>
-  ) : null;
+) : null;
 
 QuestionAnswerRow.propTypes = {
   question: PropTypes.string,
-  tableHasChangeAnswers: PropTypes.bool,
-  withChangeAnswer: PropTypes.bool,
   changeAnswerLink: PropTypes.string,
   answer: PropTypes.shape({
     answer: PropTypes.string,
@@ -73,6 +73,7 @@ QuestionAnswerRow.defaultProps = {
   question: '',
   answer: {},
   dataTags: {},
+  changeAnswerLink: '',
 };
 
 export default QuestionAnswerRow;

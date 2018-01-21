@@ -57,8 +57,7 @@ describe('app-info service', () => {
     });
     it('provides all build info', () => {
       const info = appInfo.getBuildInfo();
-      expect(info).to.have.keys(
-        'buildNumber', 'gitRef', 'gitDate', 'questionHash');
+      expect(info).to.have.keys('buildNumber', 'gitRef', 'gitDate', 'questionHash');
       expect(info.questionHash).to.have.keys('risk', 'healthcare');
     });
     it('provides gitRef from .git', () => {

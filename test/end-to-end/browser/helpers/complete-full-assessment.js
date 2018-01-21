@@ -64,9 +64,7 @@ const viewFullOutcomeForPrisoner = (config = defaultFullAssessmentConfig) => {
 
   DashboardPage.viewFullOutcomeFor(config.prisoner.nomisId);
 
-  expect(FullAssessmentOutcomePage.waitForMainHeadingWithDataId('full-outcome')).to.equal(
-    'Assessment complete',
-  );
+  expect(FullAssessmentOutcomePage.waitForMainHeadingWithDataId('full-outcome')).to.equal('Assessment complete');
 
   expect(FullAssessmentOutcomePage.prisonerName).to.equalIgnoreCase(config.prisoner.name);
   expect(FullAssessmentOutcomePage.prisonerDob).to.equalIgnoreCase(config.prisoner.dateOfBirth);

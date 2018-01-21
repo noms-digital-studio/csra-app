@@ -61,13 +61,11 @@ const state = {
   },
 };
 
-const mountApp = store => mount(
-  <Provider store={store}>
-    <Router>
-      <HealthcareSummary />
-    </Router>
-  </Provider>,
-);
+const mountApp = store => mount(<Provider store={store}>
+  <Router>
+    <HealthcareSummary />
+  </Router>
+</Provider>); // eslint-disable-line react/jsx-closing-tag-location
 
 describe('<HealthcareSummary />', () => {
   let putStub;
@@ -103,12 +101,10 @@ describe('<HealthcareSummary />', () => {
 
         mountApp(store);
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: 'HEALTHCARE_ANSWERS_COMPLETE',
-            payload: { assessmentId: 1 },
-          }),
-        ).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
+        expect(store.dispatch.calledWithMatch({
+          type: 'HEALTHCARE_ANSWERS_COMPLETE',
+          payload: { assessmentId: 1 },
+        })).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
       });
     });
 
@@ -158,12 +154,10 @@ describe('<HealthcareSummary />', () => {
         const wrapper = mountApp(store);
         const healthcareOutcome = wrapper.find('[data-element-id="healthcare-outcome"]').text();
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: 'STORE_ASSESSMENT_OUTCOME',
-            payload: { assessmentType: 'healthcare', id: 1, outcome: 'single cell' },
-          }),
-        ).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
+        expect(store.dispatch.calledWithMatch({
+          type: 'STORE_ASSESSMENT_OUTCOME',
+          payload: { assessmentType: 'healthcare', id: 1, outcome: 'single cell' },
+        })).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
 
         expect(healthcareOutcome).to.contain('Single cell');
       });
@@ -195,12 +189,10 @@ describe('<HealthcareSummary />', () => {
         const wrapper = mountApp(store);
         const healthcareOutcome = wrapper.find('[data-element-id="healthcare-outcome"]').text();
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: 'STORE_ASSESSMENT_OUTCOME',
-            payload: { assessmentType: 'healthcare', id: 1, outcome: 'shared cell' },
-          }),
-        ).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
+        expect(store.dispatch.calledWithMatch({
+          type: 'STORE_ASSESSMENT_OUTCOME',
+          payload: { assessmentType: 'healthcare', id: 1, outcome: 'shared cell' },
+        })).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
 
         expect(healthcareOutcome).to.contain('Shared cell');
       });
@@ -277,13 +269,9 @@ describe('<HealthcareSummary />', () => {
     it('displays a message informing the user that they have to complete the risk assessment', () => {
       const wrapper = mountApp(store);
 
-      expect(wrapper.find('[data-summary-next-steps]').text()).to.contain(
-        'You must now complete the risk assessment questions to get a cell sharing outcome.',
-      );
+      expect(wrapper.find('[data-summary-next-steps]').text()).to.contain('You must now complete the risk assessment questions to get a cell sharing outcome.');
 
-      expect(wrapper.find('[data-summary-next-steps] button').text()).to.equal(
-        'Finish assessment',
-      );
+      expect(wrapper.find('[data-summary-next-steps] button').text()).to.equal('Finish assessment');
     });
 
     it('on submission it navigates to the prisoner list', () => {
@@ -298,12 +286,10 @@ describe('<HealthcareSummary />', () => {
 
       expect(wrapper.find('button[type="submit"]').getDOMNode().disabled).to.equal(true);
 
-      expect(
-        store.dispatch.calledWithMatch({
-          type: '@@router/CALL_HISTORY_METHOD',
-          payload: { method: 'replace', args: ['/prisoner-list'] },
-        }),
-      ).to.equal(true, 'Changed path to /prisoner-list');
+      expect(store.dispatch.calledWithMatch({
+        type: '@@router/CALL_HISTORY_METHOD',
+        payload: { method: 'replace', args: ['/prisoner-list'] },
+      })).to.equal(true, 'Changed path to /prisoner-list');
     });
 
     it('on submission it navigates to the error page when it fails to PUT the assessment', () => {
@@ -314,12 +300,10 @@ describe('<HealthcareSummary />', () => {
 
       wrapper.find('form').simulate('submit');
 
-      expect(
-        store.dispatch.calledWithMatch({
-          type: '@@router/CALL_HISTORY_METHOD',
-          payload: { method: 'replace', args: ['/error'] },
-        }),
-      ).to.equal(true, 'Changed path to /error');
+      expect(store.dispatch.calledWithMatch({
+        type: '@@router/CALL_HISTORY_METHOD',
+        payload: { method: 'replace', args: ['/error'] },
+      })).to.equal(true, 'Changed path to /error');
     });
 
     it('on submission it navigates to the error page when it fails to get an assessment', () => {
@@ -330,12 +314,10 @@ describe('<HealthcareSummary />', () => {
 
       wrapper.find('form').simulate('submit');
 
-      expect(
-        store.dispatch.calledWithMatch({
-          type: '@@router/CALL_HISTORY_METHOD',
-          payload: { method: 'replace', args: ['/error'] },
-        }),
-      ).to.equal(true, 'Changed path to /error');
+      expect(store.dispatch.calledWithMatch({
+        type: '@@router/CALL_HISTORY_METHOD',
+        payload: { method: 'replace', args: ['/error'] },
+      })).to.equal(true, 'Changed path to /error');
     });
   });
 
@@ -357,9 +339,7 @@ describe('<HealthcareSummary />', () => {
     it('displays a message informing the user that they can see their assessment outcome', () => {
       const wrapper = mountApp(store);
 
-      expect(wrapper.find('[data-summary-next-steps] button').text()).to.equal(
-        'Finish assessment',
-      );
+      expect(wrapper.find('[data-summary-next-steps] button').text()).to.equal('Finish assessment');
     });
 
     it('on submission it navigates to the full assessment page', () => {
@@ -370,12 +350,10 @@ describe('<HealthcareSummary />', () => {
 
       wrapper.find('form').simulate('submit');
 
-      expect(
-        store.dispatch.calledWithMatch({
-          type: '@@router/CALL_HISTORY_METHOD',
-          payload: { method: 'replace', args: ['/full-assessment-outcome'] },
-        }),
-      ).to.equal(true, 'Changed path to /full-assessment-outcome');
+      expect(store.dispatch.calledWithMatch({
+        type: '@@router/CALL_HISTORY_METHOD',
+        payload: { method: 'replace', args: ['/full-assessment-outcome'] },
+      })).to.equal(true, 'Changed path to /full-assessment-outcome');
     });
   });
 
@@ -422,12 +400,10 @@ describe('<HealthcareSummary />', () => {
 
       wrapper.find('[data-element-id="continue-button"]').simulate('click');
 
-      expect(
-        store.dispatch.calledWithMatch({
-          type: '@@router/CALL_HISTORY_METHOD',
-          payload: { method: 'push', args: ['/dashboard'] },
-        }),
-      ).to.equal(true, 'Changed path to /dashboard');
+      expect(store.dispatch.calledWithMatch({
+        type: '@@router/CALL_HISTORY_METHOD',
+        payload: { method: 'push', args: ['/dashboard'] },
+      })).to.equal(true, 'Changed path to /dashboard');
     });
   });
 });

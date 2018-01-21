@@ -9,13 +9,11 @@ import { fakeStore } from '../test-helpers';
 import ConnectedAddPrisoner from '../../../../client/javascript/pages/AddPrisoner';
 
 
-const mountApp = store => mount(
-  <Provider store={store}>
-    <Router>
-      <ConnectedAddPrisoner />
-    </Router>
-  </Provider>,
-);
+const mountApp = store => mount(<Provider store={store}>
+  <Router>
+    <ConnectedAddPrisoner />
+  </Router>
+</Provider>); // eslint-disable-line react/jsx-closing-tag-location
 
 const bookings = [{
   bookingId: 123,
@@ -111,12 +109,10 @@ describe('<AddPrisoner />', () => {
 
           button.simulate('click');
 
-          expect(
-            store.dispatch.calledWithMatch({
-              type: '@@router/CALL_HISTORY_METHOD',
-              payload: { method: 'replace', args: ['/prisoner-list'] },
-            }),
-          ).to.equal(true, 'did not navigate to /prisoner-list');
+          expect(store.dispatch.calledWithMatch({
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: { method: 'replace', args: ['/prisoner-list'] },
+          })).to.equal(true, 'did not navigate to /prisoner-list');
         });
 
         context('and an error occurs', () => {
@@ -135,12 +131,10 @@ describe('<AddPrisoner />', () => {
 
             button.simulate('click');
 
-            expect(
-              store.dispatch.calledWithMatch({
-                type: '@@router/CALL_HISTORY_METHOD',
-                payload: { method: 'replace', args: ['/error'] },
-              }),
-            ).to.equal(true, 'did not navigate to /error');
+            expect(store.dispatch.calledWithMatch({
+              type: '@@router/CALL_HISTORY_METHOD',
+              payload: { method: 'replace', args: ['/error'] },
+            })).to.equal(true, 'did not navigate to /error');
           });
         });
       });

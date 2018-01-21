@@ -42,11 +42,9 @@ describe('<HealthcareAssessor />', () => {
       year: '1991',
     };
 
-    const wrapper = mount(
-      <HealthcareAssessor
-        formDefaults={{ answer: 'foo-role, foo-name, 1-11-1991' }}
-      />,
-    );
+    const wrapper = mount(<HealthcareAssessor
+      formDefaults={{ answer: 'foo-role, foo-name, 1-11-1991' }}
+    />);
 
     Object.keys(formDefaults).forEach((key) => {
       expect(wrapper.find(`[data-element-id="${key}"]`).getDOMNode().value).to.equal(

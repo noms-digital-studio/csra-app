@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === 'test') {
   const stubbedLogger = {
     info: noop,
     warn: noop,
-    error: console.trace,
+    error: console.trace, // eslint-disable-line no-console
   };
 
   module.exports = {

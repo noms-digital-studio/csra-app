@@ -25,13 +25,11 @@ const storeData = {
   },
 };
 
-const mountApp = store => mount(
-  <Provider store={store}>
-    <Router>
-      <ConnectedOffenderProfile />
-    </Router>
-  </Provider>,
-);
+const mountApp = store => mount(<Provider store={store}>
+  <Router>
+    <ConnectedOffenderProfile />
+  </Router>
+</Provider>); // eslint-disable-line react/jsx-closing-tag-location
 
 describe('<OffenderProfile />', () => {
   context('Connected OffenderProfile', () => {
@@ -66,16 +64,14 @@ describe('<OffenderProfile />', () => {
 
         wrapper.find('[data-element-id="continue-button"]').simulate('click');
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: 'START_ASSESSMENT',
-            payload: {
-              id: 1,
-              assessmentType: 'risk',
-              viperScore: 0.1,
-            },
-          }),
-        ).to.equal(true, 'did not trigger START_ASSESSMENT');
+        expect(store.dispatch.calledWithMatch({
+          type: 'START_ASSESSMENT',
+          payload: {
+            id: 1,
+            assessmentType: 'risk',
+            viperScore: 0.1,
+          },
+        })).to.equal(true, 'did not trigger START_ASSESSMENT');
       });
 
       it('navigate to the first question', () => {
@@ -85,15 +81,13 @@ describe('<OffenderProfile />', () => {
 
         wrapper.find('[data-element-id="continue-button"]').simulate('click');
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: '@@router/CALL_HISTORY_METHOD',
-            payload: {
-              method: 'push',
-              args: ['/risk-assessment/introduction'],
-            },
-          }),
-        ).to.equal(true, 'did not change path to /risk-assessment/introduction');
+        expect(store.dispatch.calledWithMatch({
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            method: 'push',
+            args: ['/risk-assessment/introduction'],
+          },
+        })).to.equal(true, 'did not change path to /risk-assessment/introduction');
       });
 
       context('and the assessment question have already been answered but not submitted', () => {
@@ -112,15 +106,13 @@ describe('<OffenderProfile />', () => {
 
           wrapper.find('[data-element-id="continue-button"]').simulate('click');
 
-          expect(
-            newStore.dispatch.calledWithMatch({
-              type: '@@router/CALL_HISTORY_METHOD',
-              payload: {
-                method: 'push',
-                args: ['/risk-assessment-summary'],
-              },
-            }),
-          ).to.equal(true, 'did not change path to /risk-assessment-summary');
+          expect(newStore.dispatch.calledWithMatch({
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              method: 'push',
+              args: ['/risk-assessment-summary'],
+            },
+          })).to.equal(true, 'did not change path to /risk-assessment-summary');
         });
       });
     });

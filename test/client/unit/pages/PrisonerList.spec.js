@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-closing-tag-location */
+
 import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter as Router } from 'react-router-dom';
@@ -98,13 +100,11 @@ const assertGivenValuesInWhiteListAreInPage = (list, whiteList, component) => {
   });
 };
 
-const mountApp = store => mount(
-  <Provider store={store}>
-    <Router>
-      <ConnectedPrisonerList />
-    </Router>
-  </Provider>,
-);
+const mountApp = store => mount(<Provider store={store}>
+  <Router>
+    <ConnectedPrisonerList />
+  </Router>
+</Provider>);
 
 xdescribe('<PrisonerList />', () => {
   describe('Connected PrisonerList', () => {
@@ -125,12 +125,10 @@ xdescribe('<PrisonerList />', () => {
 
       mountApp(store);
 
-      expect(
-        store.dispatch.calledWithMatch({
-          type: 'GET_OFFENDER_ASSESSMENTS',
-          payload: assessments,
-        }),
-      ).to.equal(true, 'did not call GET_OFFENDER_ASSESSMENTS action');
+      expect(store.dispatch.calledWithMatch({
+        type: 'GET_OFFENDER_ASSESSMENTS',
+        payload: assessments,
+      })).to.equal(true, 'did not call GET_OFFENDER_ASSESSMENTS action');
     });
 
     it('renders the correct number of assessments rows', () => {
@@ -144,11 +142,9 @@ xdescribe('<PrisonerList />', () => {
     it('renders the correct profile information per row', () => {
       const whitelist = ['nomisId', 'surname', 'forename', 'dateOfBirth'];
       const store = fakeStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <ConnectedPrisonerList />
-        </Provider>,
-      );
+      const wrapper = mount(<Provider store={store}>
+        <ConnectedPrisonerList />
+      </Provider>);
 
       assertGivenValuesInWhiteListAreInPage(filteredAssessments, whitelist, wrapper);
     });
@@ -163,11 +159,9 @@ xdescribe('<PrisonerList />', () => {
 
     it('displays a completed health assessments', () => {
       const store = fakeStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <ConnectedPrisonerList />
-        </Provider>,
-      );
+      const wrapper = mount(<Provider store={store}>
+        <ConnectedPrisonerList />
+      </Provider>);
       const column = wrapper.find('[data-health-assessment-complete=true]');
       expect(column.length).to.equal(2);
       expect(column.first().text()).to.equal('Complete');
@@ -175,11 +169,9 @@ xdescribe('<PrisonerList />', () => {
 
     it('displays the cell sharing assessment for a completed prisoner assessment', () => {
       const store = fakeStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <ConnectedPrisonerList />
-        </Provider>,
-      );
+      const wrapper = mount(<Provider store={store}>
+        <ConnectedPrisonerList />
+      </Provider>);
       const row = wrapper.find('[data-assessments-complete=true]');
 
       expect(row.length).to.equal(1);
@@ -190,28 +182,22 @@ xdescribe('<PrisonerList />', () => {
     context('When a healthcare assessment is incomplete', () => {
       it('responds to the selection of an incomplete health assessment by navigation to the first question', () => {
         const store = fakeStore(state);
-        const wrapper = mount(
-          <Provider store={store}>
-            <ConnectedPrisonerList />
-          </Provider>,
-        );
+        const wrapper = mount(<Provider store={store}>
+          <ConnectedPrisonerList />
+        </Provider>);
         const profileBtn = wrapper.find('[data-health-assessment-complete=false] > button');
 
         profileBtn.simulate('click');
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: 'SELECT_OFFENDER',
-            payload: assessments[2],
-          }),
-        ).to.equal(true, 'SELECT_OFFENDER dispatch');
+        expect(store.dispatch.calledWithMatch({
+          type: 'SELECT_OFFENDER',
+          payload: assessments[2],
+        })).to.equal(true, 'SELECT_OFFENDER dispatch');
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: '@@router/CALL_HISTORY_METHOD',
-            payload: { method: 'push', args: ['/healthcare-assessment/outcome'] },
-          }),
-        ).to.equal(true, 'dispatch /healthcare-assessment/outcome');
+        expect(store.dispatch.calledWithMatch({
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: { method: 'push', args: ['/healthcare-assessment/outcome'] },
+        })).to.equal(true, 'dispatch /healthcare-assessment/outcome');
       });
 
       context(
@@ -226,23 +212,19 @@ xdescribe('<PrisonerList />', () => {
                 },
               },
             });
-            const wrapper = mount(
-              <Provider store={newStore}>
-                <ConnectedPrisonerList />
-              </Provider>,
-            );
+            const wrapper = mount(<Provider store={newStore}>
+              <ConnectedPrisonerList />
+            </Provider>);
 
             wrapper.find('[data-health-assessment-complete=false] > button').first().simulate('click');
 
-            expect(
-              newStore.dispatch.calledWithMatch({
-                type: '@@router/CALL_HISTORY_METHOD',
-                payload: {
-                  method: 'push',
-                  args: ['/healthcare-summary'],
-                },
-              }),
-            ).to.equal(true, 'did not change path to /healthcare-summary');
+            expect(newStore.dispatch.calledWithMatch({
+              type: '@@router/CALL_HISTORY_METHOD',
+              payload: {
+                method: 'push',
+                args: ['/healthcare-summary'],
+              },
+            })).to.equal(true, 'did not change path to /healthcare-summary');
           });
         },
       );
@@ -253,11 +235,9 @@ xdescribe('<PrisonerList />', () => {
       () => {
         it('prevent a risk assessment from being started', () => {
           const store = fakeStore(state);
-          const wrapper = mount(
-            <Provider store={store}>
-              <ConnectedPrisonerList />
-            </Provider>,
-          );
+          const wrapper = mount(<Provider store={store}>
+            <ConnectedPrisonerList />
+          </Provider>);
           const profileBtn = wrapper.first().find('[data-risk-assessment-complete=false] > button');
 
           getStub
@@ -268,21 +248,17 @@ xdescribe('<PrisonerList />', () => {
 
           expect(getStub.callCount).to.equal(2);
 
-          expect(
-            store.dispatch.calledWithMatch({
-              type: '@@router/CALL_HISTORY_METHOD',
-              payload: { method: 'replace', args: ['/error'] },
-            }),
-          ).to.equal(true, 'did not dispatch /error');
+          expect(store.dispatch.calledWithMatch({
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: { method: 'replace', args: ['/error'] },
+          })).to.equal(true, 'did not dispatch /error');
         });
 
         it('prevent a health assessment from being started', () => {
           const store = fakeStore(state);
-          const wrapper = mount(
-            <Provider store={store}>
-              <ConnectedPrisonerList />
-            </Provider>,
-          );
+          const wrapper = mount(<Provider store={store}>
+            <ConnectedPrisonerList />
+          </Provider>);
           const profileBtn = wrapper.find('[data-health-assessment-complete=false] > button');
 
           getStub
@@ -293,12 +269,10 @@ xdescribe('<PrisonerList />', () => {
 
           expect(getStub.callCount).to.equal(2);
 
-          expect(
-            store.dispatch.calledWithMatch({
-              type: '@@router/CALL_HISTORY_METHOD',
-              payload: { method: 'replace', args: ['/error'] },
-            }),
-          ).to.equal(true, 'did not dispatch /error');
+          expect(store.dispatch.calledWithMatch({
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: { method: 'replace', args: ['/error'] },
+          })).to.equal(true, 'did not dispatch /error');
         });
       },
     );

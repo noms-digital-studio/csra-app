@@ -11,7 +11,7 @@ module.exports = function createRouter(viperService, authenticationMiddleware) {
   const router = express.Router();
 
   router.get('/:nomisId', authenticationMiddleware(), (req, res) => {
-    const nomisId = req.params.nomisId;
+    const { nomisId } = req.params;
 
     viperService.rating(nomisId)
       .then((viperRating) => {

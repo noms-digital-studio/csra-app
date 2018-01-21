@@ -78,13 +78,11 @@ const state = {
   },
 };
 
-const mountApp = store => mount(
-  <Provider store={store}>
-    <Router>
-      <RiskAssessmentSummary />
-    </Router>
-  </Provider>,
-);
+const mountApp = store => mount(<Provider store={store}>
+  <Router>
+    <RiskAssessmentSummary />
+  </Router>
+</Provider>); // eslint-disable-line react/jsx-closing-tag-location
 
 describe('<RiskAssessmentSummary />', () => {
   let putStub;
@@ -125,12 +123,10 @@ describe('<RiskAssessmentSummary />', () => {
 
           mountApp(store);
 
-          expect(
-            store.dispatch.calledWithMatch({
-              type: 'RISK_ANSWERS_COMPLETE',
-              payload: { assessmentId: 1 },
-            }),
-          ).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
+          expect(store.dispatch.calledWithMatch({
+            type: 'RISK_ANSWERS_COMPLETE',
+            payload: { assessmentId: 1 },
+          })).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
         });
       });
 
@@ -181,12 +177,10 @@ describe('<RiskAssessmentSummary />', () => {
         const riskText = wrapper.find('[data-element-id="risk-assessment-risk"]').text();
         const reasonsText = wrapper.find('[data-element-id="risk-assessment-reasons"]');
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: 'STORE_ASSESSMENT_OUTCOME',
-            payload: { assessmentType: 'risk', id: 1, outcome: 'shared cell' },
-          }),
-        ).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
+        expect(store.dispatch.calledWithMatch({
+          type: 'STORE_ASSESSMENT_OUTCOME',
+          payload: { assessmentType: 'risk', id: 1, outcome: 'shared cell' },
+        })).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
 
         expect(outcomeText).to.contain('Shared cell');
         expect(riskText).to.contain('Standard');
@@ -238,32 +232,28 @@ describe('<RiskAssessmentSummary />', () => {
         const riskText = wrapper.find('[data-element-id="risk-assessment-risk"]').text();
         const reasonsText = wrapper.find('[data-element-id="risk-assessment-reasons"]').text();
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: 'STORE_ASSESSMENT_OUTCOME',
-            payload: { assessmentType: 'risk', id: 1, outcome: 'shared cell with conditions' },
-          }),
-        ).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
+        expect(store.dispatch.calledWithMatch({
+          type: 'STORE_ASSESSMENT_OUTCOME',
+          payload: { assessmentType: 'risk', id: 1, outcome: 'shared cell with conditions' },
+        })).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: 'STORE_ASSESSMENT_REASONS',
-            payload: {
-              assessmentType: 'risk',
-              id: 1,
-              reasons: [
-                {
-                  questionId: 'gang-affiliation',
-                  reason: 'Has indicated gang affiliation',
-                },
-                {
-                  questionId: 'drug-misuse',
-                  reason: 'Has indicated drug use',
-                },
-              ],
-            },
-          }),
-        ).to.equal(true, 'did not triggered STORE_ASSESSMENT_REASONS');
+        expect(store.dispatch.calledWithMatch({
+          type: 'STORE_ASSESSMENT_REASONS',
+          payload: {
+            assessmentType: 'risk',
+            id: 1,
+            reasons: [
+              {
+                questionId: 'gang-affiliation',
+                reason: 'Has indicated gang affiliation',
+              },
+              {
+                questionId: 'drug-misuse',
+                reason: 'Has indicated drug use',
+              },
+            ],
+          },
+        })).to.equal(true, 'did not triggered STORE_ASSESSMENT_REASONS');
 
         expect(outcomeText).to.contain('Shared cell with conditions');
         expect(riskText).to.contain('Standard');
@@ -309,28 +299,24 @@ describe('<RiskAssessmentSummary />', () => {
         const riskText = wrapper.find('[data-element-id="risk-assessment-risk"]').text();
         const reasonsText = wrapper.find('[data-element-id="risk-assessment-reasons"]').text();
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: 'STORE_ASSESSMENT_REASONS',
-            payload: {
-              assessmentType: 'risk',
-              id: 1,
-              reasons: [
-                {
-                  questionId: 'harm-cell-mate',
-                  reason: 'Officer thinks they might seriously hurt cellmate',
-                },
-              ],
-            },
-          }),
-        ).to.equal(true, 'did not triggered STORE_ASSESSMENT_REASONS');
+        expect(store.dispatch.calledWithMatch({
+          type: 'STORE_ASSESSMENT_REASONS',
+          payload: {
+            assessmentType: 'risk',
+            id: 1,
+            reasons: [
+              {
+                questionId: 'harm-cell-mate',
+                reason: 'Officer thinks they might seriously hurt cellmate',
+              },
+            ],
+          },
+        })).to.equal(true, 'did not triggered STORE_ASSESSMENT_REASONS');
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: 'STORE_ASSESSMENT_OUTCOME',
-            payload: { assessmentType: 'risk', id: 1, outcome: 'single cell' },
-          }),
-        ).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
+        expect(store.dispatch.calledWithMatch({
+          type: 'STORE_ASSESSMENT_OUTCOME',
+          payload: { assessmentType: 'risk', id: 1, outcome: 'single cell' },
+        })).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
 
         expect(outcomeText).to.contain('Single cell');
         expect(riskText).to.contain('High');
@@ -362,23 +348,19 @@ describe('<RiskAssessmentSummary />', () => {
         const riskText = wrapper.find('[data-element-id="risk-assessment-risk"]').text();
         const reasonsText = wrapper.find('[data-element-id="risk-assessment-reasons"]').text();
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: 'STORE_ASSESSMENT_REASONS',
-            payload: {
-              assessmentType: 'risk',
-              id: 1,
-              reasons: [{ questionId: 'risk-of-violence', reason: 'has a high viper score' }],
-            },
-          }),
-        ).to.equal(true, 'did not triggered STORE_ASSESSMENT_REASONS');
+        expect(store.dispatch.calledWithMatch({
+          type: 'STORE_ASSESSMENT_REASONS',
+          payload: {
+            assessmentType: 'risk',
+            id: 1,
+            reasons: [{ questionId: 'risk-of-violence', reason: 'has a high viper score' }],
+          },
+        })).to.equal(true, 'did not triggered STORE_ASSESSMENT_REASONS');
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: 'STORE_ASSESSMENT_OUTCOME',
-            payload: { assessmentType: 'risk', id: 1, outcome: 'single cell' },
-          }),
-        ).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
+        expect(store.dispatch.calledWithMatch({
+          type: 'STORE_ASSESSMENT_OUTCOME',
+          payload: { assessmentType: 'risk', id: 1, outcome: 'single cell' },
+        })).to.equal(true, 'did not triggered STORE_ASSESSMENT_OUTCOME');
 
         expect(outcomeText).to.contain('Single cell');
         expect(riskText).to.contain('High');
@@ -425,11 +407,9 @@ describe('<RiskAssessmentSummary />', () => {
         it('does not display the `what happens next section`', () => {
           getStub.yields(null, { status: 200 }, { riskAssessment });
 
-          const wrapper = mount(
-            <Provider store={store}>
-              <RiskAssessmentSummary />
-            </Provider>,
-          );
+          const wrapper = mount(<Provider store={store}>
+            <RiskAssessmentSummary />
+          </Provider>); // eslint-disable-line react/jsx-closing-tag-location
 
           expect(wrapper.text()).to.not.include('What happens next?');
         });
@@ -441,12 +421,10 @@ describe('<RiskAssessmentSummary />', () => {
 
           wrapper.find('[data-element-id="continue-button"]').simulate('click');
 
-          expect(
-            store.dispatch.calledWithMatch({
-              type: '@@router/CALL_HISTORY_METHOD',
-              payload: { method: 'push', args: ['/dashboard'] },
-            }),
-          ).to.equal(true, 'Changed path to /dashboard');
+          expect(store.dispatch.calledWithMatch({
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: { method: 'push', args: ['/dashboard'] },
+          })).to.equal(true, 'Changed path to /dashboard');
         });
       });
     });
@@ -456,17 +434,11 @@ describe('<RiskAssessmentSummary />', () => {
         const store = fakeStore(state);
         const wrapper = mountApp(store);
 
-        expect(wrapper.find('[data-element-id="assessment-results"]').text()).to.contain(
-          'Both the risk and allocation recommendation',
-        );
+        expect(wrapper.find('[data-element-id="assessment-results"]').text()).to.contain('Both the risk and allocation recommendation');
 
-        expect(wrapper.find('[data-summary-next-steps]').text()).to.contain(
-          'You must print a copy of this summary for healthcare.',
-        );
+        expect(wrapper.find('[data-summary-next-steps]').text()).to.contain('You must print a copy of this summary for healthcare.');
 
-        expect(wrapper.find('[data-element-id="continue-button"]').text()).to.equal(
-          'Finish assessment',
-        );
+        expect(wrapper.find('[data-element-id="continue-button"]').text()).to.equal('Finish assessment');
       });
 
       it('on submission it navigates to the prisoner list', () => {
@@ -477,28 +449,22 @@ describe('<RiskAssessmentSummary />', () => {
         getStub.yields(null, { statusCode: 200 }, { healthAssessment: null });
         putStub.yields(null, { statusCode: 200 }, { foo: 'bar' });
 
-        expect(
-          wrapper
-            .find('button[type="submit"]')
-            .getDOMNode()
-            .disabled,
-        ).to.equal(false);
+        expect(wrapper
+          .find('button[type="submit"]')
+          .getDOMNode()
+          .disabled).to.equal(false);
 
         wrapper.find('form').simulate('submit');
 
-        expect(
-          wrapper
-            .find('button[type="submit"]')
-            .getDOMNode()
-            .disabled,
-        ).to.equal(true);
+        expect(wrapper
+          .find('button[type="submit"]')
+          .getDOMNode()
+          .disabled).to.equal(true);
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: '@@router/CALL_HISTORY_METHOD',
-            payload: { method: 'replace', args: ['/dashboard'] },
-          }),
-        ).to.equal(true, 'Changed path to /dashboard');
+        expect(store.dispatch.calledWithMatch({
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: { method: 'replace', args: ['/dashboard'] },
+        })).to.equal(true, 'Changed path to /dashboard');
       });
 
       it('navigates to the error page on form submission when it fails to PUT the assessment', () => {
@@ -511,12 +477,10 @@ describe('<RiskAssessmentSummary />', () => {
 
         wrapper.find('form').simulate('submit');
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: '@@router/CALL_HISTORY_METHOD',
-            payload: { method: 'replace', args: ['/error'] },
-          }),
-        ).to.equal(true, 'Changed path to /error');
+        expect(store.dispatch.calledWithMatch({
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: { method: 'replace', args: ['/error'] },
+        })).to.equal(true, 'Changed path to /error');
       });
 
       it('navigates to the error page on form submission when it fails to GET the latests assessment', () => {
@@ -528,12 +492,10 @@ describe('<RiskAssessmentSummary />', () => {
 
         wrapper.find('form').simulate('submit');
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: '@@router/CALL_HISTORY_METHOD',
-            payload: { method: 'replace', args: ['/error'] },
-          }),
-        ).to.equal(true, 'Changed path to /error');
+        expect(store.dispatch.calledWithMatch({
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: { method: 'replace', args: ['/error'] },
+        })).to.equal(true, 'Changed path to /error');
       });
     });
 
@@ -550,13 +512,9 @@ describe('<RiskAssessmentSummary />', () => {
         const store = fakeStore(stateWithCompletedHealthcare);
         const wrapper = mountApp(store);
 
-        expect(wrapper.find('[data-element-id="assessment-results"]').text()).to.not.contain(
-          'Both the risk and allocation recommendation',
-        );
+        expect(wrapper.find('[data-element-id="assessment-results"]').text()).to.not.contain('Both the risk and allocation recommendation');
 
-        expect(wrapper.find('[data-element-id="continue-button"]').text()).to.equal(
-          'Finish assessment',
-        );
+        expect(wrapper.find('[data-element-id="continue-button"]').text()).to.equal('Finish assessment');
       });
 
       it('on submission it navigates to the full assessment page', () => {
@@ -568,12 +526,10 @@ describe('<RiskAssessmentSummary />', () => {
 
         wrapper.find('form').simulate('submit');
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: '@@router/CALL_HISTORY_METHOD',
-            payload: { method: 'replace', args: ['/full-assessment-outcome'] },
-          }),
-        ).to.equal(true, 'Changed path to /full-assessment-outcome');
+        expect(store.dispatch.calledWithMatch({
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: { method: 'replace', args: ['/full-assessment-outcome'] },
+        })).to.equal(true, 'Changed path to /full-assessment-outcome');
 
         putStub.restore();
       });

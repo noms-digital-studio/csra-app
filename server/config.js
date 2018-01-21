@@ -39,9 +39,10 @@ const dbUri = neededInProd('DB_URI');
 if (dbUri) {
   const parsed = url.parse(dbUri);
   const auth = parsed.auth.split(':');
+  const [user, password] = auth;
   config.db.server = parsed.hostname;
-  config.db.user = auth[0];
-  config.db.password = auth[1];
+  config.db.user = user;
+  config.db.password = password;
   config.db.name = parsed.pathname.slice(1);
 }
 
@@ -49,9 +50,10 @@ const dbUriTests = process.env.DB_URI_TESTS;
 if (dbUriTests) {
   const parsed = url.parse(dbUriTests);
   const auth = parsed.auth.split(':');
+  const [user, password] = auth;
   config.dbTestUser.server = parsed.hostname;
-  config.dbTestUser.user = auth[0];
-  config.dbTestUser.password = auth[1];
+  config.dbTestUser.user = user;
+  config.dbTestUser.password = password;
   config.dbTestUser.name = parsed.pathname.slice(1);
 }
 

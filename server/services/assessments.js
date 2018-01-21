@@ -58,14 +58,13 @@ function save(db, appInfo, rawAssessment) {
 
 async function list(db, authToken) {
   log.info('Retrieving prisoner assessment summaries from the database');
-  const result = await db.select()
-    .orderBy('created_at', 'desc')
-    .table('prisoner_assessments');
+  const result = await db.select().orderBy('created_at', 'desc').table('prisoner_assessments');
+  let assessments = [];
 
   if (result && result.length > 0) {
     databaseLogger.info(`Found ${result.length} rows of prisoner assessment data`);
 
-    const assessments = result.map(row => ({
+    assessments = result.map(row => ({
       bookingId: row.booking_id,
       id: row.id,
       nomisId: row.nomis_id,
@@ -78,21 +77,23 @@ async function list(db, authToken) {
       createdAt: row.created_at,
       updatedAt: row.updated_at,
     }));
-
-    const prisonersArrivalList = await prisonerIntake({ authToken });
-
-    const mergeAssessmentsListWithPrisonerArrivalList = prisonersArrivalList.reduce((acc, value) => {
-      const isInList = acc.find(record => record.bookingId === value.bookingId);
-      if (isInList) {
-        return acc;
-      }
-      return [...acc, value];
-    }, assessments);
-
-    return mergeAssessmentsListWithPrisonerArrivalList;
+  } else {
+    databaseLogger.info('No prisoner assessment data found in database.');
   }
-  databaseLogger.info('No prisoner assessment data found in database.');
-  return [];
+
+  const prisonersArrivalList = await prisonerIntake({ authToken });
+
+  databaseLogger.info(`Found ${prisonersArrivalList.length} prisoner(s) in Elite2 /prisoner-intake`);
+
+  const mergeAssessmentsListWithPrisonerArrivalList = prisonersArrivalList.reduce((acc, value) => {
+    const isInList = acc.find(record => record.bookingId === value.bookingId);
+    if (isInList) {
+      return acc;
+    }
+    return [...acc, value];
+  }, assessments);
+
+  return mergeAssessmentsListWithPrisonerArrivalList;
 }
 
 function updateAssessmentWithRiskAssessment(db, id, riskAssessment) {
@@ -299,7 +300,10 @@ function assessmentFor(db, id, authToken) {
           healthAssessment: JSON.parse(results[0].health_assessment),
         }];
 
-        const prisonerWithImage = await decoratePrisonerWithImage({ authToken, prisoner: prisoner[0] });
+        const prisonerWithImage = await decoratePrisonerWithImage({
+          authToken,
+          prisoner: prisoner[0],
+        });
 
         return prisonerWithImage;
       }

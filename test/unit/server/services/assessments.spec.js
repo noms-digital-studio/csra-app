@@ -87,7 +87,7 @@ describe('prisoner assessment service', () => {
     describe('inserted record', () => {
       let row;
       before(() => {
-        row = fakeDB.insert.lastCall.args[0];
+        [row] = fakeDB.insert.lastCall.args;
       });
       it('sets bookingId from request', () => expect(row.booking_id).to.equal(121));
       it('sets nomisId from request', () => expect(row.nomis_id).to.equal('J1234LO'));
