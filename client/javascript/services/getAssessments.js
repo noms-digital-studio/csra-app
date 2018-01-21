@@ -12,8 +12,8 @@ const validate = (body) => {
   const hasForename = has('forename');
   const hasSurname = has('surname');
   const hasDob = has('dateOfBirth');
-  const hasRiskAssessmentCompleted = has('riskAssessmentCompleted');
-  const hasHealthAssessmentCompleted = has('healthAssessmentCompleted');
+  const riskAssessmentOutcome = has('riskAssessmentOutcome');
+  const healthAssessmentOutcome = has('healthAssessmentOutcome');
   const hasOutcome = has('outcome');
   const validResponse = allPass([
     hasId,
@@ -21,8 +21,8 @@ const validate = (body) => {
     hasForename,
     hasSurname,
     hasDob,
-    hasRiskAssessmentCompleted,
-    hasHealthAssessmentCompleted,
+    riskAssessmentOutcome,
+    healthAssessmentOutcome,
     hasOutcome,
   ]);
 

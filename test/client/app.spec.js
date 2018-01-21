@@ -1,10 +1,10 @@
 import { mount } from 'enzyme';
 
-import store from '../../client/javascript/store';
+import { store, history } from '../../client/javascript/store';
 import routes from '../../client/javascript/Router';
 
 describe('App', () => {
   it('should render', () => {
-    mount(routes(store));
+    mount(routes({ history, store }));
   });
 });

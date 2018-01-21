@@ -27,6 +27,7 @@ async function signIn(username, password) {
     const userDetailsResult = await superagent.get(url.resolve(`${config.elite2.url}`, 'users/me'))
       .set('Authorization', `Bearer ${generateApiGatewayToken()}`)
       .set('Elite-Authorization', eliteAuthorisationToken);
+
     log.info(`Sign in to Elite 2 for [${username}] successful`);
 
     return {

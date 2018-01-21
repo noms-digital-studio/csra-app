@@ -34,7 +34,7 @@ module.exports = function createRouter(db, appInfo) {
               resolve({ name: 'viperRestService', status: 'OK', message: 'OK' });
             }
 
-            reject({ name: 'viperRestService', status: 'ERROR', message: `Status: ${result.error}` });
+            reject(new Error({ name: 'viperRestService', status: 'ERROR', message: `Status: ${result.error}` }));
           } catch (exception) {
             log.error(exception, 'Error calling viper REST service health endpoint');
             reject(exception);
@@ -46,29 +46,29 @@ module.exports = function createRouter(db, appInfo) {
   function elite2RestServiceCheck() {
     return new Promise((resolve, reject) => {
       superagent.get(url.resolve(`${config.elite2.url}`, 'info/health'))
-      .set('Authorization', `Bearer ${generateApiGatewayToken()}`)
-      .set('Accept', 'application/json')
-      .timeout({
-        response: 2000,
-        deadline: 2500,
-      })
-      .end((error, result) => {
-        try {
-          if (error) {
-            log.error(error, 'Error calling elite 2 REST service health endpoint');
-            resolve({ name: 'elite2RestService', status: 'ERROR', message: 'ERROR' });
-          }
+        .set('Authorization', `Bearer ${generateApiGatewayToken()}`)
+        .set('Accept', 'application/json')
+        .timeout({
+          response: 2000,
+          deadline: 2500,
+        })
+        .end((error, result) => {
+          try {
+            if (error) {
+              log.error(error, 'Error calling elite 2 REST service health endpoint');
+              resolve({ name: 'elite2RestService', status: 'ERROR', message: 'ERROR' });
+            }
 
-          if ((result.status === 200) && (result.body.status === 'UP')) {
-            resolve({ name: 'elite2RestService', status: 'OK', message: 'OK' });
-          }
+            if ((result.status === 200) && (result.body.status === 'UP')) {
+              resolve({ name: 'elite2RestService', status: 'OK', message: 'OK' });
+            }
 
-          reject({ name: 'elite2RestService', status: 'ERROR', message: `Status: ${result.error}` });
-        } catch (exception) {
-          log.error(exception, 'Error calling elite 2 REST service health endpoint');
-          reject(exception);
-        }
-      });
+            reject(new Error({ name: 'elite2RestService', status: 'ERROR', message: `Status: ${result.error}` }));
+          } catch (exception) {
+            log.error(exception, 'Error calling elite 2 REST service health endpoint');
+            reject(exception);
+          }
+        });
     });
   }
 

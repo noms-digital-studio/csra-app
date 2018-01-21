@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import path from 'ramda/src/path';

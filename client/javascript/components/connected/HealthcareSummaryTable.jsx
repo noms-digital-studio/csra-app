@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import path from 'ramda/src/path';
 import not from 'ramda/src/not';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import routes from '../../constants/routes';
 

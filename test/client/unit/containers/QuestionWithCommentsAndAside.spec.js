@@ -38,50 +38,40 @@ describe('<QuestionWithCommentAndAside />', () => {
     expect(wrapper.find('textarea').length).to.equal(0, 'Did not expect to find a text area before the radio button was clicked');
 
     wrapper
-      .find('#radio-yes')
+      .find('[data-input="yes"]')
       .simulate('change', { target: { value: 'yes' } });
 
     expect(wrapper.find('textarea').length).to.equal(1, 'Expected to find a text area after radio button clicked');
   });
 
   it('pre-populates the forms if data is available for Yes answers', () => {
-    const wrapper = mount(
-      <QuestionWithCommentAndAside formDefaults={{ answer: 'yes', 'reasons-yes': 'foobar-yes' }} />,
-    );
+    const wrapper = mount(<QuestionWithCommentAndAside formDefaults={{ answer: 'yes', 'reasons-yes': 'foobar-yes' }} />);
 
-    expect(wrapper.find('[data-input="yes"]').node.checked).to.equal(
+    expect(wrapper.find('[data-input="yes"]').getDOMNode().checked).to.equal(
       true,
       'radio button selected',
     );
 
-    expect(wrapper.find('[data-element="reason-for-answer"]').node.value).to.equal(
-      'foobar-yes',
-    );
+    expect(wrapper.find('[data-element="reason-for-answer"]').getDOMNode().value).to.equal('foobar-yes');
   });
 
   it('pre-populates the forms if data is available for No answers', () => {
-    const wrapper = mount(
-      <QuestionWithCommentAndAside formDefaults={{ answer: 'no', 'reasons-no': 'foobar-no' }} />,
-    );
+    const wrapper = mount(<QuestionWithCommentAndAside formDefaults={{ answer: 'no', 'reasons-no': 'foobar-no' }} />);
 
-    expect(wrapper.find('[data-input="no"]').node.checked).to.equal(
+    expect(wrapper.find('[data-input="no"]').getDOMNode().checked).to.equal(
       true,
       'radio button selected',
     );
 
-    expect(wrapper.find('[data-element="reason-for-answer"]').node.value).to.equal(
-      'foobar-no',
-    );
+    expect(wrapper.find('[data-element="reason-for-answer"]').getDOMNode().value).to.equal('foobar-no');
   });
 
   it('accepts radio button label text', () => {
-    const wrapper = mount(
-      <QuestionWithCommentAndAside
-        formFields={{
+    const wrapper = mount(<QuestionWithCommentAndAside
+      formFields={{
           input: { yes: { text: 'foo-text' }, no: { text: 'bar-text' } },
         }}
-      />,
-    );
+    />);
 
     expect(wrapper.find('[data-label="yes"]').text()).to.equal('foo-text');
     expect(wrapper.find('[data-label="no"]').text()).to.equal('bar-text');
@@ -91,14 +81,14 @@ describe('<QuestionWithCommentAndAside />', () => {
     it('display "Save" on the submission button', () => {
       const wrapper = mount(<QuestionWithCommentAndAside isComplete />);
 
-      expect(wrapper.find('input[type="submit"]').node.value).to.equal('Save');
+      expect(wrapper.find('input[type="submit"]').getDOMNode().value).to.equal('Save');
     });
   });
 
   context('when the isComplete prop is not present', () => {
     it('display "Save and continue" on the submission button', () => {
       const wrapper = mount(<QuestionWithCommentAndAside />);
-      expect(wrapper.find('input[type="submit"]').node.value).to.equal('Save and continue');
+      expect(wrapper.find('input[type="submit"]').getDOMNode().value).to.equal('Save and continue');
     });
   });
 });

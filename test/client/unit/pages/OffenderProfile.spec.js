@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { MemoryRouter as Router } from 'react-router-dom';
 import { mount } from 'enzyme';
 import xhr from 'xhr';
 
@@ -24,6 +25,12 @@ const storeData = {
   },
 };
 
+const mountApp = store => mount(<Provider store={store}>
+  <Router>
+    <ConnectedOffenderProfile />
+  </Router>
+</Provider>); // eslint-disable-line react/jsx-closing-tag-location
+
 describe('<OffenderProfile />', () => {
   context('Connected OffenderProfile', () => {
     let store;
@@ -33,11 +40,7 @@ describe('<OffenderProfile />', () => {
     });
 
     it('accepts and correctly renders a profile', () => {
-      const wrapper = mount(
-        <Provider store={store}>
-          <ConnectedOffenderProfile />
-        </Provider>,
-      );
+      const wrapper = mountApp(store);
       const pageText = wrapper.find('[data-offender-profile-details]').first().text();
       expect(pageText).to.contain('Forename');
       expect(pageText).to.contain('Surname');
@@ -55,48 +58,36 @@ describe('<OffenderProfile />', () => {
       afterEach(() => getStub.restore());
 
       it('starts an assessments', () => {
-        const wrapper = mount(
-          <Provider store={store}>
-            <ConnectedOffenderProfile />
-          </Provider>,
-        );
+        const wrapper = mountApp(store);
 
         getStub.yields(null, { statusCode: 200 }, { viperRating: 0.1, nomisId: 'foo-nomis-id' });
 
         wrapper.find('[data-element-id="continue-button"]').simulate('click');
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: 'START_ASSESSMENT',
-            payload: {
-              id: 1,
-              assessmentType: 'risk',
-              viperScore: 0.1,
-            },
-          }),
-        ).to.equal(true, 'did not trigger START_ASSESSMENT');
+        expect(store.dispatch.calledWithMatch({
+          type: 'START_ASSESSMENT',
+          payload: {
+            id: 1,
+            assessmentType: 'risk',
+            viperScore: 0.1,
+          },
+        })).to.equal(true, 'did not trigger START_ASSESSMENT');
       });
 
       it('navigate to the first question', () => {
-        const wrapper = mount(
-          <Provider store={store}>
-            <ConnectedOffenderProfile />
-          </Provider>,
-        );
+        const wrapper = mountApp(store);
 
         getStub.yields(null, { statusCode: 200 }, { viperRating: 0.1, nomisId: 'foo-nomis-id' });
 
         wrapper.find('[data-element-id="continue-button"]').simulate('click');
 
-        expect(
-          store.dispatch.calledWithMatch({
-            type: '@@router/CALL_HISTORY_METHOD',
-            payload: {
-              method: 'push',
-              args: ['/risk-assessment/introduction'],
-            },
-          }),
-        ).to.equal(true, 'did not change path to /risk-assessment/introduction');
+        expect(store.dispatch.calledWithMatch({
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            method: 'push',
+            args: ['/risk-assessment/introduction'],
+          },
+        })).to.equal(true, 'did not change path to /risk-assessment/introduction');
       });
 
       context('and the assessment question have already been answered but not submitted', () => {
@@ -109,25 +100,19 @@ describe('<OffenderProfile />', () => {
               },
             },
           });
-          const wrapper = mount(
-            <Provider store={newStore}>
-              <ConnectedOffenderProfile />
-            </Provider>,
-          );
+          const wrapper = mountApp(newStore);
 
           getStub.yields(null, { statusCode: 200 }, { viperRating: 0.1, nomisId: 'foo-nomis-id' });
 
           wrapper.find('[data-element-id="continue-button"]').simulate('click');
 
-          expect(
-            newStore.dispatch.calledWithMatch({
-              type: '@@router/CALL_HISTORY_METHOD',
-              payload: {
-                method: 'push',
-                args: ['/risk-assessment-summary'],
-              },
-            }),
-          ).to.equal(true, 'did not change path to /risk-assessment-summary');
+          expect(newStore.dispatch.calledWithMatch({
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              method: 'push',
+              args: ['/risk-assessment-summary'],
+            },
+          })).to.equal(true, 'did not change path to /risk-assessment-summary');
         });
       });
     });

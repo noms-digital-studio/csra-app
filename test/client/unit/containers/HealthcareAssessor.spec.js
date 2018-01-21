@@ -42,14 +42,12 @@ describe('<HealthcareAssessor />', () => {
       year: '1991',
     };
 
-    const wrapper = mount(
-      <HealthcareAssessor
-        formDefaults={{ answer: 'foo-role, foo-name, 1-11-1991' }}
-      />,
-    );
+    const wrapper = mount(<HealthcareAssessor
+      formDefaults={{ answer: 'foo-role, foo-name, 1-11-1991' }}
+    />);
 
     Object.keys(formDefaults).forEach((key) => {
-      expect(wrapper.find(`[data-element-id="${key}"]`).node.value).to.equal(
+      expect(wrapper.find(`[data-element-id="${key}"]`).getDOMNode().value).to.equal(
         formDefaults[key],
         `${key} value field filled`,
       );
@@ -60,14 +58,14 @@ describe('<HealthcareAssessor />', () => {
     it('display "Save" on the submission button', () => {
       const wrapper = mount(<HealthcareAssessor isComplete />);
 
-      expect(wrapper.find('input[type="submit"]').node.value).to.equal('Save');
+      expect(wrapper.find('input[type="submit"]').getDOMNode().value).to.equal('Save');
     });
   });
 
   context('when the isComplete prop is not present', () => {
     it('display "Save and continue" on the submission button', () => {
       const wrapper = mount(<HealthcareAssessor />);
-      expect(wrapper.find('input[type="submit"]').node.value).to.equal('Save and continue');
+      expect(wrapper.find('input[type="submit"]').getDOMNode().value).to.equal('Save and continue');
     });
   });
 });

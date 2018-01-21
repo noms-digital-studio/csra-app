@@ -26,8 +26,10 @@ let i = 0;
 const total = data.length;
 db.on('query', () => {
   i += 1;
-  console.log('%s Inserting %d/%d',
-    new Date().toISOString(), i * BATCH_SIZE, total);
+  console.log(
+    '%s Inserting %d/%d',
+    new Date().toISOString(), i * BATCH_SIZE, total,
+  );
 });
 
 db.batchInsert('viper', data, BATCH_SIZE)

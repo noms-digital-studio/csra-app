@@ -11,14 +11,12 @@ describe('<QuestionAndAnswerSummaryTable/>', () => {
   });
 
   it('renders the name and date', () => {
-    const wrapper = shallow(
-      <QuestionAndAnswerSummaryTable
-        completedBy={{
+    const wrapper = shallow(<QuestionAndAnswerSummaryTable
+      completedBy={{
           name: 'foo-name',
           date: 'foo-date',
         }}
-      />,
-    );
+    />);
     expect(wrapper.text()).to.contain('foo-name');
     expect(wrapper.text()).to.contain('foo-date');
   });

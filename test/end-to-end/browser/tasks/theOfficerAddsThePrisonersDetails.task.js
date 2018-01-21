@@ -18,7 +18,7 @@ function whenTheOfficerAddsThePrisonersDetails(config = defaultConfig) {
 
   expect(AddPrisonerPage.mainHeading).to.equal('Search for a prisoner');
 
-  AddPrisonerPage.search(config.prisoner.forename.toLowerCase());
+  AddPrisonerPage.search(config.prisoner.nomisId);
 
   AddPrisonerPage.clickContinue();
 

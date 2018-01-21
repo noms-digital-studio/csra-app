@@ -35,10 +35,10 @@ describe('Prisoner Image Service', () => {
         .get(/images\/\d\/data/)
         .replyWithFile(200, `${__dirname}/1x1.jpg`);
 
-      return decoratePrisonersWithImages('foo-auth-token', prisoners)
-              .then((result) => {
-                expect(result).to.eql(expected);
-              });
+      return decoratePrisonersWithImages({ authToken: 'foo-auth-token', prisoners })
+        .then((result) => {
+          expect(result).to.eql(expected);
+        });
     });
 
     context('when there is an error retrieving ', () => {
@@ -56,14 +56,14 @@ describe('Prisoner Image Service', () => {
         ];
 
         fakeElite2RestService
-        .persist()
-        .get(/images\/\d\/data/)
-        .reply(500, 'Internal server error');
+          .persist()
+          .get(/images\/\d\/data/)
+          .reply(500, 'Internal server error');
 
-        return decoratePrisonersWithImages('foo-auth-token', prisoners)
-              .then((result) => {
-                expect(result).to.eql(expected);
-              });
+        return decoratePrisonersWithImages({ authToken: 'foo-auth-token', prisoners })
+          .then((result) => {
+            expect(result).to.eql(expected);
+          });
       });
     });
   });

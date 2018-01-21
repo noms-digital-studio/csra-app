@@ -59,14 +59,14 @@ describe('<Viper />', () => {
     it('display "Save" on the submission button', () => {
       const wrapper = mount(<Viper content={content} viperScore="low" isComplete />);
 
-      expect(wrapper.find('input[type="submit"]').node.value).to.equal('Save');
+      expect(wrapper.find('input[type="submit"]').getDOMNode().value).to.equal('Save');
     });
   });
 
   context('when the isComplete prop is not present', () => {
     it('display "Continue to questions" on the submission button', () => {
       const wrapper = mount(<Viper content={content} viperScore="low" />);
-      expect(wrapper.find('input[type="submit"]').node.value).to.equal('Continue to questions');
+      expect(wrapper.find('input[type="submit"]').getDOMNode().value).to.equal('Continue to questions');
     });
   });
 });

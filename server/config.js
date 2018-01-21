@@ -39,9 +39,10 @@ const dbUri = neededInProd('DB_URI');
 if (dbUri) {
   const parsed = url.parse(dbUri);
   const auth = parsed.auth.split(':');
+  const [user, password] = auth;
   config.db.server = parsed.hostname;
-  config.db.user = auth[0];
-  config.db.password = auth[1];
+  config.db.user = user;
+  config.db.password = password;
   config.db.name = parsed.pathname.slice(1);
 }
 
@@ -49,9 +50,10 @@ const dbUriTests = process.env.DB_URI_TESTS;
 if (dbUriTests) {
   const parsed = url.parse(dbUriTests);
   const auth = parsed.auth.split(':');
+  const [user, password] = auth;
   config.dbTestUser.server = parsed.hostname;
-  config.dbTestUser.user = auth[0];
-  config.dbTestUser.password = auth[1];
+  config.dbTestUser.user = user;
+  config.dbTestUser.password = password;
   config.dbTestUser.name = parsed.pathname.slice(1);
 }
 
@@ -60,5 +62,5 @@ config.viper.apiKey = neededInProd('VIPER_SERVICE_API_KEY');
 
 config.elite2.url = neededInProd('ELITE2_URL');
 config.elite2.apiGatewayToken = neededInProd('ELITE2_API_GATEWAY_TOKEN');
-config.elite2.apiGatewayPrivateKey = new Buffer(neededInProd('ELITE2_API_GATEWAY_PRIVATE_KEY'), 'base64').toString('ascii');
+config.elite2.apiGatewayPrivateKey = Buffer.from(neededInProd('ELITE2_API_GATEWAY_PRIVATE_KEY'), 'base64').toString('ascii');
 module.exports = config;

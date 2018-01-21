@@ -22,32 +22,28 @@ body
           div(class='header-global c-header-global')
             div(class='header-logo')
               a#logo.content(href='/', title='Go to the GOV.UK homepage')
-                img(src='/assets/images/gov.uk_logotype_crown_invert_trans.png', width='36', height='32', alt='')
+                img(src='/assets/images/moj-logo.svg', width='41', height='35', alt='')
                 | HMPPS
 
           .header-proposition.c-header-proposition
             .content
               nav#proposition-menu
-                a#proposition-name(href='/') Cell sharing risk assessment
+                a#proposition-name(href='/') Cell sharing risk assessment (CSRA)
 
                 if isLoggedIn
                   div(class='c-global-header__wrapper')
                     span(class='c-global-header__username', data-element-id="user-details" data-header-username=username data-header-name=name)
                       | #{name}
-                    span(class='c-profile-holder c-profile-holder--global-header')
                     a(href='/signout', data-element-id='sign-out', class='c-profile-logout') Sign out
 
-
-      #global-header-bar
-
       main#content(role='main')
-        div(class='phase-banner')
-          p
-            strong(class='phase-tag phase-alpha') Private Alpha
-            span
-              | This is a new service – your&nbsp;
-              a(href='/feedback', class='link') feedback
-              |  will help us to improve it.
+        //- div(class='phase-banner')
+        //-   p
+        //-     strong(class='phase-tag phase-alpha') Private Alpha
+        //-     span
+        //-       | This is a new service – your&nbsp;
+        //-       a(href='/feedback', class='link') feedback
+        //-       |  will help us to improve it.
 
         block content
 

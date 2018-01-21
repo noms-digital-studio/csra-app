@@ -10,7 +10,6 @@ class FullAssessmentOutcomePage extends BasePage {
   clickCheckbox() {
     browser.click('[data-element-id="confirm-checkbox"]');
   }
-
 }
 
 export default new FullAssessmentOutcomePage();

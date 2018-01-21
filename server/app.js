@@ -24,7 +24,9 @@ const createSearchPrisonerRoute = require('./routes/searchPrisoner');
 const index = require('./routes/index');
 const { authenticationMiddleware } = require('./authentication');
 
-module.exports = function createApp({ db, appInfo, viperService, prisonerAssessmentsService, signInService, searchPrisonerService }) {
+module.exports = function createApp({
+  db, appInfo, viperService, prisonerAssessmentsService, signInService, searchPrisonerService,
+}) {
   const app = express();
   const sixtyDaysInSeconds = 5184000;
   const sessionConfig = {

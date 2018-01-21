@@ -26,19 +26,17 @@ describe('<QuestionWithComments />', () => {
   it('pre-populates the forms if data is available', () => {
     const wrapper = mount(<QuestionWithComments formDefaults={{ answer: 'yes', 'reasons-for-answer': 'foo-comment' }} />);
 
-    expect(wrapper.find('[data-input="yes"]').node.checked).to.equal(true, 'radio button selected');
+    expect(wrapper.find('[data-input="yes"]').getDOMNode().checked).to.equal(true, 'radio button selected');
 
-    expect(wrapper.find('textarea').node.value).to.equal('foo-comment');
+    expect(wrapper.find('textarea').getDOMNode().value).to.equal('foo-comment');
   });
 
   it('accepts radio button label text', () => {
-    const wrapper = mount(
-      <QuestionWithComments
-        formFields={{
+    const wrapper = mount(<QuestionWithComments
+      formFields={{
           input: { yes: { text: 'foo-text' }, no: { text: 'bar-text' } },
         }}
-      />,
-    );
+    />);
 
     expect(wrapper.find('[data-label="yes"]').text()).to.equal('foo-text');
     expect(wrapper.find('[data-label="no"]').text()).to.equal('bar-text');

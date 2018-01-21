@@ -12,7 +12,7 @@ module.exports = {
     };
 
     const privateKey = `${config.elite2.apiGatewayPrivateKey}`;
-    const cert = new Buffer(privateKey);
+    const cert = Buffer.from(privateKey);
     return jwt.sign(payload, cert, { algorithm: 'ES256' });
   },
 

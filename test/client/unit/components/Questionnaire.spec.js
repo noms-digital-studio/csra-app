@@ -65,33 +65,29 @@ describe('<Questionnaire />', () => {
 
         const params = { section: 'foo-section' };
 
-        const wrapper = mount(
-          <Questionnaire
-            prisoner={prisoner}
-            questions={questions}
-            params={params}
-            onSubmit={callback}
-            basePath="/assessment"
-          />,
-        );
+        const wrapper = mount(<Questionnaire
+          prisoner={prisoner}
+          questions={questions}
+          params={params}
+          onSubmit={callback}
+          basePath="/assessment"
+        />);
 
         wrapper
-          .find('#radio-yes')
+          .find('[data-input="yes"]')
           .simulate('change', { target: { value: 'yes' } });
 
         wrapper.find('form').simulate('submit');
 
         expect(callback.calledOnce).to.equal(true, 'onSubmit called');
 
-        expect(
-          callback.calledWith({
-            prisoner,
-            question: questions[0],
-            section: 'foo-section',
-            answer: { answer: 'yes' },
-            nextPath: '/assessment/bar-section',
-          }),
-        ).to.equal(true, 'called with the correct props');
+        expect(callback.calledWithMatch({
+          prisoner,
+          question: questions[0],
+          section: 'foo-section',
+          answer: { answer: 'yes' },
+          nextPath: '/assessment/bar-section',
+        })).to.equal(true, 'called with the correct props');
       });
     },
   );
@@ -116,33 +112,29 @@ describe('<Questionnaire />', () => {
 
       const params = { section: 'foo-section' };
 
-      const wrapper = mount(
-        <Questionnaire
-          prisoner={prisoner}
-          questions={question}
-          params={params}
-          onSubmit={callback}
-          completionPath={'/foo-complete'}
-        />,
-      );
+      const wrapper = mount(<Questionnaire
+        prisoner={prisoner}
+        questions={question}
+        params={params}
+        onSubmit={callback}
+        completionPath="/foo-complete"
+      />);
 
       wrapper
-        .find('#radio-yes')
+        .find('[data-input="yes"]')
         .simulate('change', { target: { value: 'yes' } });
 
       wrapper.find('form').simulate('submit');
 
       expect(callback.calledOnce).to.equal(true, 'onSubmit called');
 
-      expect(
-        callback.calledWith({
-          prisoner,
-          question: questions[0],
-          section: 'foo-section',
-          answer: { answer: 'yes' },
-          nextPath: '/foo-complete',
-        }),
-      ).to.equal(true, 'called with the correct props');
+      expect(callback.calledWith({
+        prisoner,
+        question: questions[0],
+        section: 'foo-section',
+        answer: { answer: 'yes' },
+        nextPath: '/foo-complete',
+      })).to.equal(true, 'called with the correct props');
     });
   });
 });

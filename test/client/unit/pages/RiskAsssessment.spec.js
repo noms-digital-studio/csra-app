@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { MemoryRouter as Router } from 'react-router-dom';
 import { mount } from 'enzyme';
 
 import { fakeStore } from '../test-helpers';
@@ -76,6 +77,12 @@ const storeData = {
   },
 };
 
+const mountApp = store => mount(<Provider store={store}>
+  <Router>
+    <RiskAssessment params={{ section: 'foo-section' }} />
+  </Router>
+</Provider>); // eslint-disable-line react/jsx-closing-tag-location
+
 describe('<RiskAssessment />', () => {
   let store;
 
@@ -84,11 +91,7 @@ describe('<RiskAssessment />', () => {
   });
 
   it('calls actions when component mounts', () => {
-    mount(
-      <Provider store={store}>
-        <RiskAssessment params={{ section: 'foo-section' }} />
-      </Provider>,
-    );
+    mountApp(store);
 
     expect(store.dispatch.calledWithMatch({ type: 'GET_RISK_ASSESSMENT_QUESTIONS' })).to.equal(
       true,
@@ -97,48 +100,38 @@ describe('<RiskAssessment />', () => {
   });
 
   it('renders offender details', () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <RiskAssessment params={{ section: 'foo-section' }} />
-      </Provider>,
-    );
+    const wrapper = mountApp(store);
 
     expect(wrapper.text()).to.contain('Foo-surname');
     expect(wrapper.text()).to.contain('Foo-forename');
   });
 
   it('calls the onSubmit action with the answer and section', () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <RiskAssessment params={{ section: 'foo-section' }} />
-      </Provider>,
-    );
+    const wrapper = mount(<Provider store={store}>
+      <RiskAssessment params={{ section: 'foo-section' }} />
+    </Provider>); // eslint-disable-line react/jsx-closing-tag-location
 
-    wrapper.find('#radio-yes').simulate('change', { target: { value: 'yes' } });
+    wrapper.find('[data-input="yes"]').simulate('change', { target: { value: 'yes' } });
     wrapper.find('form').simulate('submit');
 
-    expect(
-      store.dispatch.calledWithMatch({
-        type: 'STORE_ASSESSMENT_ANSWER',
-        payload: {
-          id: 1,
-          questionAnswer: {
-            'foo-section': {
-              questionId: 'foo-section',
-              question: 'foo-title',
-              answer: 'yes',
-            },
+    expect(store.dispatch.calledWithMatch({
+      type: 'STORE_ASSESSMENT_ANSWER',
+      payload: {
+        id: 1,
+        questionAnswer: {
+          'foo-section': {
+            questionId: 'foo-section',
+            question: 'foo-title',
+            answer: 'yes',
           },
-          assessmentType: 'risk',
         },
-      }),
-    ).to.equal(true, 'Did not dispatched STORE_ASSESSMENT_ANSWER');
+        assessmentType: 'risk',
+      },
+    })).to.equal(true, 'Did not dispatched STORE_ASSESSMENT_ANSWER');
 
-    expect(
-      store.dispatch.calledWithMatch({
-        type: '@@router/CALL_HISTORY_METHOD',
-        payload: { method: 'push', args: ['/risk-assessment/bar-section'] },
-      }),
-    ).to.equal(true, 'Did not changed path to /risk-assessment/bar-section');
+    expect(store.dispatch.calledWithMatch({
+      type: '@@router/CALL_HISTORY_METHOD',
+      payload: { method: 'push', args: ['/risk-assessment/bar-section'] },
+    })).to.equal(true, 'Did not changed path to /risk-assessment/bar-section');
   });
 });

@@ -4,10 +4,10 @@ import { render } from 'react-dom';
 
 import './utils/debug';
 
-import store from './store';
+import { store, history } from './store';
 import routes from './Router';
 
-render(routes(store), document.getElementById('mountNode'));
+render(routes({ store, history }), document.getElementById('mountNode'));
 
 // Clear session storage upon sign out
 document.querySelector('[data-element-id="sign-out"]').addEventListener('click', (event) => {

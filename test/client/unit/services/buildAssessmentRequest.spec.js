@@ -27,24 +27,23 @@ describe('#buildAssessmentRequest', () => {
       answers,
     });
 
-    expect(request).to.eql(
-      {
-        outcome: 'Single cell',
-        viperScore: 0.71,
-        questions: {
-          'bar-section': {
-            answer: '',
-            question: 'bar-question',
-            questionId: 'bar-section',
-          },
-          'foo-section': {
-            answer: '',
-            question: 'foo-question',
-            questionId: 'foo-section',
-          },
+    expect(request).to.eql({
+      outcome: 'Single cell',
+      viperScore: 0.71,
+      questions: {
+        'bar-section': {
+          answer: '',
+          question: 'bar-question',
+          questionId: 'bar-section',
         },
-        reasons: [],
-      });
+        'foo-section': {
+          answer: '',
+          question: 'foo-question',
+          questionId: 'foo-section',
+        },
+      },
+      reasons: [],
+    });
   });
 
   it('returns a assessment request for question data with predicate and no reasons', () => {
@@ -74,19 +73,18 @@ describe('#buildAssessmentRequest', () => {
       answers,
     });
 
-    expect(request).to.eql(
-      {
-        outcome: 'Single cell',
-        viperScore: 0.11,
-        questions: {
-          'foo-section': {
-            answer: 'yes',
-            question: 'foo-question',
-            questionId: 'foo-section',
-          },
+    expect(request).to.eql({
+      outcome: 'Single cell',
+      viperScore: 0.11,
+      questions: {
+        'foo-section': {
+          answer: 'yes',
+          question: 'foo-question',
+          questionId: 'foo-section',
         },
-        reasons: [],
-      });
+      },
+      reasons: [],
+    });
   });
 
   it('returns a assessment request for a full journey', () => {
@@ -137,35 +135,34 @@ describe('#buildAssessmentRequest', () => {
       answers,
     });
 
-    expect(request).to.eql(
-      {
-        outcome: 'Shared cell',
-        viperScore: 0.11,
-        questions: {
-          'foo-section': {
-            questionId: 'foo-section',
-            question: 'foo-question',
-            answer: 'yes',
-            comments: 'foo-comment',
-          },
-          'bar-section': {
-            questionId: 'bar-section',
-            question: 'bar-question',
-            answer: 'no',
-          },
-          'baz-section': {
-            questionId: 'baz-section',
-            question: 'baz-question',
-            answer: 'a baz comment',
-          },
+    expect(request).to.eql({
+      outcome: 'Shared cell',
+      viperScore: 0.11,
+      questions: {
+        'foo-section': {
+          questionId: 'foo-section',
+          question: 'foo-question',
+          answer: 'yes',
+          comments: 'foo-comment',
         },
-        reasons: [
-          {
-            questionId: 'foo-section',
-            reason: 'foo reason',
-          },
-        ],
-      });
+        'bar-section': {
+          questionId: 'bar-section',
+          question: 'bar-question',
+          answer: 'no',
+        },
+        'baz-section': {
+          questionId: 'baz-section',
+          question: 'baz-question',
+          answer: 'a baz comment',
+        },
+      },
+      reasons: [
+        {
+          questionId: 'foo-section',
+          reason: 'foo reason',
+        },
+      ],
+    });
   });
-})
-;
+});
+

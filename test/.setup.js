@@ -7,6 +7,9 @@ const chaiAsPromised = require('chai-as-promised');
 const sinon = require('sinon');
 const chaiString = require('chai-string');
 
+const { configure } = require('enzyme');
+const Adapter = require('enzyme-adapter-react-16');
+
 const { JSDOM } = jsdom;
 const { document } = new JSDOM(undefined, { url: 'http://example.com' }).window;
 const exposedProperties = [
@@ -16,6 +19,10 @@ const exposedProperties = [
   'localStorage',
   'sessionStorage',
 ];
+
+// Configure enzyme
+configure({ adapter: new Adapter() });
+
 
 // Test Assertion libraries
 chai.use(chaiAsPromised);
@@ -53,6 +60,8 @@ const storageMock = () => {
 global.document = document;
 global.window = document.defaultView;
 global.window.localStorage = global.window.sessionStorage = storageMock();
+
+global.window.printJSON = (obj) => console.log(JSON.stringify(obj, null, 2));
 
 global.window.scrollTo = () => {};
 

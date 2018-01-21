@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 import { replace, push } from 'react-router-redux';
@@ -218,7 +219,7 @@ const mapActionsToProps = dispatch => ({
             return dispatch(replace(routes.FULL_ASSESSMENT_OUTCOME));
           }
 
-          return dispatch(replace(routes.DASHBOARD));
+          return dispatch(replace(routes.PRISONER_LIST));
         },
       );
     });

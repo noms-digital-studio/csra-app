@@ -1,10 +1,11 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import DocumentTitle from 'react-document-title';
 import serialize from 'form-serialize';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { replace } from 'react-router-redux';
 
 import isEmpty from 'ramda/src/isEmpty';
@@ -100,7 +101,7 @@ class AddPrisoner extends Component {
         <div>
           <div className="form-section">
             <p>
-              <Link className="link-back" to={routes.DASHBOARD}>
+              <Link className="link-back" to={routes.PRISONER_LIST}>
                 Back to dashboard
               </Link>
             </p>
@@ -124,9 +125,7 @@ class AddPrisoner extends Component {
                   data-element-id="query"
                 />
               </div>
-              <button type="submit" className="button button-start" data-element-id="continue-button">
-                Search
-              </button>
+              <button type="submit" className="button button-start" data-element-id="continue-button">Search</button>
             </form>
           </div>
           {(not(isEmpty(searchResults)) && not(isNil(searchResults))) && offenderTable({ searchResults, addPrisoner })}
@@ -163,7 +162,7 @@ const mapActionsToProps = dispatch => ({
         return dispatch(replace(routes.ERROR_PAGE));
       }
 
-      dispatch(replace(routes.DASHBOARD));
+      dispatch(replace(routes.PRISONER_LIST));
 
       return true;
     });

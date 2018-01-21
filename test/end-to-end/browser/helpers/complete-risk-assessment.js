@@ -49,50 +49,34 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
 
   DashboardPage.startRiskAssessmentFor(config.prisoner.nomisId);
 
-  expect(
-    RiskAssessmentPrisonerProfilePage.waitForMainHeadingWithDataId('prisoner-confirmation'),
-  ).to.contain('Confirm identity');
+  expect(RiskAssessmentPrisonerProfilePage.waitForMainHeadingWithDataId('prisoner-confirmation')).to.contain('Confirm identity');
   expect(RiskAssessmentPrisonerProfilePage.prisonerName).to.equal(config.prisoner.name);
   RiskAssessmentPrisonerProfilePage.clickContinue();
 
-  expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('introduction')).to.equal(
-    'Making this process fair and open',
-  );
+  expect(RiskAssessmentExplanationPage.waitForMainHeadingWithDataId('introduction')).to.equal('Making this process fair and open');
   RiskAssessmentExplanationPage.confirmAndContinue();
 
   expect(RiskAssessmentExplanationPage.viperHeading).to.equal(config.initialRecommendation);
   RiskAssessmentExplanationPage.clickContinue();
 
-  expect(RiskAssessmentYesNoPage.waitForMainHeadingWithDataId('harm-cell-mate')).to.equal(
-    'Is there any genuine indication they might seriously hurt a cellmate?',
-  );
+  expect(RiskAssessmentYesNoPage.waitForMainHeadingWithDataId('harm-cell-mate')).to.equal('Is there any genuine indication they might seriously hurt a cellmate?');
   RiskAssessmentYesNoPage.enterComment('A harmCellMate generic comment');
   selectYesNoAnswer(config.answers.harmCellMate);
 
 
-  expect(RiskAssessmentYesNoPage.waitForMainHeadingWithDataId('gang-affiliation')).to.equal(
-    'Are they in a gang?',
-  );
+  expect(RiskAssessmentYesNoPage.waitForMainHeadingWithDataId('gang-affiliation')).to.equal('Are they in a gang?');
   selectYesNoAnswer(config.answers.gangAffiliation);
 
-  expect(RiskAssessmentYesNoPage.waitForMainHeadingWithDataId('drug-misuse')).to.equal(
-    'Have they taken illicit drugs in the last month?',
-  );
+  expect(RiskAssessmentYesNoPage.waitForMainHeadingWithDataId('drug-misuse')).to.equal('Have they taken illicit drugs in the last month?');
   selectYesNoAnswer(config.answers.drugMisuse);
 
-  expect(RiskAssessmentYesNoPage.waitForMainHeadingWithDataId('prejudice')).to.equal(
-    'Do they have any hostile views or prejudices?',
-  );
+  expect(RiskAssessmentYesNoPage.waitForMainHeadingWithDataId('prejudice')).to.equal('Do they have any hostile views or prejudices?');
   selectYesNoAnswer(config.answers.prejudice);
 
-  expect(
-    RiskAssessmentYesNoPage.waitForMainHeadingWithDataId('officers-assessment'),
-  ).to.equal('Are there any other reasons why you would recommend they have a single cell?');
+  expect(RiskAssessmentYesNoPage.waitForMainHeadingWithDataId('officers-assessment')).to.equal('Are there any other reasons why you would recommend they have a single cell?');
   selectYesNoAnswer(config.answers.officersAssessment);
 
-  expect(RiskAssessmentSummaryPage.waitForMainHeadingWithDataId('risk-summary')).to.equal(
-    'Risk assessment summary',
-  );
+  expect(RiskAssessmentSummaryPage.waitForMainHeadingWithDataId('risk-summary')).to.equal('Risk assessment summary');
 
   if (config.reasons) {
     config.reasons.forEach((reasonObj) => {
@@ -110,9 +94,7 @@ export const whenPrisonerIsAssessed = (config = defaultAssessmentConfig) => {
   expect(RiskAssessmentSummaryPage.gang).to.equalIgnoreCase(config.answers.gangAffiliation);
   expect(RiskAssessmentSummaryPage.narcotics).to.equalIgnoreCase(config.answers.drugMisuse);
   expect(RiskAssessmentSummaryPage.prejudice).to.equalIgnoreCase(config.answers.prejudice);
-  expect(RiskAssessmentSummaryPage.officerComments).to.equalIgnoreCase(
-    config.answers.officersAssessment,
-  );
+  expect(RiskAssessmentSummaryPage.officerComments).to.equalIgnoreCase(config.answers.officersAssessment); // eslint-disable-line max-len
 
   RiskAssessmentSummaryPage.clickContinue();
 };
@@ -214,9 +196,7 @@ export const andICanViewTheAssessmentAgain = (config = defaultAssessmentConfig) 
 
   DashboardPage.viewCompletedRiskAssessmentFor(config.prisoner.nomisId);
 
-  expect(RiskAssessmentSummaryPage.waitForMainHeadingWithDataId('risk-summary')).to.equal(
-    'Risk assessment summary',
-  );
+  expect(RiskAssessmentSummaryPage.waitForMainHeadingWithDataId('risk-summary')).to.equal('Risk assessment summary');
 
   if (config.reasons) {
     config.reasons.forEach((reasonObj) => {
@@ -232,9 +212,7 @@ export const andICanViewTheAssessmentAgain = (config = defaultAssessmentConfig) 
   expect(RiskAssessmentSummaryPage.gang).to.equalIgnoreCase(config.answers.gangAffiliation);
   expect(RiskAssessmentSummaryPage.narcotics).to.equalIgnoreCase(config.answers.drugMisuse);
   expect(RiskAssessmentSummaryPage.prejudice).to.equalIgnoreCase(config.answers.prejudice);
-  expect(RiskAssessmentSummaryPage.officerComments).to.equalIgnoreCase(
-    config.answers.officersAssessment,
-  );
+  expect(RiskAssessmentSummaryPage.officerComments).to.equalIgnoreCase(config.answers.officersAssessment); // eslint-disable-line max-len
 
   RiskAssessmentSummaryPage.clickContinue();
 

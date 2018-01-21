@@ -84,73 +84,73 @@ module.exports = function createRouter(prisonerAssessmentsService, authenticatio
   });
 
   router.put('/:id/risk', (req, res) => {
-    const id = req.params.id;
+    const { id } = req.params;
     prisonerAssessmentsService.saveRiskAssessment(id, req.body)
-    .then(() => {
-      res.status(200);
-      res.json();
-    }).catch((err) => {
-      handleErrors(err, res);
-    });
+      .then(() => {
+        res.status(200);
+        res.json();
+      }).catch((err) => {
+        handleErrors(err, res);
+      });
   });
 
   router.get('/:id/risk', (req, res) => {
-    const id = req.params.id;
+    const { id } = req.params;
 
     prisonerAssessmentsService.riskAssessmentFor(id)
-    .then((result) => {
-      res.status(200);
-      res.json(result);
-    }).catch((err) => {
-      handleErrors(err, res);
-    });
+      .then((result) => {
+        res.status(200);
+        res.json(result);
+      }).catch((err) => {
+        handleErrors(err, res);
+      });
   });
 
   router.put('/:id/health', (req, res) => {
-    const id = req.params.id;
+    const { id } = req.params;
     prisonerAssessmentsService.saveHealthAssessment(id, req.body)
-    .then(() => {
-      res.status(200);
-      res.json();
-    }).catch((err) => {
-      handleErrors(err, res);
-    });
+      .then(() => {
+        res.status(200);
+        res.json();
+      }).catch((err) => {
+        handleErrors(err, res);
+      });
   });
 
   router.get('/:id/health', (req, res) => {
-    const id = req.params.id;
+    const { id } = req.params;
 
     prisonerAssessmentsService.healthAssessmentFor(id)
-    .then((result) => {
-      res.status(200);
-      res.json(result);
-    }).catch((err) => {
-      handleErrors(err, res);
-    });
+      .then((result) => {
+        res.status(200);
+        res.json(result);
+      }).catch((err) => {
+        handleErrors(err, res);
+      });
   });
 
   router.get('/:id', (req, res) => {
-    const id = req.params.id;
+    const { id } = req.params;
     const authToken = req.user.eliteAuthorisationToken;
 
     prisonerAssessmentsService.assessmentFor(id, authToken)
-    .then((result) => {
-      res.status(200);
-      res.json(result);
-    }).catch((err) => {
-      handleErrors(err, res);
-    });
+      .then((result) => {
+        res.status(200);
+        res.json(result);
+      }).catch((err) => {
+        handleErrors(err, res);
+      });
   });
 
   router.put('/:id/outcome', (req, res) => {
-    const id = req.params.id;
+    const { id } = req.params;
     prisonerAssessmentsService.saveOutcome(id, req.body)
-    .then(() => {
-      res.status(200);
-      res.json();
-    }).catch((err) => {
-      handleErrors(err, res);
-    });
+      .then(() => {
+        res.status(200);
+        res.json();
+      }).catch((err) => {
+        handleErrors(err, res);
+      });
   });
 
   return router;

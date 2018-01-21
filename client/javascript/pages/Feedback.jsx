@@ -1,6 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import DocumentTitle from 'react-document-title';
-import { browserHistory } from 'react-router';
 
 import SelectableInputGroup from '../components/SelectableInputGroup';
 import CommentBox from '../components/CommentBox';
@@ -11,7 +12,7 @@ import Routes from '../constants/routes';
 class Feedback extends Component {
   handleSubmit(e) {
     e.preventDefault();
-    browserHistory.push(Routes.FEEDBACK_CONFIRMATION);
+    this.props.history.push(Routes.FEEDBACK_CONFIRMATION);
   }
 
   render() {

@@ -22,14 +22,14 @@ function viperRatingFromApi(nomisId) {
             resolve(null);
           }
 
-          const bodyText = res.text;
-          const body = res.body;
+          const { text: bodyText, body } = res;
+
           if (body.nomsId && body.viperRating >= 0) {
             log.info(`Viper rating found from API for nomisId: ${nomisId}`);
             resolve(body.viperRating);
           }
 
-          reject(`Invalid body: ${bodyText}`);
+          reject(new Error(`Invalid body: ${bodyText}`));
         } catch (exception) {
           log.error(exception);
           reject(exception);
