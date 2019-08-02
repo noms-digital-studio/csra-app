@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.7.1
+version: v1.13.5
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
   'npm:superagent:20170807':
@@ -9,6 +9,50 @@ ignore:
     - poll-endpoint-for > superagent:
         reason: no upgrade available
         expires: '2017-11-02T10:27:41.280Z'
+  'npm:react-dom:20180802':
+    - react-dom:
+        reason: No bandwith to fix
+        expires: '2019-09-01T13:36:39.624Z'
+  SNYK-JS-LODASH-450202:
+    - react-redux > lodash:
+        reason: No bandwith to fix
+        expires: '2019-09-01T13:36:39.624Z'
+    - redux > lodash:
+        reason: No bandwith to fix
+        expires: '2019-09-01T13:36:39.624Z'
+    - snyk > @snyk/dep-graph > lodash:
+        reason: No bandwith to fix
+        expires: '2019-09-01T13:36:39.624Z'
+  SNYK-JS-LODASH-73638:
+    - react-redux > lodash:
+        reason: No bandwith to fix
+        expires: '2019-09-01T13:36:39.624Z'
+    - redux > lodash:
+        reason: No bandwith to fix
+        expires: '2019-09-01T13:36:39.624Z'
+    - snyk > @snyk/dep-graph > lodash:
+        reason: No bandwith to fix
+        expires: '2019-09-01T13:36:39.624Z'
+  SNYK-JS-LODASH-73639:
+    - react-redux > lodash:
+        reason: No bandwith to fix
+        expires: '2019-09-01T13:36:39.624Z'
+    - redux > lodash:
+        reason: No bandwith to fix
+        expires: '2019-09-01T13:36:39.624Z'
+    - snyk > @snyk/dep-graph > lodash:
+        reason: No bandwith to fix
+        expires: '2019-09-01T13:36:39.624Z'
+  'npm:lodash:20180130':
+    - react-redux > lodash:
+        reason: No bandwith to fix
+        expires: '2019-09-01T13:36:39.624Z'
+    - redux > lodash:
+        reason: No bandwith to fix
+        expires: '2019-09-01T13:36:39.624Z'
+    - snyk > @snyk/dep-graph > lodash:
+        reason: No bandwith to fix
+        expires: '2019-09-01T13:36:39.625Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   'npm:debug:20170905':
