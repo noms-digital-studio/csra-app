@@ -1,8 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import Questionnaire
-  from '../../../../client/javascript/components/Questionnaire';
+import Questionnaire from '../../../../client/javascript/components/Questionnaire';
 
 const questions = [
   {
@@ -63,12 +62,12 @@ describe('<Questionnaire />', () => {
       it('calls the onSubmit action with the answer with the path to the next question', () => {
         const callback = sinon.spy();
 
-        const params = { section: 'foo-section' };
+        const match = { params: { section: 'foo-section' } };
 
         const wrapper = mount(<Questionnaire
           prisoner={prisoner}
           questions={questions}
-          params={params}
+          match={match}
           onSubmit={callback}
           basePath="/assessment"
         />);
@@ -110,12 +109,12 @@ describe('<Questionnaire />', () => {
         },
       ];
 
-      const params = { section: 'foo-section' };
+      const match = { params: { section: 'foo-section' } };
 
       const wrapper = mount(<Questionnaire
         prisoner={prisoner}
         questions={question}
-        params={params}
+        match={match}
         onSubmit={callback}
         completionPath="/foo-complete"
       />);

@@ -14,7 +14,6 @@ import Viper from '../containers/Viper';
 
 import { capitalize } from '../utils';
 
-
 function templateSelector(data) {
   switch (data.template) {
     case 'confirmation':
@@ -65,14 +64,15 @@ class Questionnaire extends Component {
     event.preventDefault();
 
     const {
-      params: { section },
+      match: { params },
       questions,
       basePath,
       completionPath,
       isComplete,
       prisoner,
     } = this.props;
-    const { sectionIndex, question } = sectionData(questions, section);
+
+    const { sectionIndex, question } = sectionData(questions, params.section);
     const answer = serialize(event.target, { hash: true });
     const nextSectionIndex = sectionIndex + 1;
 
@@ -100,20 +100,20 @@ class Questionnaire extends Component {
       prisonerViperScore,
       completionPath,
       isComplete,
-      params: { section },
+      match: { params },
       prisoner: { forename, surname },
     } = this.props;
 
-    const { question } = sectionData(
-      questions,
-      section,
-    );
+    const { section } = params;
+
+    const { question } = sectionData(questions, section);
 
     return (
       <div className="o-question">
         <div className="">
           <h3 className="bold-medium" id="subsection-title">
-            <span className="u-font-weight-normal">Assessment for:</span> {capitalize(forename)} {capitalize(surname)}
+            <span className="u-font-weight-normal">Assessment for:</span>{' '}
+            {capitalize(forename)} {capitalize(surname)}
           </h3>
         </div>
 
@@ -137,7 +137,7 @@ Questionnaire.propTypes = {
   prisonerViperScore: PropTypes.string,
   answers: PropTypes.object,
   questions: PropTypes.array,
-  params: PropTypes.object,
+  match: PropTypes.object,
   prisoner: PropTypes.object,
   getQuestions: PropTypes.func,
   onSubmit: PropTypes.func,
@@ -147,7 +147,11 @@ Questionnaire.propTypes = {
 Questionnaire.defaultProps = {
   answers: {},
   questions: [],
-  params: {},
+  match: {
+    params: {
+      section: '',
+    },
+  },
   prisoner: {},
   prisonerViperScore: '',
   getQuestions: () => {},

@@ -12,7 +12,6 @@ import not from 'ramda/src/not';
 import path from 'ramda/src/path';
 import pluralize from 'pluralize';
 
-
 import { getTimeStamp } from '../utils';
 import {
   selectOffender,
@@ -26,7 +25,6 @@ import routes from '../constants/routes';
 
 import AssessmentRow from '../components/AssessmentRow';
 import SelectableInput from '../components/SelectableInput';
-
 
 const fortyEightHoursAgoInMilliseconds = () => {
   const date = new Date();
@@ -63,7 +61,10 @@ const AssessmentTable = children => (
 );
 
 const renderAssessmentList = map(AssessmentRow);
-const renderLast48Hours = compose(renderAssessmentList, filter(isWithin48Hours));
+const renderLast48Hours = compose(
+  renderAssessmentList,
+  filter(isWithin48Hours),
+);
 
 class PrisonerList extends Component {
   constructor() {
@@ -93,7 +94,10 @@ class PrisonerList extends Component {
       location,
     } = this.props;
 
-    const displayTestAssessments = path(['query', 'displayTestAssessments'], location);
+    const displayTestAssessments = path(
+      ['query', 'displayTestAssessments'],
+      location,
+    );
     const addClickFunctionsToAssessment = map(item => ({
       ...item,
       isAwaitingSubmission,
@@ -103,10 +107,13 @@ class PrisonerList extends Component {
       onRiskAssessmentSelect,
       onHealthcareSelect,
     }));
-    const excludeTestAssessments = filter(
-      assessment => not(assessment.nomisId.startsWith('TEST')) || displayTestAssessments === 'true',
+    const excludeTestAssessments = filter(assessment =>
+        not(assessment.nomisId.startsWith('TEST')) ||
+        displayTestAssessments === 'true',);
+    const generateAssessments = compose(
+      addClickFunctionsToAssessment,
+      excludeTestAssessments,
     );
-    const generateAssessments = compose(addClickFunctionsToAssessment, excludeTestAssessments);
     const assessments = generateAssessments(rawAssessments);
 
     if (this.state.filterLast48Hours) {
@@ -143,7 +150,11 @@ class PrisonerList extends Component {
               <h2 className="heading-large">
                 <span>There is no one to assess.</span>
               </h2>
-              <Link to={routes.ADD_OFFENDER} className="button" data-element-id="add-assessment">
+              <Link
+                to={routes.ADD_OFFENDER}
+                className="button"
+                data-element-id="add-assessment"
+              >
                 Add someone to assess
               </Link>
             </div>
@@ -153,18 +164,48 @@ class PrisonerList extends Component {
                 <form>
                   <div className="grid-row u-margin-bottom-charlie">
                     <div className="column-one-third">
-                      <label className="form-label form-label--small c-card__label" htmlFor="name-number">Filter by prisoner name or number</label>
-                      <input className="form-control c-card__input" id="name-number" type="text" name="name-number" />
+                      <label
+                        className="form-label form-label--small c-card__label"
+                        htmlFor="name-number"
+                      >
+                        Filter by prisoner name or number
+                      </label>
+                      <input
+                        className="form-control c-card__input"
+                        id="name-number"
+                        type="text"
+                        name="name-number"
+                      />
                     </div>
                     <div className="column-one-third">
-                      <label className="form-label c-card__label" htmlFor="last-name">View by date</label>
-                      <input className="form-control c-card__input" id="date" type="date" name="date" />
+                      <label
+                        className="form-label c-card__label"
+                        htmlFor="last-name"
+                      >
+                        View by date
+                      </label>
+                      <input
+                        className="form-control c-card__input"
+                        id="date"
+                        type="date"
+                        name="date"
+                      />
                     </div>
                     <div className="column-one-third">
-                      <button className="link u-link u-float-right" type="reset">Clear filters</button>
+                      <button
+                        className="link u-link u-float-right"
+                        type="reset"
+                      >
+                        Clear filters
+                      </button>
                     </div>
                   </div>
-                  <label htmlFor="" className="form-label--small u-d-block u-margin-bottom-delta">Show only:</label>
+                  <label
+                    htmlFor=""
+                    className="form-label--small u-d-block u-margin-bottom-delta"
+                  >
+                    Show only:
+                  </label>
                   <div className="grid-row">
                     <div className="column-one-quarter">
                       <SelectableInput
@@ -205,7 +246,9 @@ class PrisonerList extends Component {
                   </div>
                 </form>
               </div>
-              <p>{assessments.length} {pluralize('prisoner', assessments.length)}</p>
+              <p>
+                {assessments.length} {pluralize('prisoner', assessments.length)}
+              </p>
               {this.renderAssessments()}
             </div>
           )}
@@ -219,9 +262,7 @@ const mapStateToProps = state => ({
   assessments: state.offender.assessments,
   answers: state.answers,
   isAwaitingSubmission: id =>
-    Boolean(
-      state.assessmentStatus.awaitingSubmission.healthcare.find(item => item.assessmentId === id),
-    ),
+    Boolean(state.assessmentStatus.awaitingSubmission.healthcare.find(item => item.assessmentId === id,),),
 });
 
 const mapActionsToProps = dispatch => ({
@@ -277,8 +318,7 @@ const mapActionsToProps = dispatch => ({
 PrisonerList.propTypes = {
   title: PropTypes.string,
   isAwaitingSubmission: PropTypes.func,
-  assessments: PropTypes.arrayOf(
-    PropTypes.shape({
+  assessments: PropTypes.arrayOf(PropTypes.shape({
       nomisId: PropTypes.string,
       surname: PropTypes.string,
       forename: PropTypes.string,
@@ -286,8 +326,7 @@ PrisonerList.propTypes = {
       riskAssessmentOutcome: PropTypes.string,
       healthAssessmentOutcome: PropTypes.string,
       outcome: PropTypes.string,
-    }),
-  ),
+    }),),
   location: PropTypes.object,
   onRiskAssessmentSelect: PropTypes.func,
   getOffenderAssessments: PropTypes.func,
@@ -306,4 +345,7 @@ PrisonerList.defaultProps = {
   location: {},
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(PrisonerList);
+export default connect(
+  mapStateToProps,
+  mapActionsToProps,
+)(PrisonerList);

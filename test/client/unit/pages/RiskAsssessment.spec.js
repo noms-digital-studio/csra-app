@@ -77,11 +77,12 @@ const storeData = {
   },
 };
 
-const mountApp = store => mount(<Provider store={store}>
-  <Router>
-    <RiskAssessment params={{ section: 'foo-section' }} />
-  </Router>
-</Provider>); // eslint-disable-line react/jsx-closing-tag-location
+const mountApp = store =>
+  mount(<Provider store={store}>
+    <Router>
+      <RiskAssessment params={{ section: 'foo-section' }} />
+    </Router>
+  </Provider>); // eslint-disable-line react/jsx-closing-tag-location
 
 describe('<RiskAssessment />', () => {
   let store;
@@ -93,10 +94,7 @@ describe('<RiskAssessment />', () => {
   it('calls actions when component mounts', () => {
     mountApp(store);
 
-    expect(store.dispatch.calledWithMatch({ type: 'GET_RISK_ASSESSMENT_QUESTIONS' })).to.equal(
-      true,
-      'dispatch GET_RISK_ASSESSMENT_QUESTIONS',
-    );
+    expect(store.dispatch.calledWithMatch({ type: 'GET_RISK_ASSESSMENT_QUESTIONS' })).to.equal(true, 'dispatch GET_RISK_ASSESSMENT_QUESTIONS');
   });
 
   it('renders offender details', () => {
@@ -108,10 +106,12 @@ describe('<RiskAssessment />', () => {
 
   it('calls the onSubmit action with the answer and section', () => {
     const wrapper = mount(<Provider store={store}>
-      <RiskAssessment params={{ section: 'foo-section' }} />
+      <RiskAssessment match={{ params: { section: 'foo-section' } }} />
     </Provider>); // eslint-disable-line react/jsx-closing-tag-location
 
-    wrapper.find('[data-input="yes"]').simulate('change', { target: { value: 'yes' } });
+    wrapper
+      .find('[data-input="yes"]')
+      .simulate('change', { target: { value: 'yes' } });
     wrapper.find('form').simulate('submit');
 
     expect(store.dispatch.calledWithMatch({
