@@ -9,79 +9,85 @@ The app uses a `.env` file to manage the applications environmental variables.
 An example [file](.env.template) can be duplicated and updated according to you're needs.
 Once changes are done save the file naming it `.env`.
 
+`cp .env.template .env`
+
 
 ## Commands Available
+The application has been dockerized and can be started by simply the following commands
+
+`docker-compose up`
+
 
 ### Install dependencies
 ```
-yarn
+npm install
 ```
 
 ### Build
 Builds JS, SCSS, Images and Fonts.
 ```
-yarn run build
+npm run build
 ```
 
 ### Test
 Runs tests once.
 ```
-yarn test
+npm test
 ```
 
 ### Test watch
 Runs tests continuously.
 
 ```
-yarn test:watch
+npm test:watch
 ```
 
 ### Test end to end tests
-To run the end to end test you will need to have a running server `yarn start` then simply run:
+To run the end to end test you will need to have a running server `npm start` then simply run:
 
 #### Run both E2E and REST tests
 
 ```
-yarn test:integration
+npm test:integration
 ```
 
 #### Run E2E tests
 ```
-yarn test:e2e
+npm test:e2e
 ```
 
 #### Run REST tests
 ```
-yarn test:rest
+npm test:rest
 ```
 
 #### Run Smoke tests
 The smoke test do not interact with the database like the e2e test do. Instead it creates a test user which is hidden from the dashboard and can only be seen on the dashboard with the query string `?displayTestAssessments=true`
 ```
-yarn test:rest
+npm test:rest
 ```
 
 ### Lint
 Runs the lint using [eslint-config-airbnb](https://www.npmjs.com/package/eslint-config-airbnb)
 ```
-yarn lint
+npm lint
 ```
 
 ### Verify
 Runs tests and linter
  ```
-yarn verify
+npm verify
 ```
 
 ### Run
 Starts the server on `PORT 5000` in dev mode
 ```
-yarn start:dev
+npm start:dev
 ```
 
-Starts the server on `PORT 5000` in prod mode (prerequisite you wil have to run NODE_ENV=production yarn build)
+Starts the server on `PORT 5000` in prod mode (prerequisite you wil have to run NODE_ENV=production npm build)
 ```
-yarn start
+npm start
 ```
 
 Then go to [http://localhost:5000/](http://localhost:5000/)
@@ -361,23 +367,17 @@ Migrations are managed using [knex](http://knexjs.org/#Migrations-CLI).
 
 You can execute them with
 ```
-yarn run migrate
+npm run migrate
 ```
 
 Other knex commands can be run via
 ```
-yarn run knex -- <other args>
+npm run knex -- <other args>
 ```
 
 ### Local database setup
+Once you have your docker-compose running you can set up and seed you database as follows
 
-To run the database locally, use the [docker image](https://hub.docker.com/r/microsoft/mssql-server-linux/).
-```
-docker pull microsoft/mssql-server-linux:2017-latest
-docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=<password>' -p 1433:1433 -d microsoft/mssql-server-linux:2017-latest
-```
-
-After you have a database, you'll need to create the database and application user. On real environments this is handled by the terraform code.
 ```
 npm install -g sql-cli
 mssql -s localhost -u sa -p <password>
@@ -394,8 +394,8 @@ GRANT SELECT, INSERT, UPDATE, DELETE TO tests;
 
 And then run the migrations as with any other environment.
 ```
-yarn run knex -- migrate:currentVersion
-yarn run migrate
+npm run knex -- migrate:currentVersion
+npm run migrate
 ```
 
 ### Local database manual querying

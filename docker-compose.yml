@@ -1,0 +1,49 @@
+version: "3"
+services:
+  web:
+    container_name: csra_app
+    build:
+      context: .
+      args:
+        BUILD_NUMBER: dev
+        GIT_REF: acfbe40dcd390212323
+        GIT_DATE: "2019-07-31T11:09:18.000Z"
+        NODE_ENVIRONMENT: production
+    env_file:
+      - .env
+    command: npm start
+    volumes:
+      - "./:/home/node/app"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - database
+      - mocks
+
+  mocks:
+    container_name: csra_mocks
+    image: rodolpheche/wiremock
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./mocks/files:/home/wiremock/__files
+      - ./mocks/mappings:/home/wiremock/mappings
+
+
+  database:
+    container_name: csra_mssql
+    image: mcr.microsoft.com/mssql/server
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "Csra1234"
+      ACCEPT_EULA: "Y"
+      MSSQL_DB: csra
+      MSSQL_USER: app
+      MSSQL_PASSWORD: Csra1234
+    volumes:
+      - mssql-server-linux-data:/var/opt/mssql/data
+
+
+volumes:
+  mssql-server-linux-data:

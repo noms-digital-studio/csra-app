@@ -1,0 +1,18 @@
+[
+  {
+    "bookingId": 48164,
+    "bookingNo": "A00001",
+    "offenderNo": "A1401AE",
+    "firstName": "JILLY",
+    "lastName": "HALL",
+    "dateOfBirth": "1970-01-01",
+    "age": 47,
+    "agencyId": "LEI",
+    "assignedLivingUnitId": 25160,
+    "assignedLivingUnitDesc": "H-2-003",
+    "facialImageId": 4085,
+    "iepLevel": "Enhanced",
+    "rnum": 1,
+    "recordCount": 1
+  }
+]

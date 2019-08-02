@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/analytics/viper/A1414AE",
+    "headers": {
+      "API-Key": {
+        "equalTo": "valid-subscription-key"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"nomsId\": \"A1414AE\", \"viperRating\": 0.50}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

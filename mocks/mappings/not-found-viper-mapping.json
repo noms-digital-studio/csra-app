@@ -1,0 +1,14 @@
+{
+  "priority": 999,
+  "request": {
+    "method": "GET",
+    "urlPattern": "/analytics/viper/.*"
+  },
+  "response": {
+    "status": 404,
+    "bodyFileName": "not-found-viper.json",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
